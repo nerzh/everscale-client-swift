@@ -57,25 +57,28 @@ struct TSDKBindingResponse<TSDKResult: Decodable, TSDKError: Decodable, TSDKCust
     var customResponse: TSDKCustom?
     var finished: Bool = false
     var requestId: UInt32 = 0
-    var currentResponse: TSDKString?
+    var currentResponse: String?
 
     mutating func update(_ requestId: UInt32,
-                _ stringResponse: TSDKString,
+//                _ stringResponse: TSDKString,
+                _ stringResponse: String,
                 _ responseType: TSDKBindingResponseType,
                 _ finished: Bool
     ) {
 //        let response: [String: Any]? = TSDKBinding.convertTSDKStringToDictionary(stringResponse)
+//        let response: String = TSDKBinding.convertFromTSDKString(stringResponse)
+        let response: String = stringResponse
         self.finished = finished
         self.requestId = requestId
         self.currentResponse = stringResponse
 
         switch responseType {
         case .responseSuccess:
-            result = TSDKBinding.convertFromTSDKString(stringResponse).toModel(model: TSDKResult.self)
+            result = response.toModel(model: TSDKResult.self)
         case .responseError:
-            error = TSDKBinding.convertFromTSDKString(stringResponse).toModel(model: TSDKError.self)
+            error = response.toModel(model: TSDKError.self)
         default:
-            customResponse = TSDKBinding.convertFromTSDKString(stringResponse).toModel(model: TSDKCustom.self)
+            customResponse = response.toModel(model: TSDKCustom.self)
         }
     }
 }
