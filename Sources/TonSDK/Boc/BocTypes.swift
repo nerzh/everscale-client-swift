@@ -15,7 +15,7 @@ public struct TSDKParamsOfParse: Encodable {
 
 //ResultOfParse
 public struct TSDKResultOfParse: Decodable {
-    var parsed: String
+    var parsed: AnyJSONType
 }
 ///parsed: any – JSON containing parsed BOC
 
