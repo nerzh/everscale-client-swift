@@ -6,9 +6,11 @@ import Foundation
 
 public final class TSDKClient {
 
-    public let binding: TSDKBinding
+    private let binding: TSDKBinding
+    public var crypto: TSDKCrypto
 
     public init(config: ClientConfig) {
         self.binding = TSDKBinding(config: config)
+        self.crypto = TSDKCrypto(binding: binding)
     }
 }
