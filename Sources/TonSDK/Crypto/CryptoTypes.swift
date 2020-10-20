@@ -105,7 +105,7 @@ public struct TSDKKeyPair: Codable {
 public struct TSDKParamsOfSign: Codable {
     var unsigned: String
     var keys: TSDKKeyPair
-
+    
     public init(unsigned: String, keys: TSDKKeyPair) {
         self.unsigned = unsigned.isBase64() ? unsigned : (unsigned.base64Encoded() ?? "")
         self.keys = keys
@@ -118,7 +118,7 @@ public struct TSDKParamsOfSign: Codable {
 public struct TSDKResultOfSign: Codable {
     var signed: String
     var signature: String
-
+    
     public init(signed: String, signature: String) {
         self.signed = signed.isBase64() ? signed : (signed.base64Encoded() ?? "")
         self.signature = signature
@@ -144,7 +144,7 @@ public struct TSDKResultOfVerifySignature: Codable {
 //ParamsOfHash
 public struct TSDKParamsOfHash: Codable {
     var data: String
-
+    
     public init(data: String) {
         self.data = data.isBase64() ? data : (data.base64Encoded() ?? "")
     }
@@ -165,11 +165,11 @@ public struct TSDKParamsOfScrypt: Codable {
     var r: Int
     var p: Int
     var dk_len: Int
-
+    
     public init(password: String, salt: String, log_n: Int, r: Int, p: Int, dk_len: Int) {
         self.password = password.isBase64() ? password : (password.base64Encoded() ?? "")
         self.salt = salt.isBase64() ? salt : (salt.base64Encoded() ?? "")
-
+        
         self.log_n = log_n
         self.r = r
         self.p = p
@@ -199,7 +199,7 @@ public struct TSDKParamsOfNaclSignKeyPairFromSecret: Codable {
 public struct TSDKParamsOfNaclSign: Codable {
     var unsigned: String
     var secret: String
-
+    
     public init(unsigned: String, secret: String) {
         self.unsigned = unsigned.isBase64() ? unsigned : (unsigned.base64Encoded() ?? "")
         self.secret = secret
@@ -218,9 +218,9 @@ public struct TSDKResultOfNaclSign: Codable {
 public struct TSDKParamsOfNaclSignOpen: Codable {
     var signed: String
     var `public`: String
-
+    
     public init(signed: String, public: String) {
-//        self.signed = signed.isBase64() ? signed : (signed.base64Encoded() ?? "")
+        //        self.signed = signed.isBase64() ? signed : (signed.base64Encoded() ?? "")
         self.signed = signed
         self.public = `public`
     }
@@ -231,7 +231,7 @@ public struct TSDKParamsOfNaclSignOpen: Codable {
 //ResultOfNaclSignOpen
 public struct TSDKResultOfNaclSignOpen: Codable {
     var unsigned: String
-
+    
     public init(unsigned: String) {
         self.unsigned = unsigned.isBase64() ? unsigned : (unsigned.base64Encoded() ?? "")
     }
@@ -256,7 +256,7 @@ public struct TSDKParamsOfNaclBox: Codable {
     var nonce: String
     var their_public: String
     var secret: String
-
+    
     public init(decrypted: String, nonce: String, their_public: String, secret: String) {
         self.decrypted = decrypted.isBase64() ? decrypted : (decrypted.base64Encoded() ?? "")
         self.nonce = nonce
@@ -272,9 +272,9 @@ public struct TSDKParamsOfNaclBox: Codable {
 //ResultOfNaclBox
 public struct TSDKResultOfNaclBox: Codable {
     var encrypted: String
-
+    
     public init(encrypted: String) {
-//        self.encrypted = encrypted.isBase64() ? encrypted : (encrypted.base64Encoded() ?? "")
+        //        self.encrypted = encrypted.isBase64() ? encrypted : (encrypted.base64Encoded() ?? "")
         self.encrypted = encrypted
     }
 }
@@ -286,9 +286,9 @@ public struct TSDKParamsOfNaclBoxOpen: Codable {
     var nonce: String
     var their_public: String
     var secret: String
-
+    
     public init(encrypted: String, nonce: String, their_public: String, secret: String) {
-//        self.encrypted = encrypted.isBase64() ? encrypted : (encrypted.base64Encoded() ?? "")
+        //        self.encrypted = encrypted.isBase64() ? encrypted : (encrypted.base64Encoded() ?? "")
         self.encrypted = encrypted
         self.nonce = nonce
         self.their_public = their_public
@@ -303,7 +303,7 @@ public struct TSDKParamsOfNaclBoxOpen: Codable {
 //ResultOfNaclBoxOpen
 public struct TSDKResultOfNaclBoxOpen: Codable {
     var decrypted: String
-
+    
     public init(decrypted: String) {
         self.decrypted = decrypted.isBase64() ? decrypted : (decrypted.base64Encoded() ?? "")
     }
@@ -315,7 +315,7 @@ public struct TSDKParamsOfNaclSecretBox: Codable {
     var decrypted: String
     var nonce: String
     var key: String
-
+    
     public init(decrypted: String, nonce: String, key: String) {
         self.decrypted = decrypted.isBase64() ? decrypted : (decrypted.base64Encoded() ?? "")
         self.nonce = nonce
@@ -331,9 +331,9 @@ public struct TSDKParamsOfNaclSecretBoxOpen: Codable {
     var encrypted: String
     var nonce: String
     var key: String
-
+    
     public init(encrypted: String, nonce: String, key: String) {
-//        self.encrypted = encrypted.isBase64() ? encrypted : (encrypted.base64Encoded() ?? "")
+        //        self.encrypted = encrypted.isBase64() ? encrypted : (encrypted.base64Encoded() ?? "")
         self.encrypted = encrypted
         self.nonce = nonce
         self.key = key

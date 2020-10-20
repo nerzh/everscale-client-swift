@@ -5,18 +5,18 @@
 import Foundation
 
 public final class TSDKUtils {
-
+    
     private var binding: TSDKBinding
     public let module: String = "utils"
-
+    
     public init(binding: TSDKBinding) {
         self.binding = binding
     }
-
-    public func factorize(_ payload: TSDKParamsOfFactorize,
-                          _ handler: @escaping (TSDKBindingResponse<TSDKResultOfFactorize, TSDKClientError, TSDKDefault>) -> Void
+    
+    public func convert_address(_ payload: TSDKParamsOfConvertAddress,
+                                _ handler: @escaping (TSDKBindingResponse<TSDKResultOfConvertAddress, TSDKClientError, TSDKDefault>) -> Void
     ) {
-        let method: String = "factorize"
+        let method: String = "convert_address"
         binding.requestLibraryAsync(methodName(module, method), payload, { (response) in
             handler(response)
         })
