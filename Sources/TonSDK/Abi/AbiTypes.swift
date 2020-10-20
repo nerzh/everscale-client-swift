@@ -8,85 +8,93 @@
 import Foundation
 
 //Abi
-type Abi = {
-    type: 'Serialized'
-    value: any
-} | {
-    type: 'Handle'
-    value: number
-};
-///Depends on value of the type field.
-///When type is 'Serialized'
+public enum TSDKAbiType: String, Codable {
+    case Serialized = "Serialized"
+    case Handle = "Handle"
+}
+
+public struct TSDKAbiData: Decodable {
+    var type: TSDKAbiType
+    var value: AnyJSONType
+}
+///Depends on value of the public struct TSDKfield.
+///When public struct TSDKis 'Serialized'
 ///value: any
 ///
-///When type is 'Handle'
-///value: number
+///When public struct TSDKis 'Handle'
+///value: Int
 
 //AbiHandle
 typealias TSDKAbiHandle = Int
-///number
+///Int
 
 //FunctionHeader
 ///The ABI function header.
 ///Includes several hidden function parameters that contract uses for security and replay protection reasons.
 ///The actual set of header fields depends on the contract's ABI.
 
-type FunctionHeader = {
-    expire?: number,
-    time?: bigint,
-    pubkey?: string
-};
-///expire?: number – Message expiration time in seconds.
+public struct TSDKFunctionHeader: Codable {
+    var expire: Int?
+    var time: Int?
+    var pubkey: String?
+}
+///expire?: Int – Message expiration time in seconds.
 ///time?: bigint – Message creation time in milliseconds.
-///pubkey?: string – Public key used to sign message. Encoded with hex.
+///pubkey?: String – Public key used to sign message. Encoded with hex.
 
 //CallSet
-type CallSet = {
-    function_name: string,
-    header?: FunctionHeader,
-    input?: any
-};
-///function_name: string – Function name.
+public struct TSDKCallSet: Decodable {
+    var function_name: String
+    var header: TSDKFunctionHeader?
+    var input: AnyJSONType?
+}
+///function_name: String – Function name.
 ///header?: FunctionHeader – Function header.
 ///input?: any – Function input according to ABI.
 
 //DeploySet
-type DeploySet = {
-    tvc: string,
-    workchain_id?: number,
-    initial_data?: any
-};
-///tvc: string – Content of TVC file. Must be encoded with base64.
-///workchain_id?: number – Target workchain for destination address. Default is 0.
+public struct TSDKDeploySet: Decodable {
+    var tvc: String
+    var workchain_id: Int?
+    var initial_data: AnyJSONType?
+}
+///tvc: String – Content of TVC file. Must be encoded with base64.
+///workchain_id?: Int – Target workchain for destination address. Default is 0.
 ///initial_data?: any – List of initial values for contract's public variables.
 
 //Signer
-type Signer = {
-    type: 'None'
-} | {
-    type: 'External'
-    public_key: string
-} | {
-    type: 'Keys'
-    keys: KeyPair
-} | {
-    type: 'SigningBox'
-    handle: SigningBoxHandle
-};
-///Depends on value of the type field.
-///When type is 'None'
+public enum TSDKSignerType: String, Codable {
+    case None = "None"
+    case External = "External"
+    case Keys = "Keys"
+    case SigningBox = "SigningBox"
+}
 
-///When type is 'External'
-///public_key: string
+public struct TSDKSigner: Codable {
+    var type: TSDKSignerType
+    var public_key: String?
+    var keys: TSDKKeyPair?
+    var handle: TSDKSigningBoxHandle?
+}
+///Depends on value of the public struct TSDKfield.
+///When public struct TSDKis 'None'
 
-///When type is 'Keys'
+///When public struct TSDKis 'External'
+///public_key: String
+
+///When public struct TSDKis 'Keys'
 ///keys: KeyPair
 
-///When type is 'SigningBox'
+///When public struct TSDKis 'SigningBox'
 ///handle: SigningBoxHandle
 
 //MessageBodyType
-type MessageBodyType = 'Input' | 'Output' | 'InternalOutput' | 'Event';
+public enum TSDKMessageBodyType: String, Codable {
+    case Input = "Input"
+    case Output = "Output"
+    case InternalOutput = "InternalOutput"
+    case Event = "Event"
+}
 ///One of the following value:
 ///Input – Message contains the input of the ABI function.
 ///Output – Message contains the output of the ABI function.
@@ -94,203 +102,207 @@ type MessageBodyType = 'Input' | 'Output' | 'InternalOutput' | 'Event';
 ///Event – Message contains the input of the ABI event.
 
 //StateInitSource
-type StateInitSource = {
-    type: 'Message'
-    source: MessageSource
-} | {
-    type: 'StateInit'
-    code: string,
-    data: string,
-    library?: string
-} | {
-    type: 'Tvc'
-    tvc: string,
-    public_key?: string,
-    init_params?: StateInitParams
-};
-///Depends on value of the type field.
-///When type is 'Message'
+public enum TSDKStateInitSourceType: String, Codable {
+    case Message = "Message"
+    case StateInit = "StateInit"
+    case Tvc = "Tvc"
+}
+
+public struct TSDKStateInitSource: Decodable {
+    var type: TSDKStateInitSourceType
+    var source: TSDKMessageSource?
+    var code: String?
+    var data: String?
+    var library: String?
+    var tvc: String?
+    var public_key: String?
+    var init_params: TSDKStateInitParams?
+}
+///Depends on value of the public struct TSDKfield.
+///When public struct TSDKis 'Message'
 ///source: MessageSource
 
-///When type is 'StateInit'
-///code: string – Code BOC. Encoded with base64.
-///data: string – Data BOC. Encoded with base64.
-///library?: string – Library BOC. Encoded with base64.
+///When public struct TSDKis 'StateInit'
+///code: String – Code BOC. Encoded with base64.
+///data: String – Data BOC. Encoded with base64.
+///library?: String – Library BOC. Encoded with base64.
 
-///When type is 'Tvc'
-///tvc: string
-///public_key?: string
+///When public struct TSDKis 'Tvc'
+///tvc: String
+///public_key?: String
 ///init_params?: StateInitParams
 
 //StateInitParams
-type StateInitParams = {
-    abi: Abi,
-    value: any
-};
+public struct TSDKStateInitParams: Decodable {
+    var abi: TSDKAbiData
+    var value: AnyJSONType
+}
 ///abi: Abi
 ///value: any
 
 //MessageSource
-type MessageSource = {
-    type: 'Encoded'
-    message: string,
-    abi?: Abi
-} | {
-    type: 'EncodingParams'
-    abi: Abi,
-    address?: string,
-    deploy_set?: DeploySet,
-    call_set?: CallSet,
-    signer: Signer,
-    processing_try_index?: number
-};
-///Depends on value of the type field.
-///When type is 'Encoded'
-///message: string
+public enum TSDKMessageSourceType: String, Codable {
+    case Encoded = "Encoded"
+    case EncodingParams = "EncodingParams"
+}
+
+public struct TSDKMessageSource: Decodable {
+    var type: TSDKMessageSourceType
+    var message: String?
+    var abi: TSDKAbiData?
+    var address: String?
+    var deploy_set: TSDKDeploySet?
+    var call_set: TSDKCallSet?
+    var signer: TSDKSigner?
+    var processing_try_index: Int?
+}
+///Depends on value of the public struct TSDKfield.
+///When public struct TSDKis 'Encoded'
+///message: String
 ///abi?: Abi
 
-///When type is 'EncodingParams'
+///When public struct TSDKis 'EncodingParams'
 ///abi: Abi – Contract ABI.
-///address?: string – Contract address.
+///address?: String – Contract address.
 ///deploy_set?: DeploySet – Deploy parameters.
 ///call_set?: CallSet – Function call parameters.
 ///signer: Signer – Signing parameters.
-///processing_try_index?: number – Processing try index.
+///processing_try_index?: Int – Processing try index.
 
 //ParamsOfEncodeMessageBody
-type ParamsOfEncodeMessageBody = {
-    abi: Abi,
-    call_set: CallSet,
-    is_internal: boolean,
-    signer: Signer,
-    processing_try_index?: number
-};
+public struct TSDKParamsOfEncodeMessageBody: Decodable {
+    var abi: TSDKAbiData
+    var call_set: TSDKCallSet
+    var is_internal: Bool
+    var signer: TSDKSigner
+    var processing_try_index: Int?
+}
 ///abi: Abi – Contract ABI.
 ///call_set: CallSet – Function call parameters.
-///is_internal: boolean – True if internal message body must be encoded.
+///is_internal: Bool – True if internal message body must be encoded.
 ///signer: Signer – Signing parameters.
-///processing_try_index?: number – Processing try index.
+///processing_try_index?: Int – Processing try index.
 
 //ResultOfEncodeMessageBody
-type ResultOfEncodeMessageBody = {
-    body: string,
-    data_to_sign?: string
-};
-///body: string – Message body BOC encoded with base64.
-///data_to_sign?: string – Optional data to sign. Encoded with base64.
+public struct TSDKResultOfEncodeMessageBody: Codable {
+    var body: String
+    var data_to_sign: String?
+}
+///body: String – Message body BOC encoded with base64.
+///data_to_sign?: String – Optional data to sign. Encoded with base64.
 
 //ParamsOfAttachSignatureToMessageBody
-type ParamsOfAttachSignatureToMessageBody = {
-    abi: Abi,
-    public_key: string,
-    message: string,
-    signature: string
-};
+public struct TSDKParamsOfAttachSignatureToMessageBody: Decodable {
+    var abi: TSDKAbiData
+    var public_key: String
+    var message: String
+    var signature: String
+}
 ///abi: Abi – Contract ABI
-///public_key: string – Public key. Must be encoded with hex.
-///message: string – Unsigned message BOC. Must be encoded with base64.
-///signature: string – Signature. Must be encoded with hex.
+///public_key: String – Public key. Must be encoded with hex.
+///message: String – Unsigned message BOC. Must be encoded with base64.
+///signature: String – Signature. Must be encoded with hex.
 
 //ResultOfAttachSignatureToMessageBody
-type ResultOfAttachSignatureToMessageBody = {
-    body: string
-};
-///body: string
+public struct TSDKResultOfAttachSignatureToMessageBody: Codable {
+    var body: String
+}
+///body: String
 
 //ParamsOfEncodeMessage
-type ParamsOfEncodeMessage = {
-    abi: Abi,
-    address?: string,
-    deploy_set?: DeploySet,
-    call_set?: CallSet,
-    signer: Signer,
-    processing_try_index?: number
-};
+public struct TSDKParamsOfEncodeMessage: Decodable {
+    var abi: TSDKAbiData
+    var address: String?
+    var deploy_set: TSDKDeploySet?
+    var call_set: TSDKCallSet?
+    var signer: TSDKSigner
+    var processing_try_index: Int?
+}
 ///abi: Abi – Contract ABI.
-///address?: string – Contract address.
+///address?: String – Contract address.
 ///deploy_set?: DeploySet – Deploy parameters.
 ///call_set?: CallSet – Function call parameters.
 ///signer: Signer – Signing parameters.
-///processing_try_index?: number – Processing try index.
+///processing_try_index?: Int – Processing try index.
 
 //ResultOfEncodeMessage
-type ResultOfEncodeMessage = {
-    message: string,
-    data_to_sign?: string,
-    address: string,
-    message_id: string
-};
-///message: string – Message BOC encoded with base64.
-///data_to_sign?: string – Optional data to sign. Encoded with base64.
-///address: string – Destination address.
-///message_id: string – Message id.
+public struct TSDKResultOfEncodeMessage: Codable {
+    var message: String
+    var data_to_sign: String?
+    var address: String
+    var message_id: String
+}
+///message: String – Message BOC encoded with base64.
+///data_to_sign?: String – Optional data to sign. Encoded with base64.
+///address: String – Destination address.
+///message_id: String – Message id.
 
 //ParamsOfAttachSignature
-type ParamsOfAttachSignature = {
-    abi: Abi,
-    public_key: string,
-    message: string,
-    signature: string
-};
+public struct TSDKParamsOfAttachSignature: Decodable {
+    var abi: TSDKAbiData
+    var public_key: String
+    var message: String
+    var signature: String
+}
 ///abi: Abi – Contract ABI
-///public_key: string – Public key. Must be encoded with hex.
-///message: string – Unsigned message BOC. Must be encoded with base64.
-///signature: string – Signature. Must be encoded with hex.
+///public_key: String – Public key. Must be encoded with hex.
+///message: String – Unsigned message BOC. Must be encoded with base64.
+///signature: String – Signature. Must be encoded with hex.
 
 //ResultOfAttachSignature
-type ResultOfAttachSignature = {
-    message: string,
-    message_id: string
-};
-///message: string
-///message_id: string
+public struct TSDKResultOfAttachSignature: Codable {
+    var message: String
+    var message_id: String
+}
+///message: String
+///message_id: String
 
 //ParamsOfDecodeMessage
-type ParamsOfDecodeMessage = {
-    abi: Abi,
-    message: string
-};
+public struct TSDKParamsOfDecodeMessage: Decodable {
+    var abi: TSDKAbiData
+    var message: String
+}
 ///abi: Abi – contract ABI
-///message: string – Message BOC
+///message: String – Message BOC
 
 //DecodedMessageBody
-type DecodedMessageBody = {
-    body_type: MessageBodyType,
-    name: string,
-    value?: any,
-    header?: FunctionHeader
-};
+public struct TSDKDecodedMessageBody: Decodable {
+    var body_type: TSDKMessageBodyType
+    var name: String
+    var value: AnyJSONType?
+    var header: TSDKFunctionHeader?
+}
 ///body_type: MessageBodyType – Type of the message body content.
-///name: string – Function or event name.
+///name: String – Function or event name.
 ///value?: any – Parameters or result value.
 ///header?: FunctionHeader – Function header.
 
 //ParamsOfDecodeMessageBody
-type ParamsOfDecodeMessageBody = {
-    abi: Abi,
-    body: string,
-    is_internal: boolean
-};
+public struct TSDKParamsOfDecodeMessageBody: Decodable {
+    var abi: TSDKAbiData
+    var body: String
+    var is_internal: Bool
+}
 ///abi: Abi – Contract ABI used to decode.
-///body: string – Message body BOC. Must be encoded with base64.
-///is_internal: boolean – True if the body belongs to the internal message.
+///body: String – Message body BOC. Must be encoded with base64.
+///is_internal: Bool – True if the body belongs to the internal message.
 
 //ParamsOfEncodeAccount
-type ParamsOfEncodeAccount = {
-    state_init: StateInitSource,
-    balance?: bigint,
-    last_trans_lt?: bigint,
-    last_paid?: number
-};
+public struct TSDKParamsOfEncodeAccount: Decodable {
+    var state_init: TSDKStateInitSource
+    var balance: Int?
+    var last_trans_lt: Int?
+    var last_paid: Int?
+}
 ///state_init: StateInitSource – Source of the account state init.
 ///balance?: bigint – Initial balance.
 ///last_trans_lt?: bigint – Initial value for the last_trans_lt.
-///last_paid?: number – Initial value for the last_paid.
+///last_paid?: Int – Initial value for the last_paid.
 
 //ResultOfEncodeAccount
-type ResultOfEncodeAccount = {
-    account: string,
-    id: string
-};
-///account: string – Account BOC. Encoded with base64.
-///id: string – Account id. Encoded with hex.
+public struct TSDKResultOfEncodeAccount: Codable {
+    var account: String
+    var id: String
+}
+///account: String – Account BOC. Encoded with base64.
+///id: String – Account id. Encoded with hex.
