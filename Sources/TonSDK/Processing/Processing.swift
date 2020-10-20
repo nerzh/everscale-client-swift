@@ -16,10 +16,28 @@ public final class TSDKProcessing {
         self.binding = binding
     }
 
-    public func factorize(_ payload: TSDKParamsOfFactorize,
-                          _ handler: @escaping (TSDKBindingResponse<TSDKResultOfFactorize, TSDKClientError, TSDKDefault>) -> Void
+    public func send_message(_ payload: TSDKParamsOfSendMessage,
+                          _ handler: @escaping (TSDKBindingResponse<TSDKResultOfSendMessage, TSDKClientError, TSDKDefault>) -> Void
     ) {
-        let method: String = "factorize"
+        let method: String = "send_message"
+        binding.requestLibraryAsync(methodName(module, method), payload, { (response) in
+            handler(response)
+        })
+    }
+
+    public func wait_for_transaction(_ payload: TSDKParamsOfWaitForTransaction,
+                          _ handler: @escaping (TSDKBindingResponse<TSDKResultOfProcessMessage, TSDKClientError, TSDKDefault>) -> Void
+    ) {
+        let method: String = "wait_for_transaction"
+        binding.requestLibraryAsync(methodName(module, method), payload, { (response) in
+            handler(response)
+        })
+    }
+
+    public func process_message(_ payload: TSDKParamsOfProcessMessage,
+                          _ handler: @escaping (TSDKBindingResponse<TSDKResultOfProcessMessage, TSDKClientError, TSDKDefault>) -> Void
+    ) {
+        let method: String = "process_message"
         binding.requestLibraryAsync(methodName(module, method), payload, { (response) in
             handler(response)
         })
