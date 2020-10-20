@@ -8,19 +8,19 @@
 import Foundation
 
 //ParamsOfParse
-public struct TSDKParamsOfParse: Decodable {
+public struct TSDKParamsOfParse: Encodable {
     var boc: String
 }
 ///boc: string – BOC encoded as base64
 
 //ResultOfParse
 public struct TSDKResultOfParse: Decodable {
-    var parsed: AnyJSONType
+    var parsed: String
 }
 ///parsed: any – JSON containing parsed BOC
 
 //ParamsOfGetBlockchainConfig
-public struct TSDKParamsOfGetBlockchainConfig: Decodable {
+public struct TSDKParamsOfGetBlockchainConfig: Encodable {
     var block_boc: String
 }
 ///block_boc: string – Key block BOC encoded as base64

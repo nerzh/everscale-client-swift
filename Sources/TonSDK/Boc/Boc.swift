@@ -16,10 +16,46 @@ public final class TSDKBoc {
         self.binding = binding
     }
 
-    public func factorize(_ payload: TSDKParamsOfFactorize,
-                          _ handler: @escaping (TSDKBindingResponse<TSDKResultOfFactorize, TSDKClientError, TSDKDefault>) -> Void
+    public func parse_message(_ payload: TSDKParamsOfParse,
+                          _ handler: @escaping (TSDKBindingResponse<TSDKResultOfParse, TSDKClientError, TSDKDefault>) -> Void
     ) {
-        let method: String = "factorize"
+        let method: String = "parse_message"
+        binding.requestLibraryAsync(methodName(module, method), payload, { (response) in
+            handler(response)
+        })
+    }
+
+    public func parse_transaction(_ payload: TSDKParamsOfParse,
+                          _ handler: @escaping (TSDKBindingResponse<TSDKResultOfParse, TSDKClientError, TSDKDefault>) -> Void
+    ) {
+        let method: String = "parse_transaction"
+        binding.requestLibraryAsync(methodName(module, method), payload, { (response) in
+            handler(response)
+        })
+    }
+
+    public func parse_account(_ payload: TSDKParamsOfParse,
+                          _ handler: @escaping (TSDKBindingResponse<TSDKResultOfParse, TSDKClientError, TSDKDefault>) -> Void
+    ) {
+        let method: String = "parse_account"
+        binding.requestLibraryAsync(methodName(module, method), payload, { (response) in
+            handler(response)
+        })
+    }
+
+    public func parse_block(_ payload: TSDKParamsOfParse,
+                          _ handler: @escaping (TSDKBindingResponse<TSDKResultOfParse, TSDKClientError, TSDKDefault>) -> Void
+    ) {
+        let method: String = "parse_block"
+        binding.requestLibraryAsync(methodName(module, method), payload, { (response) in
+            handler(response)
+        })
+    }
+
+    public func get_blockchain_config(_ payload: TSDKParamsOfGetBlockchainConfig,
+                          _ handler: @escaping (TSDKBindingResponse<TSDKResultOfGetBlockchainConfig, TSDKClientError, TSDKDefault>) -> Void
+    ) {
+        let method: String = "get_blockchain_config"
         binding.requestLibraryAsync(methodName(module, method), payload, { (response) in
             handler(response)
         })
