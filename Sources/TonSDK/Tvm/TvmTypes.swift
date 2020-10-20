@@ -8,7 +8,7 @@
 import Foundation
 
 //ExecutionMode
-public enum TSDKExecutionMode: String, Decodable {
+public enum TSDKExecutionMode: String, Codable {
     case Full = "Full"
     case TvmOnly = "TvmOnly"
 }
@@ -29,7 +29,7 @@ public struct TSDKExecutionOptions: Codable {
 ///transaction_lt?: bigint – transaction logical time
 
 //ParamsOfExecuteMessage
-public struct TSDKParamsOfExecuteMessage: Decodable {
+public struct TSDKParamsOfExecuteMessage: Encodable {
     var message: TSDKMessageSource
     var account: String
     var mode: TSDKExecutionMode
@@ -53,10 +53,10 @@ public struct TSDKResultOfExecuteMessage: Decodable {
 ///account?: any – JSON with parsed updated account state. Attention! When used in
 
 //ParamsOfExecuteGet
-public struct TSDKParamsOfExecuteGet: Decodable {
+public struct TSDKParamsOfExecuteGet: Encodable {
     var account: String
     var function_name: String
-    var input: AnyJSONType?
+    var input: String?
     var execution_options: TSDKExecutionOptions?
 }
 ///account: string

@@ -89,7 +89,7 @@ public struct TSDKDecodedOutput: Decodable {
 ///output?: any – Decoded body of the function output message.
 
 //ParamsOfSendMessage
-public struct TSDKParamsOfSendMessage: Decodable {
+public struct TSDKParamsOfSendMessage: Encodable {
     var message: String
     var abi: TSDKAbiData?
     var send_events: Bool
@@ -105,7 +105,7 @@ public struct TSDKResultOfSendMessage: Decodable {
 ///shard_block_id: string – Shard block related to the message dst account before the
 
 //ParamsOfWaitForTransaction
-public struct TSDKParamsOfWaitForTransaction: Decodable {
+public struct TSDKParamsOfWaitForTransaction: Encodable {
     var abi: TSDKAbiData?
     var message: String
     var shard_block_id: String
@@ -117,7 +117,7 @@ public struct TSDKParamsOfWaitForTransaction: Decodable {
 ///send_events: boolean – Flag for requesting events sending
 
 //ParamsOfProcessMessage
-public struct TSDKParamsOfProcessMessage: Decodable {
+public struct TSDKParamsOfProcessMessage: Encodable {
     var message: TSDKMessageSource
     var send_events: Bool
 }

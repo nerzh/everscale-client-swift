@@ -8,7 +8,7 @@
 import Foundation
 
 //OrderBy
-public struct TSDKOrderBy: Decodable {
+public struct TSDKOrderBy: Codable {
     var path: String
     var direction: TSDKSortDirection
 }
@@ -16,7 +16,7 @@ public struct TSDKOrderBy: Decodable {
 ///direction: SortDirection
 
 //SortDirection
-public enum TSDKSortDirection: String, Decodable {
+public enum TSDKSortDirection: String, Codable {
     case ASC = "ASC"
     case DESC = "DESC"
 }
@@ -25,9 +25,9 @@ public enum TSDKSortDirection: String, Decodable {
 ///DESC
 
 //ParamsOfQueryCollection
-public struct TSDKParamsOfQueryCollection: Decodable {
+public struct TSDKParamsOfQueryCollection: Codable {
     var collection: String
-    var filter: AnyJSONType?
+    var filter: String?
     var result: String
     var order: [TSDKOrderBy]?
     var limit: Int?
@@ -45,9 +45,9 @@ public struct TSDKResultOfQueryCollection: Decodable {
 ///result: any[] – objects that match provided criteria
 
 //ParamsOfWaitForCollection
-public struct TSDKParamsOfWaitForCollection: Decodable {
+public struct TSDKParamsOfWaitForCollection: Encodable {
     var collection: String
-    var filter: AnyJSONType?
+    var filter: String?
     var result: String
     var timeout: Int?
 }
@@ -71,9 +71,9 @@ public struct TSDKResultOfSubscribeCollection: Decodable {
 ///public struct TSDKunit = void
 
 //ParamsOfSubscribeCollection
-public struct TSDKParamsOfSubscribeCollection: Decodable {
+public struct TSDKParamsOfSubscribeCollection: Encodable {
     var collection: String
-    var filter: AnyJSONType?
+    var filter: String?
     var result: String
 }
 ///collection: string – collection name (accounts blocks transactions messages block_signatures)
