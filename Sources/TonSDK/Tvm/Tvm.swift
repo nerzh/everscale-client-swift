@@ -16,10 +16,19 @@ public final class TSDKTvm {
         self.binding = binding
     }
 
-    public func factorize(_ payload: TSDKParamsOfFactorize,
-                          _ handler: @escaping (TSDKBindingResponse<TSDKResultOfFactorize, TSDKClientError, TSDKDefault>) -> Void
+    public func execute_message(_ payload: TSDKParamsOfExecuteMessage,
+                          _ handler: @escaping (TSDKBindingResponse<TSDKResultOfExecuteMessage, TSDKClientError, TSDKDefault>) -> Void
     ) {
-        let method: String = "factorize"
+        let method: String = "execute_message"
+        binding.requestLibraryAsync(methodName(module, method), payload, { (response) in
+            handler(response)
+        })
+    }
+
+    public func execute_get(_ payload: TSDKParamsOfExecuteGet,
+                          _ handler: @escaping (TSDKBindingResponse<TSDKResultOfExecuteGet, TSDKClientError, TSDKDefault>) -> Void
+    ) {
+        let method: String = "execute_get"
         binding.requestLibraryAsync(methodName(module, method), payload, { (response) in
             handler(response)
         })
