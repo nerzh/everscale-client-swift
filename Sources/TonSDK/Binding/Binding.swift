@@ -42,7 +42,7 @@ public final class TSDKBinding: TSDKBindingPrtcl {
     var convertTSDKStringPointerToDictionary = TSDKBinding.convertTSDKStringPointerToDictionary
 
 
-    init(config: ClientConfig = ClientConfig()) {
+    public init(config: TSDKClientConfig = TSDKClientConfig()) {
         self.context = createContext(config: config)
     }
 
@@ -76,7 +76,7 @@ public final class TSDKBinding: TSDKBindingPrtcl {
         return string.toDictionary()
     }
 
-    private func createContext(config: ClientConfig) -> UInt32 {
+    private func createContext(config: TSDKClientConfig) -> UInt32 {
         var contextId: UInt32 = .init()
         let json: String = config.toJson() ?? "{}"
         convertToTSDKString(json) { config in
@@ -88,6 +88,10 @@ public final class TSDKBinding: TSDKBindingPrtcl {
             }
         }
         return contextId
+    }
+
+    public func destroyContext() {
+        TSDKDestroyContext(context)
     }
 
     private func generate_request_id() -> UInt32 {
@@ -105,12 +109,12 @@ public final class TSDKBinding: TSDKBindingPrtcl {
                                     TSDKError: Decodable,
                                     TSDKCustom: Decodable
     >(_ methodName: String,
-      _ payload: TSDKPayload,
+      _ payload: TSDKPayload = "" as! TSDKPayload,
       _ requestHandler: @escaping (TSDKBindingResponse<TSDKResult, TSDKError, TSDKCustom>) -> Void
     ) {
         let requestId: UInt32 = generate_request_id()
         convertToTSDKString(methodName) { tsdkMethodName in
-            let payload = payload.toJson() ?? "{}"
+            let payload = payload.toJson() ?? ""
             convertToTSDKString(payload) { tsdkPayload in
                 BindingStore.asyncRequestGroups[requestId] = DispatchGroup()
                 guard let group = BindingStore.asyncRequestGroups[requestId] else { return }
@@ -125,7 +129,7 @@ public final class TSDKBinding: TSDKBindingPrtcl {
                     guard let group = BindingStore.asyncRequestGroups[requestId] else { return }
                     group.leave()
                 }
-                Thread {
+                Thread { [group, requestId, requestHandler] in
                     group.wait()
                     guard let tsdkResponse = BindingStore.getResponse(requestId) else { return }
                     guard let responseType = TSDKBindingResponseType.init(rawValue: tsdkResponse.responseType) else { return }
@@ -136,5 +140,9 @@ public final class TSDKBinding: TSDKBindingPrtcl {
                 }.start()
             }
         }
+    }
+
+    deinit {
+        destroyContext()
     }
 }

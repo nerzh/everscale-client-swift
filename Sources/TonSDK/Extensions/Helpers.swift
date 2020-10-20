@@ -7,3 +7,7 @@ import Foundation
 func methodName(_ module: String, _ method: String) -> String {
     "\(module).\(method)"
 }
+
+func Log(_ str: Any) {
+    print("❇️ logi:", str)
+}

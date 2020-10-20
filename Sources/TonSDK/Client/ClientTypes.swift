@@ -12,40 +12,51 @@ public struct TSDKDefault: Decodable {
 }
 
 
-public struct ClientError: Decodable {
+public struct TSDKClientError: Decodable {
     public var code: Int
     public var message: String
     public var data: AnyJSONType
 }
 
-public struct ClientConfig: Codable {
-    public var network: NetworkConfig?
-    public var crypto: CryptoConfig?
-    public var abi: AbiConfig?
+public struct TSDKClientConfig: Encodable {
+    public var network: TSDKNetworkConfig?
+    public var crypto: TSDKCryptoConfig?
+    public var abi: TSDKAbiConfig?
+
+    public init() {}
 }
 
-public struct NetworkConfig: Codable {
+public struct TSDKNetworkConfig: Encodable {
     var server_address: String
     var message_retries_count: Int?
     var message_processing_timeout: Int?
     var wait_for_timeout: Int?
     var out_of_sync_threshold: Int?
-    var access_key: String
+    var access_key: String?
+
+    public init(server_address: String, message_retries_count: Int? = nil, message_processing_timeout: Int? = nil, wait_for_timeout: Int? = nil, out_of_sync_threshold: Int? = nil, access_key: String? = nil) {
+        self.server_address = server_address
+        self.message_retries_count = message_retries_count
+        self.message_processing_timeout = message_processing_timeout
+        self.wait_for_timeout = wait_for_timeout
+        self.out_of_sync_threshold = out_of_sync_threshold
+        self.access_key = access_key
+    }
 }
 
-public struct CryptoConfig: Codable {
+public struct TSDKCryptoConfig: Codable {
     var fish_param: String?
 }
 
-public struct AbiConfig: Codable {
+public struct TSDKAbiConfig: Codable {
     var message_expiration_timeout: Int?
     var message_expiration_timeout_grow_factor: Int?
 }
 
-public struct ResultOfGetApiReference: Decodable {
+public struct TSDKResultOfGetApiReference: Decodable {
     var api: AnyJSONType
 }
 
-public struct ResultOfVersion: Codable {
+public struct TSDKResultOfVersion: Codable {
     var version: String
 }
