@@ -6,9 +6,9 @@ import Foundation
 
 public final class TSDKClient {
 
-    let binding: TSDKBinding
+    public let binding: TSDKBinding
 
-    init(config: ClientConfig) {
+    public init(config: ClientConfig) {
         self.binding = TSDKBinding(config: config)
     }
 }

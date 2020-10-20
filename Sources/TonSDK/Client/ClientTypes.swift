@@ -4,16 +4,24 @@
 
 import Foundation
 
+public struct TSDKDefault: Decodable {
+    public var result: AnyJSONType?
+    public var error: AnyJSONType?
+    public var data: AnyJSONType?
+    public var message: AnyJSONType?
+}
+
+
 public struct ClientError: Decodable {
-    var code: Int
-    var message: String
-    var data: AnyJSONType
+    public var code: Int
+    public var message: String
+    public var data: AnyJSONType
 }
 
 public struct ClientConfig: Codable {
-    var network: NetworkConfig?
-    var crypto: CryptoConfig?
-    var abi: AbiConfig?
+    public var network: NetworkConfig?
+    public var crypto: CryptoConfig?
+    public var abi: AbiConfig?
 }
 
 public struct NetworkConfig: Codable {

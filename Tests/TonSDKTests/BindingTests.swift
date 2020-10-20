@@ -40,6 +40,7 @@ final class BindingTests: XCTestCase {
         for _ in 1...500 {
             binding.requestLibraryAsync("client.version", "{}") { (r: TSDKBindingResponse<Test, TestError, Test>) in
                 XCTAssertEqual(r.result?.version, "1.0.0")
+                XCTAssertEqual(r.error?.message, nil)
             }
         }
         usleep(500000)

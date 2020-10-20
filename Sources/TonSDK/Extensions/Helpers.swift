@@ -4,3 +4,6 @@
 
 import Foundation
 
+func methodName(_ module: String, _ method: String) -> String {
+    "\(module).\(method)"
+}

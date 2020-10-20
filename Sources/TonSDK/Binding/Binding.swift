@@ -30,9 +30,9 @@ public protocol TSDKBindingPrtcl {
 
 // MARK: Binding Helpers
 
-final class TSDKBinding: TSDKBindingPrtcl {
+public final class TSDKBinding: TSDKBindingPrtcl {
 
-    var context: TSDKContext = .init()
+    public var context: TSDKContext = .init()
     private var requsetId: UInt32 = .init()
     private let requestLock: NSLock = .init()
     var convertToTSDKString = TSDKBinding.convertToTSDKString
@@ -123,7 +123,6 @@ final class TSDKBinding: TSDKBindingPrtcl {
                     let swiftString = TSDKBinding.convertFromTSDKString(params)
                     BindingStore.addResponse(requestId, (requestId: requestId, params: swiftString, responseType: responseType, finished: finished))
                     guard let group = BindingStore.asyncRequestGroups[requestId] else { return }
-                    usleep(200000)
                     group.leave()
                 }
                 Thread {
