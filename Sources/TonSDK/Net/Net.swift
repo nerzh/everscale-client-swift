@@ -16,7 +16,7 @@ public final class TSDKNet {
         self.binding = binding
     }
     
-    public func query_collection(_ payload: TSDKParamsOfQueryCollection,
+    public func query_collection<A: Encodable>(_ payload: TSDKParamsOfQueryCollection<A>,
                                  _ handler: @escaping (TSDKBindingResponse<TSDKResultOfQueryCollection, TSDKClientError, TSDKDefault>) -> Void
     ) {
         let method: String = "query_collection"
@@ -25,7 +25,7 @@ public final class TSDKNet {
         })
     }
     
-    public func wait_for_collection(_ payload: TSDKParamsOfWaitForCollection,
+    public func wait_for_collection<A: Encodable>(_ payload: TSDKParamsOfWaitForCollection<A>,
                                     _ handler: @escaping (TSDKBindingResponse<TSDKResultOfWaitForCollection, TSDKClientError, TSDKDefault>) -> Void
     ) {
         let method: String = "wait_for_collection"
@@ -42,7 +42,7 @@ public final class TSDKNet {
         })
     }
     
-    public func subscribe_collection(_ payload: TSDKParamsOfSubscribeCollection,
+    public func subscribe_collection<A: Encodable>(_ payload: TSDKParamsOfSubscribeCollection<A>,
                                      _ handler: @escaping (TSDKBindingResponse<TSDKResultOfSubscribeCollection, TSDKClientError, TSDKDefault>) -> Void
     ) {
         let method: String = "subscribe_collection"

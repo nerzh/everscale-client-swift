@@ -25,9 +25,9 @@ public enum TSDKSortDirection: String, Codable {
 ///DESC
 
 //ParamsOfQueryCollection
-public struct TSDKParamsOfQueryCollection: Codable {
+public struct TSDKParamsOfQueryCollection<A: Encodable>: Encodable {
     var collection: String
-    var filter: String?
+    var filter: AnyEncodable<A>?
     var result: String
     var order: [TSDKOrderBy]?
     var limit: Int?
@@ -45,9 +45,9 @@ public struct TSDKResultOfQueryCollection: Decodable {
 ///result: any[] – objects that match provided criteria
 
 //ParamsOfWaitForCollection
-public struct TSDKParamsOfWaitForCollection: Encodable {
+public struct TSDKParamsOfWaitForCollection<A: Encodable>: Encodable {
     var collection: String
-    var filter: String?
+    var filter: AnyEncodable<A>?
     var result: String
     var timeout: Int?
 }
@@ -71,9 +71,9 @@ public struct TSDKResultOfSubscribeCollection: Decodable {
 ///public struct TSDKunit = void
 
 //ParamsOfSubscribeCollection
-public struct TSDKParamsOfSubscribeCollection: Encodable {
+public struct TSDKParamsOfSubscribeCollection<A: Encodable>: Encodable {
     var collection: String
-    var filter: String?
+    var filter: AnyEncodable<A>?
     var result: String
 }
 ///collection: string – collection name (accounts blocks transactions messages block_signatures)

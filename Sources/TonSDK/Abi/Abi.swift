@@ -8,15 +8,15 @@
 import Foundation
 
 public final class TSDKAbi {
-    
+
     private var binding: TSDKBinding
     public let module: String = "abi"
-    
+
     public init(binding: TSDKBinding) {
         self.binding = binding
     }
-    
-    public func encode_message_body(_ payload: TSDKParamsOfEncodeMessageBody,
+
+    public func encode_message_body<T: Encodable>(_ payload: TSDKParamsOfEncodeMessageBody<T>,
                                     _ handler: @escaping (TSDKBindingResponse<TSDKResultOfEncodeMessageBody, TSDKClientError, TSDKDefault>) -> Void
     ) {
         let method: String = "encode_message_body"
@@ -24,8 +24,8 @@ public final class TSDKAbi {
             handler(response)
         })
     }
-    
-    public func attach_signature_to_message_body(_ payload: TSDKParamsOfAttachSignatureToMessageBody,
+
+    public func attach_signature_to_message_body<T: Encodable>(_ payload: TSDKParamsOfAttachSignatureToMessageBody<T>,
                                                  _ handler: @escaping (TSDKBindingResponse<TSDKResultOfAttachSignatureToMessageBody, TSDKClientError, TSDKDefault>) -> Void
     ) {
         let method: String = "attach_signature_to_message_body"
@@ -33,8 +33,8 @@ public final class TSDKAbi {
             handler(response)
         })
     }
-    
-    public func encode_message(_ payload: TSDKParamsOfEncodeMessage,
+
+    public func encode_message<T: Encodable>(_ payload: TSDKParamsOfEncodeMessage<T>,
                                _ handler: @escaping (TSDKBindingResponse<TSDKResultOfEncodeMessage, TSDKClientError, TSDKDefault>) -> Void
     ) {
         let method: String = "encode_message"
@@ -42,8 +42,8 @@ public final class TSDKAbi {
             handler(response)
         })
     }
-    
-    public func attach_signature(_ payload: TSDKParamsOfAttachSignature,
+
+    public func attach_signature<T: Encodable>(_ payload: TSDKParamsOfAttachSignature<T>,
                                  _ handler: @escaping (TSDKBindingResponse<TSDKResultOfAttachSignature, TSDKClientError, TSDKDefault>) -> Void
     ) {
         let method: String = "attach_signature"
@@ -51,8 +51,8 @@ public final class TSDKAbi {
             handler(response)
         })
     }
-    
-    public func decode_message(_ payload: TSDKParamsOfDecodeMessage,
+
+    public func decode_message<T: Encodable>(_ payload: TSDKParamsOfDecodeMessage<T>,
                                _ handler: @escaping (TSDKBindingResponse<TSDKDecodedMessageBody, TSDKClientError, TSDKDefault>) -> Void
     ) {
         let method: String = "decode_message"
@@ -60,8 +60,8 @@ public final class TSDKAbi {
             handler(response)
         })
     }
-    
-    public func decode_message_body(_ payload: TSDKParamsOfDecodeMessageBody,
+
+    public func decode_message_body<T: Encodable>(_ payload: TSDKParamsOfDecodeMessageBody<T>,
                                     _ handler: @escaping (TSDKBindingResponse<TSDKDecodedMessageBody, TSDKClientError, TSDKDefault>) -> Void
     ) {
         let method: String = "decode_message_body"
@@ -69,8 +69,8 @@ public final class TSDKAbi {
             handler(response)
         })
     }
-    
-    public func encode_account(_ payload: TSDKParamsOfEncodeAccount,
+
+    public func encode_account<A: Encodable, B: Encodable>(_ payload: TSDKParamsOfEncodeAccount<A, B>,
                                _ handler: @escaping (TSDKBindingResponse<TSDKResultOfEncodeAccount, TSDKClientError, TSDKDefault>) -> Void
     ) {
         let method: String = "encode_account"

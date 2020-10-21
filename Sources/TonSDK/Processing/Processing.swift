@@ -16,7 +16,7 @@ public final class TSDKProcessing {
         self.binding = binding
     }
     
-    public func send_message(_ payload: TSDKParamsOfSendMessage,
+    public func send_message<T: Encodable>(_ payload: TSDKParamsOfSendMessage<T>,
                              _ handler: @escaping (TSDKBindingResponse<TSDKResultOfSendMessage, TSDKClientError, TSDKDefault>) -> Void
     ) {
         let method: String = "send_message"
@@ -25,7 +25,7 @@ public final class TSDKProcessing {
         })
     }
     
-    public func wait_for_transaction(_ payload: TSDKParamsOfWaitForTransaction,
+    public func wait_for_transaction<T: Encodable>(_ payload: TSDKParamsOfWaitForTransaction<T>,
                                      _ handler: @escaping (TSDKBindingResponse<TSDKResultOfProcessMessage, TSDKClientError, TSDKDefault>) -> Void
     ) {
         let method: String = "wait_for_transaction"
@@ -34,7 +34,7 @@ public final class TSDKProcessing {
         })
     }
     
-    public func process_message(_ payload: TSDKParamsOfProcessMessage,
+    public func process_message<T: Encodable>(_ payload: TSDKParamsOfProcessMessage<T>,
                                 _ handler: @escaping (TSDKBindingResponse<TSDKResultOfProcessMessage, TSDKClientError, TSDKDefault>) -> Void
     ) {
         let method: String = "process_message"

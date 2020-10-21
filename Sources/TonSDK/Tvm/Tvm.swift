@@ -16,7 +16,7 @@ public final class TSDKTvm {
         self.binding = binding
     }
     
-    public func execute_message(_ payload: TSDKParamsOfExecuteMessage,
+    public func execute_message<T: Encodable>(_ payload: TSDKParamsOfExecuteMessage<T>,
                                 _ handler: @escaping (TSDKBindingResponse<TSDKResultOfExecuteMessage, TSDKClientError, TSDKDefault>) -> Void
     ) {
         let method: String = "execute_message"

@@ -11,7 +11,6 @@ public struct TSDKDefault: Decodable {
     public var message: AnyJSONType?
 }
 
-
 public struct TSDKClientError: Decodable {
     public var code: Int
     public var message: String
