@@ -29,12 +29,7 @@ public protocol TSDKBindingPrtcl {
 
 
 // MARK: Binding Helpers
-//var h: tc_response_handler_t = { (requestId: UInt32, params: TSDKString, responseType: UInt32, finished: Bool) in
-//    let swiftString = TSDKBinding.convertFromTSDKString(params)
-//    BindingStore.addResponse(requestId, (requestId: requestId, params: swiftString, responseType: responseType, finished: finished))
-//    guard let group = BindingStore.asyncRequestGroups[requestId] else { return }
-//    group.leave()
-//}
+
 public final class TSDKBinding: TSDKBindingPrtcl {
 
     public var context: TSDKContext = .init()
@@ -110,7 +105,7 @@ public final class TSDKBinding: TSDKBindingPrtcl {
     }
 
     public func requestLibraryAsync(_ methodName: String,
-                                    _ payload: Encodable = "" as! TSDKPayload,
+                                    _ payload: Encodable = "",
                                     _ requestHandler: @escaping (_ requestId: UInt32,
                                                                  _ stringResponse: String,
                                                                  _ responseType: TSDKBindingResponseType,
@@ -120,40 +115,20 @@ public final class TSDKBinding: TSDKBindingPrtcl {
         convertToTSDKString(methodName) { tsdkMethodName in
             let payload = payload.toJson() ?? ""
             convertToTSDKString(payload) { tsdkPayload in
-//                BindingStore.asyncRequestGroups[requestId] = DispatchGroup()
-//                guard let group = BindingStore.asyncRequestGroups[requestId] else { return }
-//                group.enter()
                 BindingStore.addRequest(requestId, requestHandler)
-
-
-
                 TSDKRequestAsync(self.context,
                                  tsdkMethodName,
                                  tsdkPayload,
                                  requestId
                 ) { (requestId: UInt32, params: TSDKString, responseType: UInt32, finished: Bool) in
                     let swiftString = TSDKBinding.convertFromTSDKString(params)
-                    let responseType: TSDKBindingResponseType = .init(rawValue: responseType) ?? .unknown
+                    let responseType: TSDKBindingResponseType = (TSDKBindingResponseType.init(rawValue: responseType) ?? .unknown)!
                     guard let tsdkRequest = BindingStore.getRequest(requestId) else { return }
                     tsdkRequest(requestId, swiftString, responseType, finished)
-//                    BindingStore.addResponse(requestId, (requestId: requestId, params: swiftString, responseType: responseType, finished: finished))
-//                    guard let group = BindingStore.asyncRequestGroups[requestId] else { return }
-//                    Log(finished)
-//                    Log(swiftString)
                     if finished {
                         BindingStore.deleteRequest(requestId)
-//                        group.leave()
                     }
                 }
-//                Thread { [group, requestId, requestHandler] in
-//                    group.wait()
-//                    guard let tsdkResponse = BindingStore.getResponse(requestId) else { return }
-//                    guard let responseType = TSDKBindingResponseType.init(rawValue: tsdkResponse.responseType) else { return }
-//                    var response: TSDKBindingResponse<TSDKResult, TSDKError, TSDKCustom> = .init()
-//                    response.update(tsdkResponse.requestId, tsdkResponse.params, responseType, tsdkResponse.finished)
-//                    requestHandler(response)
-//                    BindingStore.deleteResponse(requestId)
-//                }.start()
             }
         }
     }

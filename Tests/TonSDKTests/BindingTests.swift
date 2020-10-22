@@ -38,9 +38,11 @@ final class BindingTests: XCTestCase {
     func testRequestLibraryAsync() throws {
         let binding: TSDKBinding = .init()
         for _ in 1...500 {
-            binding.requestLibraryAsync("client.version", "{}") { (r: TSDKBindingResponse<Test, TestError, Test>) in
-                XCTAssertEqual(r.result?.version, "1.0.0")
-                XCTAssertEqual(r.error?.message, nil)
+            binding.requestLibraryAsync("client.version", "{}") { (requestId, params, responseType, finished) in
+                var response: TSDKBindingResponse<Test, TestError, Test> = .init()
+                response.update(requestId, params, responseType, finished)
+                XCTAssertEqual(response.result?.version, "1.0.0")
+                XCTAssertEqual(response.error?.message, nil)
             }
         }
         usleep(500000)

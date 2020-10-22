@@ -17,7 +17,9 @@ public final class TSDKUtils {
                                 _ handler: @escaping (TSDKBindingResponse<TSDKResultOfConvertAddress, TSDKClientError, TSDKDefault>) -> Void
     ) {
         let method: String = "convert_address"
-        binding.requestLibraryAsync(methodName(module, method), payload, { (response) in
+        binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKResultOfConvertAddress, TSDKClientError, TSDKDefault> = .init()
+            response.update(requestId, params, responseType, finished)
             handler(response)
         })
     }

@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Oleh Hudeichuk on 21.10.2020.
 //
@@ -9,11 +9,6 @@ import XCTest
 import class Foundation.Bundle
 @testable import TonSDK
 @testable import CTonSDK
-
-
-
-//struct
-
 
 final class AbiTests: XCTestCase {
 

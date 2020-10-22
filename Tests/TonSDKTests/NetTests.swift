@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Oleh Hudeichuk on 21.10.2020.
 //
@@ -83,8 +83,9 @@ final class NetTests: XCTestCase {
             let payload: TSDKParamsOfSubscribeCollection = .init(collection: "transactions",
                                                                       filter: any,
                                                                       result: "id account_addr")
-//            return
+            return
             client.net.subscribe_collection(payload) { [group] (response) in
+                Log(response)
 //                XCTAssertTrue(false, "No Data")
 //                if let json = response.result?.result.jsonValue as? [String: Any],
 //                   let thisNow = (json["now"] as? AnyJSONType)?.jsonValue as? Int

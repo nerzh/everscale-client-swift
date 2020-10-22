@@ -3,9 +3,6 @@ import class Foundation.Bundle
 @testable import TonSDK
 
 final class TonSDKTests: XCTestCase {
-    func testExample() throws {
-//        XCTAssertEqual(output, "Hello, world!\n")
-    }
 
     /// Returns path to the built products directory.
     var productsDirectory: URL {

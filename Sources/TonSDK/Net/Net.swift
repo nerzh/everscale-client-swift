@@ -20,16 +20,20 @@ public final class TSDKNet {
                                  _ handler: @escaping (TSDKBindingResponse<TSDKResultOfQueryCollection, TSDKClientError, TSDKDefault>) -> Void
     ) {
         let method: String = "query_collection"
-        binding.requestLibraryAsync(methodName(module, method), payload, { (response) in
+        binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKResultOfQueryCollection, TSDKClientError, TSDKDefault> = .init()
+            response.update(requestId, params, responseType, finished)
             handler(response)
         })
     }
-    
+
     public func wait_for_collection(_ payload: TSDKParamsOfWaitForCollection,
                                     _ handler: @escaping (TSDKBindingResponse<TSDKResultOfWaitForCollection, TSDKClientError, TSDKDefault>) -> Void
     ) {
         let method: String = "wait_for_collection"
-        binding.requestLibraryAsync(methodName(module, method), payload, { (response) in
+        binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKResultOfWaitForCollection, TSDKClientError, TSDKDefault> = .init()
+            response.update(requestId, params, responseType, finished)
             handler(response)
         })
     }
@@ -38,15 +42,19 @@ public final class TSDKNet {
                                      _ handler: @escaping (TSDKBindingResponse<TSDKResultOfSubscribeCollection, TSDKClientError, TSDKDefault>) -> Void
     ) {
         let method: String = "subscribe_collection"
-        binding.requestLibraryAsync(methodName(module, method), payload, { (response) in
+        binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKResultOfSubscribeCollection, TSDKClientError, TSDKDefault> = .init()
+            response.update(requestId, params, responseType, finished)
             handler(response)
         })
     }
-    
+
     public func unsubscribe(_ handler: @escaping (TSDKBindingResponse<TSDKResultOfSubscribeCollection, TSDKClientError, TSDKDefault>) -> Void
     ) {
         let method: String = "unsubscribe"
-        binding.requestLibraryAsync(methodName(module, method), "", { (response) in
+        binding.requestLibraryAsync(methodName(module, method), "", { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKResultOfSubscribeCollection, TSDKClientError, TSDKDefault> = .init()
+            response.update(requestId, params, responseType, finished)
             handler(response)
         })
     }
