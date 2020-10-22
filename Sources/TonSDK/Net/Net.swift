@@ -16,7 +16,7 @@ public final class TSDKNet {
         self.binding = binding
     }
     
-    public func query_collection<A: Encodable>(_ payload: TSDKParamsOfQueryCollection<A>,
+    public func query_collection(_ payload: TSDKParamsOfQueryCollection,
                                  _ handler: @escaping (TSDKBindingResponse<TSDKResultOfQueryCollection, TSDKClientError, TSDKDefault>) -> Void
     ) {
         let method: String = "query_collection"
@@ -25,10 +25,19 @@ public final class TSDKNet {
         })
     }
     
-    public func wait_for_collection<A: Encodable>(_ payload: TSDKParamsOfWaitForCollection<A>,
+    public func wait_for_collection(_ payload: TSDKParamsOfWaitForCollection,
                                     _ handler: @escaping (TSDKBindingResponse<TSDKResultOfWaitForCollection, TSDKClientError, TSDKDefault>) -> Void
     ) {
         let method: String = "wait_for_collection"
+        binding.requestLibraryAsync(methodName(module, method), payload, { (response) in
+            handler(response)
+        })
+    }
+
+    public func subscribe_collection(_ payload: TSDKParamsOfSubscribeCollection,
+                                     _ handler: @escaping (TSDKBindingResponse<TSDKResultOfSubscribeCollection, TSDKClientError, TSDKDefault>) -> Void
+    ) {
+        let method: String = "subscribe_collection"
         binding.requestLibraryAsync(methodName(module, method), payload, { (response) in
             handler(response)
         })
@@ -38,15 +47,6 @@ public final class TSDKNet {
     ) {
         let method: String = "unsubscribe"
         binding.requestLibraryAsync(methodName(module, method), "", { (response) in
-            handler(response)
-        })
-    }
-    
-    public func subscribe_collection<A: Encodable>(_ payload: TSDKParamsOfSubscribeCollection<A>,
-                                     _ handler: @escaping (TSDKBindingResponse<TSDKResultOfSubscribeCollection, TSDKClientError, TSDKDefault>) -> Void
-    ) {
-        let method: String = "subscribe_collection"
-        binding.requestLibraryAsync(methodName(module, method), payload, { (response) in
             handler(response)
         })
     }

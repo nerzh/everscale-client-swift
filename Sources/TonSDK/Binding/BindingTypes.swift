@@ -21,6 +21,7 @@ public enum TSDKBindingResponseType: UInt32 {
     case responseError = 1
     case responseNop = 2
     case responseCustom = 100
+    case unknown
 }
 
 public struct TSDKBindingResponse<TSDKResult: Decodable, TSDKError: Decodable, TSDKCustom: Decodable> {

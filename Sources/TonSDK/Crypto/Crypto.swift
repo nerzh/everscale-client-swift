@@ -17,7 +17,9 @@ public final class TSDKCrypto {
                           _ handler: @escaping (TSDKBindingResponse<TSDKResultOfFactorize, TSDKClientError, TSDKDefault>) -> Void
     ) {
         let method: String = "factorize"
-        binding.requestLibraryAsync(methodName(module, method), payload, { (response) in
+        binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKResultOfFactorize, TSDKClientError, TSDKDefault> = .init()
+            response.update(requestId, params, responseType, finished)
             handler(response)
         })
     }

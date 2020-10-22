@@ -29,8 +29,8 @@ public struct TSDKExecutionOptions: Codable {
 ///transaction_lt?: bigint – transaction logical time
 
 //ParamsOfExecuteMessage
-public struct TSDKParamsOfExecuteMessage<T: Encodable>: Encodable {
-    var message: TSDKMessageSource<T>
+public struct TSDKParamsOfExecuteMessage: Encodable {
+    var message: TSDKMessageSource
     var account: String
     var mode: TSDKExecutionMode
     var execution_options: TSDKExecutionOptions?

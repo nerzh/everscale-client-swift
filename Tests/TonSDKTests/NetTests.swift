@@ -14,7 +14,13 @@ final class NetTests: XCTestCase {
 
     func testQuery_collection() throws {
         testAsyncMethods { (client, group) in
-            let any = AnyEncodable(value: ["created_at": ["gt": 1562342740]])
+            let any = AnyValue.object(
+                [
+                    "created_at" : AnyValue.object(
+                        [
+                            "gt" : AnyValue.int(1562342740)
+                        ])
+                ])
             let payload: TSDKParamsOfQueryCollection = .init(collection: "messages",
                                                              filter: any,
                                                              result: "body created_at",
@@ -28,6 +34,68 @@ final class NetTests: XCTestCase {
                     XCTAssertTrue(false, "No Data")
                 }
                 group.leave()
+            }
+            group.wait()
+        }
+    }
+
+    func testWait_for_collection() throws {
+        testAsyncMethods { (client, group) in
+            let now: Int = Int(Date().timeIntervalSince1970)
+            let any = AnyValue.object(
+                [
+                    "now" : AnyValue.object(
+                        [
+                            "gt" : AnyValue.int(now)
+                        ])
+                ])
+            let payload: TSDKParamsOfWaitForCollection = .init(collection: "transactions",
+                                                                    filter: any,
+                                                                    result: "id now",
+                                                                    timeout: nil)
+            client.net.wait_for_collection(payload) { [group] (response) in
+                if let json = response.result?.result.jsonValue as? [String: Any],
+                   let thisNow = (json["now"] as? AnyJSONType)?.jsonValue as? Int
+                {
+                    XCTAssertTrue(thisNow > now)
+                } else {
+                    XCTAssertTrue(false, "No Data")
+                }
+                group.leave()
+            }
+            group.wait()
+        }
+    }
+
+    func testSubscribe_collection() throws {
+        testAsyncMethods { (client, group) in
+            let any = AnyValue.object(
+                [
+                    "account_addr" : AnyValue.object(
+                        [
+                            "eq" : AnyValue.string("")
+                        ]),
+                    "status" : AnyValue.object(
+                        [
+                            "eq" : AnyValue.string("")
+                        ])
+                ])
+            let payload: TSDKParamsOfSubscribeCollection = .init(collection: "transactions",
+                                                                      filter: any,
+                                                                      result: "id account_addr")
+//            return
+            client.net.subscribe_collection(payload) { [group] (response) in
+//                XCTAssertTrue(false, "No Data")
+//                if let json = response.result?.result.jsonValue as? [String: Any],
+//                   let thisNow = (json["now"] as? AnyJSONType)?.jsonValue as? Int
+//                {
+//                    XCTAssertTrue(thisNow > now)
+//                } else {
+//                    XCTAssertTrue(false, "No Data")
+//                }
+                if response.finished {
+                    group.leave()
+                }
             }
             group.wait()
         }
