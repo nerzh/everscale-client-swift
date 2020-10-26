@@ -14,6 +14,7 @@ final class CryptoTests: XCTestCase {
 
     func testFactorize() throws {
         testAsyncMethods { (client, group) in
+            group.enter()
             client.crypto.factorize(TSDKParamsOfFactorize(composite: "17ED48941A08F981")) { [group] (response) in
                 XCTAssertEqual(response.result?.factors, ["494C553B", "53911073"])
                 group.leave()
@@ -24,6 +25,7 @@ final class CryptoTests: XCTestCase {
 
     func testModular_power() throws {
         testAsyncMethods { (client, group) in
+            group.enter()
             let payload: TSDKParamsOfModularPower = .init(base: "0123456789ABCDEF", exponent: "0123", modulus: "01234567")
             client.crypto.modular_power(payload) { [group] (response) in
                 XCTAssertEqual(response.result?.modular_power, "63bfdf")
@@ -35,6 +37,7 @@ final class CryptoTests: XCTestCase {
 
     func testTon_crc16() throws {
         testAsyncMethods { (client, group) in
+            group.enter()
             let payload: TSDKParamsOfTonCrc16 = .init(data: "MHgzMSAweDMyIDB4MzMgMHgzNCAweDM1IDB4MzYgMHgzNyAweDM4IDB4Mzk=")
             client.crypto.ton_crc16(payload) { [group] (response) in
                 XCTAssertEqual(response.result?.crc, 63574)
@@ -46,6 +49,7 @@ final class CryptoTests: XCTestCase {
 
     func testGenerate_random_bytes() throws {
         testAsyncMethods { (client, group) in
+            group.enter()
             let payload: TSDKParamsOfGenerateRandomBytes = .init(length: 32)
             client.crypto.generate_random_bytes(payload) { [group] (response) in
                 XCTAssertEqual(response.result?.bytes.count, 44)
@@ -57,6 +61,7 @@ final class CryptoTests: XCTestCase {
 
     func testConvert_public_key_to_ton_safe_format() throws {
         testAsyncMethods { (client, group) in
+            group.enter()
             let payload: TSDKParamsOfConvertPublicKeyToTonSafeFormat = .init(public_key: "d007e112febb206f0871e6b135fb2047ad58e77329035457c0e8b7dfc110294a")
             client.crypto.convert_public_key_to_ton_safe_format(payload) { [group] (response) in
                 XCTAssertEqual(response.result?.ton_public_key, "PubQB-ES_rsgbwhx5rE1-yBHrVjncykDVFfA6LffwRApSsiQ")
@@ -68,9 +73,10 @@ final class CryptoTests: XCTestCase {
 
     func testGenerate_random_sign_keys() throws {
         testAsyncMethods { (client, group) in
+            group.enter()
             client.crypto.generate_random_sign_keys() { [group] (response) in
-                XCTAssertEqual(response.result?.public is String, true)
-                XCTAssertEqual(response.result?.secret is String, true)
+                XCTAssertTrue(response.result?.public != nil)
+                XCTAssertTrue(response.result?.secret != nil)
                 XCTAssertEqual(response.result?.public.count, 64)
                 XCTAssertEqual(response.result?.secret.count, 64)
                 group.leave()
@@ -81,6 +87,7 @@ final class CryptoTests: XCTestCase {
 
     func testSign() throws {
         testAsyncMethods { (client, group) in
+            group.enter()
             let payload: TSDKParamsOfSign = .init(unsigned: "Hello", keys: TSDKKeyPair.init(public: "a5c367411a00ab0b542d118649de388b43ce4b7fa6dae2bb9243c6ad9aca7661", secret: "254c097277e9dd09d16152ee85abde4be54030db9930e38bf7069e4684ac10bb"))
             client.crypto.sign(payload) { [group] (response) in
                 XCTAssertEqual(response.result?.signed, "JvgdakMHpOdw7PKJX/IMQDygYJxt/kzEge0ebJHXx7H8eUOYMcL7sN0YBfwP/QZ0Z8XpffpyDJdwLpTErtnCDEhlbGxv")
@@ -93,6 +100,7 @@ final class CryptoTests: XCTestCase {
 
     func testVerify_signature() throws {
         testAsyncMethods { (client, group) in
+            group.enter()
             let payload: TSDKParamsOfVerifySignature = .init(signed: "JvgdakMHpOdw7PKJX/IMQDygYJxt/kzEge0ebJHXx7H8eUOYMcL7sN0YBfwP/QZ0Z8XpffpyDJdwLpTErtnCDEhlbGxv", public: "a5c367411a00ab0b542d118649de388b43ce4b7fa6dae2bb9243c6ad9aca7661")
             client.crypto.verify_signature(payload) { [group] (response) in
                 XCTAssertEqual(response.result?.unsigned, "SGVsbG8=")
@@ -104,6 +112,7 @@ final class CryptoTests: XCTestCase {
 
     func testSha256() throws {
         testAsyncMethods { (client, group) in
+            group.enter()
             let payload: TSDKParamsOfHash = .init(data: "Hello")
             client.crypto.sha256(payload) { [group] (response) in
                 XCTAssertEqual(response.result?.hash, "185f8db32271fe25f561a6fc938b2e264306ec304eda518007d1764826381969")
@@ -115,6 +124,7 @@ final class CryptoTests: XCTestCase {
 
     func testSha512() throws {
         testAsyncMethods { (client, group) in
+            group.enter()
             let payload: TSDKParamsOfHash = .init(data: "Hello")
             client.crypto.sha512(payload) { [group] (response) in
                 XCTAssertEqual(response.result?.hash, "3615f80c9d293ed7402687f94b22d58e529b8cc7916f8fac7fddf7fbd5af4cf777d3d795a7a00a16bf7e7f3fb9561ee9baae480da9fe7a18769e71886b03f315")
@@ -126,6 +136,7 @@ final class CryptoTests: XCTestCase {
 
     func testScrypt() throws {
         testAsyncMethods { (client, group) in
+            group.enter()
             let payload: TSDKParamsOfScrypt = .init(password: "Test Password", salt: "Test Salt", log_n: 5, r: 4, p: 8, dk_len: 32)
             client.crypto.scrypt(payload) { [group] (response) in
                 XCTAssertEqual(response.result?.key, "7cc741fa9cb4eb1edd36629e224e9cc8c316810ac540e4eb9ba578ff1643a3b9")
@@ -137,6 +148,7 @@ final class CryptoTests: XCTestCase {
 
     func testNacl_sign_keypair_from_secret_key() throws {
         testAsyncMethods { (client, group) in
+            group.enter()
             let payload: TSDKParamsOfNaclSignKeyPairFromSecret = .init(secret: "254c097277e9dd09d16152ee85abde4be54030db9930e38bf7069e4684ac10bb")
             client.crypto.nacl_sign_keypair_from_secret_key(payload) { [group] (response) in
                 XCTAssertEqual(response.result?.public, "a5c367411a00ab0b542d118649de388b43ce4b7fa6dae2bb9243c6ad9aca7661")
@@ -149,7 +161,9 @@ final class CryptoTests: XCTestCase {
 
     func testNacl_sign() throws {
         testAsyncMethods { (client, group) in
-            let payload: TSDKParamsOfNaclSign = .init(unsigned: "Hello", secret: "254c097277e9dd09d16152ee85abde4be54030db9930e38bf7069e4684ac10bba5c367411a00ab0b542d118649de388b43ce4b7fa6dae2bb9243c6ad9aca7661")
+            group.enter()
+            let payload: TSDKParamsOfNaclSign = .init(unsigned: "Hello",
+                                                      secret: "254c097277e9dd09d16152ee85abde4be54030db9930e38bf7069e4684ac10bba5c367411a00ab0b542d118649de388b43ce4b7fa6dae2bb9243c6ad9aca7661")
             client.crypto.nacl_sign(payload) { [group] (response) in
                 XCTAssertEqual(response.result?.signed, "JvgdakMHpOdw7PKJX/IMQDygYJxt/kzEge0ebJHXx7H8eUOYMcL7sN0YBfwP/QZ0Z8XpffpyDJdwLpTErtnCDEhlbGxv")
                 group.leave()
@@ -160,7 +174,9 @@ final class CryptoTests: XCTestCase {
 
     func testNacl_sign_open() throws {
         testAsyncMethods { (client, group) in
-            let payload: TSDKParamsOfNaclSignOpen = .init(signed: "JvgdakMHpOdw7PKJX/IMQDygYJxt/kzEge0ebJHXx7H8eUOYMcL7sN0YBfwP/QZ0Z8XpffpyDJdwLpTErtnCDEhlbGxv", public: "a5c367411a00ab0b542d118649de388b43ce4b7fa6dae2bb9243c6ad9aca7661")
+            group.enter()
+            let payload: TSDKParamsOfNaclSignOpen = .init(signedEncodedBase64: "JvgdakMHpOdw7PKJX/IMQDygYJxt/kzEge0ebJHXx7H8eUOYMcL7sN0YBfwP/QZ0Z8XpffpyDJdwLpTErtnCDEhlbGxv",
+                                                          public: "a5c367411a00ab0b542d118649de388b43ce4b7fa6dae2bb9243c6ad9aca7661")
             client.crypto.nacl_sign_open(payload) { [group] (response) in
                 XCTAssertEqual(response.result?.unsigned, "SGVsbG8=")
                 group.leave()
@@ -171,6 +187,7 @@ final class CryptoTests: XCTestCase {
 
     func testNacl_sign_detached() throws {
         testAsyncMethods { (client, group) in
+            group.enter()
             let payload: TSDKParamsOfNaclSign = .init(unsigned: "Hello", secret: "254c097277e9dd09d16152ee85abde4be54030db9930e38bf7069e4684ac10bba5c367411a00ab0b542d118649de388b43ce4b7fa6dae2bb9243c6ad9aca7661")
             client.crypto.nacl_sign_detached(payload) { [group] (response) in
                 XCTAssertEqual(response.result?.signature, "26f81d6a4307a4e770ecf2895ff20c403ca0609c6dfe4cc481ed1e6c91d7c7b1fc79439831c2fbb0dd1805fc0ffd067467c5e97dfa720c97702e94c4aed9c20c")
@@ -182,6 +199,7 @@ final class CryptoTests: XCTestCase {
 
     func testNacl_box_keypair() throws {
         testAsyncMethods { (client, group) in
+            group.enter()
             client.crypto.nacl_box_keypair() { [group] (response) in
                 XCTAssertEqual(response.result?.public is String, true)
                 XCTAssertEqual(response.result?.secret is String, true)
@@ -195,6 +213,7 @@ final class CryptoTests: XCTestCase {
 
     func testNacl_box_keypair_from_secret_key() throws {
         testAsyncMethods { (client, group) in
+            group.enter()
             let payload: TSDKParamsOfNaclBoxKeyPairFromSecret = .init(secret: "254c097277e9dd09d16152ee85abde4be54030db9930e38bf7069e4684ac10bb")
             client.crypto.nacl_box_keypair_from_secret_key(payload) { [group] (response) in
                 XCTAssertEqual(response.result?.public, "57172b0bd70f4bc65bb8a82bd0926a1a3f8f471e16fd9d8f329bec976afe3454")
@@ -207,6 +226,7 @@ final class CryptoTests: XCTestCase {
 
     func testNacl_box() throws {
         testAsyncMethods { (client, group) in
+            group.enter()
             let payload: TSDKParamsOfNaclBox = .init(decrypted: "Test Message",
                                                      nonce: "cd7f99924bf422544046e83595dd5803f17536f5c9a11746",
                                                      their_public: "c4e2d9fe6a6baf8d1812b799856ef2a306291be7a7024837ad33a8530db79c6b",
@@ -221,7 +241,8 @@ final class CryptoTests: XCTestCase {
 
     func testNacl_box_open() throws {
         testAsyncMethods { (client, group) in
-            let payload: TSDKParamsOfNaclBoxOpen = .init(encrypted: "li4XED4kx/pjQ2qdP0eR2d/K30uN94voNADxwA==",
+            group.enter()
+            let payload: TSDKParamsOfNaclBoxOpen = .init(encryptedEncodedBase64: "li4XED4kx/pjQ2qdP0eR2d/K30uN94voNADxwA==",
                                                          nonce: "cd7f99924bf422544046e83595dd5803f17536f5c9a11746",
                                                          their_public: "c4e2d9fe6a6baf8d1812b799856ef2a306291be7a7024837ad33a8530db79c6b",
                                                          secret: "d9b9dc5033fb416134e5d2107fdbacab5aadb297cb82dbdcd137d663bac59f7f")
@@ -235,6 +256,7 @@ final class CryptoTests: XCTestCase {
 
     func testNacl_secret_box() throws {
         testAsyncMethods { (client, group) in
+            group.enter()
             let payload: TSDKParamsOfNaclSecretBox = .init(decrypted: "Test Message",
                                                            nonce: "2a33564717595ebe53d91a785b9e068aba625c8453a76e45",
                                                            key: "8f68445b4e78c000fe4d6b7fc826879c1e63e3118379219a754ae66327764bd8")
@@ -248,7 +270,8 @@ final class CryptoTests: XCTestCase {
 
     func testNacl_secret_box_open() throws {
         testAsyncMethods { (client, group) in
-            let payload: TSDKParamsOfNaclSecretBoxOpen = .init(encrypted: "JL7ejKWe2KXmrsns41yfXoQF0t/C1Q8RGyzQ2A==",
+            group.enter()
+            let payload: TSDKParamsOfNaclSecretBoxOpen = .init(encryptedEncodedBase64: "JL7ejKWe2KXmrsns41yfXoQF0t/C1Q8RGyzQ2A==",
                                                            nonce: "2a33564717595ebe53d91a785b9e068aba625c8453a76e45",
                                                            key: "8f68445b4e78c000fe4d6b7fc826879c1e63e3118379219a754ae66327764bd8")
             client.crypto.nacl_secret_box_open(payload) { [group] (response) in
@@ -261,6 +284,7 @@ final class CryptoTests: XCTestCase {
 
     func testMnemonic_words() throws {
         testAsyncMethods { (client, group) in
+            group.enter()
             let payload: TSDKParamsOfMnemonicWords = .init(dictionary: .ENGLISH)
             client.crypto.mnemonic_words(payload) { [group] (response) in
                 XCTAssertEqual(response.result?.words.split(separator: " ").count, 2048)
@@ -272,6 +296,7 @@ final class CryptoTests: XCTestCase {
 
     func testMnemonic_from_random() throws {
         testAsyncMethods { (client, group) in
+            group.enter()
             let payload: TSDKParamsOfMnemonicFromRandom = .init(dictionary: .ENGLISH, word_count: 12)
             client.crypto.mnemonic_from_random(payload) { [group] (response) in
                 XCTAssertEqual(response.result?.phrase.split(separator: " ").count, 12)
@@ -283,6 +308,7 @@ final class CryptoTests: XCTestCase {
 
     func testMnemonic_from_entropy() throws {
         testAsyncMethods { (client, group) in
+            group.enter()
             let payload: TSDKParamsOfMnemonicFromEntropy = .init(entropy: "00112233445566778899AABBCCDDEEFF",
                                                                  dictionary: .ENGLISH,
                                                                  word_count: 12)
@@ -296,6 +322,7 @@ final class CryptoTests: XCTestCase {
 
     func testMnemonic_verify() throws {
         testAsyncMethods { (client, group) in
+            group.enter()
             let payload: TSDKParamsOfMnemonicVerify = .init(phrase: "abandon math mimic master filter design carbon crystal rookie group knife young",
                                                             dictionary: .ENGLISH,
                                                             word_count: 12)
@@ -309,6 +336,7 @@ final class CryptoTests: XCTestCase {
 
     func testMnemonic_derive_sign_keys() throws {
         testAsyncMethods { (client, group) in
+            group.enter()
             let payload: TSDKParamsOfMnemonicDeriveSignKeys = .init(phrase: "abandon math mimic master filter design carbon crystal rookie group knife young",
                                                                     path: nil,
                                                                     dictionary: .ENGLISH,
@@ -324,6 +352,7 @@ final class CryptoTests: XCTestCase {
 
     func testHdkey_xprv_from_mnemonic() throws {
         testAsyncMethods { (client, group) in
+            group.enter()
             let payload: TSDKParamsOfHDKeyXPrvFromMnemonic = .init(phrase: "abandon math mimic master filter design carbon crystal rookie group knife young")
             client.crypto.hdkey_xprv_from_mnemonic(payload) { [group] (response) in
                 XCTAssertEqual(response.result?.xprv, "xprv9s21ZrQH143K3M3Auzg5wmEcKzsVbpE9PdPam5QVjW76rZ59Cw8oTg2kEqFJkNx917D8opVbuuz2jTCUtfrB7oEHU99zmnGDtPggrXNSQHB")
@@ -335,6 +364,7 @@ final class CryptoTests: XCTestCase {
 
     func testHdkey_derive_from_xprv() throws {
         testAsyncMethods { (client, group) in
+            group.enter()
             let payload: TSDKParamsOfHDKeyDeriveFromXPrv = .init(xprv: "xprv9s21ZrQH143K3M3Auzg5wmEcKzsVbpE9PdPam5QVjW76rZ59Cw8oTg2kEqFJkNx917D8opVbuuz2jTCUtfrB7oEHU99zmnGDtPggrXNSQHB",
                                                                  child_index: 1,
                                                                  hardened: true)
@@ -348,6 +378,7 @@ final class CryptoTests: XCTestCase {
 
     func testHdkey_derive_from_xprv_path() throws {
         testAsyncMethods { (client, group) in
+            group.enter()
             let payload: TSDKParamsOfHDKeyDeriveFromXPrvPath = .init(xprv: "xprv9s21ZrQH143K3M3Auzg5wmEcKzsVbpE9PdPam5QVjW76rZ59Cw8oTg2kEqFJkNx917D8opVbuuz2jTCUtfrB7oEHU99zmnGDtPggrXNSQHB",
                                                                      path: "m/44'/396'/0'/0/0")
             client.crypto.hdkey_derive_from_xprv_path(payload) { [group] (response) in
@@ -360,6 +391,7 @@ final class CryptoTests: XCTestCase {
 
     func testHdkey_secret_from_xprv() throws {
         testAsyncMethods { (client, group) in
+            group.enter()
             let payload: TSDKParamsOfHDKeySecretFromXPrv = .init(xprv: "xprv9s21ZrQH143K3M3Auzg5wmEcKzsVbpE9PdPam5QVjW76rZ59Cw8oTg2kEqFJkNx917D8opVbuuz2jTCUtfrB7oEHU99zmnGDtPggrXNSQHB")
             client.crypto.hdkey_secret_from_xprv(payload) { [group] (response) in
                 XCTAssertEqual(response.result?.secret, "1d2037d1adbd40ccf99d44e7073a9d8e32e5675ee053a2fd1c078ef9e05a807d")
@@ -371,6 +403,7 @@ final class CryptoTests: XCTestCase {
 
     func testHdkey_public_from_xprv() throws {
         testAsyncMethods { (client, group) in
+            group.enter()
             let payload: TSDKParamsOfHDKeyPublicFromXPrv = .init(xprv: "xprv9s21ZrQH143K3M3Auzg5wmEcKzsVbpE9PdPam5QVjW76rZ59Cw8oTg2kEqFJkNx917D8opVbuuz2jTCUtfrB7oEHU99zmnGDtPggrXNSQHB")
             client.crypto.hdkey_public_from_xprv(payload) { [group] (response) in
                 XCTAssertEqual(response.result?.public, "02a2b8a753c8e6c3d057b6956d125935288e657eee5ae0950095b2660d0159727f")

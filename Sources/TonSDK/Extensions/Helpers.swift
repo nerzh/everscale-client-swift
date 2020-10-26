@@ -8,6 +8,14 @@ func methodName(_ module: String, _ method: String) -> String {
     "\(module).\(method)"
 }
 
-func Log(_ str: Any) {
-    print("❇️ logi:", str)
+class Log {
+
+    class func log(_ str: Any...) {
+        print("❇️ logi:", str)
+    }
+
+    class func warn(_ str: Any...) {
+        print("⚠️ logi:", str)
+    }
 }
+

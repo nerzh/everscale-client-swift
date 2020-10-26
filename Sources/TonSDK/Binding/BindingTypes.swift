@@ -47,7 +47,7 @@ public struct TSDKBindingResponse<TSDKResult: Decodable, TSDKError: Decodable, T
             result = response.toModel(model: TSDKResult.self)
         case .responseError:
             error = response.toModel(model: TSDKError.self)
-            Log(error)
+            Log.warn(error ?? "RESPONSE TYPE ERROR, BUT ERROR IS NIL")
         default:
             customResponse = response.toModel(model: TSDKCustom.self)
         }

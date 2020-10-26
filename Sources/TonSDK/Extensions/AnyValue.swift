@@ -21,8 +21,13 @@ extension Bool: JSONType {
     public var jsonValue: Any? { return self }
 }
 
-public struct AnyJSONType: JSONType {
+public struct AnyJSONType: JSONType, Equatable {
+
     public let jsonValue: Any?
+
+    public init(_ jsonValue: Any) {
+        self.jsonValue = jsonValue
+    }
     
     public init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
@@ -41,6 +46,26 @@ public struct AnyJSONType: JSONType {
             jsonValue = doubleValue
         } else {
             jsonValue = nil
+        }
+    }
+
+    public static func == (lhs: AnyJSONType, rhs: AnyJSONType) -> Bool {
+        if let lhsValue = lhs.jsonValue as? Int, let rhsValue = rhs.jsonValue as? Int {
+            return lhsValue == rhsValue
+        } else if let lhsValue = lhs.jsonValue as? String, let rhsValue = rhs.jsonValue as? String {
+            return lhsValue == rhsValue
+        } else if let lhsValue = lhs.jsonValue as? Bool, let rhsValue = rhs.jsonValue as? Bool {
+            return lhsValue == rhsValue
+        } else if let lhsValue = lhs.jsonValue as? Double, let rhsValue = rhs.jsonValue as? Double {
+            return lhsValue == rhsValue
+        } else if let lhsValue = lhs.jsonValue as? Array<AnyJSONType>, let rhsValue = rhs.jsonValue as? Array<AnyJSONType> {
+            return lhsValue == rhsValue
+        } else if let lhsValue = lhs.jsonValue as? Dictionary<String, AnyJSONType>, let rhsValue = rhs.jsonValue as? Dictionary<String, AnyJSONType> {
+            return lhsValue == rhsValue
+        } else if lhs.jsonValue == nil, rhs.jsonValue == nil {
+            return true
+        } else {
+            return false
         }
     }
 }

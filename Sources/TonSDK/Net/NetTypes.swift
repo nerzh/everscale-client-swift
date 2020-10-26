@@ -63,7 +63,7 @@ public struct TSDKResultOfWaitForCollection: Decodable {
 ///result: any – first found object that match provided criteria
 
 //ResultOfSubscribeCollection
-public struct TSDKResultOfSubscribeCollection: Decodable {
+public struct TSDKResultOfSubscribeCollection: Codable {
     var handle: Int
 }
 ///handle: number – handle to subscription. It then can be used in get_next_subscription_data function

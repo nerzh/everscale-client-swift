@@ -27,23 +27,23 @@ public final class TSDKAbi {
         })
     }
 
-    public func attach_signature_to_message_body(_ payload: TSDKParamsOfAttachSignatureToMessageBody,
-                                                 _ handler: @escaping (TSDKBindingResponse<TSDKResultOfAttachSignatureToMessageBody, TSDKClientError, TSDKDefault>) -> Void
-    ) {
-        let method: String = "attach_signature_to_message_body"
-        binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
-            var response: TSDKBindingResponse<TSDKResultOfAttachSignatureToMessageBody, TSDKClientError, TSDKDefault> = .init()
-            response.update(requestId, params, responseType, finished)
-            handler(response)
-        })
-    }
-
     public func encode_message(_ payload: TSDKParamsOfEncodeMessage,
                                _ handler: @escaping (TSDKBindingResponse<TSDKResultOfEncodeMessage, TSDKClientError, TSDKDefault>) -> Void
     ) {
         let method: String = "encode_message"
         binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKResultOfEncodeMessage, TSDKClientError, TSDKDefault> = .init()
+            response.update(requestId, params, responseType, finished)
+            handler(response)
+        })
+    }
+
+    public func attach_signature_to_message_body(_ payload: TSDKParamsOfAttachSignatureToMessageBody,
+                                                 _ handler: @escaping (TSDKBindingResponse<TSDKResultOfAttachSignatureToMessageBody, TSDKClientError, TSDKDefault>) -> Void
+    ) {
+        let method: String = "attach_signature_to_message_body"
+        binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKResultOfAttachSignatureToMessageBody, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
             handler(response)
         })

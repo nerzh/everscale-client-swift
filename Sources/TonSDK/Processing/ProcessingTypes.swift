@@ -21,12 +21,31 @@ public enum TSDKProcessingEventType: String, Decodable {
 }
 
 public struct TSDKProcessingEvent: Decodable {
+
     var type: TSDKProcessingEventType
     var error: TSDKClientError?
     var shard_block_id: String?
     var message_id: String?
     var message: String?
     var result: TSDKResultOfProcessMessage?
+
+    public init(type: TSDKProcessingEventType, error: TSDKClientError? = nil, shard_block_id: String? = nil, message_id: String? = nil, message: String? = nil, result: TSDKResultOfProcessMessage? = nil) {
+        self.type = type
+        self.error = error
+        self.shard_block_id = shard_block_id
+        self.message_id = message_id
+        self.message = message?.base64Encoded() ?? ""
+        self.result = result
+    }
+
+    public init(type: TSDKProcessingEventType, error: TSDKClientError? = nil, shard_block_id: String? = nil, message_id: String? = nil, messageEncodedBase64: String? = nil, result: TSDKResultOfProcessMessage? = nil) {
+        self.type = type
+        self.error = error
+        self.shard_block_id = shard_block_id
+        self.message_id = message_id
+        self.message = messageEncodedBase64
+        self.result = result
+    }
 }
 ///Depends on value of the public struct TSDKfield.
 ///When public struct TSDKis 'WillFetchFirstBlock'
@@ -106,10 +125,25 @@ public struct TSDKResultOfSendMessage: Decodable {
 
 //ParamsOfWaitForTransaction
 public struct TSDKParamsOfWaitForTransaction: Encodable {
+
     var abi: TSDKAbiData?
     var message: String
     var shard_block_id: String
     var send_events: Bool
+
+    public init(abi: TSDKAbiData? = nil, message: String, shard_block_id: String, send_events: Bool) {
+        self.abi = abi
+        self.message = message.base64Encoded() ?? ""
+        self.shard_block_id = shard_block_id
+        self.send_events = send_events
+    }
+
+    public init(abi: TSDKAbiData? = nil, messageEncodedBase64: String, shard_block_id: String, send_events: Bool) {
+        self.abi = abi
+        self.message = messageEncodedBase64
+        self.shard_block_id = shard_block_id
+        self.send_events = send_events
+    }
 }
 ///abi?: Abi – Optional ABI for decoding transaction results.
 ///message: string – Message BOC. Encoded with base64.

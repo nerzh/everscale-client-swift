@@ -115,18 +115,17 @@ public final class TSDKBinding: TSDKBindingPrtcl {
         convertToTSDKString(methodName) { tsdkMethodName in
             let payload = payload.toJson() ?? ""
             convertToTSDKString(payload) { tsdkPayload in
-                BindingStore.addRequest(requestId, requestHandler)
+                BindingStore.addResponseHandler(requestId, requestHandler)
                 TSDKRequestAsync(self.context,
                                  tsdkMethodName,
                                  tsdkPayload,
                                  requestId
                 ) { (requestId: UInt32, params: TSDKString, responseType: UInt32, finished: Bool) in
-                    let swiftString = TSDKBinding.convertFromTSDKString(params)
+                    let swiftString: String = TSDKBinding.convertFromTSDKString(params)
                     let responseType: TSDKBindingResponseType = (TSDKBindingResponseType.init(rawValue: responseType) ?? .unknown)!
-                    guard let tsdkRequest = BindingStore.getRequest(requestId) else { return }
-                    tsdkRequest(requestId, swiftString, responseType, finished)
+                    BindingStore.getResponseHandler(requestId)?(requestId, swiftString, responseType, finished)
                     if finished {
-                        BindingStore.deleteRequest(requestId)
+                        BindingStore.deleteResponseHandler(requestId)
                     }
                 }
             }

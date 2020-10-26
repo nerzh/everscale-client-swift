@@ -20,8 +20,8 @@ final class DOFileReader {
         if self.file != nil { fatalError("Please, close file descriptor.") }
     }
 
-    func open() throws {
-        guard let descriptor = fopen(fileURL.path, "r") else {
+    func open(options: String = "r") throws {
+        guard let descriptor = fopen(fileURL.path, options) else {
             throw NSError(domain: NSPOSIXErrorDomain, code: Int(errno), userInfo: nil)
         }
         self.file = descriptor
@@ -51,10 +51,10 @@ final class DOFileReader {
         return String(cString: buffer)
     }
 
-    static func readFile(_ fileURL: URL, _ handler: (_ line: String) -> Void) {
+    static func readFile(_ fileURL: URL, _ options: String = "r", _ handler: (_ line: String) -> Void) {
         let file: DOFileReader = .init(fileURL: fileURL)
         do {
-            try file.open()
+            try file.open(options: options)
             defer { file.close() }
             while let line: String = try file.readLine() {
                 handler(line)
@@ -64,8 +64,8 @@ final class DOFileReader {
         }
     }
 
-    static func readFile(_ filePath: String, _ handler: (_ line: String) -> Void) {
+    static func readFile(_ filePath: String, _ options: String = "r", _ handler: (_ line: String) -> Void) {
         guard let fileURL: URL = URL(string: filePath) else { fatalError("Can not convert \(filePath) to URL") }
-        readFile(fileURL, handler)
+        readFile(fileURL, options, handler)
     }
 }

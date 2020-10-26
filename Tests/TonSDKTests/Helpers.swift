@@ -13,7 +13,6 @@ func testAsyncMethods(_ handler: @escaping (_ client: TSDKClient, _ group: Dispa
     config.network = TSDKNetworkConfig(server_address: "https://net.ton.dev")
     let client: TSDKClient = .init(config: config)
     let group: DispatchGroup = .init()
-    group.enter()
     handler(client, group)
 }
 
