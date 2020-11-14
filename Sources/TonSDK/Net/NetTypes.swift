@@ -46,10 +46,18 @@ public struct TSDKResultOfQueryCollection: Decodable {
 
 //ParamsOfWaitForCollection
 public struct TSDKParamsOfWaitForCollection: Encodable {
+
     var collection: String
     var filter: AnyValue?
     var result: String
     var timeout: Int?
+
+    public init(collection: String, filter: AnyValue? = nil, result: String, timeout: Int? = nil) {
+        self.collection = collection
+        self.filter = filter
+        self.result = result
+        self.timeout = timeout
+    }
 }
 ///collection: string – collection name (accounts blocks transactions messages block_signatures)
 ///filter?: any – collection filter
@@ -58,7 +66,7 @@ public struct TSDKParamsOfWaitForCollection: Encodable {
 
 //ResultOfWaitForCollection
 public struct TSDKResultOfWaitForCollection: Decodable {
-    var result: AnyJSONType
+    public var result: AnyJSONType
 }
 ///result: any – first found object that match provided criteria
 

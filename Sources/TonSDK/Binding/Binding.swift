@@ -6,7 +6,7 @@ import Foundation
 import CTonSDK
 
 public typealias TSDKString = tc_string_data_t
-public typealias TSDKStringPointer = tc_string_handle_t
+public typealias TSDKStringPointer = OpaquePointer
 public var TSDKReadString = tc_read_string
 public var TSDKDestroyString = tc_destroy_string
 
@@ -22,24 +22,24 @@ public protocol TSDKBindingPrtcl {
     var context: TSDKContext { get }
     static func convertToTSDKString(_ string: String, _ handler: (_ tsdkString: TSDKString) -> Void)
     static func convertFromTSDKString(_ tsdkString: TSDKString) -> String
-    static func convertTSDKStringPointerToString(_ tsdkStringPointer: UnsafePointer<TSDKStringPointer>) -> String
+    static func convertTSDKStringPointerToString(_ tsdkStringPointer: TSDKStringPointer) -> String
     static func convertTSDKStringToDictionary(_ tsdkString: TSDKString) -> [String: Any]?
-    static func convertTSDKStringPointerToDictionary(_ tsdkStringPointer: UnsafePointer<TSDKStringPointer>) -> [String: Any]?
+    static func convertTSDKStringPointerToDictionary(_ tsdkStringPointer: TSDKStringPointer) -> [String: Any]?
 }
 
 
 // MARK: Binding Helpers
 
-public final class TSDKBinding: TSDKBindingPrtcl {
+public final class TSDKBindingModule: TSDKBindingPrtcl {
 
     public var context: TSDKContext = .init()
     private var requsetId: UInt32 = .init()
     private let requestLock: NSLock = .init()
-    var convertToTSDKString = TSDKBinding.convertToTSDKString
-    var convertFromTSDKString = TSDKBinding.convertFromTSDKString
-    var convertTSDKStringPointerToString = TSDKBinding.convertTSDKStringPointerToString
-    var convertTSDKStringToDictionary = TSDKBinding.convertTSDKStringToDictionary
-    var convertTSDKStringPointerToDictionary = TSDKBinding.convertTSDKStringPointerToDictionary
+    var convertToTSDKString = TSDKBindingModule.convertToTSDKString
+    var convertFromTSDKString = TSDKBindingModule.convertFromTSDKString
+    var convertTSDKStringPointerToString = TSDKBindingModule.convertTSDKStringPointerToString
+    var convertTSDKStringToDictionary = TSDKBindingModule.convertTSDKStringToDictionary
+    var convertTSDKStringPointerToDictionary = TSDKBindingModule.convertTSDKStringPointerToDictionary
 
 
     public init(config: TSDKClientConfig = TSDKClientConfig()) {
@@ -60,13 +60,13 @@ public final class TSDKBinding: TSDKBindingPrtcl {
         return "NOT VALID"
     }
 
-    public static func convertTSDKStringPointerToString(_ tsdkStringPointer: UnsafePointer<TSDKStringPointer>) -> String {
+    public static func convertTSDKStringPointerToString(_ tsdkStringPointer: TSDKStringPointer) -> String {
         let tsdkString: TSDKString = TSDKReadString(tsdkStringPointer)
         defer { TSDKDestroyString(tsdkStringPointer) }
         return String(cString: UnsafeRawPointer(tsdkString.content).bindMemory(to: CChar.self, capacity: Int(tsdkString.len)))
     }
 
-    public static func convertTSDKStringPointerToDictionary(_ tsdkStringPointer: UnsafePointer<TSDKStringPointer>) -> [String: Any]? {
+    public static func convertTSDKStringPointerToDictionary(_ tsdkStringPointer: TSDKStringPointer) -> [String: Any]? {
         let string: String = convertTSDKStringPointerToString(tsdkStringPointer)
         return string.toDictionary()
     }
@@ -121,7 +121,7 @@ public final class TSDKBinding: TSDKBindingPrtcl {
                                  tsdkPayload,
                                  requestId
                 ) { (requestId: UInt32, params: TSDKString, responseType: UInt32, finished: Bool) in
-                    let swiftString: String = TSDKBinding.convertFromTSDKString(params)
+                    let swiftString: String = TSDKBindingModule.convertFromTSDKString(params)
                     let responseType: TSDKBindingResponseType = (TSDKBindingResponseType.init(rawValue: responseType) ?? .unknown)!
                     BindingStore.getResponseHandler(requestId)?(requestId, swiftString, responseType, finished)
                     if finished {

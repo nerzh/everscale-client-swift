@@ -7,12 +7,12 @@
 
 import Foundation
 
-public final class TSDKNet {
+public final class TSDKNetModule {
     
-    private var binding: TSDKBinding
+    private var binding: TSDKBindingModule
     public let module: String = "net"
     
-    public init(binding: TSDKBinding) {
+    public init(binding: TSDKBindingModule) {
         self.binding = binding
     }
     

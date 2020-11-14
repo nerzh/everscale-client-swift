@@ -25,14 +25,14 @@ public enum TSDKBindingResponseType: UInt32 {
 }
 
 public struct TSDKBindingResponse<TSDKResult: Decodable, TSDKError: Decodable, TSDKCustom: Decodable> {
-    var result: TSDKResult?
-    var error: TSDKError?
-    var customResponse: TSDKCustom?
-    var finished: Bool = false
-    var requestId: UInt32 = 0
-    var currentResponse: String?
+    public var result: TSDKResult?
+    public var error: TSDKError?
+    public var customResponse: TSDKCustom?
+    public var finished: Bool = false
+    public var requestId: UInt32 = 0
+    public var currentResponse: String?
 
-    mutating func update(_ requestId: UInt32,
+    public mutating func update(_ requestId: UInt32,
                 _ stringResponse: String,
                 _ responseType: TSDKBindingResponseType,
                 _ finished: Bool

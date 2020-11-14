@@ -272,8 +272,8 @@ final class CryptoTests: XCTestCase {
         testAsyncMethods { (client, group) in
             group.enter()
             let payload: TSDKParamsOfNaclSecretBoxOpen = .init(encryptedEncodedBase64: "JL7ejKWe2KXmrsns41yfXoQF0t/C1Q8RGyzQ2A==",
-                                                           nonce: "2a33564717595ebe53d91a785b9e068aba625c8453a76e45",
-                                                           key: "8f68445b4e78c000fe4d6b7fc826879c1e63e3118379219a754ae66327764bd8")
+                                                               nonce: "2a33564717595ebe53d91a785b9e068aba625c8453a76e45",
+                                                               key: "8f68445b4e78c000fe4d6b7fc826879c1e63e3118379219a754ae66327764bd8")
             client.crypto.nacl_secret_box_open(payload) { [group] (response) in
                 XCTAssertEqual(response.result?.decrypted.base64Decoded(), "Test Message")
                 group.leave()
@@ -407,6 +407,38 @@ final class CryptoTests: XCTestCase {
             let payload: TSDKParamsOfHDKeyPublicFromXPrv = .init(xprv: "xprv9s21ZrQH143K3M3Auzg5wmEcKzsVbpE9PdPam5QVjW76rZ59Cw8oTg2kEqFJkNx917D8opVbuuz2jTCUtfrB7oEHU99zmnGDtPggrXNSQHB")
             client.crypto.hdkey_public_from_xprv(payload) { [group] (response) in
                 XCTAssertEqual(response.result?.public, "02a2b8a753c8e6c3d057b6956d125935288e657eee5ae0950095b2660d0159727f")
+                group.leave()
+            }
+            group.wait()
+        }
+    }
+
+    func testChacha20() throws {
+        testAsyncMethods { (client, group) in
+            let key: String = .init(repeating: "01", count: 32)
+            let nonce: String = .init(repeating: "ff", count: 12)
+            var payload: TSDKParamsOfChaCha20 = .init(data: "Message", key: key, nonce: nonce)
+
+            group.enter()
+            client.crypto.chacha20(payload) { [group] (response) in
+                XCTAssertEqual(response.result?.data, "w5QOGsJodQ==")
+                group.leave()
+            }
+            group.wait()
+
+            var encryptedData: String = .init()
+            group.enter()
+            client.crypto.chacha20(payload) { [group] (response) in
+                XCTAssertEqual(response.result?.data, "w5QOGsJodQ==")
+                encryptedData = response.result?.data ?? ""
+                group.leave()
+            }
+            group.wait()
+
+            payload.data = encryptedData
+            group.enter()
+            client.crypto.chacha20(payload) { [group] (response) in
+                XCTAssertEqual(response.result?.data, "TWVzc2FnZQ==")
                 group.leave()
             }
             group.wait()

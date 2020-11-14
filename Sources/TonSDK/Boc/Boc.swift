@@ -7,12 +7,12 @@
 
 import Foundation
 
-public final class TSDKBoc {
+public final class TSDKBocModule {
     
-    private var binding: TSDKBinding
+    private var binding: TSDKBindingModule
     public let module: String = "boc"
     
-    public init(binding: TSDKBinding) {
+    public init(binding: TSDKBindingModule) {
         self.binding = binding
     }
     
@@ -66,6 +66,17 @@ public final class TSDKBoc {
         let method: String = "get_blockchain_config"
         binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKResultOfGetBlockchainConfig, TSDKClientError, TSDKDefault> = .init()
+            response.update(requestId, params, responseType, finished)
+            handler(response)
+        })
+    }
+
+    public func get_boc_hash(_ payload: TSDKParamsOfGetBocHash,
+                             _ handler: @escaping (TSDKBindingResponse<TSDKResultOfGetBocHash, TSDKClientError, TSDKDefault>) -> Void
+    ) {
+        let method: String = "get_boc_hash"
+        binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKResultOfGetBocHash, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
             handler(response)
         })

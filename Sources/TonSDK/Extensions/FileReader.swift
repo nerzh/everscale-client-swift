@@ -7,12 +7,12 @@
 
 import Foundation
 
-final class DOFileReader {
+public final class DOFileReader {
 
-    let fileURL: URL
+    public let fileURL: URL
     private var file: UnsafeMutablePointer<FILE>? = nil
 
-    init(fileURL: URL) {
+    public init(fileURL: URL) {
         self.fileURL = fileURL
     }
 
@@ -20,14 +20,14 @@ final class DOFileReader {
         if self.file != nil { fatalError("Please, close file descriptor.") }
     }
 
-    func open(options: String = "r") throws {
+    public func open(options: String = "r") throws {
         guard let descriptor = fopen(fileURL.path, options) else {
             throw NSError(domain: NSPOSIXErrorDomain, code: Int(errno), userInfo: nil)
         }
         self.file = descriptor
     }
 
-    func close() {
+    public func close() {
         if let descriptor = self.file {
             self.file = nil
             let success: Bool = fclose(descriptor) == 0
@@ -35,7 +35,7 @@ final class DOFileReader {
         }
     }
 
-    func readLine(maxLength: Int = 4096) throws -> String? {
+    public func readLine(maxLength: Int = 4096) throws -> String? {
         guard let descriptor = self.file else {
             throw NSError(domain: NSPOSIXErrorDomain, code: Int(EBADF), userInfo: nil)
         }
@@ -51,7 +51,7 @@ final class DOFileReader {
         return String(cString: buffer)
     }
 
-    static func readFile(_ fileURL: URL, _ options: String = "r", _ handler: (_ line: String) -> Void) {
+    public static func readFile(_ fileURL: URL, _ options: String = "r", _ handler: (_ line: String) -> Void) {
         let file: DOFileReader = .init(fileURL: fileURL)
         do {
             try file.open(options: options)
@@ -64,7 +64,7 @@ final class DOFileReader {
         }
     }
 
-    static func readFile(_ filePath: String, _ options: String = "r", _ handler: (_ line: String) -> Void) {
+    public static func readFile(_ filePath: String, _ options: String = "r", _ handler: (_ line: String) -> Void) {
         guard let fileURL: URL = URL(string: filePath) else { fatalError("Can not convert \(filePath) to URL") }
         readFile(fileURL, options, handler)
     }

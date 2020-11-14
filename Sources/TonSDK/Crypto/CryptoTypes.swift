@@ -8,7 +8,7 @@
 import Foundation
 
 //SigningBoxHandle
-typealias TSDKSigningBoxHandle = Int
+public typealias TSDKSigningBoxHandle = Int
 ///Int
 
 //ParamsOfFactorize
@@ -77,8 +77,14 @@ public struct TSDKResultOfConvertPublicKeyToTonSafeFormat: Codable {
 
 //KeyPair
 public struct TSDKKeyPair: Codable {
-    var `public`: String
-    var secret: String
+
+    public var `public`: String
+    public var secret: String
+
+    public init(public: String, secret: String) {
+        self.public = `public`
+        self.secret = secret
+    }
 }
 ///public: String – Public key. Encoded with hex.
 ///secret: String – Private key. Encoded with hex.
@@ -163,7 +169,7 @@ public struct TSDKParamsOfScrypt: Codable {
     var dk_len: Int
     
     public init(password: String, salt: String, log_n: Int, r: Int, p: Int, dk_len: Int) {
-        self.password = password.isBase64() ? password : (password.base64Encoded() ?? "")
+        self.password = password.base64Encoded() ?? ""
         self.salt = salt.base64Encoded() ?? ""
         self.log_n = log_n
         self.r = r
@@ -181,7 +187,7 @@ public struct TSDKParamsOfScrypt: Codable {
     }
 }
 ///password: String – The password bytes to be hashed.
-///salt: String – A salt bytes that modifies the hash to protect against Rainbow table attacks.
+///salt: string – Salt bytes that modify the hash to protect against Rainbow table attacks. Must be encoded with base64.
 ///log_n: Int – CPU/memory cost parameter
 ///r: Int – The block size parameter which fine-tunes sequential memory read size and performance.
 ///p: Int – Parallelization parameter.
@@ -447,7 +453,7 @@ public struct TSDKParamsOfMnemonicVerify: Codable {
 public struct TSDKResultOfMnemonicVerify: Codable {
     var valid: Bool
 }
-///valid: boolean – flag indicating the mnemonic is valid or not
+///valid: boolean – flag indicating if the mnemonic is valid or not
 
 //ParamsOfMnemonicDeriveSignKeys
 public struct TSDKParamsOfMnemonicDeriveSignKeys: Codable {
@@ -463,9 +469,13 @@ public struct TSDKParamsOfMnemonicDeriveSignKeys: Codable {
 
 //ParamsOfHDKeyXPrvFromMnemonic
 public struct TSDKParamsOfHDKeyXPrvFromMnemonic: Codable {
-    var phrase: String
+    public var phrase: String
+    public var dictionary: Int?
+    public var word_count:  Int?
 }
 ///phrase: String – String with seed phrase
+///dictionary?: number – Dictionary identifier
+///word_count?: number – Mnemonic word count
 
 //ResultOfHDKeyXPrvFromMnemonic
 public struct TSDKResultOfHDKeyXPrvFromMnemonic: Codable {
@@ -537,3 +547,41 @@ public enum TSDKMnemonicDictionary: Int, Codable {
     case KOREAN = 7
     case SPANISH = 8
 }
+
+//ParamsOfChaCha20
+public struct TSDKParamsOfChaCha20: Encodable {
+
+    public var data: String
+    public var key: String
+    public var nonce: String
+
+    public init(data: String, key: String, nonce: String) {
+        self.data = data.base64Encoded() ?? ""
+        self.key = key
+        self.nonce = nonce
+    }
+
+    public init(dataEncodedBase64: String, key: String, nonce: String) {
+        self.data = dataEncodedBase64
+        self.key = key
+        self.nonce = nonce
+    }
+}
+///data: string – Source data to be encrypted or decrypted. Must be encoded with base64.
+///key: string – 256-bit key. Must be encoded with hex.
+///nonce: string – 96-bit nonce. Must be encoded with hex.
+
+//ResultOfChaCha20
+public struct TSDKResultOfChaCha20: Codable {
+
+    public var data: String
+
+    public init(data: String) {
+        self.data = data.base64Encoded() ?? ""
+    }
+
+    public init(dataEncodedBase64: String) {
+        self.data = dataEncodedBase64
+    }
+}
+///data: string – Encrypted/decrypted data. Encoded with base64.

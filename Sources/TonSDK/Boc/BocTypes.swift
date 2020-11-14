@@ -23,9 +23,19 @@ public struct TSDKParamsOfParse: Encodable {
 
 //ResultOfParse
 public struct TSDKResultOfParse: Decodable {
-    var parsed: AnyJSONType
+    public var parsed: AnyJSONType
 }
 ///parsed: any – JSON containing parsed BOC
+
+//ParamsOfParseShardstate
+public struct TSDKParamsOfParseShardstate: Encodable {
+    public var boc: String
+    public var id: String
+    public var workchain_id: Int
+}
+///boc: string – BOC encoded as base64
+///id: string – Shardstate identificator
+///workchain_id: number – Workchain shardstate belongs to
 
 //ParamsOfGetBlockchainConfig
 public struct TSDKParamsOfGetBlockchainConfig: Encodable {
@@ -43,7 +53,7 @@ public struct TSDKParamsOfGetBlockchainConfig: Encodable {
 
 //ResultOfGetBlockchainConfig
 public struct TSDKResultOfGetBlockchainConfig: Decodable {
-    var config_boc: String
+    public var config_boc: String
 
     public init(config_boc: String) {
         self.config_boc = config_boc.base64Encoded() ?? ""
@@ -54,3 +64,15 @@ public struct TSDKResultOfGetBlockchainConfig: Decodable {
     }
 }
 ///config_boc: string – Blockchain config BOC encoded as base64
+
+//ParamsOfGetBocHash
+public struct TSDKParamsOfGetBocHash: Encodable {
+    public var boc: String
+}
+///boc: string – BOC encoded as base64
+
+//ResultOfGetBocHash
+public struct TSDKResultOfGetBocHash: Decodable {
+    public var hash: String
+}
+///hash: string – BOC root hash encoded with hex

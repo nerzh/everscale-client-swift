@@ -4,12 +4,12 @@
 
 import Foundation
 
-public final class TSDKUtils {
+public final class TSDKUtilsModule {
     
-    private var binding: TSDKBinding
+    private var binding: TSDKBindingModule
     public let module: String = "utils"
     
-    public init(binding: TSDKBinding) {
+    public init(binding: TSDKBindingModule) {
         self.binding = binding
     }
     

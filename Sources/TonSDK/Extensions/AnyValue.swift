@@ -68,7 +68,50 @@ public struct AnyJSONType: JSONType, Equatable {
             return false
         }
     }
+
+    public func toJSON() -> String {
+        var result: String = .init()
+
+        if let value = jsonValue as? Int {
+            result = String(value)
+        } else if let value = jsonValue as? String {
+            result = "\"\(value)\""
+        } else if let value = jsonValue as? Double {
+            result = String(value)
+        } else if let value = jsonValue as? Bool {
+            result = String(value)
+        } else if let value = jsonValue as? [String: AnyJSONType] {
+            result.append("{")
+            var first: Bool = true
+            for (key, val) in value {
+                if first {
+                    result.append("\"\(key)\": \(val.toJSON())")
+                } else {
+                    result.append(", \"\(key)\": \(val.toJSON())")
+                }
+                first = false
+            }
+            result.append("}")
+        } else if let value = jsonValue as? [AnyJSONType] {
+            result.append("[")
+            var first: Bool = true
+            for val in value {
+                if first {
+                    result.append("\(val.toJSON())")
+                } else {
+                    result.append(", \(val.toJSON())")
+                }
+                first = false
+            }
+            result.append("]")
+        } else {
+            result = "null"
+        }
+
+        return result
+    }
 }
+
 
 
 public enum AnyValue: Decodable, Encodable {

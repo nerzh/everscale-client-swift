@@ -7,12 +7,12 @@
 
 import Foundation
 
-public final class TSDKAbi {
+public final class TSDKAbiModule {
 
-    private var binding: TSDKBinding
+    private var binding: TSDKBindingModule
     public let module: String = "abi"
 
-    public init(binding: TSDKBinding) {
+    public init(binding: TSDKBindingModule) {
         self.binding = binding
     }
 

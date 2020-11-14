@@ -7,12 +7,12 @@
 
 import Foundation
 
-public final class TSDKProcessing {
+public final class TSDKProcessingModule {
     
-    private var binding: TSDKBinding
+    private var binding: TSDKBindingModule
     public let module: String = "processing"
     
-    public init(binding: TSDKBinding) {
+    public init(binding: TSDKBindingModule) {
         self.binding = binding
     }
     

@@ -4,12 +4,12 @@
 
 import Foundation
 
-public final class TSDKCrypto {
+public final class TSDKCryptoModule {
     
-    private var binding: TSDKBinding
+    private var binding: TSDKBindingModule
     public let module: String = "crypto"
     
-    public init(binding: TSDKBinding) {
+    public init(binding: TSDKBindingModule) {
         self.binding = binding
     }
     
@@ -347,6 +347,17 @@ public final class TSDKCrypto {
         let method: String = "hdkey_public_from_xprv"
         binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKResultOfHDKeyPublicFromXPrv, TSDKClientError, TSDKDefault> = .init()
+            response.update(requestId, params, responseType, finished)
+            handler(response)
+        })
+    }
+
+    public func chacha20(_ payload: TSDKParamsOfChaCha20,
+                         _ handler: @escaping (TSDKBindingResponse<TSDKResultOfChaCha20, TSDKClientError, TSDKDefault>) -> Void
+    ) {
+        let method: String = "chacha20"
+        binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKResultOfChaCha20, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
             handler(response)
         })

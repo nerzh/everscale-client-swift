@@ -15,16 +15,8 @@ final class AbiTests: XCTestCase {
     func testEncode_message_body() throws {
         testAsyncMethods { (client, group) in
             group.enter()
-            let abiJSON: String = "/Users/nerzh/mydata/trash/swift/ton-sdk/Tests/TonSDKTests/Fixtures/abi/Events.abi.json"
-            var abiEventsText: String = .init()
-            DOFileReader.readFile(abiJSON) { (line) in
-                abiEventsText.append(line)
-            }
-            guard let any = abiEventsText.toAnyValue() else {
-                XCTAssertFalse(true, "AbiJSON Not Parsed From File")
-                return
-            }
-            let abi: TSDKAbiData = .init(type: .Serialized, value: any)
+            let abiJSON: AnyValue = self.generateAbiAndTvc("Events").abiJSON
+            let abi: TSDKAbi = .init(type: .Serialized, value: abiJSON)
             let keys: TSDKKeyPair = .init(public: "4c7c408ff1ddebb8d6405ee979c716a14fdd6cc08124107a61d3c25597099499",
                                           secret: "cc8929d635719612a9478b9cd17675a39cfad52d8959e8a177389b8c0b9122a7")
             let singer: TSDKSigner = .init(type: .Keys,
@@ -48,18 +40,9 @@ final class AbiTests: XCTestCase {
     func testEncode_messageWithExternalSigner() throws {
         testAsyncMethods { (client, group) in
             group.enter()
-            let abiJSONEvents: String = "/Users/nerzh/mydata/trash/swift/ton-sdk/Tests/TonSDKTests/Fixtures/abi/Events.abi.json"
-            let tvcEvents: String = "/Users/nerzh/mydata/trash/swift/ton-sdk/Tests/TonSDKTests/Fixtures/abi/Events.tvc"
-            var abiEventsText: String = .init()
-            DOFileReader.readFile(abiJSONEvents) { (line) in
-                abiEventsText.append(line)
-            }
-            guard let data = FileManager.default.contents(atPath: tvcEvents) else { fatalError("tvcEvents not read") }
-            guard let any = abiEventsText.toAnyValue() else {
-                XCTAssertFalse(true, "AbiJSON Not Parsed From File")
-                return
-            }
-            let abi: TSDKAbiData = .init(type: .Serialized, value: any)
+            let tvcData: Data = self.readTvc("Events")
+            let abiJSONValue: AnyValue = self.readAbi("Events")
+            let abi: TSDKAbi = .init(type: .Serialized, value: abiJSONValue)
             let keys: TSDKKeyPair = .init(public: "4c7c408ff1ddebb8d6405ee979c716a14fdd6cc08124107a61d3c25597099499",
                                           secret: "cc8929d635719612a9478b9cd17675a39cfad52d8959e8a177389b8c0b9122a7")
             let signer: TSDKSigner = .init(type: .External,
@@ -71,7 +54,7 @@ final class AbiTests: XCTestCase {
                                                                         time: 1599458364291,
                                                                         pubkey: keys.public),
                                              input: nil)
-            let deploySet: TSDKDeploySet = .init(tvc: data, workchain_id: nil, initial_data: nil)
+            let deploySet: TSDKDeploySet = .init(tvc: tvcData, workchain_id: nil, initial_data: nil)
             let payload: TSDKParamsOfEncodeMessage = .init(abi: abi,
                                                            address: nil,
                                                            deploy_set: deploySet,
@@ -90,18 +73,9 @@ final class AbiTests: XCTestCase {
     func testEncode_messageWithKeysSigner() throws {
         testAsyncMethods { (client, group) in
             group.enter()
-            let abiJSONEvents: String = "/Users/nerzh/mydata/trash/swift/ton-sdk/Tests/TonSDKTests/Fixtures/abi/Events.abi.json"
-            let tvcEvents: String = "/Users/nerzh/mydata/trash/swift/ton-sdk/Tests/TonSDKTests/Fixtures/abi/Events.tvc"
-            var abiEventsText: String = .init()
-            DOFileReader.readFile(abiJSONEvents) { (line) in
-                abiEventsText.append(line)
-            }
-            guard let data = FileManager.default.contents(atPath: tvcEvents) else { fatalError("tvcEvents not read") }
-            guard let any = abiEventsText.toAnyValue() else {
-                XCTAssertFalse(true, "AbiJSON Not Parsed From File")
-                return
-            }
-            let abi: TSDKAbiData = .init(type: .Serialized, value: any)
+            let tvcData: Data = self.generateAbiAndTvc("Events").tvc
+            let abiJSONValue: AnyValue = self.generateAbiAndTvc("Events").abiJSON
+            let abi: TSDKAbi = .init(type: .Serialized, value: abiJSONValue)
             let keys: TSDKKeyPair = .init(public: "4c7c408ff1ddebb8d6405ee979c716a14fdd6cc08124107a61d3c25597099499",
                                           secret: "cc8929d635719612a9478b9cd17675a39cfad52d8959e8a177389b8c0b9122a7")
             let signer: TSDKSigner = .init(type: .Keys,
@@ -113,7 +87,7 @@ final class AbiTests: XCTestCase {
                                                                         time: 1599458364291,
                                                                         pubkey: keys.public),
                                              input: nil)
-            let deploySet: TSDKDeploySet = .init(tvc: data, workchain_id: nil, initial_data: nil)
+            let deploySet: TSDKDeploySet = .init(tvc: tvcData, workchain_id: nil, initial_data: nil)
             let payload: TSDKParamsOfEncodeMessage = .init(abi: abi,
                                                            address: nil,
                                                            deploy_set: deploySet,
@@ -132,18 +106,9 @@ final class AbiTests: XCTestCase {
     func testAttach_signature_to_message_body() throws {
         testAsyncMethods { (client, group) in
             group.enter()
-            let abiJSONEvents: String = "/Users/nerzh/mydata/trash/swift/ton-sdk/Tests/TonSDKTests/Fixtures/abi/Events.abi.json"
-            let tvcEvents: String = "/Users/nerzh/mydata/trash/swift/ton-sdk/Tests/TonSDKTests/Fixtures/abi/Events.tvc"
-            var abiEventsText: String = .init()
-            DOFileReader.readFile(abiJSONEvents) { (line) in
-                abiEventsText.append(line)
-            }
-            guard let data = FileManager.default.contents(atPath: tvcEvents) else { fatalError("tvcEvents not read") }
-            guard let any = abiEventsText.toAnyValue() else {
-                XCTAssertFalse(true, "AbiJSON Not Parsed From File")
-                return
-            }
-            let abi: TSDKAbiData = .init(type: .Serialized, value: any)
+            let tvcData: Data = self.generateAbiAndTvc("Events").tvc
+            let abiJSONValue: AnyValue = self.generateAbiAndTvc("Events").abiJSON
+            let abi: TSDKAbi = .init(type: .Serialized, value: abiJSONValue)
             let keys: TSDKKeyPair = .init(public: "4c7c408ff1ddebb8d6405ee979c716a14fdd6cc08124107a61d3c25597099499",
                                           secret: "cc8929d635719612a9478b9cd17675a39cfad52d8959e8a177389b8c0b9122a7")
             let signer: TSDKSigner = .init(type: .External,
@@ -155,7 +120,7 @@ final class AbiTests: XCTestCase {
                                                                         time: 1599458364291,
                                                                         pubkey: keys.public),
                                              input: nil)
-            let deploySet: TSDKDeploySet = .init(tvc: data, workchain_id: nil, initial_data: nil)
+            let deploySet: TSDKDeploySet = .init(tvc: tvcData, workchain_id: nil, initial_data: nil)
             let payload: TSDKParamsOfEncodeMessage = .init(abi: abi,
                                                            address: nil,
                                                            deploy_set: deploySet,
@@ -212,18 +177,9 @@ final class AbiTests: XCTestCase {
     func testAttach_signature() throws {
         testAsyncMethods { (client, group) in
             group.enter()
-            let abiJSONEvents: String = "/Users/nerzh/mydata/trash/swift/ton-sdk/Tests/TonSDKTests/Fixtures/abi/Events.abi.json"
-            let tvcEvents: String = "/Users/nerzh/mydata/trash/swift/ton-sdk/Tests/TonSDKTests/Fixtures/abi/Events.tvc"
-            var abiEventsText: String = .init()
-            DOFileReader.readFile(abiJSONEvents) { (line) in
-                abiEventsText.append(line)
-            }
-            guard let data = FileManager.default.contents(atPath: tvcEvents) else { fatalError("tvcEvents not read") }
-            guard let any = abiEventsText.toAnyValue() else {
-                XCTAssertFalse(true, "AbiJSON Not Parsed From File")
-                return
-            }
-            let abi: TSDKAbiData = .init(type: .Serialized, value: any)
+            let tvcData: Data = self.generateAbiAndTvc("Events").tvc
+            let abiJSONValue: AnyValue = self.generateAbiAndTvc("Events").abiJSON
+            let abi: TSDKAbi = .init(type: .Serialized, value: abiJSONValue)
             let keys: TSDKKeyPair = .init(public: "4c7c408ff1ddebb8d6405ee979c716a14fdd6cc08124107a61d3c25597099499",
                                           secret: "cc8929d635719612a9478b9cd17675a39cfad52d8959e8a177389b8c0b9122a7")
             let signer: TSDKSigner = .init(type: .External,
@@ -235,7 +191,7 @@ final class AbiTests: XCTestCase {
                                                                         time: 1599458364291,
                                                                         pubkey: keys.public),
                                              input: nil)
-            let deploySet: TSDKDeploySet = .init(tvc: data, workchain_id: nil, initial_data: nil)
+            let deploySet: TSDKDeploySet = .init(tvc: tvcData, workchain_id: nil, initial_data: nil)
             let payload: TSDKParamsOfEncodeMessage = .init(abi: abi,
                                                            address: nil,
                                                            deploy_set: deploySet,
@@ -293,21 +249,13 @@ final class AbiTests: XCTestCase {
     func testDecode_messageInputType() throws {
         testAsyncMethods { (client, group) in
             group.enter()
-            let abiJSONEvents: String = "/Users/nerzh/mydata/trash/swift/ton-sdk/Tests/TonSDKTests/Fixtures/abi/Events.abi.json"
-            var abiEventsText: String = .init()
-            DOFileReader.readFile(abiJSONEvents) { (line) in
-                abiEventsText.append(line)
-            }
-            guard let any = abiEventsText.toAnyValue() else {
-                XCTAssertFalse(true, "AbiJSON Not Parsed From File")
-                return
-            }
-            let abi: TSDKAbiData = .init(type: .Serialized, value: any)
+            let abiJSONValue: AnyValue = self.generateAbiAndTvc("Events").abiJSON
+            let abi: TSDKAbi = .init(type: .Serialized, value: abiJSONValue)
             let payload: TSDKParamsOfDecodeMessage = .init(abi: abi,
                                                            message: "te6ccgEBAwEAvAABRYgAC31qq9KF9Oifst6LU9U6FQSQQRlCSEMo+A3LN5MvphIMAQHhrd/b+MJ5Za+AygBc5qS/dVIPnqxCsM9PvqfVxutK+lnQEKzQoRTLYO6+jfM8TF4841bdNjLQwIDWL4UVFdxIhdMfECP8d3ruNZAXul5xxahT91swIEkEHph08JVlwmUmQAAAXRnJcuDX1XMZBW+LBKACAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==")
             client.abi.decode_message(payload) { [group] (response) in
                 XCTAssertEqual(response.result?.body_type, .Input)
-                XCTAssertEqual(response.result?.value, AnyJSONType(["id": AnyJSONType("0x0")]))
+                XCTAssertEqual(response.result?.value, AnyJSONType(["id": AnyJSONType("0x0000000000000000000000000000000000000000000000000000000000000000")]))
                 XCTAssertEqual(response.result?.header, TSDKFunctionHeader(expire: 1599458404,
                                                                            time: 1599458364291,
                                                                            pubkey: "4c7c408ff1ddebb8d6405ee979c716a14fdd6cc08124107a61d3c25597099499"))
@@ -320,21 +268,13 @@ final class AbiTests: XCTestCase {
     func testDecode_messageEventType() throws {
         testAsyncMethods { (client, group) in
             group.enter()
-            let abiJSONEvents: String = "/Users/nerzh/mydata/trash/swift/ton-sdk/Tests/TonSDKTests/Fixtures/abi/Events.abi.json"
-            var abiEventsText: String = .init()
-            DOFileReader.readFile(abiJSONEvents) { (line) in
-                abiEventsText.append(line)
-            }
-            guard let any = abiEventsText.toAnyValue() else {
-                XCTAssertFalse(true, "AbiJSON Not Parsed From File")
-                return
-            }
-            let abi: TSDKAbiData = .init(type: .Serialized, value: any)
+            let abiJSONValue: AnyValue = self.generateAbiAndTvc("Events").abiJSON
+            let abi: TSDKAbi = .init(type: .Serialized, value: abiJSONValue)
             let payload: TSDKParamsOfDecodeMessage = .init(abi: abi,
                                                            message: "te6ccgEBAQEAVQAApeACvg5/pmQpY4m61HmJ0ne+zjHJu3MNG8rJxUDLbHKBu/AAAAAAAAAMJL6z6ro48sYvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABA")
             client.abi.decode_message(payload) { [group] (response) in
                 XCTAssertEqual(response.result?.body_type, .Event)
-                XCTAssertEqual(response.result?.value, AnyJSONType(["id": AnyJSONType("0x0")]))
+                XCTAssertEqual(response.result?.value, AnyJSONType(["id": AnyJSONType("0x0000000000000000000000000000000000000000000000000000000000000000")]))
                 XCTAssertEqual(response.result?.header, nil)
                 group.leave()
             }
@@ -345,21 +285,13 @@ final class AbiTests: XCTestCase {
     func testDecode_messageOutputType() throws {
         testAsyncMethods { (client, group) in
             group.enter()
-            let abiJSONEvents: String = "/Users/nerzh/mydata/trash/swift/ton-sdk/Tests/TonSDKTests/Fixtures/abi/Events.abi.json"
-            var abiEventsText: String = .init()
-            DOFileReader.readFile(abiJSONEvents) { (line) in
-                abiEventsText.append(line)
-            }
-            guard let any = abiEventsText.toAnyValue() else {
-                XCTAssertFalse(true, "AbiJSON Not Parsed From File")
-                return
-            }
-            let abi: TSDKAbiData = .init(type: .Serialized, value: any)
+            let abiJSONValue: AnyValue = self.generateAbiAndTvc("Events").abiJSON
+            let abi: TSDKAbi = .init(type: .Serialized, value: abiJSONValue)
             let payload: TSDKParamsOfDecodeMessage = .init(abi: abi,
                                                            message: "te6ccgEBAQEAVQAApeACvg5/pmQpY4m61HmJ0ne+zjHJu3MNG8rJxUDLbHKBu/AAAAAAAAAMKr6z6rxK3xYJAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABA")
             client.abi.decode_message(payload) { [group] (response) in
                 XCTAssertEqual(response.result?.body_type, .Output)
-                XCTAssertEqual(response.result?.value, AnyJSONType(["value0": AnyJSONType("0x0")]))
+                XCTAssertEqual(response.result?.value, AnyJSONType(["value0": AnyJSONType("0x0000000000000000000000000000000000000000000000000000000000000000")]))
                 XCTAssertEqual(response.result?.header, nil)
                 group.leave()
             }
@@ -371,22 +303,14 @@ final class AbiTests: XCTestCase {
     func testDecode_message_body() throws {
         testAsyncMethods { (client, group) in
             group.enter()
-            let abiJSONEvents: String = "/Users/nerzh/mydata/trash/swift/ton-sdk/Tests/TonSDKTests/Fixtures/abi/Events.abi.json"
-            var abiEventsText: String = .init()
-            DOFileReader.readFile(abiJSONEvents) { (line) in
-                abiEventsText.append(line)
-            }
-            guard let any = abiEventsText.toAnyValue() else {
-                XCTAssertFalse(true, "AbiJSON Not Parsed From File")
-                return
-            }
-            let abi: TSDKAbiData = .init(type: .Serialized, value: any)
+            let abiJSONValue: AnyValue = self.generateAbiAndTvc("Events").abiJSON
+            let abi: TSDKAbi = .init(type: .Serialized, value: abiJSONValue)
             let payload: TSDKParamsOfDecodeMessageBody = .init(abi: abi,
                                                                bodyEncodedBase64: "te6ccgEBAgEAlgAB4a3f2/jCeWWvgMoAXOakv3VSD56sQrDPT76n1cbrSvpZ0BCs0KEUy2Duvo3zPExePONW3TYy0MCA1i+FFRXcSIXTHxAj/Hd67jWQF7peccWoU/dbMCBJBB6YdPCVZcJlJkAAAF0ZyXLg19VzGQVviwSgAQBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
                                                                is_internal: false)
             client.abi.decode_message_body(payload) { [group] (response) in
                 XCTAssertEqual(response.result?.body_type, .Input)
-                XCTAssertEqual(response.result?.value, AnyJSONType(["id": AnyJSONType("0x0")]))
+                XCTAssertEqual(response.result?.value, AnyJSONType(["id": AnyJSONType("0x0000000000000000000000000000000000000000000000000000000000000000")]))
                 XCTAssertEqual(response.result?.header, TSDKFunctionHeader(expire: 1599458404,
                                                                            time: 1599458364291,
                                                                            pubkey: "4c7c408ff1ddebb8d6405ee979c716a14fdd6cc08124107a61d3c25597099499"))

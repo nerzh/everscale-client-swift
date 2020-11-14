@@ -7,18 +7,18 @@
 
 import Foundation
 
-final class BindingStore {
+public final class BindingStore {
 
-    static let responseQueue: DispatchQueue = .init(label: "com.responseQueue", qos: .background, attributes: .concurrent)
-    static var asyncResponseGroups: [UInt32: DispatchGroup] = .init()
+    public static let responseQueue: DispatchQueue = .init(label: "com.responseQueue", qos: .background, attributes: .concurrent)
+    public static var asyncResponseGroups: [UInt32: DispatchGroup] = .init()
     private static let asyncResponseLock: NSLock = .init()
-    static var responses: [UInt32: (_ requestId: UInt32,
+    public static var responses: [UInt32: (_ requestId: UInt32,
                                     _ stringResponse: String,
                                     _ responseType: TSDKBindingResponseType,
                                     _ finished: Bool) -> Void] = .init()
 
 
-    class func addResponseHandler(_ requestId: UInt32,
+    public class func addResponseHandler(_ requestId: UInt32,
                                   _ response: @escaping (_ requestId: UInt32,
                                                          _ stringResponse: String,
                                                          _ responseType: TSDKBindingResponseType,
@@ -29,7 +29,7 @@ final class BindingStore {
         asyncResponseLock.unlock()
     }
 
-    class func getResponseHandler(_ requestId: UInt32) -> ((_ requestId: UInt32,
+    public class func getResponseHandler(_ requestId: UInt32) -> ((_ requestId: UInt32,
                                                             _ stringResponse: String,
                                                             _ responseType: TSDKBindingResponseType,
                                                             _ finished: Bool) -> Void)? {
@@ -38,7 +38,7 @@ final class BindingStore {
         return responses[requestId]
     }
 
-    class func deleteResponseHandler(_ requestId: UInt32) {
+    public class func deleteResponseHandler(_ requestId: UInt32) {
         asyncResponseLock.lock()
         defer { asyncResponseLock.unlock() }
         responses[requestId] = nil

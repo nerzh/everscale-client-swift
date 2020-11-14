@@ -7,12 +7,12 @@
 
 import Foundation
 
-public final class TSDKTvm {
+public final class TSDKTvmModule {
     
-    private var binding: TSDKBinding
+    private var binding: TSDKBindingModule
     public let module: String = "tvm"
     
-    public init(binding: TSDKBinding) {
+    public init(binding: TSDKBindingModule) {
         self.binding = binding
     }
     

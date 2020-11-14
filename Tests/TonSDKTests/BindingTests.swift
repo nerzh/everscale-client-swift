@@ -11,7 +11,7 @@ final class BindingTests: XCTestCase {
 
     func testConvertToTSDKString() throws {
         var string: TSDKString = .init()
-        TSDKBinding.convertToTSDKString("Hello😀") { tsdkString in
+        TSDKBindingModule.convertToTSDKString("Hello😀") { tsdkString in
             string = tsdkString
         }
         XCTAssertEqual(string.len, 9)
@@ -19,8 +19,8 @@ final class BindingTests: XCTestCase {
 
     func testConvertFromTSDKString() throws {
         var swiftString: String = .init()
-        TSDKBinding.convertToTSDKString("Hello😀") { tsdkString in
-            swiftString = TSDKBinding.convertFromTSDKString(tsdkString)
+        TSDKBindingModule.convertToTSDKString("Hello😀") { tsdkString in
+            swiftString = TSDKBindingModule.convertFromTSDKString(tsdkString)
         }
         XCTAssertEqual(swiftString, "Hello😀")
     }
@@ -36,12 +36,12 @@ final class BindingTests: XCTestCase {
     }
 
     func testRequestLibraryAsync() throws {
-        let binding: TSDKBinding = .init()
+        let binding: TSDKBindingModule = .init()
         for _ in 1...500 {
             binding.requestLibraryAsync("client.version", "{}") { (requestId, params, responseType, finished) in
                 var response: TSDKBindingResponse<Test, TestError, Test> = .init()
                 response.update(requestId, params, responseType, finished)
-                XCTAssertEqual(response.result?.version, "1.0.0")
+                XCTAssertTrue(response.result?.version != nil)
                 XCTAssertEqual(response.error?.message, nil)
             }
         }

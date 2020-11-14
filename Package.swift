@@ -12,15 +12,22 @@ let package = Package(
     products: [
         .library(name: "TonSDK", targets: ["TonSDK"])
     ],
-    dependencies: [],
+    dependencies: [
+        .package(name: "SwiftRegularExpression", url: "https://github.com/nerzh/swift-regular-expression.git", .upToNextMajor(from: "0.2.3")),
+    ],
     targets: [
         .systemLibrary(name: "CTonSDK", pkgConfig: "libton_client"),
         .target(
             name: "TonSDK",
-            dependencies: ["CTonSDK"]),
+            dependencies: [
+                .byName(name: "CTonSDK"),
+                .product(name: "SwiftRegularExpression", package: "SwiftRegularExpression"),
+            ]),
         .testTarget(
             name: "TonSDKTests",
-            dependencies: ["TonSDK"]),
+            dependencies: [
+                .byName(name: "TonSDK")
+            ]),
     ],
     swiftLanguageVersions: [
         SwiftVersion.v5

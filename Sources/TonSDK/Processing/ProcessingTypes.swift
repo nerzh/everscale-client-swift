@@ -17,7 +17,6 @@ public enum TSDKProcessingEventType: String, Decodable {
     case WillFetchNextBlock = "WillFetchNextBlock"
     case FetchNextBlockFailed = "FetchNextBlockFailed"
     case MessageExpired = "MessageExpired"
-    case TransactionReceived = "TransactionReceived"
 }
 
 public struct TSDKProcessingEvent: Decodable {
@@ -27,24 +26,21 @@ public struct TSDKProcessingEvent: Decodable {
     var shard_block_id: String?
     var message_id: String?
     var message: String?
-    var result: TSDKResultOfProcessMessage?
 
-    public init(type: TSDKProcessingEventType, error: TSDKClientError? = nil, shard_block_id: String? = nil, message_id: String? = nil, message: String? = nil, result: TSDKResultOfProcessMessage? = nil) {
+    public init(type: TSDKProcessingEventType, error: TSDKClientError? = nil, shard_block_id: String? = nil, message_id: String? = nil, message: String? = nil) {
         self.type = type
         self.error = error
         self.shard_block_id = shard_block_id
         self.message_id = message_id
         self.message = message?.base64Encoded() ?? ""
-        self.result = result
     }
 
-    public init(type: TSDKProcessingEventType, error: TSDKClientError? = nil, shard_block_id: String? = nil, message_id: String? = nil, messageEncodedBase64: String? = nil, result: TSDKResultOfProcessMessage? = nil) {
+    public init(type: TSDKProcessingEventType, error: TSDKClientError? = nil, shard_block_id: String? = nil, message_id: String? = nil, messageEncodedBase64: String? = nil) {
         self.type = type
         self.error = error
         self.shard_block_id = shard_block_id
         self.message_id = message_id
         self.message = messageEncodedBase64
-        self.result = result
     }
 }
 ///Depends on value of the public struct TSDKfield.
@@ -84,34 +80,38 @@ public struct TSDKProcessingEvent: Decodable {
 ///message: string
 ///error: ClientError
 
-///When public struct TSDKis 'TransactionReceived'
-///message_id: string – Input message id. Encoded with hex.
-///message: string – Input message. BOC encoded with base64.
-///result: ResultOfProcessMessage – Results of transaction.
-
 //ResultOfProcessMessage
 public struct TSDKResultOfProcessMessage: Decodable {
-    var transaction: AnyJSONType
-    var out_messages: [AnyJSONType]
-    var decoded: TSDKDecodedOutput?
+    public var transaction: AnyJSONType
+    public var out_messages: [String]
+    public var decoded: TSDKDecodedOutput?
+    public var fees: TSDKTransactionFees
 }
 ///transaction: any – Parsed transaction.
-///out_messages: any[] – List of parsed output messages.
+///out_messages: string[] – List of output messages' BOCs. Encoded as base64
 ///decoded?: DecodedOutput – Optional decoded message bodies according to the optional
+///fees: TransactionFees – Transaction fees
 
 //DecodedOutput
 public struct TSDKDecodedOutput: Decodable {
-    var out_messages: [TSDKDecodedMessageBody?]
-    var output: AnyJSONType?
+    public var out_messages: [TSDKDecodedMessageBody?]
+    public var output: AnyJSONType?
 }
 ///out_messages: DecodedMessageBody?[] – Decoded bodies of the out messages.
 ///output?: any – Decoded body of the function output message.
 
 //ParamsOfSendMessage
 public struct TSDKParamsOfSendMessage: Encodable {
-    var message: String
-    var abi: TSDKAbiData?
-    var send_events: Bool
+
+    public var message: String
+    public var abi: TSDKAbi?
+    public var send_events: Bool
+
+    public init(message: String, abi: TSDKAbi? = nil, send_events: Bool) {
+        self.message = message
+        self.abi = abi
+        self.send_events = send_events
+    }
 }
 ///message: string – Message BOC.
 ///abi?: Abi – Optional message ABI.
@@ -119,26 +119,26 @@ public struct TSDKParamsOfSendMessage: Encodable {
 
 //ResultOfSendMessage
 public struct TSDKResultOfSendMessage: Decodable {
-    var shard_block_id: String
+    public var shard_block_id: String
 }
 ///shard_block_id: string – Shard block related to the message dst account before the
 
 //ParamsOfWaitForTransaction
 public struct TSDKParamsOfWaitForTransaction: Encodable {
 
-    var abi: TSDKAbiData?
-    var message: String
-    var shard_block_id: String
-    var send_events: Bool
+    public var abi: TSDKAbi?
+    public var message: String
+    public var shard_block_id: String
+    public var send_events: Bool
 
-    public init(abi: TSDKAbiData? = nil, message: String, shard_block_id: String, send_events: Bool) {
+    public init(abi: TSDKAbi? = nil, message: String, shard_block_id: String, send_events: Bool) {
         self.abi = abi
         self.message = message.base64Encoded() ?? ""
         self.shard_block_id = shard_block_id
         self.send_events = send_events
     }
 
-    public init(abi: TSDKAbiData? = nil, messageEncodedBase64: String, shard_block_id: String, send_events: Bool) {
+    public init(abi: TSDKAbi? = nil, messageEncodedBase64: String, shard_block_id: String, send_events: Bool) {
         self.abi = abi
         self.message = messageEncodedBase64
         self.shard_block_id = shard_block_id
@@ -146,14 +146,23 @@ public struct TSDKParamsOfWaitForTransaction: Encodable {
     }
 }
 ///abi?: Abi – Optional ABI for decoding transaction results.
+///  If it is specified, then the output messages' bodies will be
+///  decoded according to this ABI.
+///  The abi_decoded result field will be filled out.
 ///message: string – Message BOC. Encoded with base64.
-///shard_block_id: string – Dst account shard block id before the message had been sent.
-///send_events: boolean – Flag for requesting events sending
+///shard_block_id: string – The last generated block id of the destination account shard before the message was sent. You must provide the same value as the send_message has returned.
+///send_events: boolean – Flag that enables/disables intermediate events
 
 //ParamsOfProcessMessage
 public struct TSDKParamsOfProcessMessage: Encodable {
-    var message: TSDKMessageSource
-    var send_events: Bool
+
+    public var message_encode_params: TSDKParamsOfEncodeMessage
+    public var send_events: Bool
+
+    public init(message_encode_params: TSDKParamsOfEncodeMessage, send_events: Bool) {
+        self.message_encode_params = message_encode_params
+        self.send_events = send_events
+    }
 }
-///message: MessageSource – Message source.
+///message_encode_params: ParamsOfEncodeMessage – Message encode parameters
 ///send_events: boolean – Flag for requesting events sending

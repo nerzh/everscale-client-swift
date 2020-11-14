@@ -11,119 +11,179 @@ import class Foundation.Bundle
 
 final class TvmTests: XCTestCase {
 
-    func testExecute_getParticipantList() throws {
+    func testRun_getParticipantList() throws {
         testAsyncMethods { (client, group) in
-//            group.enter()
-//
-//            let stateInitSource: TSDKStateInitSource = .init(type: .StateInit,
-//                                                             source: nil,
-//                                                             codeEncodedBase64: self.electorCode,
-//                                                             dataEncodedBase64: self.electorData,
-//                                                             libraryEncodedBase64: nil,
-//                                                             tvc: nil,
-//                                                             public_key: nil,
-//                                                             init_params: nil)
-//            let payloadEncodeAccount: TSDKParamsOfEncodeAccount = .init(state_init: stateInitSource,
-//                                                           balance: nil,
-//                                                           last_trans_lt: nil,
-//                                                           last_paid: nil)
-//            var accountBase64: String = .init()
-//            client.abi.encode_account(payloadEncodeAccount) { (response) in
-//                accountBase64 = response.result?.account ?? ""
-//                group.leave()
-//            }
-//            group.wait()
-//            XCTAssertTrue(accountBase64.count > 0)
-//
-//            group.enter()
-//            let payload: TSDKParamsOfExecuteGet = .init(accountEncodedBase64: accountBase64,
-//                                                        function_name: "participant_list",
-//                                                        input: nil,
-//                                                        execution_options: nil)
-//            client.tvm.execute_get(payload) { [group] (response) in
-//                let first: String? = (((response.result?.output.jsonValue as? [AnyJSONType])?[0].jsonValue as? [AnyJSONType])?[0].jsonValue as? [AnyJSONType])?[0].jsonValue as? String
-//                let last: String? = (((response.result?.output.jsonValue as? [AnyJSONType])?[0].jsonValue as? [AnyJSONType])?[0].jsonValue as? [AnyJSONType])?[1].jsonValue as? String
-//                XCTAssertEqual(first, "0x101b6d65a384b9c70deb49fd6c43ffc0f60ed22fcc3a4966f7043794a749228")
-//                XCTAssertEqual(last, "0x36b1f820a400")
-//                group.leave()
-//            }
-//            group.wait()
+            group.enter()
+
+            let stateInitSource: TSDKStateInitSource = .init(type: .StateInit,
+                                                             source: nil,
+                                                             codeEncodedBase64: self.electorCode,
+                                                             dataEncodedBase64: self.electorData,
+                                                             libraryEncodedBase64: nil,
+                                                             tvc: nil,
+                                                             public_key: nil,
+                                                             init_params: nil)
+            let payloadEncodeAccount: TSDKParamsOfEncodeAccount = .init(state_init: stateInitSource,
+                                                                        balance: nil,
+                                                                        last_trans_lt: nil,
+                                                                        last_paid: nil)
+            var accountBase64: String = .init()
+            client.abi.encode_account(payloadEncodeAccount) { (response) in
+                accountBase64 = response.result?.account ?? ""
+                group.leave()
+            }
+            group.wait()
+            XCTAssertTrue(accountBase64.count > 0)
+
+            group.enter()
+            let payload: TSDKParamsOfRunGet = .init(accountEncodedBase64: accountBase64,
+                                                    function_name: "participant_list",
+                                                    input: nil,
+                                                    execution_options: nil)
+            client.tvm.run_get(payload) { [group] (response) in
+                let first: String? = (((response.result?.output.jsonValue as? [AnyJSONType])?[0].jsonValue as? [AnyJSONType])?[0].jsonValue as? [AnyJSONType])?[0].jsonValue as? String
+                let last: String? = (((response.result?.output.jsonValue as? [AnyJSONType])?[0].jsonValue as? [AnyJSONType])?[0].jsonValue as? [AnyJSONType])?[1].jsonValue as? String
+                XCTAssertEqual(first, "0x0101b6d65a384b9c70deb49fd6c43ffc0f60ed22fcc3a4966f7043794a749228")
+                XCTAssertEqual(last, "60138000000000")
+                group.leave()
+            }
+            group.wait()
         }
     }
 
-    func testExecute_getPast_elections() throws {
+    func testRun_getPast_elections() throws {
         testAsyncMethods { (client, group) in
-//            group.enter()
-//
-//            let stateInitSource: TSDKStateInitSource = .init(type: .StateInit,
-//                                                             source: nil,
-//                                                             codeEncodedBase64: self.electorCode,
-//                                                             dataEncodedBase64: self.electorData,
-//                                                             libraryEncodedBase64: nil,
-//                                                             tvc: nil,
-//                                                             public_key: nil,
-//                                                             init_params: nil)
-//            let payloadEncodeAccount: TSDKParamsOfEncodeAccount = .init(state_init: stateInitSource,
-//                                                           balance: nil,
-//                                                           last_trans_lt: nil,
-//                                                           last_paid: nil)
-//            var accountBase64: String = .init()
-//            client.abi.encode_account(payloadEncodeAccount) { (response) in
-//                accountBase64 = response.result?.account ?? ""
-//                group.leave()
-//            }
-//            group.wait()
-//            XCTAssertTrue(accountBase64.count > 0)
-//
-//            group.enter()
-//            let payload: TSDKParamsOfExecuteGet = .init(accountEncodedBase64: accountBase64,
-//                                                        function_name: "past_elections",
-//                                                        input: nil,
-//                                                        execution_options: nil)
-//            client.tvm.execute_get(payload) { [group] (response) in
-//                let first: String? = (((response.result?.output.jsonValue as? [AnyJSONType])?[0].jsonValue as? [AnyJSONType])?[0].jsonValue as? [AnyJSONType])?[0].jsonValue as? String
-//                XCTAssertEqual(first, "0x5eab0e74")
-//                group.leave()
-//            }
-//            group.wait()
+            group.enter()
+
+            let stateInitSource: TSDKStateInitSource = .init(type: .StateInit,
+                                                             source: nil,
+                                                             codeEncodedBase64: self.electorCode,
+                                                             dataEncodedBase64: self.electorData,
+                                                             libraryEncodedBase64: nil,
+                                                             tvc: nil,
+                                                             public_key: nil,
+                                                             init_params: nil)
+            let payloadEncodeAccount: TSDKParamsOfEncodeAccount = .init(state_init: stateInitSource,
+                                                                        balance: nil,
+                                                                        last_trans_lt: nil,
+                                                                        last_paid: nil)
+            var accountBase64: String = .init()
+            client.abi.encode_account(payloadEncodeAccount) { (response) in
+                accountBase64 = response.result?.account ?? ""
+                group.leave()
+            }
+            group.wait()
+            XCTAssertTrue(accountBase64.count > 0)
+
+            group.enter()
+            let payload: TSDKParamsOfRunGet = .init(accountEncodedBase64: accountBase64,
+                                                    function_name: "past_elections",
+                                                    input: nil,
+                                                    execution_options: nil)
+            client.tvm.run_get(payload) { [group] (response) in
+                let first: String? = (((response.result?.output.jsonValue as? [AnyJSONType])?[0].jsonValue as? [AnyJSONType])?[0].jsonValue as? [AnyJSONType])?[0].jsonValue as? String
+                XCTAssertEqual(first, "1588268660")
+                group.leave()
+            }
+            group.wait()
         }
     }
 
-    func testExecute_message() throws {
+    func testRun_getCompute_returned_stake() throws {
         testAsyncMethods { (client, group) in
-//            group.enter()
-//
-//            let stateInitSource: TSDKStateInitSource = .init(type: .StateInit,
-//                                                             source: nil,
-//                                                             codeEncodedBase64: self.electorCode,
-//                                                             dataEncodedBase64: self.electorData,
-//                                                             libraryEncodedBase64: nil,
-//                                                             tvc: nil,
-//                                                             public_key: nil,
-//                                                             init_params: nil)
-//            let payloadEncodeAccount: TSDKParamsOfEncodeAccount = .init(state_init: stateInitSource,
-//                                                           balance: nil,
-//                                                           last_trans_lt: nil,
-//                                                           last_paid: nil)
-//            var accountBase64: String = .init()
-//            client.abi.encode_account(payloadEncodeAccount) { (response) in
-//                accountBase64 = response.result?.account ?? ""
-//                group.leave()
-//            }
-//            group.wait()
-//            XCTAssertTrue(accountBase64.count > 0)
+            group.enter()
 
-//            group.enter()
-//            let payload: TSDKParamsOfExecuteMessage = .init(message: TSDKMessageSource,
-//                                                            accountEncodedBase64: <#T##String#>,
-//                                                            mode: <#T##TSDKExecutionMode#>,
-//                                                            execution_options: <#T##TSDKExecutionOptions?#>)
-//            client.tvm.execute_message(payload) { [group] (response) in
-//                let first: String? = (((response.result?.output.jsonValue as? [AnyJSONType])?[0].jsonValue as? [AnyJSONType])?[0].jsonValue as? [AnyJSONType])?[0].jsonValue as? String
-//                XCTAssertEqual(first, "0x5eab0e74")
-//                group.leave()
-//            }
-//            group.wait()
+            let stateInitSource: TSDKStateInitSource = .init(type: .StateInit,
+                                                             source: nil,
+                                                             codeEncodedBase64: self.electorCode,
+                                                             dataEncodedBase64: self.electorData,
+                                                             libraryEncodedBase64: nil,
+                                                             tvc: nil,
+                                                             public_key: nil,
+                                                             init_params: nil)
+            let payloadEncodeAccount: TSDKParamsOfEncodeAccount = .init(state_init: stateInitSource,
+                                                                        balance: nil,
+                                                                        last_trans_lt: nil,
+                                                                        last_paid: nil)
+            var accountBase64: String = .init()
+            client.abi.encode_account(payloadEncodeAccount) { (response) in
+                accountBase64 = response.result?.account ?? ""
+                group.leave()
+            }
+            group.wait()
+            XCTAssertTrue(accountBase64.count > 0)
+
+            group.enter()
+            let input: AnyValue = .string(String(self.electorAddress.split(separator: ":").last!))
+            let payload: TSDKParamsOfRunGet = .init(accountEncodedBase64: accountBase64,
+                                                    function_name: "compute_returned_stake",
+                                                    input: input,
+                                                    execution_options: nil)
+            client.tvm.run_get(payload) { [group] (response) in
+                let first: String? = (response.result?.output.jsonValue as? [AnyJSONType])?[0].jsonValue as? String
+                XCTAssertEqual(first, "0")
+                group.leave()
+            }
+            group.wait()
+        }
+    }
+
+    func testRun_tvm() throws {
+        testAsyncMethods { (client, group) in
+            /// abi, tvc
+            let abiJSONEvents: String = "/Users/nerzh/mydata/trash/swift/ton-sdk/Tests/TonSDKTests/Fixtures/abi/Subscription.abi.json"
+            let tvcEvents: String = "/Users/nerzh/mydata/trash/swift/ton-sdk/Tests/TonSDKTests/Fixtures/abi/Subscription.tvc"
+            var abiEventsText: String = .init()
+            DOFileReader.readFile(abiJSONEvents) { (line) in
+                abiEventsText.append(line)
+            }
+            guard let data = FileManager.default.contents(atPath: tvcEvents) else { fatalError("tvcEvents not read") }
+            guard let any = abiEventsText.toAnyValue() else {
+                XCTAssertFalse(true, "AbiJSON Not Parsed From File")
+                return
+            }
+            /// keys
+            group.enter()
+            var keys: TSDKKeyPair = .init(public: "", secret: "")
+            client.crypto.generate_random_sign_keys() { [group] (response) in
+                XCTAssertTrue(response.result?.public != nil)
+                XCTAssertTrue(response.result?.secret != nil)
+                XCTAssertEqual(response.result?.public.count, 64)
+                XCTAssertEqual(response.result?.secret.count, 64)
+                keys.public = response.result?.public ?? ""
+                keys.secret = response.result?.secret ?? ""
+                group.leave()
+            }
+            group.wait()
+
+            let wallet_address: String = "0:2222222222222222222222222222222222222222222222222222222222222222"
+            
+            /// Encode Message (message)
+            group.enter()
+            let abi: TSDKAbi = .init(type: .Serialized, value: any)
+            let signer: TSDKSigner = .init(type: .Keys,
+                                           public_key: nil,
+                                           keys: keys,
+                                           handle: nil)
+            let callSet: TSDKCallSet = .init(function_name: "constructor",
+                                             header: nil,
+                                             input: AnyValue.object(["wallet" : AnyValue.string(wallet_address)]))
+            let deploySet: TSDKDeploySet = .init(tvc: data, workchain_id: nil, initial_data: nil)
+            let payloadEncodeMessage: TSDKParamsOfEncodeMessage = .init(abi: abi,
+                                                                        address: nil,
+                                                                        deploy_set: deploySet,
+                                                                        call_set: callSet,
+                                                                        signer: signer,
+                                                                        processing_try_index: nil)
+            var message: TSDKResultOfEncodeMessage!
+            client.abi.encode_message(payloadEncodeMessage) { [group] (response) in
+                XCTAssertTrue(response.result != nil, "Must be not nil")
+                if response.result != nil { message = response.result! }
+                group.leave()
+            }
+            group.wait()
+
+            XCTAssertTrue(false)
         }
     }
 
