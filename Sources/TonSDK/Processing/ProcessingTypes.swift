@@ -93,9 +93,14 @@ public struct TSDKResultOfProcessMessage: Decodable {
 ///fees: TransactionFees – Transaction fees
 
 //DecodedOutput
-public struct TSDKDecodedOutput: Decodable {
+public struct TSDKDecodedOutput: Decodable, Equatable {
     public var out_messages: [TSDKDecodedMessageBody?]
     public var output: AnyJSONType?
+
+    public static func == (lhs: TSDKDecodedOutput, rhs: TSDKDecodedOutput) -> Bool {
+        lhs.out_messages == rhs.out_messages &&
+            lhs.output == rhs.output
+    }
 }
 ///out_messages: DecodedMessageBody?[] – Decoded bodies of the out messages.
 ///output?: any – Decoded body of the function output message.

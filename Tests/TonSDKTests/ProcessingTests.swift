@@ -14,11 +14,10 @@ final class ProcessingTests: XCTestCase {
 
     func testWait_for_transaction() throws {
         testAsyncMethods { (client, group) in
-            group.enter()
-            let tvcData: Data = self.generateAbiAndTvc("Events").tvc
-            let abiJSONValue: AnyValue = self.generateAbiAndTvc("Events").abiJSON
-            let keys: TSDKKeyPair = self.generateKeys()
+            let tvcData: Data = self.readTvc("Events")
+            let abiJSONValue: AnyValue = self.readAbi("Events")
             let abi: TSDKAbi = .init(type: .Serialized, value: abiJSONValue)
+            let keys: TSDKKeyPair = self.generateKeys()
             let signer: TSDKSigner = .init(type: .Keys,
                                            public_key: nil,
                                            keys: keys,
@@ -35,17 +34,57 @@ final class ProcessingTests: XCTestCase {
                                                                         call_set: callSet,
                                                                         signer: signer,
                                                                         processing_try_index: nil)
-            var result: TSDKResultOfEncodeMessage!
+            var encodedMessage: TSDKResultOfEncodeMessage!
+            group.enter()
             client.abi.encode_message(payloadEncodeMessage) { [group] (response) in
                 guard let responseResult = response.result else {
                     XCTAssertTrue(response.result?.address != nil, "Must be not nil")
                     return
                 }
-                result = responseResult
+                encodedMessage = responseResult
+                BindingStore.deleteResponseHandler(response.requestId)
                 group.leave()
             }
             group.wait()
-            XCTAssertTrue(false)
+            Log.warn("address - ", encodedMessage.address)
+
+            self.getGramsFromGiverSync(client, encodedMessage.address)
+
+            let paramsOfSendMessage: TSDKParamsOfSendMessage = .init(message: encodedMessage.message, abi: abi, send_events: true)
+            var maybeResultOfSendMessage: TSDKResultOfSendMessage?
+            group.enter()
+            client.processing.send_message(paramsOfSendMessage) { (response) in
+                if response.result != nil {
+                    maybeResultOfSendMessage = response.result
+                }
+                if response.finished {
+                    group.leave()
+                }
+            }
+            group.wait()
+            guard let resultOfSendMessage = maybeResultOfSendMessage else {
+                XCTAssertTrue(false, "resultOfSendMessage is nil")
+                return
+            }
+
+            let paramsOfWaitForTransaction: TSDKParamsOfWaitForTransaction = .init(abi: abi,
+                                                                                   messageEncodedBase64: encodedMessage.message,
+                                                                                   shard_block_id: resultOfSendMessage.shard_block_id,
+                                                                                   send_events: true)
+            var resultOfProcessMessage: TSDKResultOfProcessMessage?
+            group.enter()
+            client.processing.wait_for_transaction(paramsOfWaitForTransaction) { (response) in
+
+                if response.result != nil {
+                    resultOfProcessMessage = response.result
+                }
+                if response.finished {
+                    group.leave()
+                }
+            }
+            group.wait()
+            XCTAssertEqual(resultOfProcessMessage?.out_messages.count, 0)
+            XCTAssertEqual(resultOfProcessMessage?.decoded, TSDKDecodedOutput(out_messages: [], output: nil))
         }
     }
 
@@ -79,21 +118,33 @@ final class ProcessingTests: XCTestCase {
                     return
                 }
                 result = responseResult
-                BindingStore.deleteResponseHandler(response.requestId)
                 group.leave()
             }
             group.wait()
             Log.warn("address - ", result.address)
 
-//            group.enter()
-            self.getGramsFromGiverSync(client, result.address) { (response) in
-                if let response = response, !response.finished {
-                    XCTAssertTrue(response.result != nil)
-                    BindingStore.deleteResponseHandler(response.requestId)
-//                    group.leave()
+            self.getGramsFromGiverSync(client, result.address)
+
+            let payloadProcessMessage: TSDKParamsOfProcessMessage = .init(message_encode_params: payloadEncodeMessage, send_events: true)
+            group.enter()
+
+            var resultOfProcessMessage: TSDKResultOfProcessMessage?
+            client.processing.process_message(payloadProcessMessage) { [group] (response) in
+                if let result = response.result {
+                    resultOfProcessMessage = result
+                }
+                if response.finished {
+                    group.leave()
                 }
             }
             group.wait()
+            if let resultOfProcessMessage = resultOfProcessMessage {
+                XCTAssertTrue(resultOfProcessMessage.fees.total_account_fees > 0)
+                XCTAssertEqual(resultOfProcessMessage.out_messages.count, 0)
+                XCTAssertEqual(resultOfProcessMessage.decoded, TSDKDecodedOutput(out_messages: [], output: nil))
+            } else {
+                XCTAssertTrue(false, "resultOfProcessMessage is nil")
+            }
         }
     }
 }

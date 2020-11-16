@@ -45,11 +45,11 @@ extension XCTestCase {
     func getGramsFromGiverSync(_ client: TSDKClientModule,
                                _ accountAddress: String? = nil,
                                _ value: Int = 10_000_000_000,
-                               _ handler: @escaping (TSDKBindingResponse<TSDKResultOfProcessMessage, TSDKClientError, TSDKDefault>?) -> Void
+                               _ handler: ((TSDKBindingResponse<TSDKResultOfProcessMessage, TSDKClientError, TSDKDefault>?) -> Void)? = nil
     ) {
         guard let server_address = client.config.network?.server_address else {
             Log.warn("Please, set client network for Giver work!")
-            handler(nil)
+            handler?(nil)
             return
         }
 
@@ -59,14 +59,14 @@ extension XCTestCase {
             self.getGramsFromGiverSyncNetDev(client, accountAddress ?? testAddr, value, handler)
         } else {
             Log.warn("No Giver for this network: \(server_address)")
-            handler(nil)
+            handler?(nil)
         }
     }
 
     func getGramsFromGiverSyncNetDev(_ client: TSDKClientModule,
                                      _ accountAddress: String,
                                      _ value: Int? = nil,
-                                     _ handler: @escaping (TSDKBindingResponse<TSDKResultOfProcessMessage, TSDKClientError, TSDKDefault>?) -> Void
+                                     _ handler: ((TSDKBindingResponse<TSDKResultOfProcessMessage, TSDKClientError, TSDKDefault>?) -> Void)?
     ) {
         let walletAddress: String = "0:653b9a6452c7a982c6dc92b2da9eba832ade1c467699ebb3b43dca6d77b780dd"
         let abiJSONValue: AnyValue = self.readAbi("Giver")
@@ -88,18 +88,17 @@ extension XCTestCase {
                 resultResponse = response
             }
             if response.finished {
-                BindingStore.deleteResponseHandler(response.requestId)
                 group.leave()
             }
         }
         group.wait()
-        handler(resultResponse)
+        handler?(resultResponse)
     }
 
     func getGramsFromGiverSyncNodeSE(_ client: TSDKClientModule,
                                      _ accountAddress: String,
                                      _ value: Int = 10_000_000_000,
-                                     _ handler: @escaping (TSDKBindingResponse<TSDKResultOfProcessMessage, TSDKClientError, TSDKDefault>?) -> Void
+                                     _ handler: ((TSDKBindingResponse<TSDKResultOfProcessMessage, TSDKClientError, TSDKDefault>?) -> Void)?
     ) {
         let walletAddress: String = "0:841288ed3b55d9cdafa806807f02a0ae0c169aa5edfe88a789a6482429756a94"
         let abiJSONValue: AnyValue = self.readAbi("GiverNodeSE")
@@ -117,16 +116,16 @@ extension XCTestCase {
         group.enter()
         var resultResponse: TSDKBindingResponse<TSDKResultOfProcessMessage, TSDKClientError, TSDKDefault>?
         client.processing.process_message(sendPaylod) { (response) in
+            Log.warn(response)
             if !response.finished {
                 resultResponse = response
             }
             if response.finished {
-                BindingStore.deleteResponseHandler(response.requestId)
                 group.leave()
             }
-            group.wait()
-            handler(resultResponse)
         }
+        group.wait()
+        handler?(resultResponse)
     }
 
 

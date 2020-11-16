@@ -473,7 +473,7 @@ public struct TSDKParamsOfDecodeMessage: Encodable {
 ///message: String – Message BOC
 
 //DecodedMessageBody
-public struct TSDKDecodedMessageBody: Decodable {
+public struct TSDKDecodedMessageBody: Decodable, Equatable {
     var body_type: TSDKMessageBodyType
     var name: String
     var value: AnyJSONType?

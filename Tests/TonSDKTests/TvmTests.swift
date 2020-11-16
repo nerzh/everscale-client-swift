@@ -128,39 +128,22 @@ final class TvmTests: XCTestCase {
         }
     }
 
-    func testRun_tvm() throws {
+    private func runMessage(_ handler: @escaping (_ client: TSDKClientModule,
+                                                  _ message: TSDKResultOfEncodeMessage,
+                                                  _ abi: TSDKAbi,
+                                                  _ account: String) -> String
+    ) {
         testAsyncMethods { (client, group) in
             /// abi, tvc
-            let abiJSONEvents: String = "/Users/nerzh/mydata/trash/swift/ton-sdk/Tests/TonSDKTests/Fixtures/abi/Subscription.abi.json"
-            let tvcEvents: String = "/Users/nerzh/mydata/trash/swift/ton-sdk/Tests/TonSDKTests/Fixtures/abi/Subscription.tvc"
-            var abiEventsText: String = .init()
-            DOFileReader.readFile(abiJSONEvents) { (line) in
-                abiEventsText.append(line)
-            }
-            guard let data = FileManager.default.contents(atPath: tvcEvents) else { fatalError("tvcEvents not read") }
-            guard let any = abiEventsText.toAnyValue() else {
-                XCTAssertFalse(true, "AbiJSON Not Parsed From File")
-                return
-            }
+            let abiName: String = "Subscription"
+            let abiJSONValue: AnyValue = self.readAbi(abiName)
+            let abi: TSDKAbi = .init(type: .Serialized, value: abiJSONValue)
+            let tvc: Data = self.readTvc(abiName)
             /// keys
-            group.enter()
-            var keys: TSDKKeyPair = .init(public: "", secret: "")
-            client.crypto.generate_random_sign_keys() { [group] (response) in
-                XCTAssertTrue(response.result?.public != nil)
-                XCTAssertTrue(response.result?.secret != nil)
-                XCTAssertEqual(response.result?.public.count, 64)
-                XCTAssertEqual(response.result?.secret.count, 64)
-                keys.public = response.result?.public ?? ""
-                keys.secret = response.result?.secret ?? ""
-                group.leave()
-            }
-            group.wait()
-
+            let keys: TSDKKeyPair = self.generateKeys()
             let wallet_address: String = "0:2222222222222222222222222222222222222222222222222222222222222222"
             
             /// Encode Message (message)
-            group.enter()
-            let abi: TSDKAbi = .init(type: .Serialized, value: any)
             let signer: TSDKSigner = .init(type: .Keys,
                                            public_key: nil,
                                            keys: keys,
@@ -168,27 +151,242 @@ final class TvmTests: XCTestCase {
             let callSet: TSDKCallSet = .init(function_name: "constructor",
                                              header: nil,
                                              input: AnyValue.object(["wallet" : AnyValue.string(wallet_address)]))
-            let deploySet: TSDKDeploySet = .init(tvc: data, workchain_id: nil, initial_data: nil)
-            let payloadEncodeMessage: TSDKParamsOfEncodeMessage = .init(abi: abi,
-                                                                        address: nil,
-                                                                        deploy_set: deploySet,
-                                                                        call_set: callSet,
-                                                                        signer: signer,
-                                                                        processing_try_index: nil)
-            var message: TSDKResultOfEncodeMessage!
-            client.abi.encode_message(payloadEncodeMessage) { [group] (response) in
-                XCTAssertTrue(response.result != nil, "Must be not nil")
-                if response.result != nil { message = response.result! }
-                group.leave()
+            let deploySet: TSDKDeploySet = .init(tvc: tvc, workchain_id: nil, initial_data: nil)
+            let paramsOfEncodeMessage: TSDKParamsOfEncodeMessage = .init(abi: abi,
+                                                                         address: nil,
+                                                                         deploy_set: deploySet,
+                                                                         call_set: callSet,
+                                                                         signer: signer,
+                                                                         processing_try_index: nil)
+
+            let resultOfEncodeMessage: TSDKResultOfEncodeMessage = self.abiEncodeMessage(nameAbi: abiName,
+                                                                                         nameTvc: abiName,
+                                                                                         address: nil,
+                                                                                         public: keys.public,
+                                                                                         secret: keys.secret,
+                                                                                         signerType: .Keys,
+                                                                                         callSetFunction_name: callSet.function_name,
+                                                                                         callSetHeader: callSet.header,
+                                                                                         callSetInput: callSet.input)
+            Log.log("Message has been received")
+            self.getGramsFromGiverSync(client, resultOfEncodeMessage.address)
+            Log.log("Grams was sent")
+            let paramsOfProcessMessage: TSDKParamsOfProcessMessage = .init(message_encode_params: paramsOfEncodeMessage, send_events: false)
+            group.enter()
+            client.processing.process_message(paramsOfProcessMessage) { (response) in
+                if response.finished {
+                    group.leave()
+                }
             }
             group.wait()
+            Log.log("process_message")
 
-            XCTAssertTrue(false)
+            let paramsOfWaitForCollection: TSDKParamsOfWaitForCollection = .init(collection: "accounts",
+                                                                                 filter: .object(["id": .object(["eq": .string(resultOfEncodeMessage.address)])]),
+                                                                                 result: "id boc",
+                                                                                 timeout: nil)
+            var maybeResultOfWaitForCollection: TSDKResultOfWaitForCollection?
+            group.enter()
+            client.net.wait_for_collection(paramsOfWaitForCollection) { (response) in
+                if response.result != nil {
+                    maybeResultOfWaitForCollection = response.result
+                }
+                if response.finished {
+                    group.leave()
+                }
+            }
+            group.wait()
+            guard let resultOfWaitForCollection = maybeResultOfWaitForCollection else {
+                XCTAssertTrue(false, "resultOfWaitForCollection is nil")
+                return
+            }
+            Log.log("account has been received")
+
+            guard let accountResult = resultOfWaitForCollection.result.jsonValue as? [String: AnyJSONType],
+                  let accountBOC: String = accountResult["boc"]?.jsonValue as? String
+            else {
+                XCTAssertTrue(false, "accountBOC is nil")
+                return
+            }
+
+            let subscribeParams: AnyValue = .object([
+                "subscriptionId": .string("0x1111111111111111111111111111111111111111111111111111111111111111"),
+                "pubkey": .string("0x2222222222222222222222222222222222222222222222222222222222222222"),
+                "to": .string("0:3333333333333333333333333333333333333333333333333333333333333333"),
+                "value": .string("0x123"),
+                "period": .string("0x456")
+            ])
+
+            let subscriptionEncodeMessage: TSDKResultOfEncodeMessage = self.abiEncodeMessage(nameAbi: abiName,
+                                                                                             nameTvc: nil,
+                                                                                             address: resultOfEncodeMessage.address,
+                                                                                             public: keys.public,
+                                                                                             secret: keys.secret,
+                                                                                             signerType: .Keys,
+                                                                                             callSetFunction_name: "subscribe",
+                                                                                             callSetHeader: nil,
+                                                                                             callSetInput: subscribeParams)
+            //MARK: CALL HANDLER
+            let account: String = handler(client, subscriptionEncodeMessage, abi, accountBOC)
+
+            Log.log("Check subscription")
+
+            let checkSubscribeParams: AnyValue = .object([
+                "subscriptionId": .string("0x1111111111111111111111111111111111111111111111111111111111111111")
+            ])
+            let checkSubscriptionEncodeMessage: TSDKResultOfEncodeMessage = self.abiEncodeMessage(nameAbi: abiName,
+                                                                                                  nameTvc: nil,
+                                                                                                  address: resultOfEncodeMessage.address,
+                                                                                                  public: keys.public,
+                                                                                             secret: keys.secret,
+                                                                                             signerType: .Keys,
+                                                                                             callSetFunction_name: "getSubscription",
+                                                                                             callSetHeader: nil,
+                                                                                             callSetInput: checkSubscribeParams)
+            let paramsOfRunTvm: TSDKParamsOfRunTvm = .init(messageEncodedBase64: checkSubscriptionEncodeMessage.message,
+                                                           accountEncodedBase64: account,
+                                                           execution_options: nil,
+                                                           abi: abi)
+            var mayneResultOfRunTvm: TSDKResultOfRunTvm?
+            group.enter()
+            client.tvm.run_tvm(paramsOfRunTvm) { (response) in
+                if response.result != nil {
+                    mayneResultOfRunTvm = response.result
+                }
+                if response.finished {
+                    group.leave()
+                }
+            }
+            group.wait()
+            guard let resultOfRunTvm = mayneResultOfRunTvm else {
+                XCTAssertTrue(false, "resultOfWaitForCollection is nil")
+                return
+            }
+            Log.log("Run tvm complete")
+
+            if let output = resultOfRunTvm.decoded?.output?.toDictionary() {
+                if let value = output["subscription"] as? [String: Any] {
+                    XCTAssertEqual(value["pubkey"] as? String, "0x2222222222222222222222222222222222222222222222222222222222222222")
+                } else if let value = output["value0"] as? [String: Any] {
+                    XCTAssertEqual(value["pubkey"] as? String, "0x2222222222222222222222222222222222222222222222222222222222222222")
+                } else {
+                    XCTAssertTrue(false, "keys 'subscription' or 'value0' not found")
+                }
+            }
         }
     }
 
+    func testRun_tvm() throws {
+        runMessage { (client, encodedMessage, abi, account) -> String in
+            let group: DispatchGroup = .init()
+            let paramsOfRunTvm: TSDKParamsOfRunTvm = .init(messageEncodedBase64: encodedMessage.message,
+                                                           accountEncodedBase64: account,
+                                                           execution_options: nil,
+                                                           abi: abi)
+            group.enter()
+            var result: String = .init()
+            client.tvm.run_tvm(paramsOfRunTvm) { (response) in
+                if response.result != nil {
+                    result = response.result!.account
+                }
+                if response.finished {
+                    group.leave()
+                }
+            }
+            group.wait()
 
+            return result
+        }
+    }
 
+    func testRun_executor() throws {
+        runMessage { (client, encodedMessage, abi, account) -> String in
+            let group: DispatchGroup = .init()
+            var result: String = .init()
+            var maybeParsed: TSDKResultOfParse?
+            group.enter()
+            client.boc.parse_account(TSDKParamsOfParse(bocEncodedBase64: account)) { (response) in
+                if response.result != nil {
+                    maybeParsed = response.result
+                }
+                if response.finished {
+                    group.leave()
+                }
+            }
+            group.wait()
+            guard let parsed = maybeParsed else {
+                XCTAssertTrue(false, "parsed is nil")
+                return ""
+            }
+            guard let originalBalance: String = parsed.parsed.toDictionary()?["balance"] as? String else {
+                XCTAssertTrue(false, "originalBalance is nil")
+                return ""
+            }
+
+            var paramsOfRunExecutor: TSDKParamsOfRunExecutor = .init(messageEncodedBsae64: encodedMessage.message,
+                                                                     account: TSDKAccountForExecutor(type: .Account,
+                                                                                                     bocEncodedBase64: account,
+                                                                                                     unlimited_balance: true),
+                                                                     execution_options: nil,
+                                                                     abi: abi,
+                                                                     skip_transaction_check: nil)
+            var maybeResultOfRunExecutor: TSDKResultOfRunExecutor?
+            group.enter()
+            client.tvm.run_executor(paramsOfRunExecutor) { (response) in
+                if response.result != nil {
+                    maybeResultOfRunExecutor = response.result
+                }
+                if response.finished {
+                    group.leave()
+                }
+            }
+            group.wait()
+            guard let resultOfRunExecutor = maybeResultOfRunExecutor else {
+                XCTAssertTrue(false, "resultOfRunExecutor is nil")
+                return ""
+            }
+
+            group.enter()
+            client.boc.parse_account(TSDKParamsOfParse(bocEncodedBase64: resultOfRunExecutor.account)) { (response) in
+                if response.result != nil {
+                    maybeParsed = response.result
+                }
+                if response.finished {
+                    group.leave()
+                }
+            }
+            group.wait()
+
+            XCTAssertEqual(maybeParsed?.parsed.toDictionary()?["balance"] as? String, originalBalance)
+
+            // check standard run
+            paramsOfRunExecutor = .init(messageEncodedBsae64: encodedMessage.message,
+                                        account: TSDKAccountForExecutor(type: .Account, bocEncodedBase64: account, unlimited_balance: nil),
+                                        execution_options: nil,
+                                        abi: abi,
+                                        skip_transaction_check: nil)
+            var maybeCheckResultOfRunExecutor: TSDKResultOfRunExecutor?
+            group.enter()
+            client.tvm.run_executor(paramsOfRunExecutor) { (response) in
+                if response.result != nil {
+                    maybeCheckResultOfRunExecutor = response.result
+                }
+                if response.finished {
+                    group.leave()
+                }
+            }
+            group.wait()
+            guard let checkResultOfRunExecutor = maybeCheckResultOfRunExecutor else {
+                XCTAssertTrue(false, "checkResultOfRunExecutor is nil")
+                return ""
+            }
+            result = checkResultOfRunExecutor.account
+            XCTAssertEqual(checkResultOfRunExecutor.transaction.toDictionary()?["in_msg"] as? String, encodedMessage.message_id)
+            XCTAssertTrue(checkResultOfRunExecutor.fees.total_account_fees > 0)
+
+            return result
+        }
+    }
 
 
 

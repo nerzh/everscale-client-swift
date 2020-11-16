@@ -34,9 +34,7 @@ public final class TSDKNetModule {
         binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKResultOfWaitForCollection, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            BindingStore.responseQueue.async { [response, handler] in
             handler(response)
-            }
         })
     }
 

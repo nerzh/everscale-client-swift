@@ -110,6 +110,40 @@ public struct AnyJSONType: JSONType, Equatable {
 
         return result
     }
+
+    public func toAny() -> Any {
+        var result: Any
+
+        if let value = jsonValue as? Int {
+            result = value
+        } else if let value = jsonValue as? String {
+            result = value
+        } else if let value = jsonValue as? Double {
+            result = value
+        } else if let value = jsonValue as? Bool {
+            result = value
+        } else if let value = jsonValue as? [String: AnyJSONType] {
+            var tmpResult: [String: Any] = .init()
+            for (key, val) in value {
+                tmpResult[key] = val.toAny()
+            }
+            result = tmpResult
+        } else if let value = jsonValue as? [AnyJSONType] {
+            var tmpResult: [Any] = .init()
+            for val in value {
+                tmpResult.append(val.toAny())
+            }
+            result = tmpResult
+        } else {
+            fatalError("JSONType toAny convertor error: unknown type \(jsonValue)")
+        }
+
+        return result
+    }
+
+    public func toDictionary() -> [String: Any]? {
+        toAny() as? [String: Any]
+    }
 }
 
 
