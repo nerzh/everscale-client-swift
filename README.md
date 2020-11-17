@@ -2,6 +2,12 @@
 
 [![SPM](https://img.shields.io/badge/swift-package%20manager-green)](https://swift.org/package-manager/)
 
+| OS | Result |
+| ----------- | ----------- |
+| MacOS | ✅ |
+| Paragraph | ✅ |
+| iOS | Soon |
+
 ## Setup TONSDK
 0. Install Rust to your OS
 1. git clone https://github.com/tonlabs/TON-SDK
