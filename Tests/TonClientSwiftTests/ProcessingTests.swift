@@ -127,11 +127,6 @@ final class ProcessingTests: XCTestCase {
             var tokensReceived: Bool = false
             var fuseCounter: Int = 0
             while !tokensReceived {
-                fuseCounter += 1
-                if fuseCounter > 20 {
-                    tokensReceived = true
-                    XCTAssertTrue(false, "Tokens does not received form giver")
-                }
                 group.enter()
                 let paramsOfWaitForCollection: TSDKParamsOfWaitForCollection = .init(collection: "accounts",
                                                                                      filter: .object(["id": .object(
@@ -152,6 +147,11 @@ final class ProcessingTests: XCTestCase {
                     }
                 }
                 group.wait()
+                fuseCounter += 1
+                if fuseCounter > 20 && !tokensReceived {
+                    tokensReceived = true
+                    XCTAssertTrue(false, "Tokens does not received form giver")
+                }
             }
 
             let payloadProcessMessage: TSDKParamsOfProcessMessage = .init(message_encode_params: payloadEncodeMessage, send_events: true)
