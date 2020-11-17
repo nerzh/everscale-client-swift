@@ -10,10 +10,12 @@
 4. cargo build --release
 5. macOS :
     copy or create symlink of file ./TON-SDK/target/release/libton_client.dylib to /usr/local/lib/libton_client.dylib
+    
     Linux :
     copy or create symlink of file ./TON-SDK/target/release/libton_client.so to /usr/lib/libton_client.so
 6. Create pkgConfig file :
-    macOS :
+    
+macOS :
     
 ```bash
 
@@ -29,7 +31,7 @@ Cflags: -I${includedir}
 Libs: -L${libdir} -lton_client
 
 ```
-    Linux:
+Linux:
 
 ```bash
 prefix=/usr
