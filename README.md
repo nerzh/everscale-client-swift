@@ -9,14 +9,21 @@
 3. cargo update
 4. cargo build --release
 5. macOS :
-    copy or create symlink of file ./TON-SDK/target/release/libton_client.dylib to /usr/local/lib/libton_client.dylib
+    copy or create symlink of file 
+**./TON-SDK/target/release/libton_client.dylib**
+to 
+**/usr/local/lib/libton_client.dylib**
     
     Linux :
-    copy or create symlink of file ./TON-SDK/target/release/libton_client.so to /usr/lib/libton_client.so
+    copy or create symlink of file 
+**./TON-SDK/target/release/libton_client.so**   
+to   
+**/usr/lib/libton_client.so**
 6. Create pkgConfig file :
     
 macOS :
-    
+    **/usr/local/lib/pkgConfig/libton_client.pc**
+
 ```bash
 
 prefix=/usr/local
@@ -32,7 +39,8 @@ Libs: -L${libdir} -lton_client
 
 ```
 Linux:
-
+    **/usr/lib/pkgConfig/libton_client.pc**
+    
 ```bash
 prefix=/usr
 exec_prefix=${prefix}
@@ -45,7 +53,13 @@ Version: 1.0.0
 Cflags: -I${includedir}
 Libs: -L${libdir} -lton_client
 ```
-
+7. Copy or create symlink of file 
+**/TON-SDK/ton_client/client/tonclient.h**
+to
+MacOS:
+**/usr/local/include/tonclient.h**
+Linux:
+**/usr/include/tonclient.h**
 
 ## Usage
 
@@ -90,9 +104,8 @@ You may change it with the xcode edit scheme menu.
 Or inside file path_to_ton_sdk/.swiftpm/xcode/xcshareddata/xcschemes/TonClientSwift.xcscheme
 set to tag "LaunchAction" absolute path to this library with options:
 
-useCustomWorkingDirectory = "YES"
-
-customWorkingDirectory = "/path_to_ton_sdk"
+**useCustomWorkingDirectory = "YES"**  
+**customWorkingDirectory = "/path_to_ton_sdk"**
 
 
 Tests
