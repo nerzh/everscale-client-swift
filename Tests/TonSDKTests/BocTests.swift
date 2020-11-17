@@ -109,6 +109,24 @@ final class BocTests: XCTestCase {
     }
 
     func testGet_boc_hash() throws {
-        XCTAssertTrue(false, "test not implemented yet")
+        testAsyncMethods { (client, group) in
+            var maybeResultOfGetBocHash: TSDKResultOfGetBocHash?
+            group.enter()
+            client.boc.get_boc_hash(TSDKParamsOfGetBocHash(bocEncodedBase64: "te6ccgEBAQEAWAAAq2n+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAE/zMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzSsG8DgAAAAAjuOu9NAL7BxYpA"))
+            { (response) in
+                if response.result != nil {
+                    maybeResultOfGetBocHash = response.result
+                }
+                if response.finished {
+                    group.leave()
+                }
+            }
+            group.wait()
+            guard let resultOfGetBocHash = maybeResultOfGetBocHash else {
+                XCTAssertTrue(false, "resultOfGetBocHash is nil")
+                return
+            }
+            XCTAssertEqual(resultOfGetBocHash.hash, "dfd47194f3058ee058bfbfad3ea40cbbd9ad17ca77cd0904d4d9f18a48c2fbca")
+        }
     }
 }

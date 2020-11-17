@@ -67,7 +67,16 @@ public struct TSDKResultOfGetBlockchainConfig: Decodable {
 
 //ParamsOfGetBocHash
 public struct TSDKParamsOfGetBocHash: Encodable {
+
     public var boc: String
+
+    public init(boc: String) {
+        self.boc = boc.base64Encoded() ?? ""
+    }
+
+    public init(bocEncodedBase64: String) {
+        self.boc = bocEncodedBase64
+    }
 }
 ///boc: string – BOC encoded as base64
 

@@ -26,17 +26,22 @@ extension XCTestCase {
     }
 
     var pathToRootDirectory: String {
-        let directory: String = "/Users/nerzh/mydata/trash/swift/ton-sdk"
-        if !FileManager.default.fileExists(atPath: directory) {
-            fatalError("\(directory) directory is not exist")
+        /// Please, set custom working directory to project folder for your xcode scheme. This is necessary for the relative path "./" to the project folders to work.
+        /// You may change it with the xcode edit scheme menu.
+        /// Or inside file path_to_ton_sdk/.swiftpm/xcode/xcshareddata/xcschemes/TonSDK.xcscheme
+        /// set to tag "LaunchAction" absolute path to this library with options:
+        /// useCustomWorkingDirectory = "YES"
+        /// customWorkingDirectory = "/path_to_ton_sdk"
+        let workingDirectory: String = "./"
+        if !FileManager.default.fileExists(atPath: workingDirectory) {
+            fatalError("\(workingDirectory) directory is not exist")
         }
-        return directory
+        return workingDirectory
     }
 
     func testAsyncMethods<V>(_ handler: @escaping (_ client: TSDKClientModule, _ group: DispatchGroup) -> V) -> V {
         var config: TSDKClientConfig = .init()
-        //        config.network = TSDKNetworkConfig(server_address: "https://net.ton.dev")
-        config.network = TSDKNetworkConfig(server_address: "http://localhost:80")
+        config.network = TSDKNetworkConfig(server_address: SimpleEnv["server_address"] ?? "")
         let client: TSDKClientModule = .init(config: config)
         let group: DispatchGroup = .init()
         return handler(client, group)
@@ -68,11 +73,11 @@ extension XCTestCase {
                                      _ value: Int? = nil,
                                      _ handler: ((TSDKBindingResponse<TSDKResultOfProcessMessage, TSDKClientError, TSDKDefault>?) -> Void)?
     ) {
-        let walletAddress: String = "0:653b9a6452c7a982c6dc92b2da9eba832ade1c467699ebb3b43dca6d77b780dd"
-        let abiJSONValue: AnyValue = self.readAbi("Giver")
+        let walletAddress: String = SimpleEnv["giver_address"] ?? ""
+        let abiJSONValue: AnyValue = self.readAbi(SimpleEnv["giver_abi_name"] ?? "")
         let abi: TSDKAbi = .init(type: .Serialized, value: abiJSONValue)
         let callSetInput: AnyValue = .object(["addr" : .string(accountAddress)])
-        let callSet: TSDKCallSet = .init(function_name: "grant", header: nil, input: callSetInput)
+        let callSet: TSDKCallSet = .init(function_name: SimpleEnv["giver_function"] ?? "", header: nil, input: callSetInput)
         let paramsOfEncodedMessage: TSDKParamsOfEncodeMessage = .init(abi: abi,
                                                                       address: walletAddress,
                                                                       deploy_set: nil,
@@ -100,11 +105,11 @@ extension XCTestCase {
                                      _ value: Int = 10_000_000_000,
                                      _ handler: ((TSDKBindingResponse<TSDKResultOfProcessMessage, TSDKClientError, TSDKDefault>?) -> Void)?
     ) {
-        let walletAddress: String = "0:841288ed3b55d9cdafa806807f02a0ae0c169aa5edfe88a789a6482429756a94"
-        let abiJSONValue: AnyValue = self.readAbi("GiverNodeSE")
+        let walletAddress: String = SimpleEnv["giver_address"] ?? ""
+        let abiJSONValue: AnyValue = self.readAbi(SimpleEnv["giver_abi_name"] ?? "")
         let abi: TSDKAbi = .init(type: .Serialized, value: abiJSONValue)
-        let callSetInput: AnyValue = .object(["dest" : .string(accountAddress), "amount": .int(value)])
-        let callSet: TSDKCallSet = .init(function_name: "sendGrams", header: nil, input: callSetInput)
+        let callSetInput: AnyValue = .object(["dest" : .string(accountAddress), "amount": .int(Int(SimpleEnv["giver_amount"] ?? "") ?? value)])
+        let callSet: TSDKCallSet = .init(function_name: SimpleEnv["giver_function"] ?? "", header: nil, input: callSetInput)
         let paramsOfEncodedMessage: TSDKParamsOfEncodeMessage = .init(abi: abi,
                                                                       address: walletAddress,
                                                                       deploy_set: nil,
@@ -116,7 +121,6 @@ extension XCTestCase {
         group.enter()
         var resultResponse: TSDKBindingResponse<TSDKResultOfProcessMessage, TSDKClientError, TSDKDefault>?
         client.processing.process_message(sendPaylod) { (response) in
-            Log.warn(response)
             if !response.finished {
                 resultResponse = response
             }

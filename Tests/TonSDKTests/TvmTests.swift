@@ -388,7 +388,103 @@ final class TvmTests: XCTestCase {
         }
     }
 
+    func testRun_account_none() throws {
+        testAsyncMethods { (client, group) in
+            let message: String = "te6ccgEBAQEAXAAAs0gAV2lB0HI8/VEO/pBKDJJJeoOcIh+dL9JzpmRzM8PfdicAPGNEGwRWGaJsR6UYmnsFVC2llSo1ZZN5mgUnCiHf7ZaUBKgXyAAGFFhgAAAB69+UmQS/LjmiQA=="
+            let paramsOfRunExecutor: TSDKParamsOfRunExecutor = .init(messageEncodedBsae64: message,
+                                                                     account: TSDKAccountForExecutor(type: .None),
+                                                                     execution_options: nil,
+                                                                     abi: nil,
+                                                                     skip_transaction_check: true)
+            var maybeResultOfRunExecutor: TSDKResultOfRunExecutor?
+            group.enter()
+            client.tvm.run_executor(paramsOfRunExecutor) { (response) in
+                if response.result != nil {
+                    maybeResultOfRunExecutor = response.result
+                }
+                if response.finished {
+                    group.leave()
+                }
+            }
+            group.wait()
+            guard let resultOfRunExecutor = maybeResultOfRunExecutor else {
+                XCTAssertTrue(false, "resultOfRunExecutor is nil")
+                return
+            }
 
+            group.enter()
+            var maybeResultOfParse: TSDKResultOfParse?
+            client.boc.parse_account(TSDKParamsOfParse(bocEncodedBase64: resultOfRunExecutor.account)) { (response) in
+                if response.result != nil {
+                    maybeResultOfParse = response.result
+                }
+                if response.finished {
+                    group.leave()
+                }
+            }
+            group.wait()
+            guard let resultOfParse = maybeResultOfParse else {
+                XCTAssertTrue(false, "resultOfParse is nil")
+                return
+            }
+            XCTAssertEqual(resultOfParse.parsed.toDictionary()?["id"] as? String, "0:f18d106c11586689b11e946269ec1550b69654a8d5964de668149c28877fb65a")
+            XCTAssertEqual(resultOfParse.parsed.toDictionary()?["acc_type_name"] as? String, "Uninit")
+        }
+    }
+
+    func testRun_account_uinit() throws {
+        testAsyncMethods { (client, group) in
+            let abiName: String = "Hello"
+            let keys: TSDKKeyPair = self.generateKeys()
+            let message: TSDKResultOfEncodeMessage = self.abiEncodeMessage(nameAbi: abiName,
+                                                                           nameTvc: abiName,
+                                                                           address: nil,
+                                                                           public: keys.public,
+                                                                           secret: keys.secret,
+                                                                           signerType: .Keys,
+                                                                           callSetFunction_name: "constructor",
+                                                                           callSetHeader: nil,
+                                                                           callSetInput: nil)
+            let paramsOfRunExecutor: TSDKParamsOfRunExecutor = .init(messageEncodedBsae64: message.message,
+                                                                     account: TSDKAccountForExecutor(type: .Uninit),
+                                                                     execution_options: nil,
+                                                                     abi: nil,
+                                                                     skip_transaction_check: nil)
+            var maybeResultOfRunExecutor: TSDKResultOfRunExecutor?
+            group.enter()
+            client.tvm.run_executor(paramsOfRunExecutor) { (response) in
+                if response.result != nil {
+                    maybeResultOfRunExecutor = response.result
+                }
+                if response.finished {
+                    group.leave()
+                }
+            }
+            group.wait()
+            guard let resultOfRunExecutor = maybeResultOfRunExecutor else {
+                XCTAssertTrue(false, "resultOfRunExecutor is nil")
+                return
+            }
+
+            group.enter()
+            var maybeResultOfParse: TSDKResultOfParse?
+            client.boc.parse_account(TSDKParamsOfParse(bocEncodedBase64: resultOfRunExecutor.account)) { (response) in
+                if response.result != nil {
+                    maybeResultOfParse = response.result
+                }
+                if response.finished {
+                    group.leave()
+                }
+            }
+            group.wait()
+            guard let resultOfParse = maybeResultOfParse else {
+                XCTAssertTrue(false, "resultOfParse is nil")
+                return
+            }
+            XCTAssertEqual(resultOfParse.parsed.toDictionary()?["id"] as? String, message.address)
+            XCTAssertEqual(resultOfParse.parsed.toDictionary()?["acc_type_name"] as? String, "Active")
+        }
+    }
 
 
 

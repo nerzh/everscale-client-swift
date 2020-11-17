@@ -29,7 +29,7 @@ public enum TSDKAccountForExecutorType: String, Codable {
 public struct TSDKAccountForExecutor: Codable {
 
     public var type: TSDKAccountForExecutorType
-    public var boc: String
+    public var boc: String?
     public var unlimited_balance: Bool?
 
     public init(type: TSDKAccountForExecutorType, boc: String, unlimited_balance: Bool? = nil) {
@@ -42,6 +42,10 @@ public struct TSDKAccountForExecutor: Codable {
         self.type = type
         self.boc = bocEncodedBase64
         self.unlimited_balance = unlimited_balance
+    }
+
+    public init(type: TSDKAccountForExecutorType) {
+        self.type = type
     }
 }
 ///Depends on value of the type field.
