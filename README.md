@@ -14,14 +14,13 @@
 2. cd ./TON-SDK
 3. cargo update
 4. cargo build --release
-5. macOS :  
-    copy or create symlink of file   
+5. copy or create symlink of dynamic library    
+macOS :  
 **./TON-SDK/target/release/libton_client.dylib**  
 to   
 **/usr/local/lib/libton_client.dylib**  
     
     Linux :  
-    copy or create symlink of file   
 **./TON-SDK/target/release/libton_client.so**     
 to    
 **/usr/lib/libton_client.so**  
