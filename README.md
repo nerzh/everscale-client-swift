@@ -1,4 +1,4 @@
-# Swift Free Ton SDK
+# Swift Client for Free Ton SDK
 
 [![SPM](https://img.shields.io/badge/swift-package%20manager-green)](https://swift.org/package-manager/)
 
@@ -47,6 +47,32 @@ Libs: -L${libdir} -lton_client
 ```
 
 
+## Usage
+
+All requests are async.
+
+```swift
+var config: TSDKClientConfig = .init()
+config.network = TSDKNetworkConfig(server_address: "https://net.ton.dev")
+let client: TSDKClientModule = .init(config: config)
+
+// Crypto
+client.crypto.factorize(TSDKParamsOfFactorize(composite: "17ED48941A08F981")) { (response) in
+    print(response.result?.factors)
+}
+
+// Boc
+let payload: TSDKParamsOfParse = .init(bocEncodedBase64: "te6ccgEBAQEAWAAAq2n+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAE/zMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzSsG8DgAAAAAjuOu9NAL7BxYpA")
+client.boc.parse_message(payload) { (response) in
+    if let result = response.result, let parsed: [String: Any] = result.parsed.toDictionary() {
+        print(parsed["id"])
+        print(parsed["src"])
+        print(parsed["dst"])
+    }
+}
+```
+
+
 ## Tests
 ### If you use Xcode for Test
 
@@ -54,6 +80,35 @@ Please, set custom working directory to project folder for your xcode scheme. Th
 You may change it with the xcode edit scheme menu.
 Or inside file path_to_ton_sdk/.swiftpm/xcode/xcshareddata/xcschemes/TonClientSwift.xcscheme
 set to tag "LaunchAction" absolute path to this library with options:
+
 useCustomWorkingDirectory = "YES"
+
 customWorkingDirectory = "/path_to_ton_sdk"
 
+
+1. inside root directory of ton-client-swift create .env.debug file with 
+
+```
+server_address=http://localhost:80
+
+// NODE SE
+giver_address=0:841288ed3b55d9cdafa806807f02a0ae0c169aa5edfe88a789a6482429756a94
+giver_abi_name=GiverNodeSE
+giver_function=sendGrams
+giver_amount=10000000000
+
+// NET TON DEV
+// giver_address=0:653b9a6452c7a982c6dc92b2da9eba832ade1c467699ebb3b43dca6d77b780dd
+// giver_abi_name=Giver
+// giver_function=grant
+```
+
+2. Install locale NodeSE for tests :
+- launch docker
+- install nodejs to your OS
+- npm install -g ton-dev-cli
+- ton start
+
+by default nodeSE will start on localhost:80
+
+3. Run Tests
