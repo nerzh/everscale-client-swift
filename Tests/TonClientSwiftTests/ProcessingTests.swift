@@ -125,7 +125,13 @@ final class ProcessingTests: XCTestCase {
             self.getGramsFromGiverSync(client, result.address)
 
             var tokensReceived: Bool = false
+            var fuseCounter: Int = 0
             while !tokensReceived {
+                fuseCounter += 1
+                if fuseCounter > 20 {
+                    tokensReceived = true
+                    XCTAssertTrue(false, "Tokens does not received form giver")
+                }
                 group.enter()
                 let paramsOfWaitForCollection: TSDKParamsOfWaitForCollection = .init(collection: "accounts",
                                                                                      filter: .object(["id": .object(
