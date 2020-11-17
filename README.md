@@ -5,7 +5,7 @@
 | OS | Result |
 | ----------- | ----------- |
 | MacOS | ✅ |
-| Paragraph | ✅ |
+| Linux | ✅ |
 | iOS | Soon |
 
 ## Setup TONSDK
