@@ -71,6 +71,8 @@ Linux:
 All requests are async.
 
 ```swift
+import TonClientSwift
+
 var config: TSDKClientConfig = .init()
 config.network = TSDKNetworkConfig(server_address: "https://net.ton.dev")
 let client: TSDKClientModule = .init(config: config)
