@@ -33,7 +33,7 @@ public final class SimpleEnv {
         if !FileManager.default.fileExists(atPath: envFilePath) { return }
 
         DOFileReader.readFile("./\(envFileName)") { (line) in
-            var line = line.trimmingCharacters(in: .whitespacesAndNewlines)
+            let line = line.trimmingCharacters(in: .whitespacesAndNewlines)
             let matchesWithQuotes: [Int: String] = line.regexp(#"\"([\s\S]+)\"\s*=\s*\"([\s\S]+)\""#)
             if line[#"^\/\/"#] { return }
             if let key: String = matchesWithQuotes[1], let value: String = matchesWithQuotes[2] {
