@@ -8,21 +8,21 @@
 2. cd ./TON-SDK
 3. cargo update
 4. cargo build --release
-5. macOS :
-    copy or create symlink of file 
-**./TON-SDK/target/release/libton_client.dylib**
-to 
-**/usr/local/lib/libton_client.dylib**
-    
-    Linux :
-    copy or create symlink of file 
-**./TON-SDK/target/release/libton_client.so**   
+5. macOS :  
+    copy or create symlink of file   
+**./TON-SDK/target/release/libton_client.dylib**  
 to   
-**/usr/lib/libton_client.so**
-6. Create pkgConfig file :
+**/usr/local/lib/libton_client.dylib**  
     
-macOS :
-    **/usr/local/lib/pkgConfig/libton_client.pc**
+    Linux :  
+    copy or create symlink of file   
+**./TON-SDK/target/release/libton_client.so**     
+to    
+**/usr/lib/libton_client.so**  
+6. Create pkgConfig file :  
+    
+macOS :  
+    **/usr/local/lib/pkgConfig/libton_client.pc**  
 
 ```bash
 
@@ -38,8 +38,8 @@ Cflags: -I${includedir}
 Libs: -L${libdir} -lton_client
 
 ```
-Linux:
-    **/usr/lib/pkgConfig/libton_client.pc**
+Linux:  
+    **/usr/lib/pkgConfig/libton_client.pc**  
     
 ```bash
 prefix=/usr
@@ -53,13 +53,13 @@ Version: 1.0.0
 Cflags: -I${includedir}
 Libs: -L${libdir} -lton_client
 ```
-7. Copy or create symlink of file 
-**/TON-SDK/ton_client/client/tonclient.h**
-to
-MacOS:
-**/usr/local/include/tonclient.h**
-Linux:
-**/usr/include/tonclient.h**
+7. Copy or create symlink of file   
+**/TON-SDK/ton_client/client/tonclient.h**  
+to  
+MacOS:  
+**/usr/local/include/tonclient.h**  
+Linux:  
+**/usr/include/tonclient.h**  
 
 ## Usage
 
@@ -110,8 +110,8 @@ set to tag "LaunchAction" absolute path to this library with options:
 
 Tests
 
-1. inside root directory of ton-client-swift create **.env.debug** file with 
-NODE SE
+1. inside root directory of ton-client-swift create **.env.debug** file with   
+NODE SE  
 ```
 server_address=http://localhost:80
 giver_address=0:841288ed3b55d9cdafa806807f02a0ae0c169aa5edfe88a789a6482429756a94
@@ -135,9 +135,9 @@ giver_function=grant
 
 by default nodeSE will start on localhost:80
 
-3. Run Tests
-MacOS:
-Run Tests inside Xcode
-Linux:
-swift test --generate-linuxmain
-swift test --enable-test-discovery
+3. Run Tests  
+MacOS:  
+Run Tests inside Xcode  
+Linux:  
+swift test --generate-linuxmain  
+swift test --enable-test-discovery  
