@@ -1,8 +1,8 @@
 import XCTest
 
-import TonSDKTests
+import TonClientSwiftTests
 
 var tests = [XCTestCaseEntry]()
-tests += TonSDKTests.__allTests()
+tests += TonClientSwiftTests.__allTests()
 
 XCTMain(tests)
