@@ -7,7 +7,7 @@
 
 import XCTest
 import class Foundation.Bundle
-@testable import TonSDK
+@testable import TonClientSwift
 
 final class TvmTests: XCTestCase {
 

@@ -23,7 +23,7 @@ public final class TSDKProcessingModule {
         binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKResultOfSendMessage, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            handler(response)
+            BindingStore.responseQueue.async { handler(response) }
         })
     }
 
@@ -34,7 +34,7 @@ public final class TSDKProcessingModule {
         binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKResultOfProcessMessage, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            handler(response)
+            BindingStore.responseQueue.async { handler(response) }
         })
     }
 
@@ -45,7 +45,7 @@ public final class TSDKProcessingModule {
         binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKResultOfProcessMessage, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            handler(response)
+            BindingStore.responseQueue.async { handler(response) }
         })
     }
 }

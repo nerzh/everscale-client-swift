@@ -71,7 +71,16 @@ client.boc.parse_message(payload) { (response) in
     }
 }
 ```
+## Errors
 
+```swift
+client.crypto.factorize(TSDKParamsOfFactorize(composite: "17ED48941A08F981")) { (response) in
+    if let error = response.error {
+        print(error.data.toJSON())
+        print(error.code)
+    }
+}
+```
 
 ## Tests
 ### If you use Xcode for Test
@@ -85,6 +94,8 @@ useCustomWorkingDirectory = "YES"
 
 customWorkingDirectory = "/path_to_ton_sdk"
 
+
+Tests
 
 1. inside root directory of ton-client-swift create .env.debug file with 
 

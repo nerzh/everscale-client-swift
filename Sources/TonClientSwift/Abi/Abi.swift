@@ -23,7 +23,7 @@ public final class TSDKAbiModule {
         binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKResultOfEncodeMessageBody, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            handler(response)
+            BindingStore.responseQueue.async { handler(response) }
         })
     }
 
@@ -34,7 +34,7 @@ public final class TSDKAbiModule {
         binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKResultOfEncodeMessage, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            handler(response)
+            BindingStore.responseQueue.async { handler(response) }
         })
     }
 
@@ -45,7 +45,7 @@ public final class TSDKAbiModule {
         binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKResultOfAttachSignatureToMessageBody, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            handler(response)
+            BindingStore.responseQueue.async { handler(response) }
         })
     }
 
@@ -56,7 +56,7 @@ public final class TSDKAbiModule {
         binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKResultOfAttachSignature, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            handler(response)
+            BindingStore.responseQueue.async { handler(response) }
         })
     }
 
@@ -67,7 +67,7 @@ public final class TSDKAbiModule {
         binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKDecodedMessageBody, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            handler(response)
+            BindingStore.responseQueue.async { handler(response) }
         })
     }
 
@@ -78,7 +78,7 @@ public final class TSDKAbiModule {
         binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKDecodedMessageBody, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            handler(response)
+            BindingStore.responseQueue.async { handler(response) }
         })
     }
 
@@ -89,7 +89,7 @@ public final class TSDKAbiModule {
         binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKResultOfEncodeAccount, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            handler(response)
+            BindingStore.responseQueue.async { handler(response) }
         })
     }
 }

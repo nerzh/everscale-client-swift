@@ -20,7 +20,7 @@ public final class TSDKCryptoModule {
         binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKResultOfFactorize, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            handler(response)
+            BindingStore.responseQueue.async { handler(response) }
         })
     }
     
@@ -31,7 +31,7 @@ public final class TSDKCryptoModule {
         binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKResultOfModularPower, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            handler(response)
+            BindingStore.responseQueue.async { handler(response) }
         })
     }
 
@@ -42,7 +42,7 @@ public final class TSDKCryptoModule {
         binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKResultOfTonCrc16, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            handler(response)
+            BindingStore.responseQueue.async { handler(response) }
         })
     }
 
@@ -53,7 +53,7 @@ public final class TSDKCryptoModule {
         binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKResultOfGenerateRandomBytes, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            handler(response)
+            BindingStore.responseQueue.async { handler(response) }
         })
     }
 
@@ -64,7 +64,7 @@ public final class TSDKCryptoModule {
         binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKResultOfConvertPublicKeyToTonSafeFormat, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            handler(response)
+            BindingStore.responseQueue.async { handler(response) }
         })
     }
 
@@ -74,7 +74,7 @@ public final class TSDKCryptoModule {
         binding.requestLibraryAsync(methodName(module, method), "", { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKKeyPair, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            handler(response)
+            BindingStore.responseQueue.async { handler(response) }
         })
     }
 
@@ -85,7 +85,7 @@ public final class TSDKCryptoModule {
         binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKResultOfSign, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            handler(response)
+            BindingStore.responseQueue.async { handler(response) }
         })
     }
 
@@ -96,7 +96,7 @@ public final class TSDKCryptoModule {
         binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKResultOfVerifySignature, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            handler(response)
+            BindingStore.responseQueue.async { handler(response) }
         })
     }
 
@@ -107,7 +107,7 @@ public final class TSDKCryptoModule {
         binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKResultOfHash, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            handler(response)
+            BindingStore.responseQueue.async { handler(response) }
         })
     }
 
@@ -118,7 +118,7 @@ public final class TSDKCryptoModule {
         binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKResultOfHash, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            handler(response)
+            BindingStore.responseQueue.async { handler(response) }
         })
     }
 
@@ -129,7 +129,7 @@ public final class TSDKCryptoModule {
         binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKResultOfScrypt, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            handler(response)
+            BindingStore.responseQueue.async { handler(response) }
         })
     }
 
@@ -140,7 +140,7 @@ public final class TSDKCryptoModule {
         binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKKeyPair, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            handler(response)
+            BindingStore.responseQueue.async { handler(response) }
         })
     }
 
@@ -151,7 +151,7 @@ public final class TSDKCryptoModule {
         binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKResultOfNaclSign, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            handler(response)
+            BindingStore.responseQueue.async { handler(response) }
         })
     }
 
@@ -162,7 +162,7 @@ public final class TSDKCryptoModule {
         binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKResultOfNaclSignOpen, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            handler(response)
+            BindingStore.responseQueue.async { handler(response) }
         })
     }
 
@@ -173,7 +173,7 @@ public final class TSDKCryptoModule {
         binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKResultOfNaclSignDetached, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            handler(response)
+            BindingStore.responseQueue.async { handler(response) }
         })
     }
 
@@ -183,7 +183,7 @@ public final class TSDKCryptoModule {
         binding.requestLibraryAsync(methodName(module, method), "", { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKKeyPair, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            handler(response)
+            BindingStore.responseQueue.async { handler(response) }
         })
     }
 
@@ -194,7 +194,7 @@ public final class TSDKCryptoModule {
         binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKKeyPair, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            handler(response)
+            BindingStore.responseQueue.async { handler(response) }
         })
     }
 
@@ -205,7 +205,7 @@ public final class TSDKCryptoModule {
         binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKResultOfNaclBox, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            handler(response)
+            BindingStore.responseQueue.async { handler(response) }
         })
     }
 
@@ -216,7 +216,7 @@ public final class TSDKCryptoModule {
         binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKResultOfNaclBoxOpen, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            handler(response)
+            BindingStore.responseQueue.async { handler(response) }
         })
     }
 
@@ -227,7 +227,7 @@ public final class TSDKCryptoModule {
         binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKResultOfNaclBox, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            handler(response)
+            BindingStore.responseQueue.async { handler(response) }
         })
     }
 
@@ -238,7 +238,7 @@ public final class TSDKCryptoModule {
         binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKResultOfNaclBoxOpen, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            handler(response)
+            BindingStore.responseQueue.async { handler(response) }
         })
     }
 
@@ -249,7 +249,7 @@ public final class TSDKCryptoModule {
         binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKResultOfMnemonicWords, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            handler(response)
+            BindingStore.responseQueue.async { handler(response) }
         })
     }
 
@@ -260,7 +260,7 @@ public final class TSDKCryptoModule {
         binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKResultOfMnemonicFromRandom, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            handler(response)
+            BindingStore.responseQueue.async { handler(response) }
         })
     }
 
@@ -271,7 +271,7 @@ public final class TSDKCryptoModule {
         binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKResultOfMnemonicFromEntropy, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            handler(response)
+            BindingStore.responseQueue.async { handler(response) }
         })
     }
 
@@ -282,7 +282,7 @@ public final class TSDKCryptoModule {
         binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKResultOfMnemonicVerify, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            handler(response)
+            BindingStore.responseQueue.async { handler(response) }
         })
     }
 
@@ -293,7 +293,7 @@ public final class TSDKCryptoModule {
         binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKKeyPair, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            handler(response)
+            BindingStore.responseQueue.async { handler(response) }
         })
     }
 
@@ -304,7 +304,7 @@ public final class TSDKCryptoModule {
         binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKResultOfHDKeyXPrvFromMnemonic, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            handler(response)
+            BindingStore.responseQueue.async { handler(response) }
         })
     }
 
@@ -315,7 +315,7 @@ public final class TSDKCryptoModule {
         binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKResultOfHDKeyDeriveFromXPrv, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            handler(response)
+            BindingStore.responseQueue.async { handler(response) }
         })
     }
 
@@ -326,7 +326,7 @@ public final class TSDKCryptoModule {
         binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKResultOfHDKeyDeriveFromXPrvPath, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            handler(response)
+            BindingStore.responseQueue.async { handler(response) }
         })
     }
 
@@ -337,7 +337,7 @@ public final class TSDKCryptoModule {
         binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKResultOfHDKeySecretFromXPrv, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            handler(response)
+            BindingStore.responseQueue.async { handler(response) }
         })
     }
 
@@ -348,7 +348,7 @@ public final class TSDKCryptoModule {
         binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKResultOfHDKeyPublicFromXPrv, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            handler(response)
+            BindingStore.responseQueue.async { handler(response) }
         })
     }
 
@@ -359,7 +359,7 @@ public final class TSDKCryptoModule {
         binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKResultOfChaCha20, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            handler(response)
+            BindingStore.responseQueue.async { handler(response) }
         })
     }
 }

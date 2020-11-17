@@ -1,7 +1,4 @@
 //
-//  File.swift
-//  
-//
 //  Created by Oleh Hudeichuk on 21.10.2020.
 //
 
@@ -23,7 +20,7 @@ public final class TSDKTvmModule {
         binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKResultOfRunExecutor, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            handler(response)
+            BindingStore.responseQueue.async { handler(response) }
         })
     }
 
@@ -34,7 +31,7 @@ public final class TSDKTvmModule {
         binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKResultOfRunTvm, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            handler(response)
+            BindingStore.responseQueue.async { handler(response) }
         })
     }
 
@@ -45,7 +42,7 @@ public final class TSDKTvmModule {
         binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKResultOfRunGet, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            handler(response)
+            BindingStore.responseQueue.async { handler(response) }
         })
     }
 }

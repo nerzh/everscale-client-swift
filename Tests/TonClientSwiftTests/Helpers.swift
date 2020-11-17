@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import TonSDK
+import TonClientSwift
 import XCTest
 import SwiftRegularExpression
 
@@ -213,7 +213,7 @@ extension XCTestCase {
     }
 
     func readAbi(_ name: String) -> AnyValue {
-        let abiJSON: String = pathToRootDirectory + "/Tests/TonSDKTests/Fixtures/abi/\(name).abi.json"
+        let abiJSON: String = pathToRootDirectory + "/Tests/TonClientSwiftTests/Fixtures/abi/\(name).abi.json"
         var abiText: String = .init()
         DOFileReader.readFile(abiJSON) { (line) in
             abiText.append(line)
@@ -224,7 +224,7 @@ extension XCTestCase {
     }
 
     func readTvc(_ name: String) -> Data {
-        let tvc: String = pathToRootDirectory + "/Tests/TonSDKTests/Fixtures/abi/\(name).tvc"
+        let tvc: String = pathToRootDirectory + "/Tests/TonClientSwiftTests/Fixtures/abi/\(name).tvc"
         guard let data = FileManager.default.contents(atPath: tvc) else { fatalError("tvc not read") }
 
         return data
