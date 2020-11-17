@@ -111,10 +111,10 @@ public final class TSDKBindingModule: TSDKBindingPrtcl {
                                                                  _ responseType: TSDKBindingResponseType,
                                                                  _ finished: Bool) -> Void
     ) {
-        let requestId: UInt32 = generate_request_id()
         convertToTSDKString(methodName) { tsdkMethodName in
             let payload = payload.toJson() ?? ""
             convertToTSDKString(payload) { tsdkPayload in
+                let requestId: UInt32 = generate_request_id()
                 BindingStore.addResponseHandler(requestId, requestHandler)
                 TSDKRequestAsync(self.context,
                                  tsdkMethodName,

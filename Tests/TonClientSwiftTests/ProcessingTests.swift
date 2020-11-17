@@ -122,13 +122,35 @@ final class ProcessingTests: XCTestCase {
             }
             group.wait()
             Log.warn("address - ", result.address)
-
             self.getGramsFromGiverSync(client, result.address)
 
-            let payloadProcessMessage: TSDKParamsOfProcessMessage = .init(message_encode_params: payloadEncodeMessage, send_events: true)
-            group.enter()
+            var tokensReceived: Bool = false
+            while !tokensReceived {
+                group.enter()
+                let paramsOfWaitForCollection: TSDKParamsOfWaitForCollection = .init(collection: "accounts",
+                                                                                     filter: .object(["id": .object(
+                                                                                                        [
+                                                                                                            "eq": .string(result.address)
+                                                                                                        ])
+                                                                                     ]),
+                                                                                     result: "id balance(format: DEC)",
+                                                                                     timeout: nil)
+                client.net.wait_for_collection(paramsOfWaitForCollection) { (response) in
+                    if let result = response.result?.result.toDictionary(), let balance: Int = Int(result["balance"] as? String ?? "") {
+                        if balance > 0 {
+                            tokensReceived = true
+                        }
+                    }
+                    if response.finished {
+                        group.leave()
+                    }
+                }
+                group.wait()
+            }
 
+            let payloadProcessMessage: TSDKParamsOfProcessMessage = .init(message_encode_params: payloadEncodeMessage, send_events: true)
             var resultOfProcessMessage: TSDKResultOfProcessMessage?
+            group.enter()
             client.processing.process_message(payloadProcessMessage) { [group] (response) in
                 if let result = response.result {
                     resultOfProcessMessage = result
@@ -138,6 +160,7 @@ final class ProcessingTests: XCTestCase {
                 }
             }
             group.wait()
+
             if let resultOfProcessMessage = resultOfProcessMessage {
                 XCTAssertTrue(resultOfProcessMessage.fees.total_account_fees > 0)
                 XCTAssertEqual(resultOfProcessMessage.out_messages.count, 0)
