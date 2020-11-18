@@ -117,7 +117,20 @@ set to tag "LaunchAction" absolute path to this library with options:
 
 Tests
 
-1. inside root directory of ton-client-swift create **.env.debug** file with   
+1. inside root directory of ton-client-swift create **.env.debug** file with
+NET TON DEV
+```
+server_address=https://net.ton.dev
+giver_address=0:653b9a6452c7a982c6dc92b2da9eba832ade1c467699ebb3b43dca6d77b780dd
+giver_abi_name=Giver
+giver_function=grant
+```
+**Optional:** Install locale NodeSE for tests if you needed:  
+- launch docker
+- install nodejs to your OS
+- npm install -g ton-dev-cli
+- ton start  
+by default nodeSE will start on localhost:80  
 NODE SE  
 ```
 server_address=http://localhost:80
@@ -126,23 +139,8 @@ giver_abi_name=GiverNodeSE
 giver_function=sendGrams
 giver_amount=10000000000
 ```
-NET TON DEV
-```
-server_address=https://net.ton.dev
-giver_address=0:653b9a6452c7a982c6dc92b2da9eba832ade1c467699ebb3b43dca6d77b780dd
-giver_abi_name=Giver
-giver_function=grant
-```
 
-2. Install locale NodeSE for tests if you needed:
-- launch docker
-- install nodejs to your OS
-- npm install -g ton-dev-cli
-- ton start
-
-by default nodeSE will start on localhost:80
-
-3. Run Tests  
+2. Run Tests  
 MacOS:  
 Run Tests inside Xcode  
 Linux:  
