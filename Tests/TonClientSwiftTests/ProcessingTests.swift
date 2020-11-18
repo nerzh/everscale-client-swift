@@ -42,7 +42,6 @@ final class ProcessingTests: XCTestCase {
                     return
                 }
                 encodedMessage = responseResult
-                BindingStore.deleteResponseHandler(response.requestId)
                 group.leave()
             }
             group.wait()
@@ -123,36 +122,6 @@ final class ProcessingTests: XCTestCase {
             group.wait()
             Log.warn("address - ", result.address)
             self.getGramsFromGiverSync(client, result.address)
-
-            var tokensReceived: Bool = false
-            var fuseCounter: Int = 0
-            while !tokensReceived {
-                group.enter()
-                let paramsOfWaitForCollection: TSDKParamsOfWaitForCollection = .init(collection: "accounts",
-                                                                                     filter: .object(["id": .object(
-                                                                                                        [
-                                                                                                            "eq": .string(result.address)
-                                                                                                        ])
-                                                                                     ]),
-                                                                                     result: "id balance(format: DEC)",
-                                                                                     timeout: nil)
-                client.net.wait_for_collection(paramsOfWaitForCollection) { (response) in
-                    if let result = response.result?.result.toDictionary(), let balance: Int = Int(result["balance"] as? String ?? "") {
-                        if balance > 0 {
-                            tokensReceived = true
-                        }
-                    }
-                    if response.finished {
-                        group.leave()
-                    }
-                }
-                group.wait()
-                fuseCounter += 1
-                if fuseCounter > 20 && !tokensReceived {
-                    tokensReceived = true
-                    XCTAssertTrue(false, "Tokens does not received form giver")
-                }
-            }
 
             let payloadProcessMessage: TSDKParamsOfProcessMessage = .init(message_encode_params: payloadEncodeMessage, send_events: true)
             var resultOfProcessMessage: TSDKResultOfProcessMessage?

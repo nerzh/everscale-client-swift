@@ -78,18 +78,11 @@ final class NetTests: XCTestCase {
     func testSubscribe_collection() throws {
         testAsyncMethods { (client, group) in
             group.enter()
-            //            let finalizedStatus: Int = 3
-            //            let anyFilter = AnyValue.object(
-            //                [
-            //                    "account_addr" : AnyValue.object(["eq" : AnyValue.string(address)]),
-            //                    "status" : AnyValue.object(["eq" : AnyValue.int(finalizedStatus)])
-            //                ])
             let payload: TSDKParamsOfSubscribeCollection = .init(collection: "transactions",
                                                                  filter: nil,
                                                                  result: "id account_addr")
             client.net.subscribe_collection(payload) { [group] (response) in
-                if response.result != nil {
-                    XCTAssertTrue(response.result?.handle != nil)
+                if response.result?.handle != nil {
                     BindingStore.deleteResponseHandler(response.requestId)
                     group.leave()
                     return
