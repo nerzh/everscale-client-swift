@@ -68,11 +68,7 @@ final class NetTests: XCTestCase {
             Thread {
                 usleep(1_000_000)
                 for _ in 1...5 {
-                    self.getGramsFromGiverSync(client) { (response) in
-                        if let response = response, !response.finished {
-                            BindingStore.deleteResponseHandler(response.requestId)
-                        }
-                    }
+                    self.getGramsFromGiverSync(client)
                 }
             }.start()
             group.wait()

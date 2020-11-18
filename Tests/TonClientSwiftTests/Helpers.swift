@@ -47,32 +47,68 @@ extension XCTestCase {
         return handler(client, group)
     }
 
+    @discardableResult
     func getGramsFromGiverSync(_ client: TSDKClientModule,
                                _ accountAddress: String? = nil,
-                               _ value: Int = 10_000_000_000,
-                               _ handler: ((TSDKBindingResponse<TSDKResultOfProcessMessage, TSDKClientError, TSDKDefault>?) -> Void)? = nil
-    ) {
+                               _ value: Int = 10_000_000_000
+    ) -> Bool {
         guard let server_address = client.config.network?.server_address else {
             Log.warn("Please, set client network for Giver work!")
-            handler?(nil)
-            return
+            return false
         }
 
         if server_address[#"localhost"#] || server_address[#"127\.0\.0\.1"#] {
-            self.getGramsFromGiverSyncNodeSE(client, accountAddress ?? testAddr, value, handler)
+            return self.getGramsFromGiverSyncNodeSE(client, accountAddress ?? testAddr, value)
         } else if server_address[#"net\.ton\.dev"#] {
-            self.getGramsFromGiverSyncNetDev(client, accountAddress ?? testAddr, value, handler)
+            return self.getGramsFromGiverSyncNetDev(client, accountAddress ?? testAddr, value)
         } else {
             Log.warn("No Giver for this network: \(server_address)")
-            handler?(nil)
         }
+
+        return false
+    }
+
+    func checkPositiveBallance(_ client: TSDKClientModule, _ accountAddress: String) -> Bool {
+        var tokensReceived: Bool = false
+        var fuseCounter: Int = 0
+        let group: DispatchGroup = .init()
+        var isPositiveBalance: Bool = false
+        while !tokensReceived {
+            group.enter()
+            let paramsOfWaitForCollection: TSDKParamsOfWaitForCollection = .init(collection: "accounts",
+                                                                                 filter: .object(["id": .object(
+                                                                                                    [
+                                                                                                        "eq": .string(accountAddress)
+                                                                                                    ])
+                                                                                 ]),
+                                                                                 result: "id balance(format: DEC)",
+                                                                                 timeout: nil)
+            client.net.wait_for_collection(paramsOfWaitForCollection) { (response) in
+                if let result = response.result?.result.toDictionary(), let balance: Int = Int(result["balance"] as? String ?? "") {
+                    if balance > 0 {
+                        tokensReceived = true
+                        isPositiveBalance = true
+                    }
+                }
+                if response.finished {
+                    group.leave()
+                }
+            }
+            group.wait()
+            fuseCounter += 1
+            if fuseCounter > 20 && !tokensReceived {
+                tokensReceived = true
+                isPositiveBalance = false
+                XCTAssertTrue(false, "Tokens does not received form giver")
+            }
+        }
+        return isPositiveBalance
     }
 
     func getGramsFromGiverSyncNetDev(_ client: TSDKClientModule,
                                      _ accountAddress: String,
-                                     _ value: Int? = nil,
-                                     _ handler: ((TSDKBindingResponse<TSDKResultOfProcessMessage, TSDKClientError, TSDKDefault>?) -> Void)?
-    ) {
+                                     _ value: Int? = nil
+    ) -> Bool {
         let walletAddress: String = SimpleEnv["giver_address"] ?? ""
         let abiJSONValue: AnyValue = self.readAbi(SimpleEnv["giver_abi_name"] ?? "")
         let abi: TSDKAbi = .init(type: .Serialized, value: abiJSONValue)
@@ -87,24 +123,19 @@ extension XCTestCase {
         let sendPaylod: TSDKParamsOfProcessMessage = .init(message_encode_params: paramsOfEncodedMessage, send_events: false)
         let group: DispatchGroup = .init()
         group.enter()
-        var resultResponse: TSDKBindingResponse<TSDKResultOfProcessMessage, TSDKClientError, TSDKDefault>?
         client.processing.process_message(sendPaylod) { (response) in
-            if !response.finished {
-                resultResponse = response
-            }
             if response.finished {
                 group.leave()
             }
         }
         group.wait()
-        handler?(resultResponse)
+        return checkPositiveBallance(client, accountAddress)
     }
 
     func getGramsFromGiverSyncNodeSE(_ client: TSDKClientModule,
                                      _ accountAddress: String,
-                                     _ value: Int = 10_000_000_000,
-                                     _ handler: ((TSDKBindingResponse<TSDKResultOfProcessMessage, TSDKClientError, TSDKDefault>?) -> Void)?
-    ) {
+                                     _ value: Int = 10_000_000_000
+    ) -> Bool {
         let walletAddress: String = SimpleEnv["giver_address"] ?? ""
         let abiJSONValue: AnyValue = self.readAbi(SimpleEnv["giver_abi_name"] ?? "")
         let abi: TSDKAbi = .init(type: .Serialized, value: abiJSONValue)
@@ -119,17 +150,13 @@ extension XCTestCase {
         let sendPaylod: TSDKParamsOfProcessMessage = .init(message_encode_params: paramsOfEncodedMessage, send_events: false)
         let group: DispatchGroup = .init()
         group.enter()
-        var resultResponse: TSDKBindingResponse<TSDKResultOfProcessMessage, TSDKClientError, TSDKDefault>?
         client.processing.process_message(sendPaylod) { (response) in
-            if !response.finished {
-                resultResponse = response
-            }
             if response.finished {
                 group.leave()
             }
         }
         group.wait()
-        handler?(resultResponse)
+        return checkPositiveBallance(client, accountAddress)
     }
 
 
