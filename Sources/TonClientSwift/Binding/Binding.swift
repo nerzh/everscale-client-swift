@@ -33,8 +33,6 @@ public protocol TSDKBindingPrtcl {
 public final class TSDKBindingModule: TSDKBindingPrtcl {
 
     public var context: TSDKContext = .init()
-    private var requsetId: UInt32 = .init()
-    private let requestLock: NSLock = .init()
     var convertToTSDKString = TSDKBindingModule.convertToTSDKString
     var convertFromTSDKString = TSDKBindingModule.convertFromTSDKString
     var convertTSDKStringPointerToString = TSDKBindingModule.convertTSDKStringPointerToString
@@ -94,16 +92,6 @@ public final class TSDKBindingModule: TSDKBindingPrtcl {
         TSDKDestroyContext(context)
     }
 
-    private func generate_request_id() -> UInt32 {
-        requestLock.lock()
-        defer { requestLock.unlock() }
-        if requsetId == UInt32.max {
-            requsetId = 0
-        }
-        requsetId += 1
-        return requsetId
-    }
-
     public func requestLibraryAsync(_ methodName: String,
                                     _ payload: Encodable = "",
                                     _ requestHandler: @escaping (_ requestId: UInt32,
@@ -114,7 +102,7 @@ public final class TSDKBindingModule: TSDKBindingPrtcl {
         convertToTSDKString(methodName) { tsdkMethodName in
             let payload = payload.toJson() ?? ""
             convertToTSDKString(payload) { tsdkPayload in
-                let requestId: UInt32 = generate_request_id()
+                let requestId: UInt32 = BindingStore.generate_request_id()
                 BindingStore.addResponseHandler(requestId, requestHandler)
                 TSDKRequestAsync(self.context,
                                  tsdkMethodName,

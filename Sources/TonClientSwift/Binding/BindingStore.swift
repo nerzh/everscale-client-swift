@@ -8,7 +8,9 @@
 import Foundation
 
 public final class BindingStore {
-    
+
+    private static var requsetId: UInt32 = .init()
+    private static let requestLock: NSLock = .init()
     public static var asyncResponseGroups: [UInt32: DispatchGroup] = .init()
     private static let asyncResponseLock: NSLock = .init()
     public static var responses: [UInt32: (_ requestId: UInt32,
@@ -41,5 +43,15 @@ public final class BindingStore {
         asyncResponseLock.lock()
         defer { asyncResponseLock.unlock() }
         responses[requestId] = nil
+    }
+
+    public class func generate_request_id() -> UInt32 {
+        requestLock.lock()
+        defer { requestLock.unlock() }
+        if requsetId == UInt32.max {
+            requsetId = 0
+        }
+        requsetId += 1
+        return requsetId
     }
 }

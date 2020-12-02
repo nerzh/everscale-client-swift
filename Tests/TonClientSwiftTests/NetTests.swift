@@ -66,8 +66,9 @@ final class NetTests: XCTestCase {
                 group.leave()
             }
             Thread {
+                // Just generate transactions
                 usleep(1_000_000)
-                for _ in 1...5 {
+                for _ in 1...2 {
                     self.getGramsFromGiverSync(client)
                 }
             }.start()
