@@ -38,7 +38,7 @@ public final class TSDKClientModule {
         binding.requestLibraryAsync(methodName(module, method)) { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKResultOfGetApiReference, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            BindingStore.responseQueue.async { handler(response) }
+            handler(response)
         }
     }
 
@@ -47,7 +47,7 @@ public final class TSDKClientModule {
         binding.requestLibraryAsync(methodName(module, method)) { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKResultOfVersion, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            BindingStore.responseQueue.async { handler(response) }
+            handler(response)
         }
     }
 
@@ -56,7 +56,7 @@ public final class TSDKClientModule {
         binding.requestLibraryAsync(methodName(module, method)) { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKResultOfBuildInfo, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            BindingStore.responseQueue.async { handler(response) }
+            handler(response)
         }
     }
 }

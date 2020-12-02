@@ -73,7 +73,6 @@ final class ProcessingTests: XCTestCase {
             var resultOfProcessMessage: TSDKResultOfProcessMessage?
             group.enter()
             client.processing.wait_for_transaction(paramsOfWaitForTransaction) { (response) in
-
                 if response.result != nil {
                     resultOfProcessMessage = response.result
                 }

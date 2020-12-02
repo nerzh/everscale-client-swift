@@ -20,7 +20,7 @@ public final class TSDKUtilsModule {
         binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKResultOfConvertAddress, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            BindingStore.responseQueue.async { handler(response) }
+            handler(response)
         })
     }
 }

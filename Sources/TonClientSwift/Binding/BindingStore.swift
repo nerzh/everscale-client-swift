@@ -8,8 +8,7 @@
 import Foundation
 
 public final class BindingStore {
-
-    public static let responseQueue: DispatchQueue = .init(label: "com.responseQueue", qos: .background, attributes: .concurrent)
+    
     public static var asyncResponseGroups: [UInt32: DispatchGroup] = .init()
     private static let asyncResponseLock: NSLock = .init()
     public static var responses: [UInt32: (_ requestId: UInt32,

@@ -23,7 +23,7 @@ public final class TSDKBocModule {
         binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKResultOfParse, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            BindingStore.responseQueue.async { handler(response) }
+            handler(response)
         })
     }
 
@@ -34,7 +34,7 @@ public final class TSDKBocModule {
         binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKResultOfParse, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            BindingStore.responseQueue.async { handler(response) }
+            handler(response)
         })
     }
 
@@ -45,7 +45,7 @@ public final class TSDKBocModule {
         binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKResultOfParse, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            BindingStore.responseQueue.async { handler(response) }
+            handler(response)
         })
     }
 
@@ -56,7 +56,7 @@ public final class TSDKBocModule {
         binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKResultOfParse, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            BindingStore.responseQueue.async { handler(response) }
+            handler(response)
         })
     }
 
@@ -67,7 +67,7 @@ public final class TSDKBocModule {
         binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKResultOfGetBlockchainConfig, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            BindingStore.responseQueue.async { handler(response) }
+            handler(response)
         })
     }
 
@@ -78,7 +78,7 @@ public final class TSDKBocModule {
         binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKResultOfGetBocHash, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            BindingStore.responseQueue.async { handler(response) }
+            handler(response)
         })
     }
 }
