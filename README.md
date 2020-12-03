@@ -121,8 +121,7 @@ Please, set custom working directory to project folder for your xcode scheme. Th
 You may change it with the xcode edit scheme menu.  
 
 Or inside file path_to_ton_sdk/.swiftpm/xcode/xcshareddata/xcschemes/TonClientSwift.xcscheme
-set to tag "LaunchAction" absolute path to this library with options:
-
+set to tag "LaunchAction" absolute path to this library with options:   
 **useCustomWorkingDirectory = "YES"**  
 **customWorkingDirectory = "/path_to_ton_sdk"**
 
