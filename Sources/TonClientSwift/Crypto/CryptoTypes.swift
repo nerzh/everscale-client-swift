@@ -151,7 +151,7 @@ public struct TSDKResultOfSign: Codable {
 public struct TSDKParamsOfVerifySignature: Codable {
     public init(signed: String, public: String) {
         self.signed = signed
-        self.public = public
+        self.public = `public`
     }
 
     public var signed: String
@@ -168,10 +168,6 @@ public struct TSDKResultOfVerifySignature: Codable {
 
 //ParamsOfHash
 public struct TSDKParamsOfHash: Codable {
-    public init(data: String) {
-        self.data = data
-    }
-
     public var data: String
     
     public init(data: String) {
