@@ -80,10 +80,10 @@ Linux:
 ## For IOS
 
 You should to install
-```cargo install cargo-lipo```
-```rustup target add aarch64-apple-ios x86_64-apple-ios```
-add tonclient.h to bridge 
-add libton_client.a file to you xcode project as dependency 
+```cargo install cargo-lipo```   
+```rustup target add aarch64-apple-ios x86_64-apple-ios```   
+add tonclient.h to bridge    
+add libton_client.a file to you xcode project as dependency    
 
 ## Usage
 
