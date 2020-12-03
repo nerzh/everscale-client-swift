@@ -9,6 +9,17 @@
 | iOS | Soon |
 
 ## Setup TONSDK
+
+### Install sdk with bash script
+
+0. create folder for TONSDK, for example 
+```mkdir ./TONSDK```
+1. copy script from scripts/install_tonsdk.sh to created folder ./TONSDK
+2. cd ./TONSDK
+3. bash ./install_tonsdk.sh
+
+### Manual install sdk
+
 0. Install Rust to your OS
 1. git clone https://github.com/tonlabs/TON-SDK
 2. cd ./TON-SDK
