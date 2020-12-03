@@ -20,7 +20,6 @@ public enum TSDKProcessingEventType: String, Decodable {
 }
 
 public struct TSDKProcessingEvent: Decodable {
-
     public var type: TSDKProcessingEventType
     public var error: TSDKClientError?
     public var shard_block_id: String?
@@ -107,7 +106,6 @@ public struct TSDKDecodedOutput: Decodable, Equatable {
 
 //ParamsOfSendMessage
 public struct TSDKParamsOfSendMessage: Encodable {
-
     public var message: String
     public var abi: TSDKAbi?
     public var send_events: Bool
@@ -130,7 +128,6 @@ public struct TSDKResultOfSendMessage: Decodable {
 
 //ParamsOfWaitForTransaction
 public struct TSDKParamsOfWaitForTransaction: Encodable {
-
     public var abi: TSDKAbi?
     public var message: String
     public var shard_block_id: String
@@ -160,7 +157,6 @@ public struct TSDKParamsOfWaitForTransaction: Encodable {
 
 //ParamsOfProcessMessage
 public struct TSDKParamsOfProcessMessage: Encodable {
-
     public var message_encode_params: TSDKParamsOfEncodeMessage
     public var send_events: Bool
 

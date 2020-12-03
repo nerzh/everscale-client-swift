@@ -11,6 +11,11 @@ import Foundation
 public struct TSDKOrderBy: Codable {
     public var path: String
     public var direction: TSDKSortDirection
+
+    public init(path: String, direction: TSDKSortDirection) {
+        self.path = path
+        self.direction = direction
+    }
 }
 ///path: string
 ///direction: SortDirection
@@ -31,6 +36,14 @@ public struct TSDKParamsOfQueryCollection: Encodable {
     public var result: String
     public var order: [TSDKOrderBy]?
     public var limit: Int?
+
+    public init(collection: String, filter: AnyValue? = nil, result: String, order: [TSDKOrderBy]? = nil, limit: Int? = nil) {
+        self.collection = collection
+        self.filter = filter
+        self.result = result
+        self.order = order
+        self.limit = limit
+    }
 }
 ///collection: string – collection name (accounts blocks transactions messages block_signatures)
 ///filter?: any – collection filter
@@ -46,7 +59,6 @@ public struct TSDKResultOfQueryCollection: Decodable {
 
 //ParamsOfWaitForCollection
 public struct TSDKParamsOfWaitForCollection: Encodable {
-
     public var collection: String
     public var filter: AnyValue?
     public var result: String
@@ -83,6 +95,12 @@ public struct TSDKParamsOfSubscribeCollection: Encodable {
     public var collection: String
     public var filter: AnyValue?
     public var result: String
+
+    public init(collection: String, filter: AnyValue? = nil, result: String) {
+        self.collection = collection
+        self.filter = filter
+        self.result = result
+    }
 }
 ///collection: string – collection name (accounts blocks transactions messages block_signatures)
 ///filter?: any – collection filter

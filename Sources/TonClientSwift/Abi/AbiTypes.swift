@@ -12,7 +12,6 @@ public enum TSDKAbiType: String, Codable {
 }
 
 public struct TSDKAbi: Encodable {
-    
     public var type: TSDKAbiType
     public var value: AnyValue
 
@@ -38,7 +37,6 @@ typealias TSDKAbiHandle = Int
 ///The actual set of header fields depends on the contract's ABI.
 
 public struct TSDKFunctionHeader: Codable, Equatable {
-
     public var expire: Int?
     public var time: Int?
     public var pubkey: String?
@@ -55,7 +53,6 @@ public struct TSDKFunctionHeader: Codable, Equatable {
 
 //CallSet
 public struct TSDKCallSet: Encodable {
-
     public var function_name: String
     public var header: TSDKFunctionHeader?
     public var input: AnyValue?
@@ -95,7 +92,6 @@ public enum TSDKSignerType: String, Codable {
 }
 
 public struct TSDKSigner: Codable {
-
     public var type: TSDKSignerType
     public var public_key: String?
     public var keys: TSDKKeyPair?
@@ -195,6 +191,11 @@ public struct TSDKStateInitSource: Encodable {
 public struct TSDKStateInitParams: Encodable {
     public var abi: TSDKAbi
     public var value: AnyValue
+
+    public init(abi: TSDKAbi, value: AnyValue) {
+        self.abi = abi
+        self.value = value
+    }
 }
 ///abi: Abi
 ///value: any
@@ -206,7 +207,6 @@ public enum TSDKMessageSourceType: String, Codable {
 }
 
 public struct TSDKMessageSource: Encodable {
-
     public var type: TSDKMessageSourceType
     public var message: String?
     public var abi: TSDKAbi?
@@ -245,6 +245,12 @@ public struct TSDKAbiParam: Encodable {
     public var name: String
     public var type: String
     public var components: [TSDKAbiParam]?
+
+    public init(name: String, type: String, components: [TSDKAbiParam]? = nil) {
+        self.name = name
+        self.type = type
+        self.components = components
+    }
 }
 ///name: string
 ///type: string
@@ -255,6 +261,12 @@ public struct TSDKAbiEvent: Encodable {
     public var name: String
     public var inputs: [TSDKAbiParam]
     public var id: Int?
+
+    public init(name: String, inputs: [TSDKAbiParam], id: Int? = nil) {
+        self.name = name
+        self.inputs = inputs
+        self.id = id
+    }
 }
 ///name: string
 ///inputs: AbiParam[]
@@ -266,6 +278,13 @@ public struct TSDKAbiData: Encodable {
     public var name: String
     public var type: String
     public var components: [TSDKAbiParam]?
+
+    public init(key: Int, name: String, type: String, components: [TSDKAbiParam]? = nil) {
+        self.key = key
+        self.name = name
+        self.type = type
+        self.components = components
+    }
 }
 ///key: bigint
 ///name: string
@@ -278,6 +297,13 @@ public struct TSDKAbiFunction: Encodable {
     public var inputs: [TSDKAbiParam]
     public var outputs: [TSDKAbiParam]
     public var id: Int?
+
+    public init(name: String, inputs: [TSDKAbiParam], outputs: [TSDKAbiParam], id: Int? = nil) {
+        self.name = name
+        self.inputs = inputs
+        self.outputs = outputs
+        self.id = id
+    }
 }
 ///name: string
 ///inputs: AbiParam[]
@@ -317,6 +343,14 @@ public struct TSDKParamsOfEncodeMessageBody: Encodable {
     public var is_internal: Bool
     public var signer: TSDKSigner
     public var processing_try_index: Int?
+
+    public init(abi: TSDKAbi, call_set: TSDKCallSet, is_internal: Bool, signer: TSDKSigner, processing_try_index: Int? = nil) {
+        self.abi = abi
+        self.call_set = call_set
+        self.is_internal = is_internal
+        self.signer = signer
+        self.processing_try_index = processing_try_index
+    }
 }
 ///abi: Abi – Contract ABI.
 ///call_set: CallSet – Function call parameters.
@@ -326,7 +360,6 @@ public struct TSDKParamsOfEncodeMessageBody: Encodable {
 
 //ResultOfEncodeMessageBody
 public struct TSDKResultOfEncodeMessageBody: Codable {
-
     public var body: String
     public var data_to_sign: String?
 
@@ -345,7 +378,6 @@ public struct TSDKResultOfEncodeMessageBody: Codable {
 
 //ParamsOfAttachSignatureToMessageBody
 public struct TSDKParamsOfAttachSignatureToMessageBody: Encodable {
-
     public var abi: TSDKAbi
     public var public_key: String
     public var message: String
@@ -378,7 +410,6 @@ public struct TSDKResultOfAttachSignatureToMessageBody: Codable {
 
 //ParamsOfEncodeMessage
 public struct TSDKParamsOfEncodeMessage: Encodable {
-
     public var abi: TSDKAbi
     public var address: String?
     public var deploy_set: TSDKDeploySet?
@@ -468,6 +499,11 @@ public struct TSDKResultOfAttachSignature: Codable {
 public struct TSDKParamsOfDecodeMessage: Encodable {
     public var abi: TSDKAbi
     public var message: String
+
+    public init(abi: TSDKAbi, message: String) {
+        self.abi = abi
+        self.message = message
+    }
 }
 ///abi: Abi – contract ABI
 ///message: String – Message BOC
@@ -478,6 +514,13 @@ public struct TSDKDecodedMessageBody: Decodable, Equatable {
     public var name: String
     public var value: AnyJSONType?
     public var header: TSDKFunctionHeader?
+
+    public init(body_type: TSDKMessageBodyType, name: String, value: AnyJSONType? = nil, header: TSDKFunctionHeader? = nil) {
+        self.body_type = body_type
+        self.name = name
+        self.value = value
+        self.header = header
+    }
 }
 ///body_type: MessageBodyType – Type of the message body content.
 ///name: String – Function or event name.
@@ -513,6 +556,14 @@ public struct TSDKParamsOfEncodeAccount: Encodable {
     public var balance: Int?
     public var last_trans_lt: Int?
     public var last_paid: Int?
+
+    public init(state_init: TSDKStateInitSource, balance: Int? = nil, last_trans_lt: Int? = nil, last_paid: Int? = nil) {
+        self.state_init = state_init
+        self.balance = balance
+        self.last_trans_lt = last_trans_lt
+        self.last_paid = last_paid
+    }
+
 }
 ///state_init: StateInitSource – Source of the account state init.
 ///balance?: bigint – Initial balance.
@@ -521,7 +572,6 @@ public struct TSDKParamsOfEncodeAccount: Encodable {
 
 //ResultOfEncodeAccount
 public struct TSDKResultOfEncodeAccount: Codable {
-
     public var account: String
     public var id: String
 

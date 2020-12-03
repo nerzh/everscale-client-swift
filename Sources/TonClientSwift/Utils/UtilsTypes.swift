@@ -16,6 +16,13 @@ public struct TSDKAddressStringFormat: Encodable {
     public var url: Bool?
     public var test: Bool?
     public var bounce: Bool?
+
+    public init(type: TSDKAddressStringFormatType, url: Bool? = nil, test: Bool? = nil, bounce: Bool? = nil) {
+        self.type = type
+        self.url = url
+        self.test = test
+        self.bounce = bounce
+    }
 }
 ///Depends on value of the public struct TSDKfield.
 ///When public struct TSDKis 'AccountId'
@@ -31,6 +38,11 @@ public struct TSDKAddressStringFormat: Encodable {
 public struct TSDKParamsOfConvertAddress: Encodable {
     public var address: String
     public var output_format: TSDKAddressStringFormat
+
+    public init(address: String, output_format: TSDKAddressStringFormat) {
+        self.address = address
+        self.output_format = output_format
+    }
 }
 ///address: string – Account address in any format.
 ///output_format: AddressStringFormat – Specify the format to convert to.

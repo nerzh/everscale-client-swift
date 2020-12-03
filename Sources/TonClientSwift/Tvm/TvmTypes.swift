@@ -13,6 +13,13 @@ public struct TSDKExecutionOptions: Codable {
     public var block_time: Int?
     public var block_lt: Int?
     public var transaction_lt: Int?
+
+    public init(blockchain_config: String? = nil, block_time: Int? = nil, block_lt: Int? = nil, transaction_lt: Int? = nil) {
+        self.blockchain_config = blockchain_config
+        self.block_time = block_time
+        self.block_lt = block_lt
+        self.transaction_lt = transaction_lt
+    }
 }
 /// blockchain_config?: String – boc with config
 /// block_time?: Int – time that is used as transaction time
@@ -27,7 +34,6 @@ public enum TSDKAccountForExecutorType: String, Codable {
 
 //AccountForExecutor
 public struct TSDKAccountForExecutor: Codable {
-
     public var type: TSDKAccountForExecutorType
     public var boc: String?
     public var unlimited_balance: Bool?
@@ -63,7 +69,6 @@ public struct TSDKAccountForExecutor: Codable {
 
 //ParamsOfRunExecutor
 public struct TSDKParamsOfRunExecutor: Encodable {
-
     public var message: String
     public var account: TSDKAccountForExecutor
     public var execution_options: TSDKExecutionOptions?
@@ -100,6 +105,15 @@ public struct TSDKTransactionFees: Codable {
     public var out_msgs_fwd_fee: Int
     public var total_account_fees: Int
     public var total_output: Int
+
+    public init(in_msg_fwd_fee: Int, storage_fee: Int, gas_fee: Int, out_msgs_fwd_fee: Int, total_account_fees: Int, total_output: Int) {
+        self.in_msg_fwd_fee = in_msg_fwd_fee
+        self.storage_fee = storage_fee
+        self.gas_fee = gas_fee
+        self.out_msgs_fwd_fee = out_msgs_fwd_fee
+        self.total_account_fees = total_account_fees
+        self.total_output = total_output
+    }
 }
 ///in_msg_fwd_fee: bigint
 ///storage_fee: bigint
@@ -109,7 +123,6 @@ public struct TSDKTransactionFees: Codable {
 ///total_output: bigint
 
 public struct TSDKResultOfRunExecutor: Decodable {
-
     public var transaction: AnyJSONType
     public var out_messages: [String]
     public var decoded: TSDKDecodedOutput?
@@ -145,7 +158,6 @@ public struct TSDKResultOfRunExecutor: Decodable {
 
 //ParamsOfRunTvm
 public struct TSDKParamsOfRunTvm: Encodable {
-
     public var message: String
     public var account: String
     public var execution_options: TSDKExecutionOptions?
@@ -172,7 +184,6 @@ public struct TSDKParamsOfRunTvm: Encodable {
 
 //ResultOfRunTvm
 public struct TSDKResultOfRunTvm: Decodable {
-
     public var out_messages: [String]
     public var decoded: TSDKDecodedOutput?
     public var account: String
@@ -195,7 +206,6 @@ public struct TSDKResultOfRunTvm: Decodable {
 
 //ParamsOfRunGet
 public struct TSDKParamsOfRunGet: Encodable {
-
     public var account: String
     public var function_name: String
     public var input: AnyValue?

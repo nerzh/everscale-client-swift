@@ -32,6 +32,12 @@ public struct TSDKParamsOfParseShardstate: Encodable {
     public var boc: String
     public var id: String
     public var workchain_id: Int
+
+    public init(boc: String, id: String, workchain_id: Int) {
+        self.boc = boc
+        self.id = id
+        self.workchain_id = workchain_id
+    }
 }
 ///boc: string – BOC encoded as base64
 ///id: string – Shardstate identificator
@@ -67,7 +73,6 @@ public struct TSDKResultOfGetBlockchainConfig: Decodable {
 
 //ParamsOfGetBocHash
 public struct TSDKParamsOfGetBocHash: Encodable {
-
     public var boc: String
 
     public init(boc: String) {

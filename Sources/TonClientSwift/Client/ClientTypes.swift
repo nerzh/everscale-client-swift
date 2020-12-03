@@ -9,12 +9,25 @@ public struct TSDKDefault: Decodable {
     public var error: AnyJSONType?
     public var data: AnyJSONType?
     public var message: AnyJSONType?
+
+    public init(result: AnyJSONType? = nil, error: AnyJSONType? = nil, data: AnyJSONType? = nil, message: AnyJSONType? = nil) {
+        self.result = result
+        self.error = error
+        self.data = data
+        self.message = message
+    }
 }
 
 public struct TSDKClientError: Decodable {
     public var code: Int
     public var message: String
     public var data: AnyJSONType
+
+    public init(code: Int, message: String, data: AnyJSONType) {
+        self.code = code
+        self.message = message
+        self.data = data
+    }
 }
 
 public struct TSDKClientConfig: Encodable {
@@ -23,6 +36,12 @@ public struct TSDKClientConfig: Encodable {
     public var abi: TSDKAbiConfig?
 
     public init() {}
+
+    public init(network: TSDKNetworkConfig? = nil, crypto: TSDKCryptoConfig? = nil, abi: TSDKAbiConfig? = nil) {
+        self.network = network
+        self.crypto = crypto
+        self.abi = abi
+    }
 }
 
 public struct TSDKNetworkConfig: Encodable {
@@ -48,6 +67,13 @@ public struct TSDKCryptoConfig: Codable {
     public var mnemonic_word_count: Int?
     public var hdkey_derivation_path: String?
     public var hdkey_compliant: Bool?
+
+    public init(mnemonic_dictionary: Int? = nil, mnemonic_word_count: Int? = nil, hdkey_derivation_path: String? = nil, hdkey_compliant: Bool? = nil) {
+        self.mnemonic_dictionary = mnemonic_dictionary
+        self.mnemonic_word_count = mnemonic_word_count
+        self.hdkey_derivation_path = hdkey_derivation_path
+        self.hdkey_compliant = hdkey_compliant
+    }
 }
 ///mnemonic_dictionary?: number
 ///mnemonic_word_count?: number
@@ -58,6 +84,12 @@ public struct TSDKAbiConfig: Codable {
     public var workchain: Int?
     public var message_expiration_timeout: Int?
     public var message_expiration_timeout_grow_factor: Int?
+
+    public init(workchain: Int? = nil, message_expiration_timeout: Int? = nil, message_expiration_timeout_grow_factor: Int? = nil) {
+        self.workchain = workchain
+        self.message_expiration_timeout = message_expiration_timeout
+        self.message_expiration_timeout_grow_factor = message_expiration_timeout_grow_factor
+    }
 }
 ///workchain?: number
 ///message_expiration_timeout?: number
@@ -65,6 +97,11 @@ public struct TSDKAbiConfig: Codable {
 
 //BuildInfoDependency
 public struct TSDKBuildInfoDependency: Codable {
+    public init(name: String, git_commit: String) {
+        self.name = name
+        self.git_commit = git_commit
+    }
+
     public var name: String
     public var git_commit: String
 }
