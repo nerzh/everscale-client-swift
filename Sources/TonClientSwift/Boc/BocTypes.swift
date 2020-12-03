@@ -9,7 +9,7 @@ import Foundation
 
 //ParamsOfParse
 public struct TSDKParamsOfParse: Encodable {
-    var boc: String
+    public var boc: String
 
     public init(boc: String) {
         self.boc = boc.base64Encoded() ?? ""
@@ -39,7 +39,7 @@ public struct TSDKParamsOfParseShardstate: Encodable {
 
 //ParamsOfGetBlockchainConfig
 public struct TSDKParamsOfGetBlockchainConfig: Encodable {
-    var block_boc: String
+    public var block_boc: String
 
     public init(block_boc: String) {
         self.block_boc = block_boc.base64Encoded() ?? ""

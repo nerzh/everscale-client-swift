@@ -12,10 +12,10 @@ public enum TSDKAddressStringFormatType: String, Encodable {
 }
 
 public struct TSDKAddressStringFormat: Encodable {
-    var type: TSDKAddressStringFormatType
-    var url: Bool?
-    var test: Bool?
-    var bounce: Bool?
+    public var type: TSDKAddressStringFormatType
+    public var url: Bool?
+    public var test: Bool?
+    public var bounce: Bool?
 }
 ///Depends on value of the public struct TSDKfield.
 ///When public struct TSDKis 'AccountId'
@@ -29,14 +29,14 @@ public struct TSDKAddressStringFormat: Encodable {
 
 //ParamsOfConvertAddress
 public struct TSDKParamsOfConvertAddress: Encodable {
-    var address: String
-    var output_format: TSDKAddressStringFormat
+    public var address: String
+    public var output_format: TSDKAddressStringFormat
 }
 ///address: string – Account address in any format.
 ///output_format: AddressStringFormat – Specify the format to convert to.
 
 //ResultOfConvertAddress
 public struct TSDKResultOfConvertAddress: Decodable {
-    var address: String
+    public var address: String
 }
 ///address: string – address in the specified format

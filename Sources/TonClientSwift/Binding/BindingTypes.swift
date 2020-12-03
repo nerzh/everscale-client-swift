@@ -5,14 +5,14 @@
 import Foundation
 
 public struct TSDKContextResponse: Decodable {
-    var result: UInt32?
-    var error: AnyJSONType?
+    public var result: UInt32?
+    public var error: AnyJSONType?
 }
 
 public struct TSDKBindingRequest<TSDKResult: Decodable, TSDKError: Decodable, TSDKCustom: Decodable> {
-    var result: (_ result: TSDKResult?) -> Void
-    var error: (_ error: TSDKError?) -> Void
-    var customHandler: (_ params: TSDKCustom?) -> Void
+    public var result: (_ result: TSDKResult?) -> Void
+    public var error: (_ error: TSDKError?) -> Void
+    public var customHandler: (_ params: TSDKCustom?) -> Void
 }
 
 

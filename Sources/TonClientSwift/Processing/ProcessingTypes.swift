@@ -21,11 +21,11 @@ public enum TSDKProcessingEventType: String, Decodable {
 
 public struct TSDKProcessingEvent: Decodable {
 
-    var type: TSDKProcessingEventType
-    var error: TSDKClientError?
-    var shard_block_id: String?
-    var message_id: String?
-    var message: String?
+    public var type: TSDKProcessingEventType
+    public var error: TSDKClientError?
+    public var shard_block_id: String?
+    public var message_id: String?
+    public var message: String?
 
     public init(type: TSDKProcessingEventType, error: TSDKClientError? = nil, shard_block_id: String? = nil, message_id: String? = nil, message: String? = nil) {
         self.type = type

@@ -9,8 +9,8 @@ import Foundation
 
 //OrderBy
 public struct TSDKOrderBy: Codable {
-    var path: String
-    var direction: TSDKSortDirection
+    public var path: String
+    public var direction: TSDKSortDirection
 }
 ///path: string
 ///direction: SortDirection
@@ -26,11 +26,11 @@ public enum TSDKSortDirection: String, Codable {
 
 //ParamsOfQueryCollection
 public struct TSDKParamsOfQueryCollection: Encodable {
-    var collection: String
-    var filter: AnyValue?
-    var result: String
-    var order: [TSDKOrderBy]?
-    var limit: Int?
+    public var collection: String
+    public var filter: AnyValue?
+    public var result: String
+    public var order: [TSDKOrderBy]?
+    public var limit: Int?
 }
 ///collection: string – collection name (accounts blocks transactions messages block_signatures)
 ///filter?: any – collection filter
@@ -40,17 +40,17 @@ public struct TSDKParamsOfQueryCollection: Encodable {
 
 //ResultOfQueryCollection
 public struct TSDKResultOfQueryCollection: Decodable {
-    var result: [AnyJSONType]
+    public var result: [AnyJSONType]
 }
 ///result: any[] – objects that match provided criteria
 
 //ParamsOfWaitForCollection
 public struct TSDKParamsOfWaitForCollection: Encodable {
 
-    var collection: String
-    var filter: AnyValue?
-    var result: String
-    var timeout: Int?
+    public var collection: String
+    public var filter: AnyValue?
+    public var result: String
+    public var timeout: Int?
 
     public init(collection: String, filter: AnyValue? = nil, result: String, timeout: Int? = nil) {
         self.collection = collection
@@ -72,7 +72,7 @@ public struct TSDKResultOfWaitForCollection: Decodable {
 
 //ResultOfSubscribeCollection
 public struct TSDKResultOfSubscribeCollection: Codable {
-    var handle: Int
+    public var handle: Int
 }
 ///handle: number – handle to subscription. It then can be used in get_next_subscription_data function
 ///unit
@@ -80,9 +80,9 @@ public struct TSDKResultOfSubscribeCollection: Codable {
 
 //ParamsOfSubscribeCollection
 public struct TSDKParamsOfSubscribeCollection: Encodable {
-    var collection: String
-    var filter: AnyValue?
-    var result: String
+    public var collection: String
+    public var filter: AnyValue?
+    public var result: String
 }
 ///collection: string – collection name (accounts blocks transactions messages block_signatures)
 ///filter?: any – collection filter

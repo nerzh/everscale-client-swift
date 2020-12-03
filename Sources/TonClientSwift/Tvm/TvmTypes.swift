@@ -9,10 +9,10 @@ import Foundation
 
 //ExecutionOptions
 public struct TSDKExecutionOptions: Codable {
-    var blockchain_config: String?
-    var block_time: Int?
-    var block_lt: Int?
-    var transaction_lt: Int?
+    public var blockchain_config: String?
+    public var block_time: Int?
+    public var block_lt: Int?
+    public var transaction_lt: Int?
 }
 /// blockchain_config?: String – boc with config
 /// block_time?: Int – time that is used as transaction time
@@ -146,10 +146,10 @@ public struct TSDKResultOfRunExecutor: Decodable {
 //ParamsOfRunTvm
 public struct TSDKParamsOfRunTvm: Encodable {
 
-    var message: String
-    var account: String
-    var execution_options: TSDKExecutionOptions?
-    var abi: TSDKAbi?
+    public var message: String
+    public var account: String
+    public var execution_options: TSDKExecutionOptions?
+    public var abi: TSDKAbi?
 
     public init(message: String, account: String, execution_options: TSDKExecutionOptions? = nil, abi: TSDKAbi? = nil) {
         self.message = message.base64Encoded() ?? ""
@@ -173,9 +173,9 @@ public struct TSDKParamsOfRunTvm: Encodable {
 //ResultOfRunTvm
 public struct TSDKResultOfRunTvm: Decodable {
 
-    var out_messages: [String]
-    var decoded: TSDKDecodedOutput?
-    var account: String
+    public var out_messages: [String]
+    public var decoded: TSDKDecodedOutput?
+    public var account: String
 
     public init(out_messages: [String], decoded: TSDKDecodedOutput? = nil, account: String) {
         self.out_messages = out_messages.map { $0.base64Encoded() ?? "" }
@@ -196,10 +196,10 @@ public struct TSDKResultOfRunTvm: Decodable {
 //ParamsOfRunGet
 public struct TSDKParamsOfRunGet: Encodable {
 
-    var account: String
-    var function_name: String
-    var input: AnyValue?
-    var execution_options: TSDKExecutionOptions?
+    public var account: String
+    public var function_name: String
+    public var input: AnyValue?
+    public var execution_options: TSDKExecutionOptions?
 
     public init(account: String, function_name: String, input: AnyValue? = nil, execution_options: TSDKExecutionOptions? = nil) {
         self.account = account.base64Encoded() ?? ""
@@ -222,6 +222,6 @@ public struct TSDKParamsOfRunGet: Encodable {
 
 //ResultOfRunGet
 public struct TSDKResultOfRunGet: Decodable {
-    var output: AnyJSONType
+    public var output: AnyJSONType
 }
 /// output: AnyJSONType – Values returned by getmethod on stack
