@@ -118,13 +118,13 @@ final class NetTests: XCTestCase {
             let handleGroup: DispatchGroup = .init()
             handleGroup.enter()
             client.net.subscribe_collection(payload) { [group, handleGroup, groupCounterLock] (response) in
+                groupCounterLock.lock()
                 if response.result != nil {
                     XCTAssertTrue(response.result?.handle != nil)
                     handle = response.result?.handle ?? 0
                     requestId = response.requestId
                     handleGroup.leave()
                 }
-                groupCounterLock.lock()
                 if response.finished {
                     BindingStore.deleteResponseHandler(response.requestId)
                     if groupCounter > 0 {
@@ -135,12 +135,15 @@ final class NetTests: XCTestCase {
                 groupCounterLock.unlock()
             }
 
-            Thread { [group, requestId, groupCounterLock] in
+            groupCounterLock.lock()
+            let copyRequestId: UInt32 = requestId
+            groupCounterLock.unlock()
+            Thread { [group, copyRequestId, groupCounterLock] in
                 sleep(5)
                 groupCounterLock.lock()
                 if groupCounter > 0 {
                     groupCounter -= 1
-                    BindingStore.deleteResponseHandler(requestId)
+                    BindingStore.deleteResponseHandler(copyRequestId)
                     XCTAssertTrue(false, "NOT UNSUBSCRIBED")
                     group.leave()
                 }
