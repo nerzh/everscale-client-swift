@@ -118,7 +118,8 @@ client.crypto.factorize(TSDKParamsOfFactorize(composite: "17ED48941A08F981")) { 
 ### If you use Xcode for Test
 
 Please, set custom working directory to project folder for your xcode scheme. This is necessary for the relative path "./" to the project folders to work.
-You may change it with the xcode edit scheme menu.
+You may change it with the xcode edit scheme menu.  
+
 Or inside file path_to_ton_sdk/.swiftpm/xcode/xcshareddata/xcschemes/TonClientSwift.xcscheme
 set to tag "LaunchAction" absolute path to this library with options:
 
