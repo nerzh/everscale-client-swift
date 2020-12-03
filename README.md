@@ -14,9 +14,8 @@
 
 0. create folder for TONSDK, for example 
 ```mkdir ./TONSDK```
-1. copy script from scripts/install_tonsdk.sh to created folder ./TONSDK
-2. cd ./TONSDK
-3. bash ./install_tonsdk.sh
+1. ```cd ./TONSDK```
+2. ```bash path_to_this_library/scripts/install_tonsdk.sh```
 
 ### Manual install sdk
 
@@ -120,7 +119,7 @@ client.crypto.factorize(TSDKParamsOfFactorize(composite: "17ED48941A08F981")) { 
 Please, set custom working directory to project folder for your xcode scheme. This is necessary for the relative path "./" to the project folders to work.
 You may change it with the xcode edit scheme menu.  
 
-Or inside file path_to_ton_sdk/.swiftpm/xcode/xcshareddata/xcschemes/TonClientSwift.xcscheme
+Or inside file path_to_this_library/.swiftpm/xcode/xcshareddata/xcschemes/TonClientSwift.xcscheme
 set to tag "LaunchAction" absolute path to this library with options:   
 **useCustomWorkingDirectory = "YES"**  
 **customWorkingDirectory = "/path_to_ton_sdk"**
