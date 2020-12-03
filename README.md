@@ -38,7 +38,7 @@ to
 6. Create pkgConfig file :  
     
 macOS :  
-    **/usr/local/lib/pkgConfig/libton_client.pc**  
+    **/usr/local/lib/pkgconfig/libton_client.pc**  
 
 ```bash
 
@@ -55,7 +55,7 @@ Libs: -L${libdir} -lton_client
 
 ```
 Linux:  
-    **/usr/lib/pkgConfig/libton_client.pc**  
+    **/usr/lib/pkgconfig/libton_client.pc**  
     
 ```bash
 prefix=/usr
