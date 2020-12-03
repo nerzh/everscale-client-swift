@@ -14,6 +14,10 @@ public typealias TSDKSigningBoxHandle = Int
 //ParamsOfFactorize
 public struct TSDKParamsOfFactorize: Codable {
     public var composite: String
+
+    public init(composite: String) {
+        self.composite = composite
+    }
 }
 ///composite: String – Hexadecimal representation of u64 composite Int.
 
@@ -28,6 +32,12 @@ public struct TSDKParamsOfModularPower: Codable {
     public var base: String
     public var exponent: String
     public var modulus: String
+
+    public init(base: String, exponent: String, modulus: String) {
+        self.base = base
+        self.exponent = exponent
+        self.modulus = modulus
+    }
 }
 ///base: String – base argument of calculation.
 ///exponent: String – exponent argument of calculation.
@@ -42,6 +52,10 @@ public struct TSDKResultOfModularPower: Codable {
 //ParamsOfTonCrc16
 public struct TSDKParamsOfTonCrc16: Codable {
     public var data: String
+
+    public init(data: String) {
+        self.data = data
+    }
 }
 ///data: String – Input data for CRC calculation. Encoded with base64.
 
@@ -53,6 +67,10 @@ public struct TSDKResultOfTonCrc16: Codable {
 
 //ParamsOfGenerateRandomBytes
 public struct TSDKParamsOfGenerateRandomBytes: Codable {
+    public init(length: Int) {
+        self.length = length
+    }
+
     public var length: Int
 }
 ///length: Int – Size of random byte array.
@@ -65,6 +83,10 @@ public struct TSDKResultOfGenerateRandomBytes: Codable {
 
 //ParamsOfConvertPublicKeyToTonSafeFormat
 public struct TSDKParamsOfConvertPublicKeyToTonSafeFormat: Codable {
+    public init(public_key: String) {
+        self.public_key = public_key
+    }
+
     public var public_key: String
 }
 ///public_key: String – Public key.
@@ -127,6 +149,11 @@ public struct TSDKResultOfSign: Codable {
 
 //ParamsOfVerifySignature
 public struct TSDKParamsOfVerifySignature: Codable {
+    public init(signed: String, public: String) {
+        self.signed = signed
+        self.public = public
+    }
+
     public var signed: String
     public var `public`: String
 }
@@ -141,6 +168,10 @@ public struct TSDKResultOfVerifySignature: Codable {
 
 //ParamsOfHash
 public struct TSDKParamsOfHash: Codable {
+    public init(data: String) {
+        self.data = data
+    }
+
     public var data: String
     
     public init(data: String) {
@@ -201,6 +232,10 @@ public struct TSDKResultOfScrypt: Codable {
 
 //ParamsOfNaclSignKeyPairFromSecret
 public struct TSDKParamsOfNaclSignKeyPairFromSecret: Codable {
+    public init(secret: String) {
+        self.secret = secret
+    }
+
     public var secret: String
 }
 ///secret: String – secret key
@@ -269,6 +304,10 @@ public struct TSDKResultOfNaclSignDetached: Codable {
 
 //ParamsOfNaclBoxKeyPairFromSecret
 public struct TSDKParamsOfNaclBoxKeyPairFromSecret: Codable {
+    public init(secret: String) {
+        self.secret = secret
+    }
+
     public var secret: String
 }
 ///secret: String – Hex encoded secret key.
@@ -399,6 +438,10 @@ public struct TSDKParamsOfNaclSecretBoxOpen: Codable {
 
 //ParamsOfMnemonicWords
 public struct TSDKParamsOfMnemonicWords: Codable {
+    public init(dictionary: TSDKMnemonicDictionary? = nil) {
+        self.dictionary = dictionary
+    }
+
     public var dictionary: TSDKMnemonicDictionary?
 }
 ///dictionary?: Int – dictionary identifier
@@ -411,6 +454,11 @@ public struct TSDKResultOfMnemonicWords: Codable {
 
 //ParamsOfMnemonicFromRandom
 public struct TSDKParamsOfMnemonicFromRandom: Codable {
+    public init(dictionary: TSDKMnemonicDictionary? = nil, word_count: Int? = nil) {
+        self.dictionary = dictionary
+        self.word_count = word_count
+    }
+
     public var dictionary: TSDKMnemonicDictionary?
     public var word_count: Int?
 }
@@ -425,6 +473,12 @@ public struct TSDKResultOfMnemonicFromRandom: Codable {
 
 //ParamsOfMnemonicFromEntropy
 public struct TSDKParamsOfMnemonicFromEntropy: Codable {
+    public init(entropy: String, dictionary: TSDKMnemonicDictionary? = nil, word_count: Int? = nil) {
+        self.entropy = entropy
+        self.dictionary = dictionary
+        self.word_count = word_count
+    }
+
     public var entropy: String
     public var dictionary: TSDKMnemonicDictionary?
     public var word_count: Int?
@@ -441,6 +495,12 @@ public struct TSDKResultOfMnemonicFromEntropy: Codable {
 
 //ParamsOfMnemonicVerify
 public struct TSDKParamsOfMnemonicVerify: Codable {
+    public init(phrase: String, dictionary: TSDKMnemonicDictionary? = nil, word_count: Int? = nil) {
+        self.phrase = phrase
+        self.dictionary = dictionary
+        self.word_count = word_count
+    }
+
     public var phrase: String
     public var dictionary: TSDKMnemonicDictionary?
     public var word_count: Int?
@@ -457,6 +517,13 @@ public struct TSDKResultOfMnemonicVerify: Codable {
 
 //ParamsOfMnemonicDeriveSignKeys
 public struct TSDKParamsOfMnemonicDeriveSignKeys: Codable {
+    public init(phrase: String, path: String? = nil, dictionary: TSDKMnemonicDictionary? = nil, word_count: Int? = nil) {
+        self.phrase = phrase
+        self.path = path
+        self.dictionary = dictionary
+        self.word_count = word_count
+    }
+
     public var phrase: String
     public var path: String?
     public var dictionary: TSDKMnemonicDictionary?
@@ -469,6 +536,12 @@ public struct TSDKParamsOfMnemonicDeriveSignKeys: Codable {
 
 //ParamsOfHDKeyXPrvFromMnemonic
 public struct TSDKParamsOfHDKeyXPrvFromMnemonic: Codable {
+    public init(phrase: String, dictionary: Int? = nil, word_count: Int? = nil) {
+        self.phrase = phrase
+        self.dictionary = dictionary
+        self.word_count = word_count
+    }
+
     public var phrase: String
     public var dictionary: Int?
     public var word_count:  Int?
@@ -485,6 +558,12 @@ public struct TSDKResultOfHDKeyXPrvFromMnemonic: Codable {
 
 //ParamsOfHDKeyDeriveFromXPrv
 public struct TSDKParamsOfHDKeyDeriveFromXPrv: Codable {
+    public init(xprv: String, child_index: Int, hardened: Bool) {
+        self.xprv = xprv
+        self.child_index = child_index
+        self.hardened = hardened
+    }
+
     public var xprv: String
     public var child_index: Int
     public var hardened: Bool
@@ -501,6 +580,11 @@ public struct TSDKResultOfHDKeyDeriveFromXPrv: Codable {
 
 //ParamsOfHDKeyDeriveFromXPrvPath
 public struct TSDKParamsOfHDKeyDeriveFromXPrvPath: Codable {
+    public init(xprv: String, path: String) {
+        self.xprv = xprv
+        self.path = path
+    }
+
     public var xprv: String
     public var path: String
 }
@@ -515,6 +599,10 @@ public struct TSDKResultOfHDKeyDeriveFromXPrvPath: Codable {
 
 //ParamsOfHDKeySecretFromXPrv
 public struct TSDKParamsOfHDKeySecretFromXPrv: Codable {
+    public init(xprv: String) {
+        self.xprv = xprv
+    }
+
     public var xprv: String
 }
 ///xprv: String – serialized extended private key
@@ -527,6 +615,10 @@ public struct TSDKResultOfHDKeySecretFromXPrv: Codable {
 
 //ParamsOfHDKeyPublicFromXPrv
 public struct TSDKParamsOfHDKeyPublicFromXPrv: Codable {
+    public init(xprv: String) {
+        self.xprv = xprv
+    }
+
     public var xprv: String
 }
 ///xprv: String – serialized extended private key
@@ -573,7 +665,6 @@ public struct TSDKParamsOfChaCha20: Encodable {
 
 //ResultOfChaCha20
 public struct TSDKResultOfChaCha20: Codable {
-
     public var data: String
 
     public init(data: String) {
