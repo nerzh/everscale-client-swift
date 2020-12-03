@@ -20,8 +20,8 @@
 
 ### Manual install sdk
 
-0. Install Rust to your OS
-1. git clone https://github.com/tonlabs/TON-SDK
+0. Install Rust to your OS   
+1. git clone https://github.com/tonlabs/TON-SDK   
 2. cd ./TON-SDK
 3. cargo update
 4. cargo build --release
