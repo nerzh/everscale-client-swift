@@ -152,9 +152,9 @@ client.crypto.factorize(TSDKParamsOfFactorize(composite: "17ED48941A08F981")) { 
 ### If you use Xcode for Test
 
 Please, set custom working directory to project folder for your xcode scheme. This is necessary for the relative path "./" to the project folders to work.
-You may change it with the xcode edit scheme menu.  
+You may change it with the xcode edit scheme menu __Product > Scheme > Edit Scheme__ menu __Run__ submenu __Options__ enable checkbox "Use custom directory" and add path working directory.  
 
-Or inside file path_to_this_library/.swiftpm/xcode/xcshareddata/xcschemes/TonClientSwift.xcscheme
+Or if above variant not available, then inside file path_to_this_library/.swiftpm/xcode/xcshareddata/xcschemes/TonClientSwift.xcscheme
 set to tag "LaunchAction" absolute path to this library with options:   
 **useCustomWorkingDirectory = "YES"**  
 **customWorkingDirectory = "/path_to_ton_sdk"**
@@ -174,7 +174,6 @@ giver_function=grant
 - launch docker  
 - docker run -d --name local-node -p 80:80 tonlabs/local-node   
 nodeSE will start on localhost:80   
-NODE SE   
 ```
 server_address=http://localhost:80
 giver_address=0:841288ed3b55d9cdafa806807f02a0ae0c169aa5edfe88a789a6482429756a94
