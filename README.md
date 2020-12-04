@@ -105,7 +105,7 @@ cargo lipo --release
 
 #endif
 ```   
-7. Add path to search for headers ( path to tonclient.h )  
+7. Add path to search for bridge headers ( path to Tonclient-Bridging-Header.h )  
 ![](https://user-images.githubusercontent.com/10519803/101163840-e736d480-363c-11eb-8ffe-022eec57a7ed.png)
 8. Add path to search for libraries ( path to libton_client.a )   
 ![](https://user-images.githubusercontent.com/10519803/101163634-8c04e200-363c-11eb-8ad9-6eea755d05f4.png)
