@@ -2,7 +2,7 @@
 
 [![SPM](https://img.shields.io/badge/swift-package%20manager-green)](https://swift.org/package-manager/)
 
-Swift is a strongly typed language that has long been used not only for iOS development. Apple is actively promoting it to new platforms and today it can be used for almost any task. Thanks to this, this implementation provides the work of TonSDK on many platforms at once, including the native one for mobile phones. Let me remind you that swift can also be builded for android.  
+Swift is a strongly typed language that has long been used not only for iOS development. Apple is actively promoting it to new platforms and today it can be used for almost any task. Thanks to this, this implementation provides the work of TonSDK on many platforms at once, including the native one for mobile phones. Let me remind you that swift can also be built for android.
 
 | OS | Result |
 | ----------- | ----------- |
@@ -81,14 +81,35 @@ Linux:
 
 ## Setup TONSDK For iOS
 
-You should to install   
-```cargo install cargo-lipo```   
-```rustup target add aarch64-apple-ios x86_64-apple-ios```   
-Build TON-SDK for ios   
-```cargo lipo --release```   
-add tonclient.h to bridge   
-add bridge to tonclient.h   
-add libton_client.a file to you xcode project as dependency    
+1. Cargo.toml file should have will tell cargo to create a static library and C dynamic library for our code   
+```
+[lib]
+name = "ton_client"
+crate-type = ["cdylib", "staticlib"]
+```
+2.   ```cargo install cargo-lipo```   
+3. ```rustup target add aarch64-apple-ios x86_64-apple-ios```   
+4. 
+```
+cd ./TON-SDK
+cargo lipo --release
+```  
+5. In xcode __File > Add files to "Name Your Project"__ navigate to ./TON-SDK/ton_client/tonclient.h
+6. Create bridge. In xcode __File > New > File__, select Header File, set name for example Tonclient-Bridging-Header.h and add this code:   
+```C
+#ifndef Tonclient_Bridging_Header_h
+#define Tonclient_Bridging_Header_h
+
+#include <stdbool.h>
+#import "tonclient.h"
+
+#endif
+```   
+7. Add path to search for headers   
+![](https://user-images.githubusercontent.com/10519803/101163634-8c04e200-363c-11eb-8ad9-6eea755d05f4.png)
+8. Add path to search for libraries   
+![](https://user-images.githubusercontent.com/10519803/101163840-e736d480-363c-11eb-8ffe-022eec57a7ed.png)
+9. Build ...
 
 ## Usage
 
