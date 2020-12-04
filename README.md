@@ -170,13 +170,11 @@ giver_address=0:653b9a6452c7a982c6dc92b2da9eba832ade1c467699ebb3b43dca6d77b780dd
 giver_abi_name=Giver
 giver_function=grant
 ```
-**Optional:** Install locale NodeSE for tests if you needed:  
-- launch docker
-- install nodejs to your OS
-- npm install -g ton-dev-cli
-- ton start  
-by default nodeSE will start on localhost:80  
-NODE SE  
+**Optional:** Install locale NodeSE for tests if you needed:    
+- launch docker  
+- docker run -d --name local-node -p 80:80 tonlabs/local-node   
+nodeSE will start on localhost:80   
+NODE SE   
 ```
 server_address=http://localhost:80
 giver_address=0:841288ed3b55d9cdafa806807f02a0ae0c169aa5edfe88a789a6482429756a94
