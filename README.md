@@ -79,12 +79,12 @@ MacOS:
 Linux:  
 **/usr/include/tonclient.h**  
 
-## Setup TONSDK For IOS
+## Setup TONSDK For iOS
 
 You should to install   
 ```cargo install cargo-lipo```   
 ```rustup target add aarch64-apple-ios x86_64-apple-ios```   
-Build TON-SDK for ios
+Build TON-SDK for ios   
 ```cargo lipo --release```   
 add tonclient.h to bridge   
 add bridge to tonclient.h   
