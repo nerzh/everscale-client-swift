@@ -11,6 +11,44 @@ Swift is a strongly typed language that has long been used not only for iOS deve
 | iOS | ✅ |
 | Windows | Soon |
 
+## Usage
+
+All requests are async
+
+```swift
+import TonClientSwift
+
+var config: TSDKClientConfig = .init()
+config.network = TSDKNetworkConfig(server_address: "https://net.ton.dev")
+let client: TSDKClientModule = .init(config: config)
+
+// Crypto
+client.crypto.factorize(TSDKParamsOfFactorize(composite: "17ED48941A08F981")) { (response) in
+    print(response.result?.factors)
+}
+
+// Boc
+let payload: TSDKParamsOfParse = .init(bocEncodedBase64: "te6ccgEBAQEAWAAAq2n+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAE/zMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzSsG8DgAAAAAjuOu9NAL7BxYpA")
+client.boc.parse_message(payload) { (response) in
+    if let result = response.result, let parsed: [String: Any] = result.parsed.toDictionary() {
+        print(parsed["id"])
+        print(parsed["src"])
+        print(parsed["dst"])
+    }
+}
+```
+
+## Errors
+
+```swift
+client.crypto.factorize(TSDKParamsOfFactorize(composite: "17ED48941A08F981")) { (response) in
+    if let error = response.error {
+        print(error.data.toJSON())
+        print(error.code)
+    }
+}
+```
+
 ## Setup TONSDK For Linux and MacOS
 
 ### Install sdk with bash script
@@ -111,53 +149,16 @@ cargo lipo --release
 ![](https://user-images.githubusercontent.com/10519803/101163634-8c04e200-363c-11eb-8ad9-6eea755d05f4.png)
 9. Build ...
 
-## Usage
-
-All requests are async.
-
-```swift
-import TonClientSwift
-
-var config: TSDKClientConfig = .init()
-config.network = TSDKNetworkConfig(server_address: "https://net.ton.dev")
-let client: TSDKClientModule = .init(config: config)
-
-// Crypto
-client.crypto.factorize(TSDKParamsOfFactorize(composite: "17ED48941A08F981")) { (response) in
-    print(response.result?.factors)
-}
-
-// Boc
-let payload: TSDKParamsOfParse = .init(bocEncodedBase64: "te6ccgEBAQEAWAAAq2n+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAE/zMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzSsG8DgAAAAAjuOu9NAL7BxYpA")
-client.boc.parse_message(payload) { (response) in
-    if let result = response.result, let parsed: [String: Any] = result.parsed.toDictionary() {
-        print(parsed["id"])
-        print(parsed["src"])
-        print(parsed["dst"])
-    }
-}
-```
-## Errors
-
-```swift
-client.crypto.factorize(TSDKParamsOfFactorize(composite: "17ED48941A08F981")) { (response) in
-    if let error = response.error {
-        print(error.data.toJSON())
-        print(error.code)
-    }
-}
-```
-
 ## Tests
 ### If you use Xcode for Test
 
-Please, set custom working directory to project folder for your xcode scheme. This is necessary for the relative path "./" to the project folders to work.
-You may change it with the xcode edit scheme menu __Product > Scheme > Edit Scheme__ menu __Run__ submenu __Options__ enable checkbox "Use custom directory" and add path working directory.  
+Please, set custom working directory to project folder for your xcode scheme. This is necessary for the relative path "./" to this library folders.
+You may change it with the xcode edit scheme menu __Product > Scheme > Edit Scheme__ menu __Run__ submenu __Options__ enable checkbox "Use custom directory" and add custom working directory.  
 
 Or if above variant not available, then inside file path_to_this_library/.swiftpm/xcode/xcshareddata/xcschemes/TonClientSwift.xcscheme
-set to tag "LaunchAction" absolute path to this library with options:   
+set to tag __"LaunchAction"__ absolute path to this library with options:   
 **useCustomWorkingDirectory = "YES"**  
-**customWorkingDirectory = "/path_to_ton_sdk"**
+**customWorkingDirectory = "/path_to_this_library"**  
 
 
 Tests
