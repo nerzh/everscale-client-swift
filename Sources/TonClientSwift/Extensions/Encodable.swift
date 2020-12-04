@@ -4,7 +4,7 @@
 
 import Foundation
 
-extension Encodable {
+public extension Encodable {
 
     func toJson() -> String? {
         let encoder = JSONEncoder()
