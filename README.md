@@ -11,7 +11,7 @@ Swift is a strongly typed language that has long been used not only for iOS deve
 | iOS | ✅ |
 | Windows | Soon |
 
-## Setup TONSDK
+## Setup TONSDK For Linux and MacOS
 
 ### Install sdk with bash script
 
@@ -79,7 +79,7 @@ MacOS:
 Linux:  
 **/usr/include/tonclient.h**  
 
-## For IOS
+## Setup TONSDK For IOS
 
 You should to install   
 ```cargo install cargo-lipo```   
