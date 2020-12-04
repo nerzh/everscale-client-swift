@@ -106,9 +106,9 @@ cargo lipo --release
 #endif
 ```   
 7. Add path to search for headers   
-![](https://user-images.githubusercontent.com/10519803/101163634-8c04e200-363c-11eb-8ad9-6eea755d05f4.png)
-8. Add path to search for libraries   
 ![](https://user-images.githubusercontent.com/10519803/101163840-e736d480-363c-11eb-8ffe-022eec57a7ed.png)
+8. Add path to search for libraries   
+![](https://user-images.githubusercontent.com/10519803/101163634-8c04e200-363c-11eb-8ad9-6eea755d05f4.png)
 9. Build ...
 
 ## Usage
