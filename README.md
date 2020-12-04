@@ -81,7 +81,7 @@ Linux:
 
 ## Setup TONSDK For iOS
 
-1. Cargo.toml file should have will tell cargo to create a static library and C dynamic library for our code   
+1. Cargo.toml file of ton_client should have will tell cargo to create a static library and C dynamic library for our code   
 ```
 [lib]
 name = "ton_client"
