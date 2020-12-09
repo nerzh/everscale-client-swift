@@ -58,7 +58,10 @@ client.crypto.factorize(TSDKParamsOfFactorize(composite: "17ED48941A08F981")) { 
 1. ```cd ./TONSDK```
 2. ```bash path_to_this_library/scripts/install_tonsdk.sh```
 
-### Manual install sdk
+### Manual install sdk ( if you have any problem with script install_tonsdk.sh )
+
+<details>
+  <summary>SPOILER: Manual installation</summary>
 
 0. Install Rust to your OS   
 1. git clone https://github.com/tonlabs/TON-SDK   
@@ -117,23 +120,19 @@ MacOS:
 Linux:  
 **/usr/include/tonclient.h**  
 
+</details>
+
 ## Setup TONSDK For iOS
 
-1. The Cargo.toml for ton_client must notify cargo to create static and dynamic C libraries for our code      
-```
-[lib]
-name = "ton_client"
-crate-type = ["cdylib", "staticlib"]
-```
-2.   ```cargo install cargo-lipo```   
-3. ```rustup target add aarch64-apple-ios x86_64-apple-ios```   
-4. 
+1.   ```cargo install cargo-lipo```   
+2. ```rustup target add aarch64-apple-ios x86_64-apple-ios```   
+3. 
 ```
 cd ./TON-SDK
 cargo lipo --release
 ```  
-5. In xcode __File > Add files to "Name Your Project"__ navigate to ./TON-SDK/ton_client/tonclient.h
-6. Create bridge. In xcode __File > New > File__, select Header File, set name for example Tonclient-Bridging-Header.h and add this code:   
+4. In xcode __File > Add files to "Name Your Project"__ navigate to ./TON-SDK/ton_client/tonclient.h
+5. Create bridge. In xcode __File > New > File__, select Header File, set name for example Tonclient-Bridging-Header.h and add this code:   
 ```C
 #ifndef Tonclient_Bridging_Header_h
 #define Tonclient_Bridging_Header_h
@@ -143,11 +142,11 @@ cargo lipo --release
 
 #endif
 ```   
-7. Add path to search for bridge headers ( path to Tonclient-Bridging-Header.h )  
+6. Add path to search for bridge headers ( path to Tonclient-Bridging-Header.h )  
 ![](https://user-images.githubusercontent.com/10519803/101163840-e736d480-363c-11eb-8ffe-022eec57a7ed.png)
-8. Add path to search for libraries ( path to directory withlibton_client.a )   
+7. Add path to search for libraries ( path to directory withlibton_client.a )   
 ![](https://user-images.githubusercontent.com/10519803/101163634-8c04e200-363c-11eb-8ad9-6eea755d05f4.png)
-9. Build ...
+8. Build ...
 
 ## Tests
 ### If you use Xcode for Test
