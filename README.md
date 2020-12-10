@@ -53,8 +53,16 @@ client.crypto.factorize(TSDKParamsOfFactorize(composite: "17ED48941A08F981")) { 
 
 ### Install sdk with bash script
  
-0. ```cd path_to_this_library```
-1. ```bash scripts/install_tonsdk.sh```
+0. This download TON-SDK to current dirrectory, compile it and add library symlinks to your system 
+```bash path_to_this_library/scripts/install_tonsdk.sh```
+
+- __note:__ then you can update the TON-SDK version simply by running these commands:
+```
+cd path_to/TON-SDK
+git pull
+cargo update
+cargo build --release
+```
 
 ### Manual install sdk ( if you have any problem with script install_tonsdk.sh )
 
