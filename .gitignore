@@ -10,3 +10,5 @@ db.sqlite
 Keys/*
 !Keys/.gitkeep
 Package.resolved
+TON-SDK/*
+dependencies/*
