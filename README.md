@@ -122,7 +122,7 @@ __Linux:__
 
 ## Setup TONSDK For iOS
 
-0.   For install Rust and rust dependencies you should to execute the install_rust script from scripts directory   
+0.   For install Rust and rust dependencies you should download and execute the install_rust.sh script from scripts directory   
 ```bash install_rust.sh```   
 1. 
 ```
