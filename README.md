@@ -125,6 +125,7 @@ __Linux:__
 0.   For install Rust and rust dependencies you should download and execute the install_rust.sh script from scripts directory   
 ```bash install_rust.sh```  
 ⚠️ Wait installation
+
 1. 
 ```
 git clone https://github.com/tonlabs/TON-SDK.git
@@ -132,7 +133,9 @@ cd ./TON-SDK
 cargo lipo --release
 ```  
 ⚠️ Wait installation
+
 2. In xcode __File > Add files to "Name Your Project"__ navigate to ./TON-SDK/ton_client/tonclient.h
+
 3. Create bridge. In xcode __File > New > File__, select Header File, set name for example Tonclient-Bridging-Header.h and add __#include <stdbool.h>__ and __#import "tonclient.h"__ like this:
 
 ```C
@@ -146,10 +149,13 @@ cargo lipo --release
 ```   
 4. Add path to search for bridge headers ( path to Tonclient-Bridging-Header.h )  
 ![](https://user-images.githubusercontent.com/10519803/101789966-9591bc80-3b0a-11eb-8918-1adf36130617.png)
+
 5. Add path to search for libraries ( path to directory withlibton_client.a )   
 ![](https://user-images.githubusercontent.com/10519803/101791171-e524b800-3b0b-11eb-98fa-29b7a50c3b67.png)
+
 6. __File > Swift Packages > Add Package Dependency__  
-![](https://user-images.githubusercontent.com/10519803/101791238-fa99e200-3b0b-11eb-99f3-8e8120c57e96.png)  
+![](https://user-images.githubusercontent.com/10519803/101791238-fa99e200-3b0b-11eb-99f3-8e8120c57e96.png)
+
 7. Build project ...
 
 ## Tests
