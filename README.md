@@ -52,11 +52,9 @@ client.crypto.factorize(TSDKParamsOfFactorize(composite: "17ED48941A08F981")) { 
 ## Setup TONSDK For Linux and MacOS
 
 ### Install sdk with bash script
-
-0. create folder for TONSDK, for example 
-```mkdir ./TONSDK```
-1. ```cd ./TONSDK```
-2. ```bash path_to_this_library/scripts/install_tonsdk.sh```
+ 
+0. ```cd path_to_this_library```
+1. ```bash scripts/install_tonsdk.sh```
 
 ### Manual install sdk ( if you have any problem with script install_tonsdk.sh )
 
@@ -69,18 +67,18 @@ client.crypto.factorize(TSDKParamsOfFactorize(composite: "17ED48941A08F981")) { 
 3. cargo update
 4. cargo build --release
 5. copy or create symlink of dynamic library    
-macOS :  
+__macOS :__  
 **./TON-SDK/target/release/libton_client.dylib**  
 to   
 **/usr/local/lib/libton_client.dylib**  
     
-    Linux :  
+    __Linux :__  
 **./TON-SDK/target/release/libton_client.so**     
 to    
 **/usr/lib/libton_client.so**  
 6. Create pkgConfig file :  
     
-macOS :  
+__macOS :__  
     **/usr/local/lib/pkgconfig/libton_client.pc**  
 
 ```bash
@@ -97,7 +95,7 @@ Cflags: -I${includedir}
 Libs: -L${libdir} -lton_client
 
 ```
-Linux:  
+__Linux:__  
     **/usr/lib/pkgconfig/libton_client.pc**  
     
 ```bash
@@ -115,24 +113,25 @@ Libs: -L${libdir} -lton_client
 7. Copy or create symlink of file   
 **/TON-SDK/ton_client/client/tonclient.h**  
 to  
-MacOS:  
+__MacOS:__  
 **/usr/local/include/tonclient.h**  
-Linux:  
+__Linux:__  
 **/usr/include/tonclient.h**  
 
 </details>
 
 ## Setup TONSDK For iOS
 
-1.   ```cargo install cargo-lipo```   
-2. ```rustup target add aarch64-apple-ios x86_64-apple-ios```   
-3. 
+0.   For install Rust and rust dependencies you should to execute the install_rust script from scripts directory   
+```bash install_rust.sh```   
+1. 
 ```
+git clone https://github.com/tonlabs/TON-SDK.git
 cd ./TON-SDK
 cargo lipo --release
 ```  
-4. In xcode __File > Add files to "Name Your Project"__ navigate to ./TON-SDK/ton_client/tonclient.h
-5. Create bridge. In xcode __File > New > File__, select Header File, set name for example Tonclient-Bridging-Header.h and add this code:   
+2. In xcode __File > Add files to "Name Your Project"__ navigate to ./TON-SDK/ton_client/tonclient.h
+3. Create bridge. In xcode __File > New > File__, select Header File, set name for example Tonclient-Bridging-Header.h and add this code:   
 ```C
 #ifndef Tonclient_Bridging_Header_h
 #define Tonclient_Bridging_Header_h
@@ -142,11 +141,11 @@ cargo lipo --release
 
 #endif
 ```   
-6. Add path to search for bridge headers ( path to Tonclient-Bridging-Header.h )  
+4. Add path to search for bridge headers ( path to Tonclient-Bridging-Header.h )  
 ![](https://user-images.githubusercontent.com/10519803/101163840-e736d480-363c-11eb-8ffe-022eec57a7ed.png)
-7. Add path to search for libraries ( path to directory withlibton_client.a )   
+5. Add path to search for libraries ( path to directory withlibton_client.a )   
 ![](https://user-images.githubusercontent.com/10519803/101163634-8c04e200-363c-11eb-8ad9-6eea755d05f4.png)
-8. Build ...
+6. Build project ...
 
 ## Tests
 ### If you use Xcode for Test
@@ -160,7 +159,7 @@ set to tag __"LaunchAction"__ absolute path to this library with options:
 **customWorkingDirectory = "/path_to_this_library"**  
 
 
-Tests
+### Tests
 
 1. inside root directory of ton-client-swift create **.env.debug** file with
 NET TON DEV
@@ -183,8 +182,8 @@ giver_amount=10000000000
 ```
 
 2. Run Tests  
-MacOS:  
+__MacOS:__  
 Run Tests inside Xcode  
-Linux:  
+__Linux:__  
 swift test --generate-linuxmain  
 swift test --enable-test-discovery  

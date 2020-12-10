@@ -2,20 +2,13 @@ if [ `uname -s` = Linux ]; then
   sudo echo $(whoami)
 fi
 
-commandExist() {
-  which $1 > /dev/null && echo '1' && return;
-  echo '0';
-}
 
-if [ $(commandExist 'cargo') == "1" ]; then
-  echo "RUST ALREADY INSTALLED TO YOUR OS";
-else
-  echo "CARGO NOT FOUND";
-  echo "INSTALL RUST TO YOUR OS";
-  curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-  bash
-fi;
+# INSTALL RUST
+SCRIPTPATH="$( cd "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
+bash "$SCRIPTPATH/install_rust.sh"
 
+
+# INSTALL TON-SDK
 if [ -d "./TON-SDK" ]; then
   echo "TON-SDK FOLDER ALREADY EXISTS"
 else
