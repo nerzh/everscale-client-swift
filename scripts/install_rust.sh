@@ -17,7 +17,7 @@ else
     fi
     echo "INSTALL RUST...";
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-    bash
+    source ~/.profile
   else
     echo "RUST NOT INSTALLED. EXIT.";
     exit 0;
@@ -25,8 +25,11 @@ else
 fi;
 
 if [ `uname -s` = Darwin ]; then
-  cargo install cargo-lipo
-  rustup target add aarch64-apple-ios x86_64-apple-ios
+  source ~/.profile
+  echo "Install cargo-lipo"
+  USER=$(whoami)
+  sudo -H -u $USER bash -lc 'cargo install cargo-lipo'
+  sudo -H -u $USER bash -lc 'rustup target add aarch64-apple-ios x86_64-apple-ios'
 fi
   
 echo $'\nINSTALLATION RUST COMPLETE'
