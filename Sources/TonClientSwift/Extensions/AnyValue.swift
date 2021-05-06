@@ -4,7 +4,7 @@
 
 import Foundation
 
-public protocol JSONType: Decodable {
+public protocol JSONType: Codable {
     var jsonValue: Any? { get }
 }
 
@@ -46,6 +46,36 @@ public struct AnyJSONType: JSONType, Equatable {
             jsonValue = doubleValue
         } else {
             jsonValue = nil
+        }
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+
+        if let value = jsonValue as? Int {
+            try container.encode(value)
+        } else if let value = jsonValue as? String {
+            try container.encode(value)
+        } else if let value = jsonValue as? Bool {
+            try container.encode(value)
+        } else if let value = jsonValue as? Double {
+            try container.encode(value)
+        } else if let value = jsonValue as? Array<JSONType> {
+            var arr: [AnyJSONType] = .init()
+            for val in value {
+                arr.append(AnyJSONType.init(val))
+            }
+            try container.encode(arr)
+        } else if let value = jsonValue as? Dictionary<String, JSONType> {
+            var dict: Dictionary<String, AnyJSONType> = .init()
+            for (key, val) in value {
+                dict[key] = AnyJSONType.init(val)
+            }
+            try container.encode(dict)
+        } else if let value = jsonValue as? AnyJSONType {
+            try container.encode(value)
+        } else {
+            try container.encodeNil()
         }
     }
 
