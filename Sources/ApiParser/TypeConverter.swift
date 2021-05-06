@@ -168,16 +168,11 @@ class SDKApi {
             tempType = type.type
         }
 
-//        guard let result = types[tempType] else {
-//            fatalError("Didn't find any type for \(tempType)")
-//        }
-
         if let result = types[tempType] {
             return result
         } else {
             return tempType
         }
-//        return ""
     }
 
     private func generateType(_ type: SDKApiJSONFieldPrtcl) -> String {
@@ -278,26 +273,6 @@ struct SDKSwiftTypes {
 
 
 
-
-
-
-
-
-//protocol SDKApiJSONFieldSimplePrtcl: Codable {
-//    var name: String {get set}
-//    var type: String {get set}
-//    var ref_name: String? {get set}
-//    var number_type: String? {get set}
-//    var number_size: Int? {get set}
-//    var array_item: SDKApiJSON.Module.ModuleType.ArrayItem? {get set}
-//    var summary: String? {get set}
-//    var description: String? {get set}
-//}
-//
-//protocol SDKApiJSONFieldPrtcl: SDKApiJSONFieldSimplePrtcl {
-//    var optional_inner: SDKApiJSON.Module.ModuleType.OptionalInner? {get set}
-//}
-
 struct SDKApiJSON: Codable {
     var version: String
     var modules: [Module]
@@ -394,28 +369,6 @@ struct SDKApiJSON: Codable {
                 var array_item: ArrayItem?
                 var summary: String?
                 var description: String?
-
-                enum CodingKeys: String, CodingKey {
-                    case type
-                    case ref_name
-                    case number_type
-                    case number_size
-                    case array_item
-                    case summary
-                    case description
-                }
-
-                init(from decoder: Decoder) throws {
-                    let container = try decoder.container(keyedBy: CodingKeys.self)
-//                    name = try container.decodeIfPresent(String.self, forKey: CodingKeys.name) ?? ""
-                    type = try container.decode(String.self, forKey: CodingKeys.type)
-                    ref_name = try container.decodeIfPresent(String.self, forKey: CodingKeys.ref_name)
-                    number_type = try container.decodeIfPresent(String.self, forKey: CodingKeys.number_type)
-                    number_size = try container.decodeIfPresent(Int.self, forKey: CodingKeys.number_size)
-                    array_item = try container.decodeIfPresent(ArrayItem.self, forKey: CodingKeys.array_item)
-                    summary = try container.decodeIfPresent(String.self, forKey: CodingKeys.summary)
-                    description = try container.decodeIfPresent(String.self, forKey: CodingKeys.description)
-                }
             }
 
             class ArrayItem: SDKApiJSONTypePrtcl {
@@ -461,11 +414,6 @@ protocol SDKApiJSONTypePrtcl: Codable {
     var summary: String? {get set}
     var description: String? {get set}
 }
-
-
-//protocol SDKApiJSONFieldSimplePrtcl: SDKApiJSONTypePrtcl {
-//    var name: String {get set}
-//}
 
 protocol SDKApiJSONFieldPrtcl: SDKApiJSONTypePrtcl {
     var name: String {get set}
