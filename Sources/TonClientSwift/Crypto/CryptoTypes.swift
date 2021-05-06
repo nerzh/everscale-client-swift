@@ -438,7 +438,6 @@ public struct TSDKParamsOfMnemonicWords: Codable {
     public init(dictionary: TSDKMnemonicDictionary? = nil) {
         self.dictionary = dictionary
     }
-
 }
 ///dictionary?: Int – dictionary identifier
 
@@ -637,7 +636,7 @@ public enum TSDKMnemonicDictionary: Int, Codable {
 }
 
 //ParamsOfChaCha20
-public struct TSDKParamsOfChaCha20: Encodable {
+public struct TSDKParamsOfChaCha20: Codable {
 
     public var data: String
     public var key: String

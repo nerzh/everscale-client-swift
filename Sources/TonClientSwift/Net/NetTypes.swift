@@ -52,13 +52,13 @@ public struct TSDKParamsOfQueryCollection: Encodable {
 ///limit?: number – number of documents to return
 
 //ResultOfQueryCollection
-public struct TSDKResultOfQueryCollection: Decodable {
+public struct TSDKResultOfQueryCollection: Codable {
     public var result: [AnyJSONType]
 }
 ///result: any[] – objects that match provided criteria
 
 //ParamsOfWaitForCollection
-public struct TSDKParamsOfWaitForCollection: Encodable {
+public struct TSDKParamsOfWaitForCollection: Codable {
     public var collection: String
     public var filter: AnyValue?
     public var result: String
@@ -77,7 +77,7 @@ public struct TSDKParamsOfWaitForCollection: Encodable {
 ///timeout?: number – query timeout
 
 //ResultOfWaitForCollection
-public struct TSDKResultOfWaitForCollection: Decodable {
+public struct TSDKResultOfWaitForCollection: Codable {
     public var result: AnyJSONType
 }
 ///result: any – first found object that match provided criteria
@@ -91,7 +91,7 @@ public struct TSDKResultOfSubscribeCollection: Codable {
 ///public struct TSDKunit = void
 
 //ParamsOfSubscribeCollection
-public struct TSDKParamsOfSubscribeCollection: Encodable {
+public struct TSDKParamsOfSubscribeCollection: Codable {
     public var collection: String
     public var filter: AnyValue?
     public var result: String

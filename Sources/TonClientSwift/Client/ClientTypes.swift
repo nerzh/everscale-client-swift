@@ -4,7 +4,7 @@
 
 import Foundation
 
-public struct TSDKDefault: Decodable {
+public struct TSDKDefault: Codable {
     public var result: AnyJSONType?
     public var error: AnyJSONType?
     public var data: AnyJSONType?
@@ -18,7 +18,7 @@ public struct TSDKDefault: Decodable {
     }
 }
 
-public struct TSDKClientError: Decodable {
+public struct TSDKClientError: Codable {
     public var code: Int
     public var message: String
     public var data: AnyJSONType
@@ -30,7 +30,7 @@ public struct TSDKClientError: Decodable {
     }
 }
 
-public struct TSDKClientConfig: Encodable {
+public struct TSDKClientConfig: Codable {
     public var network: TSDKNetworkConfig?
     public var crypto: TSDKCryptoConfig?
     public var abi: TSDKAbiConfig?
@@ -44,7 +44,7 @@ public struct TSDKClientConfig: Encodable {
     }
 }
 
-public struct TSDKNetworkConfig: Encodable {
+public struct TSDKNetworkConfig: Codable {
     public var server_address: String
     public var message_retries_count: Int?
     public var message_processing_timeout: Int?
@@ -108,7 +108,7 @@ public struct TSDKBuildInfoDependency: Codable {
 ///name: string – Dependency name. Usually it is a crate name.
 ///git_commit: string – Git commit hash of the related repository.
 
-public struct TSDKResultOfGetApiReference: Decodable {
+public struct TSDKResultOfGetApiReference: Codable {
     public var api: AnyJSONType
 }
 ///api: API

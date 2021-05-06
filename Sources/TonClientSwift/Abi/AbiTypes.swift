@@ -11,7 +11,7 @@ public enum TSDKAbiType: String, Codable {
     case ContractAbi = "ContractAbi"
 }
 
-public struct TSDKAbi: Encodable {
+public struct TSDKAbi: Codable {
     public var type: TSDKAbiType
     public var value: AnyValue
 
@@ -36,7 +36,7 @@ typealias TSDKAbiHandle = Int
 ///Includes several hidden function parameters that contract uses for security and replay protection reasons.
 ///The actual set of header fields depends on the contract's ABI.
 
-public struct TSDKFunctionHeader: Codable, Equatable {
+public struct TSDKFunctionHeader: Codable {
     public var expire: Int?
     public var time: Int?
     public var pubkey: String?
@@ -52,7 +52,7 @@ public struct TSDKFunctionHeader: Codable, Equatable {
 ///pubkey?: String – Public key used to sign message. Encoded with hex.
 
 //CallSet
-public struct TSDKCallSet: Encodable {
+public struct TSDKCallSet: Codable {
     public var function_name: String
     public var header: TSDKFunctionHeader?
     public var input: AnyValue?
@@ -68,7 +68,7 @@ public struct TSDKCallSet: Encodable {
 ///input?: any – Function input according to ABI.
 
 //DeploySet
-public struct TSDKDeploySet: Encodable {
+public struct TSDKDeploySet: Codable {
     public var tvc: String
     public var workchain_id: Int?
     public var initial_data: AnyValue?
@@ -140,7 +140,7 @@ public enum TSDKStateInitSourceType: String, Codable {
     case Tvc = "Tvc"
 }
 
-public struct TSDKStateInitSource: Encodable {
+public struct TSDKStateInitSource: Codable {
 
     public var type: TSDKStateInitSourceType
     public var source: TSDKMessageSource?
@@ -188,7 +188,7 @@ public struct TSDKStateInitSource: Encodable {
 ///init_params?: StateInitParams
 
 //StateInitParams
-public struct TSDKStateInitParams: Encodable {
+public struct TSDKStateInitParams: Codable {
     public var abi: TSDKAbi
     public var value: AnyValue
 
@@ -206,7 +206,7 @@ public enum TSDKMessageSourceType: String, Codable {
     case EncodingParams = "EncodingParams"
 }
 
-public struct TSDKMessageSource: Encodable {
+public struct TSDKMessageSource: Codable {
     public var type: TSDKMessageSourceType
     public var message: String?
     public var abi: TSDKAbi?
@@ -241,7 +241,7 @@ public struct TSDKMessageSource: Encodable {
 ///processing_try_index?: Int – Processing try index.
 
 //AbiParam
-public struct TSDKAbiParam: Encodable {
+public struct TSDKAbiParam: Codable {
     public var name: String
     public var type: String
     public var components: [TSDKAbiParam]?
@@ -257,7 +257,7 @@ public struct TSDKAbiParam: Encodable {
 ///components?: AbiParam[]
 
 //AbiEvent
-public struct TSDKAbiEvent: Encodable {
+public struct TSDKAbiEvent: Codable {
     public var name: String
     public var inputs: [TSDKAbiParam]
     public var id: Int?
@@ -273,7 +273,7 @@ public struct TSDKAbiEvent: Encodable {
 ///id?: number?
 
 //AbiData
-public struct TSDKAbiData: Encodable {
+public struct TSDKAbiData: Codable {
     public var key: Int
     public var name: String
     public var type: String
@@ -292,7 +292,7 @@ public struct TSDKAbiData: Encodable {
 ///components?: AbiParam[]
 
 //AbiFunction
-public struct TSDKAbiFunction: Encodable {
+public struct TSDKAbiFunction: Codable {
     public var name: String
     public var inputs: [TSDKAbiParam]
     public var outputs: [TSDKAbiParam]
@@ -312,7 +312,7 @@ public struct TSDKAbiFunction: Encodable {
 
 //AbiContract
 #warning("WTF 'ABI version'?: number,")
-public struct TSDKAbiContract: Encodable {
+public struct TSDKAbiContract: Codable {
     public var abiVersion: Int?
     public var abi_version: Int?
     public var header: [String]?
@@ -337,7 +337,7 @@ public struct TSDKAbiContract: Encodable {
 ///data?: AbiData[]
 
 //ParamsOfEncodeMessageBody
-public struct TSDKParamsOfEncodeMessageBody: Encodable {
+public struct TSDKParamsOfEncodeMessageBody: Codable {
     public var abi: TSDKAbi
     public var call_set: TSDKCallSet
     public var is_internal: Bool
@@ -377,7 +377,7 @@ public struct TSDKResultOfEncodeMessageBody: Codable {
 ///data_to_sign?: String – Optional data to sign. Encoded with base64.
 
 //ParamsOfAttachSignatureToMessageBody
-public struct TSDKParamsOfAttachSignatureToMessageBody: Encodable {
+public struct TSDKParamsOfAttachSignatureToMessageBody: Codable {
     public var abi: TSDKAbi
     public var public_key: String
     public var message: String
@@ -409,7 +409,7 @@ public struct TSDKResultOfAttachSignatureToMessageBody: Codable {
 ///body: String
 
 //ParamsOfEncodeMessage
-public struct TSDKParamsOfEncodeMessage: Encodable {
+public struct TSDKParamsOfEncodeMessage: Codable {
     public var abi: TSDKAbi
     public var address: String?
     public var deploy_set: TSDKDeploySet?
@@ -461,7 +461,7 @@ public struct TSDKResultOfEncodeMessage: Codable {
 ///message_id: String – Message id.
 
 //ParamsOfAttachSignature
-public struct TSDKParamsOfAttachSignature: Encodable {
+public struct TSDKParamsOfAttachSignature: Codable {
 
     public var abi: TSDKAbi
     public var public_key: String
@@ -496,7 +496,7 @@ public struct TSDKResultOfAttachSignature: Codable {
 ///message_id: String
 
 //ParamsOfDecodeMessage
-public struct TSDKParamsOfDecodeMessage: Encodable {
+public struct TSDKParamsOfDecodeMessage: Codable {
     public var abi: TSDKAbi
     public var message: String
 
@@ -509,7 +509,7 @@ public struct TSDKParamsOfDecodeMessage: Encodable {
 ///message: String – Message BOC
 
 //DecodedMessageBody
-public struct TSDKDecodedMessageBody: Decodable, Equatable {
+public struct TSDKDecodedMessageBody: Codable {
     public var body_type: TSDKMessageBodyType
     public var name: String
     public var value: AnyJSONType?
@@ -528,7 +528,7 @@ public struct TSDKDecodedMessageBody: Decodable, Equatable {
 ///header?: FunctionHeader – Function header.
 
 //ParamsOfDecodeMessageBody
-public struct TSDKParamsOfDecodeMessageBody: Encodable {
+public struct TSDKParamsOfDecodeMessageBody: Codable {
 
     public var abi: TSDKAbi
     public var body: String
@@ -551,7 +551,7 @@ public struct TSDKParamsOfDecodeMessageBody: Encodable {
 ///is_internal: Bool – True if the body belongs to the internal message.
 
 //ParamsOfEncodeAccount
-public struct TSDKParamsOfEncodeAccount: Encodable {
+public struct TSDKParamsOfEncodeAccount: Codable {
     public var state_init: TSDKStateInitSource
     public var balance: Int?
     public var last_trans_lt: Int?

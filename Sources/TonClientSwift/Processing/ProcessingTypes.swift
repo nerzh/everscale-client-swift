@@ -8,7 +8,7 @@
 import Foundation
 
 //ProcessingEvent
-public enum TSDKProcessingEventType: String, Decodable {
+public enum TSDKProcessingEventType: String, Codable {
     case WillFetchFirstBlock = "WillFetchFirstBlock"
     case FetchFirstBlockFailed = "FetchFirstBlockFailed"
     case WillSend = "WillSend"
@@ -19,7 +19,7 @@ public enum TSDKProcessingEventType: String, Decodable {
     case MessageExpired = "MessageExpired"
 }
 
-public struct TSDKProcessingEvent: Decodable {
+public struct TSDKProcessingEvent: Codable {
     public var type: TSDKProcessingEventType
     public var error: TSDKClientError?
     public var shard_block_id: String?
@@ -80,7 +80,7 @@ public struct TSDKProcessingEvent: Decodable {
 ///error: ClientError
 
 //ResultOfProcessMessage
-public struct TSDKResultOfProcessMessage: Decodable {
+public struct TSDKResultOfProcessMessage: Codable {
     public var transaction: AnyJSONType
     public var out_messages: [String]
     public var decoded: TSDKDecodedOutput?
@@ -92,20 +92,15 @@ public struct TSDKResultOfProcessMessage: Decodable {
 ///fees: TransactionFees – Transaction fees
 
 //DecodedOutput
-public struct TSDKDecodedOutput: Decodable, Equatable {
+public struct TSDKDecodedOutput: Codable {
     public var out_messages: [TSDKDecodedMessageBody?]
     public var output: AnyJSONType?
-
-    public static func == (lhs: TSDKDecodedOutput, rhs: TSDKDecodedOutput) -> Bool {
-        lhs.out_messages == rhs.out_messages &&
-            lhs.output == rhs.output
-    }
 }
 ///out_messages: DecodedMessageBody?[] – Decoded bodies of the out messages.
 ///output?: any – Decoded body of the function output message.
 
 //ParamsOfSendMessage
-public struct TSDKParamsOfSendMessage: Encodable {
+public struct TSDKParamsOfSendMessage: Codable {
     public var message: String
     public var abi: TSDKAbi?
     public var send_events: Bool
@@ -121,13 +116,13 @@ public struct TSDKParamsOfSendMessage: Encodable {
 ///send_events: boolean – Flag for requesting events sending
 
 //ResultOfSendMessage
-public struct TSDKResultOfSendMessage: Decodable {
+public struct TSDKResultOfSendMessage: Codable {
     public var shard_block_id: String
 }
 ///shard_block_id: string – Shard block related to the message dst account before the
 
 //ParamsOfWaitForTransaction
-public struct TSDKParamsOfWaitForTransaction: Encodable {
+public struct TSDKParamsOfWaitForTransaction: Codable {
     public var abi: TSDKAbi?
     public var message: String
     public var shard_block_id: String
@@ -156,7 +151,7 @@ public struct TSDKParamsOfWaitForTransaction: Encodable {
 ///send_events: boolean – Flag that enables/disables intermediate events
 
 //ParamsOfProcessMessage
-public struct TSDKParamsOfProcessMessage: Encodable {
+public struct TSDKParamsOfProcessMessage: Codable {
     public var message_encode_params: TSDKParamsOfEncodeMessage
     public var send_events: Bool
 

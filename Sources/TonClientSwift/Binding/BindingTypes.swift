@@ -4,12 +4,12 @@
 
 import Foundation
 
-public struct TSDKContextResponse: Decodable {
+public struct TSDKContextResponse: Codable {
     public var result: UInt32?
     public var error: AnyJSONType?
 }
 
-public struct TSDKBindingRequest<TSDKResult: Decodable, TSDKError: Decodable, TSDKCustom: Decodable> {
+public struct TSDKBindingRequest<TSDKResult: Codable, TSDKError: Codable, TSDKCustom: Codable> {
     public var result: (_ result: TSDKResult?) -> Void
     public var error: (_ error: TSDKError?) -> Void
     public var customHandler: (_ params: TSDKCustom?) -> Void
@@ -24,7 +24,7 @@ public enum TSDKBindingResponseType: UInt32 {
     case unknown
 }
 
-public struct TSDKBindingResponse<TSDKResult: Decodable, TSDKError: Decodable, TSDKCustom: Decodable> {
+public struct TSDKBindingResponse<TSDKResult: Codable, TSDKError: Codable, TSDKCustom: Codable> {
     public var result: TSDKResult?
     public var error: TSDKError?
     public var customResponse: TSDKCustom?

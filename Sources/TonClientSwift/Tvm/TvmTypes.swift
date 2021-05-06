@@ -68,7 +68,7 @@ public struct TSDKAccountForExecutor: Codable {
 ///unlimited_balance?: boolean – Flag for running account with the unlimited balance. Can be used to calculate transaction fees without balance check
 
 //ParamsOfRunExecutor
-public struct TSDKParamsOfRunExecutor: Encodable {
+public struct TSDKParamsOfRunExecutor: Codable {
     public var message: String
     public var account: TSDKAccountForExecutor
     public var execution_options: TSDKExecutionOptions?
@@ -122,7 +122,7 @@ public struct TSDKTransactionFees: Codable {
 ///total_account_fees: bigint
 ///total_output: bigint
 
-public struct TSDKResultOfRunExecutor: Decodable {
+public struct TSDKResultOfRunExecutor: Codable {
     public var transaction: AnyJSONType
     public var out_messages: [String]
     public var decoded: TSDKDecodedOutput?
@@ -157,7 +157,7 @@ public struct TSDKResultOfRunExecutor: Decodable {
 /// fees: TransactionFees – Transaction fees
 
 //ParamsOfRunTvm
-public struct TSDKParamsOfRunTvm: Encodable {
+public struct TSDKParamsOfRunTvm: Codable {
     public var message: String
     public var account: String
     public var execution_options: TSDKExecutionOptions?
@@ -183,7 +183,7 @@ public struct TSDKParamsOfRunTvm: Encodable {
 /// abi?: Abi – Contract ABI for dedcoding output messages
 
 //ResultOfRunTvm
-public struct TSDKResultOfRunTvm: Decodable {
+public struct TSDKResultOfRunTvm: Codable {
     public var out_messages: [String]
     public var decoded: TSDKDecodedOutput?
     public var account: String
@@ -205,7 +205,7 @@ public struct TSDKResultOfRunTvm: Decodable {
 /// account: String – Updated account state BOC. Encoded as base64.
 
 //ParamsOfRunGet
-public struct TSDKParamsOfRunGet: Encodable {
+public struct TSDKParamsOfRunGet: Codable {
     public var account: String
     public var function_name: String
     public var input: AnyValue?
@@ -231,7 +231,7 @@ public struct TSDKParamsOfRunGet: Encodable {
 /// execution_options?: ExecutionOptions
 
 //ResultOfRunGet
-public struct TSDKResultOfRunGet: Decodable {
+public struct TSDKResultOfRunGet: Codable {
     public var output: AnyJSONType
 }
 /// output: AnyJSONType – Values returned by getmethod on stack

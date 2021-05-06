@@ -8,7 +8,7 @@
 import Foundation
 
 //ParamsOfParse
-public struct TSDKParamsOfParse: Encodable {
+public struct TSDKParamsOfParse: Codable {
     public var boc: String
 
     public init(boc: String) {
@@ -22,13 +22,13 @@ public struct TSDKParamsOfParse: Encodable {
 ///boc: string – BOC encoded as base64
 
 //ResultOfParse
-public struct TSDKResultOfParse: Decodable {
+public struct TSDKResultOfParse: Codable {
     public var parsed: AnyJSONType
 }
 ///parsed: any – JSON containing parsed BOC
 
 //ParamsOfParseShardstate
-public struct TSDKParamsOfParseShardstate: Encodable {
+public struct TSDKParamsOfParseShardstate: Codable {
     public var boc: String
     public var id: String
     public var workchain_id: Int
@@ -44,7 +44,7 @@ public struct TSDKParamsOfParseShardstate: Encodable {
 ///workchain_id: number – Workchain shardstate belongs to
 
 //ParamsOfGetBlockchainConfig
-public struct TSDKParamsOfGetBlockchainConfig: Encodable {
+public struct TSDKParamsOfGetBlockchainConfig: Codable {
     public var block_boc: String
 
     public init(block_boc: String) {
@@ -58,7 +58,7 @@ public struct TSDKParamsOfGetBlockchainConfig: Encodable {
 ///block_boc: string – Key block BOC encoded as base64
 
 //ResultOfGetBlockchainConfig
-public struct TSDKResultOfGetBlockchainConfig: Decodable {
+public struct TSDKResultOfGetBlockchainConfig: Codable {
     public var config_boc: String
 
     public init(config_boc: String) {
@@ -72,7 +72,7 @@ public struct TSDKResultOfGetBlockchainConfig: Decodable {
 ///config_boc: string – Blockchain config BOC encoded as base64
 
 //ParamsOfGetBocHash
-public struct TSDKParamsOfGetBocHash: Encodable {
+public struct TSDKParamsOfGetBocHash: Codable {
     public var boc: String
 
     public init(boc: String) {
@@ -86,7 +86,7 @@ public struct TSDKParamsOfGetBocHash: Encodable {
 ///boc: string – BOC encoded as base64
 
 //ResultOfGetBocHash
-public struct TSDKResultOfGetBocHash: Decodable {
+public struct TSDKResultOfGetBocHash: Codable {
     public var hash: String
 }
 ///hash: string – BOC root hash encoded with hex

@@ -25,11 +25,11 @@ final class BindingTests: XCTestCase {
         XCTAssertEqual(swiftString, "Hello😀")
     }
 
-    struct Test: Decodable {
+    struct Test: Codable {
         var version: String
     }
 
-    struct TestError: Decodable {
+    struct TestError: Codable {
         var code: UInt32
         var message: String
         var data: AnyJSONType

@@ -5,13 +5,13 @@
 import Foundation
 
 //AddressStringFormat
-public enum TSDKAddressStringFormatType: String, Encodable {
+public enum TSDKAddressStringFormatType: String, Codable {
     case AccountId = "AccountId"
     case Hex = "Hex"
     case Base64 = "Base64"
 }
 
-public struct TSDKAddressStringFormat: Encodable {
+public struct TSDKAddressStringFormat: Codable {
     public var type: TSDKAddressStringFormatType
     public var url: Bool?
     public var test: Bool?
@@ -35,7 +35,7 @@ public struct TSDKAddressStringFormat: Encodable {
 ///bounce: boolean
 
 //ParamsOfConvertAddress
-public struct TSDKParamsOfConvertAddress: Encodable {
+public struct TSDKParamsOfConvertAddress: Codable {
     public var address: String
     public var output_format: TSDKAddressStringFormat
 
@@ -48,7 +48,7 @@ public struct TSDKParamsOfConvertAddress: Encodable {
 ///output_format: AddressStringFormat – Specify the format to convert to.
 
 //ResultOfConvertAddress
-public struct TSDKResultOfConvertAddress: Decodable {
+public struct TSDKResultOfConvertAddress: Codable {
     public var address: String
 }
 ///address: string – address in the specified format

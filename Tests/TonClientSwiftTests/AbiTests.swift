@@ -185,9 +185,10 @@ final class AbiTests: XCTestCase {
             client.abi.decode_message(payload) { [group] (response) in
                 XCTAssertEqual(response.result?.body_type, .Input)
                 XCTAssertEqual(response.result?.value, AnyJSONType(["id": AnyJSONType("0x0000000000000000000000000000000000000000000000000000000000000000")]))
-                XCTAssertEqual(response.result?.header, TSDKFunctionHeader(expire: 1599458404,
-                                                                           time: 1599458364291,
-                                                                           pubkey: "4c7c408ff1ddebb8d6405ee979c716a14fdd6cc08124107a61d3c25597099499"))
+                XCTAssertEqual(response.result?.header?.expire, 1599458404)
+                XCTAssertEqual(response.result?.header?.time, 1599458364291)
+                XCTAssertEqual(response.result?.header?.pubkey, "4c7c408ff1ddebb8d6405ee979c716a14fdd6cc08124107a61d3c25597099499")
+
                 group.leave()
             }
             group.wait()
@@ -204,7 +205,7 @@ final class AbiTests: XCTestCase {
             client.abi.decode_message(payload) { [group] (response) in
                 XCTAssertEqual(response.result?.body_type, .Event)
                 XCTAssertEqual(response.result?.value, AnyJSONType(["id": AnyJSONType("0x0000000000000000000000000000000000000000000000000000000000000000")]))
-                XCTAssertEqual(response.result?.header, nil)
+                XCTAssertNil(response.result?.header)
                 group.leave()
             }
             group.wait()
@@ -221,7 +222,7 @@ final class AbiTests: XCTestCase {
             client.abi.decode_message(payload) { [group] (response) in
                 XCTAssertEqual(response.result?.body_type, .Output)
                 XCTAssertEqual(response.result?.value, AnyJSONType(["value0": AnyJSONType("0x0000000000000000000000000000000000000000000000000000000000000000")]))
-                XCTAssertEqual(response.result?.header, nil)
+                XCTAssertNil(response.result?.header)
                 group.leave()
             }
             group.wait()
@@ -240,9 +241,9 @@ final class AbiTests: XCTestCase {
             client.abi.decode_message_body(payload) { [group] (response) in
                 XCTAssertEqual(response.result?.body_type, .Input)
                 XCTAssertEqual(response.result?.value, AnyJSONType(["id": AnyJSONType("0x0000000000000000000000000000000000000000000000000000000000000000")]))
-                XCTAssertEqual(response.result?.header, TSDKFunctionHeader(expire: 1599458404,
-                                                                           time: 1599458364291,
-                                                                           pubkey: "4c7c408ff1ddebb8d6405ee979c716a14fdd6cc08124107a61d3c25597099499"))
+                XCTAssertEqual(response.result?.header?.expire, 1599458404)
+                XCTAssertEqual(response.result?.header?.time, 1599458364291)
+                XCTAssertEqual(response.result?.header?.pubkey, "4c7c408ff1ddebb8d6405ee979c716a14fdd6cc08124107a61d3c25597099499")
 
                 group.leave()
             }
