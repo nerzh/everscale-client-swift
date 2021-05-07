@@ -64,6 +64,62 @@ class SDKApi {
                     swiftModule.types.append(newStruct)
                 }
             }
+
+            for function in module.functions {
+                /// result type
+                var result: SDKSwiftReturn = .init(type: "")
+                if function.result.type == "Generic" {
+                    let ref_type: String = function.result.generic_args.first?.type ?? ""
+                    if ref_type == "Ref" {
+                        let ref_name: String = function.result.generic_args.first?.ref_name ?? ""
+                        let matches: [Int: String] = ref_name.regexp(#"^(.+)\.(.+)$"#)
+                        if let module: String = matches[1],
+                           let type: String = matches[2]
+                        {
+                            _ = module
+                            result.type = "\(libPrefix)\(type)"
+                        } else {
+                            fatalError("Bad function result ref_name: \(ref_name), function name: \(function.name), result: \(function.result)")
+                        }
+                    } else if ref_type == "None" {
+                        result.type = "Void"
+                    }
+                } else {
+                    fatalError("New function result type !")
+                }
+
+                /// Get Parameters
+                var newFunction: SDKSwiftFunction = .init(name: function.name,
+                                                          params: [],
+                                                          willReturn: result,
+                                                          summary: function.summary,
+                                                          description: function.description,
+                                                          errors: function.errors)
+                var paramsCount: Int8 = 0
+                for parameter in function.params {
+                    if parameter.name == "params" {
+                        paramsCount += 1
+                        if parameter.type == "Ref" {
+                            let ref_name: String = parameter.ref_name ?? ""
+                            let matches: [Int: String] = ref_name.regexp(#"^(.+)\.(.+)$"#)
+                            if let module: String = matches[1],
+                               let type: String = matches[2]
+                            {
+                                _ = module
+                                newFunction.params.append(.init(name: "payload", type: "\(libPrefix)\(type)"))
+                            } else {
+                                fatalError("Bad function params ref_name: \(ref_name), function name: \(function.name), result: \(function.result)")
+                            }
+                        } else {
+                            fatalError("NEW CASE! New parameter type: \(parameter.type)")
+                        }
+                    }
+                    if paramsCount > 1 { fatalError("NEW CASE ! More then one parameter for functions !") }
+                }
+
+                swiftModule.functions.append(newFunction)
+            }
+
             swiftTypes.modules.append(swiftModule)
         }
 
@@ -71,7 +127,7 @@ class SDKApi {
     }
 
     func convertStruct(_ from: SDKApiJSON.Module.ModuleType) -> SDKSwiftStruct {
-        var result: SDKSwiftStruct = .init(name: from.name, parents: defaultStructTypeParents, properties: [], functions: [])
+        var result: SDKSwiftStruct = .init(name: "\(libPrefix)\(from.name)", parents: defaultStructTypeParents, properties: [], functions: [])
         for field in (from.struct_fields ?? []) {
             let property: SDKSwiftProperty = .init(name: field.name, type: generateType(field), summary: field.summary, description: field.description)
             result.properties.append(property)
@@ -98,6 +154,8 @@ class SDKApi {
             } else {
                 fatalError("Unkown type: \(enumConst.type)")
             }
+            let isNumber: Bool = Int(caseValue) != nil
+            if isNumber { result.parents = ["Int", "Codable"] }
             result.cases.append(.init(name: caseName, value: caseValue, summary: enumConst.summary, description: enumConst.description))
         }
 
@@ -112,6 +170,8 @@ class SDKApi {
         var propertiesNameSet: Set<String> = .init()
         var properties: [SDKApiJSON.Module.ModuleType.EnumType.EnumTypeField] = .init()
         for enum_type in (from.enum_types ?? []) {
+            let isNumber: Bool = Int(enum_type.name) != nil
+            if isNumber { result.enum.parents = ["Int", "Codable"] }
             result.enum.cases.append(.init(name: enum_type.name, value: enum_type.name))
             for field in (enum_type.struct_fields ?? []) {
                 if !propertiesNameSet.contains(field.name) {
@@ -135,7 +195,7 @@ class SDKApi {
     }
 
     private func generateEnumName(_ name: String) -> String {
-        "\(name)\(libEnumPostfix)"
+        "\(libPrefix)\(name)\(libEnumPostfix)"
     }
 
     private func generateStructName(_ name: String) -> String {
@@ -193,7 +253,7 @@ class SDKApi {
             result = "\(libPrefix)\(typeName)"
         } else {
             result = "\(libPrefix)\(type)"
-//            fatalError("generateRefType: parse error - module not found for \(type)")
+            //            fatalError("generateRefType: parse error - module not found for \(type)")
         }
 
         return result
@@ -230,10 +290,11 @@ struct SDKSwiftStruct {
 struct SDKSwiftFunction {
     var accessType: String = "public"
     var name: String
-    var params: [SDKSwiftParametr]
+    var params: [SDKSwiftParameter]
     var willReturn: SDKSwiftReturn
     var summary: String?
     var description: String?
+    var errors: String?
 }
 
 struct SDKSwiftProperty {
@@ -245,10 +306,10 @@ struct SDKSwiftProperty {
     var description: String?
 }
 
-struct SDKSwiftParametr {
+struct SDKSwiftParameter {
     var name: String
     var type: String
-    var value: String
+    var value: String?
 }
 
 struct SDKSwiftReturn {
@@ -381,15 +442,14 @@ struct SDKApiJSON: Codable {
                 var summary: String?
                 var description: String?
 
-                init(
-                              type: String,
-                              ref_name: String? = nil,
-                              number_type: String? = nil,
-                              number_size: Int? = nil,
-                              optional_inner: OptionalInner? = nil,
-                              array_item: ArrayItem? = nil,
-                              summary: String? = nil,
-                              description: String? = nil
+                init(type: String,
+                     ref_name: String? = nil,
+                     number_type: String? = nil,
+                     number_size: Int? = nil,
+                     optional_inner: OptionalInner? = nil,
+                     array_item: ArrayItem? = nil,
+                     summary: String? = nil,
+                     description: String? = nil
                 ) {
                     self.type = type
                     self.ref_name = ref_name

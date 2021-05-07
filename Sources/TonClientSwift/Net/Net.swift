@@ -50,13 +50,15 @@ public final class TSDKNetModule {
     }
 
     public func unsubscribe(_ payload: TSDKResultOfSubscribeCollection,
-                            _ handler: @escaping (TSDKBindingResponse<TSDKResultOfSubscribeCollection, TSDKClientError, TSDKDefault>) -> Void
+                            _ handler: @escaping (TSDKBindingResponse<TSDKNoneResult, TSDKClientError, TSDKDefault>) -> Void
     ) {
         let method: String = "unsubscribe"
         binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-            var response: TSDKBindingResponse<TSDKResultOfSubscribeCollection, TSDKClientError, TSDKDefault> = .init()
+            var response: TSDKBindingResponse<TSDKNoneResult, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
             handler(response)
         }
     }
 }
+
+

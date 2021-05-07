@@ -15,7 +15,6 @@ public struct TSDKBindingRequest<TSDKResult: Codable, TSDKError: Codable, TSDKCu
     public var customHandler: (_ params: TSDKCustom?) -> Void
 }
 
-
 public enum TSDKBindingResponseType: UInt32 {
     case responseSuccess = 0
     case responseError = 1
@@ -23,6 +22,8 @@ public enum TSDKBindingResponseType: UInt32 {
     case responseCustom = 100
     case unknown
 }
+
+public struct TSDKNoneResult: Codable {}
 
 public struct TSDKBindingResponse<TSDKResult: Codable, TSDKError: Codable, TSDKCustom: Codable> {
     public var result: TSDKResult?
