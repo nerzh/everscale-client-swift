@@ -80,7 +80,7 @@ class CodeGenerator {
             if let descr: String = property.description { result.append("\(tab)/// \(descr.replace(#"\n"#, ""))\n") }
             result.append("\(tab)\(property.accessType) var \(property.name): \(property.type)\n")
         }
-        result.append("\n\(tab)init(")
+        result.append("\n\(tab)public init(")
         for (index, property) in swiftStruct.properties.enumerated() {
             if property.type[#"\?$"#] {
                 result.append("\(property.name): \(property.type) = nil")
