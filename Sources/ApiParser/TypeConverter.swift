@@ -216,7 +216,7 @@ class SDKApi {
 
         if type.type == "Ref" {
             if type.ref_name == "Value" || type.ref_name == "API" {
-                tempType = type.ref_name!
+                tempType = "Value"
             } else {
                 return generateRefType(type.ref_name ?? "nil")
             }
