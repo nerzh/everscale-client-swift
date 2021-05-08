@@ -32,20 +32,16 @@ class SDKApi {
     private var _filePath: String = ""
     var filePath: String
     var sdkApi: SDKApiJSON!
-    var libPrefix: String = "TSDK"
-    var libEnumPostfix: String = "EnumTypes"
-    var defaultEnumParents: [String] = ["String", "Codable"]
-    var defaultStructTypeParents: [String] = ["Codable"]
 
     init(_ filePath: String) throws {
         self.filePath = filePath
         self.sdkApi = try Self.readSDKFile(filePath)
     }
 
-    func convertToSwift() -> SDKSwiftTypes {
-        var swiftTypes: SDKSwiftTypes = .init(version: sdkApi.version)
+    func convertToSwift() -> SDKSwiftApi {
+        var swiftTypes: SDKSwiftApi = .init(version: sdkApi.version)
         for module in sdkApi.modules {
-            var swiftModule: SDKSwiftTypes.Module = .init(name: module.name,
+            var swiftModule: SDKSwiftApi.Module = .init(name: module.name,
                                                           summary: module.summary,
                                                           description: module.description,
                                                           enums: [],
@@ -316,7 +312,7 @@ struct SDKSwiftReturn {
     var type: String
 }
 
-struct SDKSwiftTypes {
+struct SDKSwiftApi {
     var version: String
     var modules: [Module] = []
 

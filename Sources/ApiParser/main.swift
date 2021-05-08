@@ -15,7 +15,7 @@ struct ApiParser: ParsableCommand {
     mutating func run() throws {
         let api = try SDKApi.init(pathToApiFile)
         let r = api.convertToSwift()
-        let generator = CodeGenerator(swiftTypes: r)
+        let generator = CodeGenerator(swiftApi: r)
         generator.generate()
     }
 }
