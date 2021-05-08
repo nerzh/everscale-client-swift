@@ -246,7 +246,11 @@ class SDKApi {
 
     private func generateType(_ type: SDKApiJSONFieldPrtcl) -> String {
         if type.type == "Optional", let optionalInner = type.optional_inner {
-            return "\(generateSimpleType(optionalInner))?"
+            if optionalInner.type == "Optional" {
+                return generateType(optionalInner)
+            } else {
+                return "\(generateSimpleType(optionalInner))?"
+            }
         } else {
             return generateSimpleType(type)
         }
@@ -443,7 +447,9 @@ struct SDKApiJSON: Codable {
                 var description: String?
             }
 
-            struct OptionalInner: SDKApiJSONTypePrtcl {
+            class OptionalInner: SDKApiJSONFieldPrtcl {
+                var name: String?
+                var optional_inner: SDKApiJSON.Module.ModuleType.OptionalInner?
                 var type: String
                 var ref_name: String?
                 var number_type: String?
