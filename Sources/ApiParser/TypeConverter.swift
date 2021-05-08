@@ -193,7 +193,7 @@ class SDKApi {
         }
         result.struct.properties.append(.init(name: "type", type: generateEnumName(from.name ?? "")))
         for property in properties {
-            result.struct.properties.append(.init(name: property.name ?? "", type: generateType(property), summary: property.summary, description: property.description))
+            result.struct.properties.append(.init(name: property.name ?? "", type: "\(generateType(property))?", summary: property.summary, description: property.description))
         }
         return result
     }
