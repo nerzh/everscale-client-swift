@@ -134,7 +134,7 @@ class SDKApi {
     }
 
     func convertStruct(_ from: SDKApiJSON.Module.ModuleType) -> SDKSwiftStruct {
-        var result: SDKSwiftStruct = .init(name: "\(libPrefix)\(from.name)", parents: defaultStructTypeParents, properties: [], functions: [])
+        var result: SDKSwiftStruct = .init(name: "\(libPrefix)\(from.name ?? "")", parents: defaultStructTypeParents, properties: [], functions: [])
         for field in (from.struct_fields ?? []) {
             let property: SDKSwiftProperty = .init(name: field.name ?? "", type: generateType(field), summary: field.summary, description: field.description)
             result.properties.append(property)
