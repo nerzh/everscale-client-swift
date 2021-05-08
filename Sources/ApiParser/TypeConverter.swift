@@ -42,11 +42,12 @@ class SDKApi {
         var swiftTypes: SDKSwiftApi = .init(version: sdkApi.version)
         for module in sdkApi.modules {
             var swiftModule: SDKSwiftApi.Module = .init(name: module.name,
-                                                          summary: module.summary,
-                                                          description: module.description,
-                                                          enums: [],
-                                                          types: [],
-                                                          functions: [])
+                                                        summary: module.summary,
+                                                        description: module.description,
+                                                        enums: [],
+                                                        types: [],
+                                                        functions: [],
+                                                        alias: [])
             for type in module.types {
                 if type.type == "EnumOfTypes" {
                     let (newEnum, newStruct) = convertEnumOfTypes(type)
@@ -58,6 +59,11 @@ class SDKApi {
                 } else if type.type == "Struct" {
                     let newStruct: SDKSwiftStruct = convertStruct(type)
                     swiftModule.types.append(newStruct)
+                } else if type.type == "Number" {
+                    let newAlias: SDKSwiftTypeAlias = convertTypeAlias(type)
+                    swiftModule.alias.append(newAlias)
+                } else {
+                    fatalError("Unkown NEW TYPE for module \(type.name ?? "") \"types\": \(type.type)")
                 }
             }
 
@@ -122,6 +128,11 @@ class SDKApi {
         return swiftTypes
     }
 
+    func convertTypeAlias(_ from: SDKApiJSON.Module.ModuleType) -> SDKSwiftTypeAlias {
+        let result: SDKSwiftTypeAlias = .init(name: "\(libPrefix)\(from.name ?? "")", type: generateType(from))
+        return result
+    }
+
     func convertStruct(_ from: SDKApiJSON.Module.ModuleType) -> SDKSwiftStruct {
         var result: SDKSwiftStruct = .init(name: "\(libPrefix)\(from.name)", parents: defaultStructTypeParents, properties: [], functions: [])
         for field in (from.struct_fields ?? []) {
@@ -132,7 +143,7 @@ class SDKApi {
     }
 
     func convertEnumOfConsts(_ from: SDKApiJSON.Module.ModuleType) -> SDKSwiftEnum {
-        var result: SDKSwiftEnum = .init(name: generateEnumName(from.name), parents: defaultEnumParents, cases: [], summary: from.summary, description: from.description)
+        var result: SDKSwiftEnum = .init(name: generateEnumName(from.name ?? ""), parents: defaultEnumParents, cases: [], summary: from.summary, description: from.description)
         for enumConst in (from.enum_consts ?? []) {
             let caseName: String = enumConst.name
             var caseValue: String = .init()
@@ -160,8 +171,8 @@ class SDKApi {
 
     func convertEnumOfTypes(_ from: SDKApiJSON.Module.ModuleType) -> (enum: SDKSwiftEnum, struct: SDKSwiftStruct) {
         var result: (enum: SDKSwiftEnum, struct: SDKSwiftStruct) = (
-            enum: .init(name: generateEnumName(from.name), parents: defaultEnumParents, cases: []),
-            struct: .init(name: generateStructName(from.name), parents: defaultStructTypeParents, properties: [], functions: [], summary: from.summary, description: from.description)
+            enum: .init(name: generateEnumName(from.name ?? ""), parents: defaultEnumParents, cases: []),
+            struct: .init(name: generateStructName(from.name ?? ""), parents: defaultStructTypeParents, properties: [], functions: [], summary: from.summary, description: from.description)
         )
         var propertiesNameSet: Set<String> = .init()
         var properties: [SDKApiJSON.Module.ModuleType.EnumType.EnumTypeField] = .init()
@@ -275,6 +286,12 @@ struct SDKSwiftEnum {
     }
 }
 
+struct SDKSwiftTypeAlias {
+    var accessType: String = "public"
+    var name: String
+    var type: String
+}
+
 struct SDKSwiftStruct {
     var accessType: String = "public"
     var name: String
@@ -325,6 +342,7 @@ struct SDKSwiftApi {
         var enums: [SDKSwiftEnum]
         var types: [SDKSwiftStruct]
         var functions: [SDKSwiftFunction]
+        var alias: [SDKSwiftTypeAlias]
     }
 }
 
@@ -373,8 +391,13 @@ struct SDKApiJSON: Codable {
             }
         }
 
-        struct ModuleType: Codable {
-            var name: String
+        struct ModuleType: SDKApiJSONFieldPrtcl {
+            var name: String?
+            var optional_inner: OptionalInner?
+            var ref_name: String?
+            var number_type: String?
+            var number_size: Int?
+            var array_item: ArrayItem?
             var type: String
             var enum_consts: [ConstantType]?
             var struct_fields: [StructField]?
@@ -464,6 +487,7 @@ struct SDKApiJSON: Codable {
     }
 }
 
+/// needed for optional_inner - fix recursive protocol
 protocol SDKApiJSONTypePrtcl: Codable {
     var type: String {get set}
     var ref_name: String? {get set}
