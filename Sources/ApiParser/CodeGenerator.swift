@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftRegularExpression
+import FileUtils
 
 class CodeGenerator {
     var swiftApi: SDKSwiftApi
@@ -17,18 +18,42 @@ class CodeGenerator {
     }
 
     func generate() {
-//        for m in swiftTypes.modules.first!.enums {
-//            print(generateEnum(m))
-//        }
+        for module in swiftApi.modules {
+            let moduleClassFolder: String = "./Sources/TonClientSwift/\(module.name.capitalized)"
+            let moduleClassFilePath: String = "\(moduleClassFolder)/\(module.name.capitalized).swift"
+            var newModuleClass: String = ""
+            if module.name == "client" {
+                newModuleClass = generateClientModule(module, swiftApi.modules)
+            } else {
+                newModuleClass = generateModule(module)
+            }
+            if FileManager.default.fileExists(atPath: moduleClassFolder) {
+                FileUtils.deleteFileOrFolder(URL(string: moduleClassFolder))
+            }
+            FileUtils.createFolder(URL(fileURLWithPath: moduleClassFolder, isDirectory: true))
+            FileUtils.writeFile(to: moduleClassFilePath, newModuleClass)
 
-//        for m in swiftTypes.modules.first!.types {
-//            print(generateStruct(m))
-//        }
+            var newTypes: String = ""
 
-        print(generateClientModule(swiftApi.modules.first!, swiftApi.modules))
-//        for m in swiftTypes.modules.first!.functions {
-//            print(generateFunction(m))
-//        }
+            for newAlias in module.alias {
+                newTypes.append(generateAlias(newAlias))
+            }
+
+            for newEnum in module.enums {
+                newTypes.append(generateEnum(newEnum))
+            }
+
+            for newStruct in module.types {
+                newTypes.append(generateStruct(newStruct))
+            }
+
+            let moduleTypesFilePath: String = "\(moduleClassFolder)/\(module.name.capitalized)Types.swift"
+            FileUtils.writeFile(to: moduleTypesFilePath, newTypes)
+        }
+    }
+
+    private func generateAlias(_ swiftAlias: SDKSwiftTypeAlias) -> String {
+        "\(swiftAlias.accessType) typealias \(swiftAlias.name) = \(swiftAlias.type)\n\n"
     }
 
     private func generateEnum(_ swiftEnum: SDKSwiftEnum) -> String {
@@ -36,14 +61,14 @@ class CodeGenerator {
         for enumCase in swiftEnum.cases {
             let isNumber: Bool = Int(enumCase.value) != nil
             if isNumber {
-                result.append("\(tab)\(enumCase.name) = \(enumCase.value)\n")
+                result.append("\(tab)case \(enumCase.name) = \(enumCase.value)\n")
             } else {
-                result.append("\(tab)\(enumCase.name) = \"\(enumCase.value)\"\n")
+                result.append("\(tab)case \(enumCase.name) = \"\(enumCase.value)\"\n")
             }
         }
-        result.append("}\n")
-        if let summary: String = swiftEnum.summary { result.append("\(summary.replace(#"\n"#, ""))\n") }
-        if let descr: String = swiftEnum.description { result.append("\(descr.replace(#"\n"#, ""))\n") }
+        result.append("}\n\n")
+        if let summary: String = swiftEnum.summary { result.append("/// \(summary.replace(#"\n"#, ""))\n\n") }
+        if let descr: String = swiftEnum.description { result.append("/// \(descr.replace(#"\n"#, ""))\n\n") }
 
         return result
     }
@@ -69,9 +94,9 @@ class CodeGenerator {
             result.append("\(tab)\(tab)self.\(property.name) = \(property.name)\n")
         }
         result.append("\(tab)}\n")
-        result.append("}\n")
-        if let summary: String = swiftStruct.summary { result.append("\(summary.replace(#"\n"#, ""))\n") }
-        if let descr: String = swiftStruct.description { result.append("\(descr.replace(#"\n"#, ""))\n") }
+        result.append("}\n\n")
+        if let summary: String = swiftStruct.summary { result.append("/// \(summary.replace(#"\n"#, ""))\n") }
+        if let descr: String = swiftStruct.description { result.append("/// \(descr.replace(#"\n"#, ""))\n") }
 
         return result
     }
@@ -119,7 +144,7 @@ class CodeGenerator {
         for function in swiftModule.functions {
             result.append(generateFunction(function))
         }
-        result.append("}")
+        result.append("}\n")
 
         return result
     }
@@ -134,7 +159,7 @@ class CodeGenerator {
             result.append("\(tab)public var \(module.name): \(libPrefix)\(module.name.capitalized)Module\n")
         }
         result.append("\n")
-        result.append("\(tab)public init(congig: \(libPrefix)ClientConfig) {\n")
+        result.append("\(tab)public init(config: \(libPrefix)ClientConfig) {\n")
         result.append("\(tab)\(tab)self.config = config\n")
         result.append("\(tab)\(tab)self.binding = \(libPrefix)BindingModule(config: config)\n")
         for module in modules {
@@ -146,7 +171,7 @@ class CodeGenerator {
         for function in swiftModule.functions {
             result.append(generateFunction(function))
         }
-        result.append("}")
+        result.append("}\n")
 
         return result
     }
