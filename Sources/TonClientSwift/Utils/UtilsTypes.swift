@@ -1,42 +1,27 @@
-//
-//  Created by Oleh Hudeichuk on 21.10.2020.
-//
-
-import Foundation
-
-//AddressStringFormat
-public enum TSDKAddressStringFormatType: String, Codable {
+public enum TSDKAddressStringFormatEnumTypes: String, Codable {
     case AccountId = "AccountId"
     case Hex = "Hex"
     case Base64 = "Base64"
 }
 
 public struct TSDKAddressStringFormat: Codable {
-    public var type: TSDKAddressStringFormatType
+    public var type: TSDKAddressStringFormatEnumTypes
     public var url: Bool?
     public var test: Bool?
     public var bounce: Bool?
 
-    public init(type: TSDKAddressStringFormatType, url: Bool? = nil, test: Bool? = nil, bounce: Bool? = nil) {
+    public init(type: TSDKAddressStringFormatEnumTypes, url: Bool? = nil, test: Bool? = nil, bounce: Bool? = nil) {
         self.type = type
         self.url = url
         self.test = test
         self.bounce = bounce
     }
 }
-///Depends on value of the public struct TSDKfield.
-///When public struct TSDKis 'AccountId'
 
-///When public struct TSDKis 'Hex'
-
-///When public struct TSDKis 'Base64'
-///url: boolean
-///test: boolean
-///bounce: boolean
-
-//ParamsOfConvertAddress
 public struct TSDKParamsOfConvertAddress: Codable {
+    /// Account address in any TON format.
     public var address: String
+    /// Specify the format to convert to.
     public var output_format: TSDKAddressStringFormat
 
     public init(address: String, output_format: TSDKAddressStringFormat) {
@@ -44,11 +29,74 @@ public struct TSDKParamsOfConvertAddress: Codable {
         self.output_format = output_format
     }
 }
-///address: string – Account address in any format.
-///output_format: AddressStringFormat – Specify the format to convert to.
 
-//ResultOfConvertAddress
 public struct TSDKResultOfConvertAddress: Codable {
+    /// Address in the specified format
     public var address: String
+
+    public init(address: String) {
+        self.address = address
+    }
 }
-///address: string – address in the specified format
+
+public struct TSDKParamsOfCalcStorageFee: Codable {
+    public var account: String
+    public var period: UInt32
+
+    public init(account: String, period: UInt32) {
+        self.account = account
+        self.period = period
+    }
+}
+
+public struct TSDKResultOfCalcStorageFee: Codable {
+    public var fee: String
+
+    public init(fee: String) {
+        self.fee = fee
+    }
+}
+
+public struct TSDKParamsOfCompressZstd: Codable {
+    /// Uncompressed data.
+    /// Must be encoded as base64.
+    public var uncompressed: String
+    /// Compression level, from 1 to 21. Where: 1 - lowest compression level (fastest compression); 21 - highest compression level (slowest compression). If level is omitted, the default compression level is used (currently `3`).
+    public var level: Int32?
+
+    public init(uncompressed: String, level: Int32? = nil) {
+        self.uncompressed = uncompressed
+        self.level = level
+    }
+}
+
+public struct TSDKResultOfCompressZstd: Codable {
+    /// Compressed data.
+    /// Must be encoded as base64.
+    public var compressed: String
+
+    public init(compressed: String) {
+        self.compressed = compressed
+    }
+}
+
+public struct TSDKParamsOfDecompressZstd: Codable {
+    /// Compressed data.
+    /// Must be encoded as base64.
+    public var compressed: String
+
+    public init(compressed: String) {
+        self.compressed = compressed
+    }
+}
+
+public struct TSDKResultOfDecompressZstd: Codable {
+    /// Decompressed data.
+    /// Must be encoded as base64.
+    public var decompressed: String
+
+    public init(decompressed: String) {
+        self.decompressed = decompressed
+    }
+}
+

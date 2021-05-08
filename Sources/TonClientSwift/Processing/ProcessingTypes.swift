@@ -1,14 +1,20 @@
-//
-//  File.swift
-//  
-//
-//  Created by Oleh Hudeichuk on 21.10.2020.
-//
+public enum TSDKProcessingErrorCode: Int, Codable {
+    case MessageAlreadyExpired = 501
+    case MessageHasNotDestinationAddress = 502
+    case CanNotBuildMessageCell = 503
+    case FetchBlockFailed = 504
+    case SendMessageFailed = 505
+    case InvalidMessageBoc = 506
+    case MessageExpired = 507
+    case TransactionWaitTimeout = 508
+    case InvalidBlockReceived = 509
+    case CanNotCheckBlockShard = 510
+    case BlockNotFound = 511
+    case InvalidData = 512
+    case ExternalSignerMustNotBeUsed = 513
+}
 
-import Foundation
-
-//ProcessingEvent
-public enum TSDKProcessingEventType: String, Codable {
+public enum TSDKProcessingEventEnumTypes: String, Codable {
     case WillFetchFirstBlock = "WillFetchFirstBlock"
     case FetchFirstBlockFailed = "FetchFirstBlockFailed"
     case WillSend = "WillSend"
@@ -20,89 +26,61 @@ public enum TSDKProcessingEventType: String, Codable {
 }
 
 public struct TSDKProcessingEvent: Codable {
-    public var type: TSDKProcessingEventType
+    public var type: TSDKProcessingEventEnumTypes
     public var error: TSDKClientError?
     public var shard_block_id: String?
     public var message_id: String?
     public var message: String?
 
-    public init(type: TSDKProcessingEventType, error: TSDKClientError? = nil, shard_block_id: String? = nil, message_id: String? = nil, message: String? = nil) {
+    public init(type: TSDKProcessingEventEnumTypes, error: TSDKClientError? = nil, shard_block_id: String? = nil, message_id: String? = nil, message: String? = nil) {
         self.type = type
         self.error = error
         self.shard_block_id = shard_block_id
         self.message_id = message_id
-        self.message = message?.base64Encoded() ?? ""
-    }
-
-    public init(type: TSDKProcessingEventType, error: TSDKClientError? = nil, shard_block_id: String? = nil, message_id: String? = nil, messageEncodedBase64: String? = nil) {
-        self.type = type
-        self.error = error
-        self.shard_block_id = shard_block_id
-        self.message_id = message_id
-        self.message = messageEncodedBase64
+        self.message = message
     }
 }
-///Depends on value of the public struct TSDKfield.
-///When public struct TSDKis 'WillFetchFirstBlock'
-///When public struct TSDKis 'FetchFirstBlockFailed'
-///error: ClientError
 
-///When public struct TSDKis 'WillSend'
-///shard_block_id: string
-///message_id: string
-///message: string
-
-///When public struct TSDKis 'DidSend'
-///shard_block_id: string
-///message_id: string
-///message: string
-
-///When public struct TSDKis 'SendFailed'
-///shard_block_id: string
-///message_id: string
-///message: string
-///error: ClientError
-
-///When public struct TSDKis 'WillFetchNextBlock'
-///shard_block_id: string
-///message_id: string
-///message: string
-
-///When public struct TSDKis 'FetchNextBlockFailed'
-///shard_block_id: string
-///message_id: string
-///message: string
-///error: ClientError
-
-///When public struct TSDKis 'MessageExpired'
-///message_id: string
-///message: string
-///error: ClientError
-
-//ResultOfProcessMessage
 public struct TSDKResultOfProcessMessage: Codable {
+    /// Parsed transaction.
+    /// In addition to the regular transaction fields there is a`boc` field encoded with `base64` which contains sourcetransaction BOC.
     public var transaction: AnyJSONType
+    /// List of output messages' BOCs.
+    /// Encoded as `base64`
     public var out_messages: [String]
+    /// Optional decoded message bodies according to the optional `abi` parameter.
     public var decoded: TSDKDecodedOutput?
+    /// Transaction fees
     public var fees: TSDKTransactionFees
-}
-///transaction: any – Parsed transaction.
-///out_messages: string[] – List of output messages' BOCs. Encoded as base64
-///decoded?: DecodedOutput – Optional decoded message bodies according to the optional
-///fees: TransactionFees – Transaction fees
 
-//DecodedOutput
+    public init(transaction: AnyJSONType, out_messages: [String], decoded: TSDKDecodedOutput? = nil, fees: TSDKTransactionFees) {
+        self.transaction = transaction
+        self.out_messages = out_messages
+        self.decoded = decoded
+        self.fees = fees
+    }
+}
+
 public struct TSDKDecodedOutput: Codable {
-    public var out_messages: [TSDKDecodedMessageBody?]
+    /// Decoded bodies of the out messages.
+    /// If the message can't be decoded, then `None` will be stored inthe appropriate position.
+    public var out_messages: [TSDKDecodedMessageBody]?
+    /// Decoded body of the function output message.
     public var output: AnyJSONType?
-}
-///out_messages: DecodedMessageBody?[] – Decoded bodies of the out messages.
-///output?: any – Decoded body of the function output message.
 
-//ParamsOfSendMessage
+    public init(out_messages: [TSDKDecodedMessageBody]? = nil, output: AnyJSONType? = nil) {
+        self.out_messages = out_messages
+        self.output = output
+    }
+}
+
 public struct TSDKParamsOfSendMessage: Codable {
+    /// Message BOC.
     public var message: String
+    /// Optional message ABI.
+    /// If this parameter is specified and the message has the`expire` header then expiration time will be checked againstthe current time to prevent unnecessary sending of already expired message.The `message already expired` error will be returned in thiscase.Note, that specifying `abi` for ABI compliant contracts isstrongly recommended, so that proper processing strategy can bechosen.
     public var abi: TSDKAbi?
+    /// Flag for requesting events sending
     public var send_events: Bool
 
     public init(message: String, abi: TSDKAbi? = nil, send_events: Bool) {
@@ -111,48 +89,50 @@ public struct TSDKParamsOfSendMessage: Codable {
         self.send_events = send_events
     }
 }
-///message: string – Message BOC.
-///abi?: Abi – Optional message ABI.
-///send_events: boolean – Flag for requesting events sending
 
-//ResultOfSendMessage
 public struct TSDKResultOfSendMessage: Codable {
+    /// The last generated shard block of the message destination account before the message was sent.
+    /// This block id must be used as a parameter of the`wait_for_transaction`.
     public var shard_block_id: String
-}
-///shard_block_id: string – Shard block related to the message dst account before the
+    /// The list of endpoints to which the message was sent.
+    /// This list id must be used as a parameter of the`wait_for_transaction`.
+    public var sending_endpoints: [String]
 
-//ParamsOfWaitForTransaction
+    public init(shard_block_id: String, sending_endpoints: [String]) {
+        self.shard_block_id = shard_block_id
+        self.sending_endpoints = sending_endpoints
+    }
+}
+
 public struct TSDKParamsOfWaitForTransaction: Codable {
+    /// Optional ABI for decoding the transaction result.
+    /// If it is specified, then the output messages' bodies will bedecoded according to this ABI.The `abi_decoded` result field will be filled out.
     public var abi: TSDKAbi?
+    /// Message BOC.
+    /// Encoded with `base64`.
     public var message: String
+    /// The last generated block id of the destination account shard before the message was sent.
+    /// You must provide the same value as the `send_message` has returned.
     public var shard_block_id: String
+    /// Flag that enables/disables intermediate events
     public var send_events: Bool
+    /// The list of endpoints to which the message was sent.
+    /// You must provide the same value as the `send_message` has returned.
+    public var sending_endpoints: [String]?
 
-    public init(abi: TSDKAbi? = nil, message: String, shard_block_id: String, send_events: Bool) {
+    public init(abi: TSDKAbi? = nil, message: String, shard_block_id: String, send_events: Bool, sending_endpoints: [String]? = nil) {
         self.abi = abi
-        self.message = message.base64Encoded() ?? ""
+        self.message = message
         self.shard_block_id = shard_block_id
         self.send_events = send_events
-    }
-
-    public init(abi: TSDKAbi? = nil, messageEncodedBase64: String, shard_block_id: String, send_events: Bool) {
-        self.abi = abi
-        self.message = messageEncodedBase64
-        self.shard_block_id = shard_block_id
-        self.send_events = send_events
+        self.sending_endpoints = sending_endpoints
     }
 }
-///abi?: Abi – Optional ABI for decoding transaction results.
-///  If it is specified, then the output messages' bodies will be
-///  decoded according to this ABI.
-///  The abi_decoded result field will be filled out.
-///message: string – Message BOC. Encoded with base64.
-///shard_block_id: string – The last generated block id of the destination account shard before the message was sent. You must provide the same value as the send_message has returned.
-///send_events: boolean – Flag that enables/disables intermediate events
 
-//ParamsOfProcessMessage
 public struct TSDKParamsOfProcessMessage: Codable {
+    /// Message encode parameters.
     public var message_encode_params: TSDKParamsOfEncodeMessage
+    /// Flag for requesting events sending
     public var send_events: Bool
 
     public init(message_encode_params: TSDKParamsOfEncodeMessage, send_events: Bool) {
@@ -160,5 +140,4 @@ public struct TSDKParamsOfProcessMessage: Codable {
         self.send_events = send_events
     }
 }
-///message_encode_params: ParamsOfEncodeMessage – Message encode parameters
-///send_events: boolean – Flag for requesting events sending
+
