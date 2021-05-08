@@ -425,9 +425,9 @@ public struct TSDKParamsOfNaclSecretBoxOpen: Codable {
 
 public struct TSDKParamsOfMnemonicWords: Codable {
     /// Dictionary identifier
-    public var dictionary: UInt8?
+    public var dictionary: TSDKMnemonicDictionary?
 
-    public init(dictionary: UInt8? = nil) {
+    public init(dictionary: TSDKMnemonicDictionary? = nil) {
         self.dictionary = dictionary
     }
 }
@@ -443,11 +443,11 @@ public struct TSDKResultOfMnemonicWords: Codable {
 
 public struct TSDKParamsOfMnemonicFromRandom: Codable {
     /// Dictionary identifier
-    public var dictionary: UInt8?
+    public var dictionary: TSDKMnemonicDictionary?
     /// Mnemonic word count
     public var word_count: UInt8?
 
-    public init(dictionary: UInt8? = nil, word_count: UInt8? = nil) {
+    public init(dictionary: TSDKMnemonicDictionary? = nil, word_count: UInt8? = nil) {
         self.dictionary = dictionary
         self.word_count = word_count
     }
@@ -467,11 +467,11 @@ public struct TSDKParamsOfMnemonicFromEntropy: Codable {
     /// Hex encoded.
     public var entropy: String
     /// Dictionary identifier
-    public var dictionary: UInt8?
+    public var dictionary: TSDKMnemonicDictionary?
     /// Mnemonic word count
     public var word_count: UInt8?
 
-    public init(entropy: String, dictionary: UInt8? = nil, word_count: UInt8? = nil) {
+    public init(entropy: String, dictionary: TSDKMnemonicDictionary? = nil, word_count: UInt8? = nil) {
         self.entropy = entropy
         self.dictionary = dictionary
         self.word_count = word_count
@@ -491,11 +491,11 @@ public struct TSDKParamsOfMnemonicVerify: Codable {
     /// Phrase
     public var phrase: String
     /// Dictionary identifier
-    public var dictionary: UInt8?
+    public var dictionary: TSDKMnemonicDictionary?
     /// Word count
     public var word_count: UInt8?
 
-    public init(phrase: String, dictionary: UInt8? = nil, word_count: UInt8? = nil) {
+    public init(phrase: String, dictionary: TSDKMnemonicDictionary? = nil, word_count: UInt8? = nil) {
         self.phrase = phrase
         self.dictionary = dictionary
         self.word_count = word_count
@@ -517,11 +517,11 @@ public struct TSDKParamsOfMnemonicDeriveSignKeys: Codable {
     /// Derivation path, for instance "m/44'/396'/0'/0/0"
     public var path: String?
     /// Dictionary identifier
-    public var dictionary: UInt8?
+    public var dictionary: TSDKMnemonicDictionary?
     /// Word count
     public var word_count: UInt8?
 
-    public init(phrase: String, path: String? = nil, dictionary: UInt8? = nil, word_count: UInt8? = nil) {
+    public init(phrase: String, path: String? = nil, dictionary: TSDKMnemonicDictionary? = nil, word_count: UInt8? = nil) {
         self.phrase = phrase
         self.path = path
         self.dictionary = dictionary
@@ -533,11 +533,11 @@ public struct TSDKParamsOfHDKeyXPrvFromMnemonic: Codable {
     /// String with seed phrase
     public var phrase: String
     /// Dictionary identifier
-    public var dictionary: UInt8?
+    public var dictionary: TSDKMnemonicDictionary?
     /// Mnemonic word count
     public var word_count: UInt8?
 
-    public init(phrase: String, dictionary: UInt8? = nil, word_count: UInt8? = nil) {
+    public init(phrase: String, dictionary: TSDKMnemonicDictionary? = nil, word_count: UInt8? = nil) {
         self.phrase = phrase
         self.dictionary = dictionary
         self.word_count = word_count

@@ -146,6 +146,9 @@ class SDKApi {
                 } else if type[#"AbiContract"#] {
                     let optional: String = type[#"\?"#] ? "?" : ""
                     type = "AnyValue\(optional)"
+                } else if (field.name ?? "")[#"^dictionary$"#] {
+                    let optional: String = type[#"\?"#] ? "?" : ""
+                    type = "TSDKMnemonicDictionary\(optional)"
                 }
                 let property: SDKSwiftProperty = .init(name: checkPropertyName(field.name), type: type, summary: field.summary, description: field.description)
                 result.properties.append(property)
@@ -231,6 +234,9 @@ class SDKApi {
             if type[#"AbiContract"#] {
                 let optional: String = type[#"\?"#] ? "?" : ""
                 type = "AnyValue\(optional)"
+            } else if (property.name ?? "")[#"^dictionary$"#] {
+                let optional: String = type[#"\?"#] ? "?" : ""
+                type = "TSDKMnemonicDictionary\(optional)"
             }
             result.struct.properties.append(.init(name: property.name ?? "",
                                                   type: "\(type)?",
