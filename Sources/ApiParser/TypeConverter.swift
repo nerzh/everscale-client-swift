@@ -139,7 +139,12 @@ class SDKApi {
         var result: SDKSwiftStruct = .init(name: "\(libPrefix)\(from.name ?? "")", parents: defaultStructTypeParents, properties: [], functions: [])
         for field in (from.struct_fields ?? []) {
             if isValidPropertyName(field.name) {
-                let property: SDKSwiftProperty = .init(name: checkPropertyName(field.name), type: generateType(field), summary: field.summary, description: field.description)
+                var type: String = generateType(field)
+                if (from.name ?? "")[#"Params"#] && type[#"AnyJSONType"#] {
+                    let optional: String = type[#"\?"#] ? "?" : ""
+                    type = "AnyValue\(optional)"
+                }
+                let property: SDKSwiftProperty = .init(name: checkPropertyName(field.name), type: type, summary: field.summary, description: field.description)
                 result.properties.append(property)
             }
         }
