@@ -138,8 +138,10 @@ class SDKApi {
     func convertStruct(_ from: SDKApiJSON.Module.ModuleType) -> SDKSwiftStruct {
         var result: SDKSwiftStruct = .init(name: "\(libPrefix)\(from.name ?? "")", parents: defaultStructTypeParents, properties: [], functions: [])
         for field in (from.struct_fields ?? []) {
-            let property: SDKSwiftProperty = .init(name: checkPropertyName(field.name), type: generateType(field), summary: field.summary, description: field.description)
-            result.properties.append(property)
+            if isValidPropertyName(field.name) {
+                let property: SDKSwiftProperty = .init(name: checkPropertyName(field.name), type: generateType(field), summary: field.summary, description: field.description)
+                result.properties.append(property)
+            }
         }
         return result
     }
@@ -287,6 +289,10 @@ class SDKApi {
         }
 
         return result
+    }
+
+    private func isValidPropertyName(_ name: String?) -> Bool {
+        !(name ?? "")[#" "#]
     }
 
     private func checkFunctionName(_ name: String?) -> String {
