@@ -48,6 +48,7 @@ class SDKApi {
                                                         types: [],
                                                         functions: [],
                                                         alias: [])
+            /// TYPE
             for type in module.types {
                 if type.type == "EnumOfTypes" {
                     let (newEnum, newStruct) = convertEnumOfTypes(type)
@@ -67,8 +68,8 @@ class SDKApi {
                 }
             }
 
+            /// FUNCTIONS
             for function in module.functions {
-                /// result type
                 var result: SDKSwiftReturn = .init(type: "")
                 if function.result.type == "Generic" {
                     let ref_type: String = function.result.generic_args.first?.type ?? ""
@@ -90,13 +91,14 @@ class SDKApi {
                     fatalError("New function result type !")
                 }
 
-                /// Get Parameters
-                var newFunction: SDKSwiftFunction = .init(name: function.name,
+                /// function
+                var newFunction: SDKSwiftFunction = .init(name: checkFunctionName(function.name),
                                                           params: [],
                                                           willReturn: result,
                                                           summary: function.summary,
                                                           description: function.description,
                                                           errors: function.errors)
+                /// FUNCTION PARAMETERS
                 var paramsCount: Int8 = 0
                 for parameter in function.params {
                     if parameter.name == "params" {
@@ -136,7 +138,7 @@ class SDKApi {
     func convertStruct(_ from: SDKApiJSON.Module.ModuleType) -> SDKSwiftStruct {
         var result: SDKSwiftStruct = .init(name: "\(libPrefix)\(from.name ?? "")", parents: defaultStructTypeParents, properties: [], functions: [])
         for field in (from.struct_fields ?? []) {
-            let property: SDKSwiftProperty = .init(name: field.name ?? "", type: generateType(field), summary: field.summary, description: field.description)
+            let property: SDKSwiftProperty = .init(name: checkPropertyName(field.name), type: generateType(field), summary: field.summary, description: field.description)
             result.properties.append(property)
         }
         return result
@@ -267,6 +269,36 @@ class SDKApi {
         } else {
             result = "\(libPrefix)\(type)"
             //            fatalError("generateRefType: parse error - module not found for \(type)")
+        }
+
+        return result
+    }
+
+    private func checkPropertyName(_ name: String?) -> String {
+        var result: String = ""
+        guard let name = name else {
+            fatalError("Property Name is nil")
+        }
+        switch name {
+        case "public":
+            result = "`public`"
+        default:
+            result = name
+        }
+
+        return result
+    }
+
+    private func checkFunctionName(_ name: String?) -> String {
+        var result: String = ""
+        guard let name = name else {
+            fatalError("Property Name is nil")
+        }
+        switch name {
+        case "init":
+            result = "initialize"
+        default:
+            result = name
         }
 
         return result
