@@ -145,7 +145,7 @@ class SDKApi {
     }
 
     func convertEnumOfConsts(_ from: SDKApiJSON.Module.ModuleType) -> SDKSwiftEnum {
-        var result: SDKSwiftEnum = .init(name: from.name ?? "", parents: defaultEnumParents, cases: [], summary: from.summary, description: from.description)
+        var result: SDKSwiftEnum = .init(name: "\(libPrefix)\(from.name ?? "")", parents: defaultEnumParents, cases: [], summary: from.summary, description: from.description)
         for enumConst in (from.enum_consts ?? []) {
             let caseName: String = enumConst.name
             var caseValue: String = .init()
