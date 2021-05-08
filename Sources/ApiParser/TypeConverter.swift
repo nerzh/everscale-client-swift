@@ -219,6 +219,8 @@ class SDKApi {
             let matches: [Int: String] = tempType.regexp(#"^(.+)(\?|\!)$"#)
             if let type: String = matches[1], let symbol: String = matches[2] {
                 tempType = "[\(type)]\(symbol)"
+            } else {
+                tempType = "[\(tempType)]"
             }
         } else {
             tempType = type.type
