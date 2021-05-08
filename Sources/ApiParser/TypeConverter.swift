@@ -140,7 +140,10 @@ class SDKApi {
         for field in (from.struct_fields ?? []) {
             if isValidPropertyName(field.name) {
                 var type: String = generateType(field)
-                if (from.name ?? "")[#"Params"#] && type[#"AnyJSONType"#] {
+                if ((from.name ?? "")[#"Params"#] || (field.name ?? "")[#"input"#]) && type[#"AnyJSONType"#] {
+                    let optional: String = type[#"\?"#] ? "?" : ""
+                    type = "AnyValue\(optional)"
+                } else if type[#"AbiContract"#] {
                     let optional: String = type[#"\?"#] ? "?" : ""
                     type = "AnyValue\(optional)"
                 }
@@ -149,6 +152,32 @@ class SDKApi {
             }
         }
         return result
+    }
+
+//    private func checkField(_ field: SDKApiJSON.Module.ModuleType.StructField) -> SDKApiJSON.Module.ModuleType.StructField {
+//        var result: SDKApiJSON.Module.ModuleType.StructField = .init(name: nil, type: nil, ref_name: nil, number_type: nil, number_size: nil, array_item: nil, optional_inner: nil, summary: nil, description: nil)
+//
+//
+//        return result
+//    }
+
+    private func checkPropertyName(_ name: String?) -> String {
+        var result: String = ""
+        guard let name = name else {
+            fatalError("Property Name is nil")
+        }
+        switch name {
+        case "public":
+            result = "`public`"
+        default:
+            result = name
+        }
+
+        return result
+    }
+
+    private func isValidPropertyName(_ name: String?) -> Bool {
+        !(name ?? "")[#" "#]
     }
 
     func convertEnumOfConsts(_ from: SDKApiJSON.Module.ModuleType) -> SDKSwiftEnum {
@@ -198,7 +227,15 @@ class SDKApi {
         }
         result.struct.properties.append(.init(name: "type", type: generateEnumName(from.name ?? "")))
         for property in properties {
-            result.struct.properties.append(.init(name: property.name ?? "", type: "\(generateType(property))?", summary: property.summary, description: property.description))
+            var type: String = generateType(property)
+            if type[#"AbiContract"#] {
+                let optional: String = type[#"\?"#] ? "?" : ""
+                type = "AnyValue\(optional)"
+            }
+            result.struct.properties.append(.init(name: property.name ?? "",
+                                                  type: "\(type)?",
+                                                  summary: property.summary,
+                                                  description: property.description))
         }
         return result
     }
@@ -280,25 +317,6 @@ class SDKApi {
         }
 
         return result
-    }
-
-    private func checkPropertyName(_ name: String?) -> String {
-        var result: String = ""
-        guard let name = name else {
-            fatalError("Property Name is nil")
-        }
-        switch name {
-        case "public":
-            result = "`public`"
-        default:
-            result = name
-        }
-
-        return result
-    }
-
-    private func isValidPropertyName(_ name: String?) -> Bool {
-        !(name ?? "")[#" "#]
     }
 
     private func checkFunctionName(_ name: String?) -> String {

@@ -49,9 +49,9 @@ public enum TSDKMessageSourceEnumTypes: String, Codable {
 
 public struct TSDKAbi: Codable {
     public var type: TSDKAbiEnumTypes
-    public var value: TSDKAbiContract?
+    public var value: AnyValue?
 
-    public init(type: TSDKAbiEnumTypes, value: TSDKAbiContract? = nil) {
+    public init(type: TSDKAbiEnumTypes, value: AnyValue? = nil) {
         self.type = type
         self.value = value
     }
@@ -81,9 +81,9 @@ public struct TSDKCallSet: Codable {
     /// If an application omits some header parameters required by thecontract's ABI, the library will set the default values forthem.
     public var header: TSDKFunctionHeader?
     /// Function input parameters according to ABI.
-    public var input: AnyJSONType?
+    public var input: AnyValue?
 
-    public init(function_name: String, header: TSDKFunctionHeader? = nil, input: AnyJSONType? = nil) {
+    public init(function_name: String, header: TSDKFunctionHeader? = nil, input: AnyValue? = nil) {
         self.function_name = function_name
         self.header = header
         self.input = input

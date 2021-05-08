@@ -118,7 +118,7 @@ extension XCTestCase {
                                                                       address: walletAddress,
                                                                       deploy_set: nil,
                                                                       call_set: callSet,
-                                                                      signer: TSDKSigner(),
+                                                                      signer: TSDKSigner(type: .None),
                                                                       processing_try_index: nil)
         let sendPaylod: TSDKParamsOfProcessMessage = .init(message_encode_params: paramsOfEncodedMessage, send_events: false)
         let group: DispatchGroup = .init()
@@ -145,7 +145,7 @@ extension XCTestCase {
                                                                       address: walletAddress,
                                                                       deploy_set: nil,
                                                                       call_set: callSet,
-                                                                      signer: TSDKSigner(),
+                                                                      signer: TSDKSigner(type: .None),
                                                                       processing_try_index: nil)
         let sendPaylod: TSDKParamsOfProcessMessage = .init(message_encode_params: paramsOfEncodedMessage, send_events: false)
         let group: DispatchGroup = .init()
@@ -165,7 +165,7 @@ extension XCTestCase {
                           address: String?,
                           public: String?,
                           secret: String?,
-                          signerType: TSDKSignerType,
+                          signerType: TSDKSignerEnumTypes,
                           callSetFunction_name: String?,
                           callSetHeader: TSDKFunctionHeader?,
                           callSetInput: AnyValue?
@@ -180,7 +180,7 @@ extension XCTestCase {
             var signer: TSDKSigner!
             if nameTvc != nil {
                 let tvcData: Data = self.readTvc(nameTvc!)
-                deploySet = .init(tvc: tvcData, workchain_id: nil, initial_data: nil)
+                deploySet = .init(tvc: tvcData.base64EncodedString(), workchain_id: nil, initial_data: nil)
             }
             if `public` != nil && secret != nil {
                 keys = .init(public: `public`!, secret: secret!)
@@ -197,7 +197,7 @@ extension XCTestCase {
                                keys: keys,
                                handle: nil)
             default:
-                signer = .init()
+                signer = .init(type: .None)
             }
             if callSetFunction_name != nil {
                 callSet = .init(function_name: callSetFunction_name!,
