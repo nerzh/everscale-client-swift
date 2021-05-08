@@ -125,7 +125,7 @@ class SDKApi {
     func convertStruct(_ from: SDKApiJSON.Module.ModuleType) -> SDKSwiftStruct {
         var result: SDKSwiftStruct = .init(name: "\(libPrefix)\(from.name)", parents: defaultStructTypeParents, properties: [], functions: [])
         for field in (from.struct_fields ?? []) {
-            let property: SDKSwiftProperty = .init(name: field.name, type: generateType(field), summary: field.summary, description: field.description)
+            let property: SDKSwiftProperty = .init(name: field.name ?? "", type: generateType(field), summary: field.summary, description: field.description)
             result.properties.append(property)
         }
         return result
@@ -170,14 +170,14 @@ class SDKApi {
             if isNumber { result.enum.parents = ["Int", "Codable"] }
             result.enum.cases.append(.init(name: enum_type.name, value: enum_type.name))
             for field in (enum_type.struct_fields ?? []) {
-                if !propertiesNameSet.contains(field.name) {
+                if !propertiesNameSet.contains(field.name ?? "") {
                     properties.append(field)
                 }
-                propertiesNameSet.insert(field.name)
+                propertiesNameSet.insert(field.name ?? "")
             }
         }
         for property in properties {
-            result.struct.properties.append(.init(name: property.name, type: generateType(property), summary: property.summary, description: property.description))
+            result.struct.properties.append(.init(name: property.name ?? "", type: generateType(property), summary: property.summary, description: property.description))
         }
         return result
     }
@@ -215,7 +215,7 @@ class SDKApi {
         } else if type.type == "Array",
                   let arrayItem = type.array_item
         {
-            tempType = generateSimpleType(arrayItem)
+            tempType = generateType(arrayItem)
             let matches: [Int: String] = tempType.regexp(#"^(.+)(\?|\!)$"#)
             if let type: String = matches[1], let symbol: String = matches[2] {
                 tempType = "[\(type)]\(symbol)"
@@ -396,7 +396,7 @@ struct SDKApiJSON: Codable {
                 var struct_fields: [EnumTypeField]?
 
                 struct EnumTypeField: SDKApiJSONFieldPrtcl {
-                    var name: String
+                    var name: String?
                     var type: String
                     var ref_name: String?
                     var number_type: String?
@@ -409,7 +409,7 @@ struct SDKApiJSON: Codable {
             }
 
             struct StructField: SDKApiJSONFieldPrtcl {
-                var name: String
+                var name: String?
                 var type: String
                 var ref_name: String?
                 var number_type: String?
@@ -430,7 +430,8 @@ struct SDKApiJSON: Codable {
                 var description: String?
             }
 
-            class ArrayItem: SDKApiJSONTypePrtcl {
+            class ArrayItem: SDKApiJSONFieldPrtcl {
+                var name: String?
                 var type: String
                 var ref_name: String?
                 var number_type: String?
@@ -474,7 +475,8 @@ protocol SDKApiJSONTypePrtcl: Codable {
 }
 
 protocol SDKApiJSONFieldPrtcl: SDKApiJSONTypePrtcl {
-    var name: String {get set}
+    var name: String? {get set}
     var optional_inner: SDKApiJSON.Module.ModuleType.OptionalInner? {get set}
 }
+
 
