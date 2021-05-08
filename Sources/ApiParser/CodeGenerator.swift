@@ -118,7 +118,8 @@ class CodeGenerator {
         }
         let resultType: String = swiftFunction.willReturn.type == "Void" ? "\(libPrefix)NoneResult" : swiftFunction.willReturn.type
         result.append("_ handler: @escaping (TSDKBindingResponse<\(resultType), \(libPrefix)ClientError, \(libPrefix)Default>) -> Void\n\(tab)) {\n")
-        result.append("\(tab)\(tab)let method: String = \"\(swiftFunction.name)\"\n")
+        let methodName: String = swiftFunction.name == "initialize" ? "init" : swiftFunction.name
+        result.append("\(tab)\(tab)let method: String = \"\(methodName)\"\n")
         if swiftFunction.params.isEmpty {
             result.append("\(tab)\(tab)binding.requestLibraryAsync(methodName(module, method), \"\", { (requestId, params, responseType, finished) in\n")
         } else {

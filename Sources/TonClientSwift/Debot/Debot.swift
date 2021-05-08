@@ -9,7 +9,7 @@ public final class TSDKDebotModule {
 
     public func initialize(_ payload: TSDKParamsOfInit, _ handler: @escaping (TSDKBindingResponse<TSDKRegisteredDebot, TSDKClientError, TSDKDefault>) -> Void
     ) {
-        let method: String = "initialize"
+        let method: String = "init"
         binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKRegisteredDebot, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)

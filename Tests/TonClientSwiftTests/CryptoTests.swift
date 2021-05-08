@@ -88,7 +88,7 @@ final class CryptoTests: XCTestCase {
     func testSign() throws {
         testAsyncMethods { (client, group) in
             group.enter()
-            let payload: TSDKParamsOfSign = .init(unsigned: "Hello", keys: TSDKKeyPair.init(public: "a5c367411a00ab0b542d118649de388b43ce4b7fa6dae2bb9243c6ad9aca7661", secret: "254c097277e9dd09d16152ee85abde4be54030db9930e38bf7069e4684ac10bb"))
+            let payload: TSDKParamsOfSign = .init(unsigned: "Hello".base64Encoded() ?? "", keys: TSDKKeyPair.init(public: "a5c367411a00ab0b542d118649de388b43ce4b7fa6dae2bb9243c6ad9aca7661", secret: "254c097277e9dd09d16152ee85abde4be54030db9930e38bf7069e4684ac10bb"))
             client.crypto.sign(payload) { [group] (response) in
                 XCTAssertEqual(response.result?.signed, "JvgdakMHpOdw7PKJX/IMQDygYJxt/kzEge0ebJHXx7H8eUOYMcL7sN0YBfwP/QZ0Z8XpffpyDJdwLpTErtnCDEhlbGxv")
                 XCTAssertEqual(response.result?.signature, "26f81d6a4307a4e770ecf2895ff20c403ca0609c6dfe4cc481ed1e6c91d7c7b1fc79439831c2fbb0dd1805fc0ffd067467c5e97dfa720c97702e94c4aed9c20c")
@@ -113,7 +113,7 @@ final class CryptoTests: XCTestCase {
     func testSha256() throws {
         testAsyncMethods { (client, group) in
             group.enter()
-            let payload: TSDKParamsOfHash = .init(data: "Hello")
+            let payload: TSDKParamsOfHash = .init(data: "Hello".base64Encoded() ?? "")
             client.crypto.sha256(payload) { [group] (response) in
                 XCTAssertEqual(response.result?.hash, "185f8db32271fe25f561a6fc938b2e264306ec304eda518007d1764826381969")
                 group.leave()
@@ -125,7 +125,7 @@ final class CryptoTests: XCTestCase {
     func testSha512() throws {
         testAsyncMethods { (client, group) in
             group.enter()
-            let payload: TSDKParamsOfHash = .init(data: "Hello")
+            let payload: TSDKParamsOfHash = .init(data: "Hello".base64Encoded() ?? "")
             client.crypto.sha512(payload) { [group] (response) in
                 XCTAssertEqual(response.result?.hash, "3615f80c9d293ed7402687f94b22d58e529b8cc7916f8fac7fddf7fbd5af4cf777d3d795a7a00a16bf7e7f3fb9561ee9baae480da9fe7a18769e71886b03f315")
                 group.leave()
@@ -137,7 +137,7 @@ final class CryptoTests: XCTestCase {
     func testScrypt() throws {
         testAsyncMethods { (client, group) in
             group.enter()
-            let payload: TSDKParamsOfScrypt = .init(password: "Test Password", salt: "Test Salt", log_n: 5, r: 4, p: 8, dk_len: 32)
+            let payload: TSDKParamsOfScrypt = .init(password: "Test Password".base64Encoded() ?? "", salt: "Test Salt".base64Encoded() ?? "", log_n: 5, r: 4, p: 8, dk_len: 32)
             client.crypto.scrypt(payload) { [group] (response) in
                 XCTAssertEqual(response.result?.key, "7cc741fa9cb4eb1edd36629e224e9cc8c316810ac540e4eb9ba578ff1643a3b9")
                 group.leave()
@@ -162,7 +162,7 @@ final class CryptoTests: XCTestCase {
     func testNacl_sign() throws {
         testAsyncMethods { (client, group) in
             group.enter()
-            let payload: TSDKParamsOfNaclSign = .init(unsigned: "Hello",
+            let payload: TSDKParamsOfNaclSign = .init(unsigned: "Hello".base64Encoded() ?? "",
                                                       secret: "254c097277e9dd09d16152ee85abde4be54030db9930e38bf7069e4684ac10bba5c367411a00ab0b542d118649de388b43ce4b7fa6dae2bb9243c6ad9aca7661")
             client.crypto.nacl_sign(payload) { [group] (response) in
                 XCTAssertEqual(response.result?.signed, "JvgdakMHpOdw7PKJX/IMQDygYJxt/kzEge0ebJHXx7H8eUOYMcL7sN0YBfwP/QZ0Z8XpffpyDJdwLpTErtnCDEhlbGxv")
@@ -188,7 +188,7 @@ final class CryptoTests: XCTestCase {
     func testNacl_sign_detached() throws {
         testAsyncMethods { (client, group) in
             group.enter()
-            let payload: TSDKParamsOfNaclSign = .init(unsigned: "Hello", secret: "254c097277e9dd09d16152ee85abde4be54030db9930e38bf7069e4684ac10bba5c367411a00ab0b542d118649de388b43ce4b7fa6dae2bb9243c6ad9aca7661")
+            let payload: TSDKParamsOfNaclSign = .init(unsigned: "Hello".base64Encoded() ?? "", secret: "254c097277e9dd09d16152ee85abde4be54030db9930e38bf7069e4684ac10bba5c367411a00ab0b542d118649de388b43ce4b7fa6dae2bb9243c6ad9aca7661")
             client.crypto.nacl_sign_detached(payload) { [group] (response) in
                 XCTAssertEqual(response.result?.signature, "26f81d6a4307a4e770ecf2895ff20c403ca0609c6dfe4cc481ed1e6c91d7c7b1fc79439831c2fbb0dd1805fc0ffd067467c5e97dfa720c97702e94c4aed9c20c")
                 group.leave()
@@ -227,7 +227,7 @@ final class CryptoTests: XCTestCase {
     func testNacl_box() throws {
         testAsyncMethods { (client, group) in
             group.enter()
-            let payload: TSDKParamsOfNaclBox = .init(decrypted: "Test Message",
+            let payload: TSDKParamsOfNaclBox = .init(decrypted: "Test Message".base64Encoded() ?? "",
                                                      nonce: "cd7f99924bf422544046e83595dd5803f17536f5c9a11746",
                                                      their_public: "c4e2d9fe6a6baf8d1812b799856ef2a306291be7a7024837ad33a8530db79c6b",
                                                      secret: "d9b9dc5033fb416134e5d2107fdbacab5aadb297cb82dbdcd137d663bac59f7f")
@@ -257,7 +257,7 @@ final class CryptoTests: XCTestCase {
     func testNacl_secret_box() throws {
         testAsyncMethods { (client, group) in
             group.enter()
-            let payload: TSDKParamsOfNaclSecretBox = .init(decrypted: "Test Message",
+            let payload: TSDKParamsOfNaclSecretBox = .init(decrypted: "Test Message".base64Encoded() ?? "",
                                                            nonce: "2a33564717595ebe53d91a785b9e068aba625c8453a76e45",
                                                            key: "8f68445b4e78c000fe4d6b7fc826879c1e63e3118379219a754ae66327764bd8")
             client.crypto.nacl_secret_box(payload) { [group] (response) in
@@ -417,7 +417,7 @@ final class CryptoTests: XCTestCase {
         testAsyncMethods { (client, group) in
             let key: String = .init(repeating: "01", count: 32)
             let nonce: String = .init(repeating: "ff", count: 12)
-            var payload: TSDKParamsOfChaCha20 = .init(data: "Message", key: key, nonce: nonce)
+            var payload: TSDKParamsOfChaCha20 = .init(data: "Message".base64Encoded() ?? "", key: key, nonce: nonce)
 
             group.enter()
             client.crypto.chacha20(payload) { [group] (response) in
