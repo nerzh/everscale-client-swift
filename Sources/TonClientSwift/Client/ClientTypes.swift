@@ -4,20 +4,6 @@
 
 import Foundation
 
-public struct TSDKDefault: Codable {
-    public var result: AnyJSONType?
-    public var error: AnyJSONType?
-    public var data: AnyJSONType?
-    public var message: AnyJSONType?
-
-    public init(result: AnyJSONType? = nil, error: AnyJSONType? = nil, data: AnyJSONType? = nil, message: AnyJSONType? = nil) {
-        self.result = result
-        self.error = error
-        self.data = data
-        self.message = message
-    }
-}
-
 public struct TSDKClientError: Codable {
     public var code: Int
     public var message: String
