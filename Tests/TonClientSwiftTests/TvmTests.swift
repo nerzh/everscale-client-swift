@@ -179,7 +179,7 @@ final class TvmTests: XCTestCase {
                 }
             }
             group.wait()
-            Log.log("process_message")
+            Log.log("process_message: deploy subscribe tvc to", resultOfEncodeMessage.address)
 
             let paramsOfWaitForCollection: TSDKParamsOfWaitForCollection = .init(collection: "accounts",
                                                                                  filter: .object(["id": .object(["eq": .string(resultOfEncodeMessage.address)])]),
@@ -200,7 +200,7 @@ final class TvmTests: XCTestCase {
                 XCTAssertTrue(false, "resultOfWaitForCollection is nil")
                 return
             }
-            Log.log("account BOC", resultOfWaitForCollection.result.toJSON())
+//            Log.log("account BOC", resultOfWaitForCollection.result.toJSON())
             Log.log("account has been received")
 
             guard let accountResult = resultOfWaitForCollection.result.jsonValue as? [String: AnyJSONType],
@@ -228,10 +228,11 @@ final class TvmTests: XCTestCase {
                                                                                              callSetHeader: nil,
                                                                                              callSetInput: subscribeParams)
             //MARK: CALL HANDLER
+
             let account: String = handler(client, subscriptionEncodeMessage, abi, accountBOC)
+            XCTAssertTrue(account != "", "RUN_TVM. Account is empty string")
 
             Log.log("Check subscription")
-
             let checkSubscribeParams: AnyValue = .object([
                 "subscriptionId": .string("0x1111111111111111111111111111111111111111111111111111111111111111")
             ])
@@ -250,6 +251,7 @@ final class TvmTests: XCTestCase {
                                                            abi: abi)
             var mayneResultOfRunTvm: TSDKResultOfRunTvm?
             group.enter()
+
             client.tvm.run_tvm(paramsOfRunTvm) { (response) in
                 if response.result != nil {
                     mayneResultOfRunTvm = response.result
@@ -283,11 +285,14 @@ final class TvmTests: XCTestCase {
             let paramsOfRunTvm: TSDKParamsOfRunTvm = .init(message: encodedMessage.message,
                                                            account: account,
                                                            execution_options: nil,
-                                                           abi: abi)
+                                                           abi: abi,
+                                                           return_updated_account: true)
             group.enter()
             var result: String = .init()
+            Log.warn(paramsOfRunTvm)
             client.tvm.run_tvm(paramsOfRunTvm) { (response) in
                 if response.result != nil {
+//                    Log.warn(response.result)
                     result = response.result!.account
                 }
                 if response.finished {
@@ -330,7 +335,8 @@ final class TvmTests: XCTestCase {
                                                                                                      unlimited_balance: true),
                                                                      execution_options: nil,
                                                                      abi: abi,
-                                                                     skip_transaction_check: nil)
+                                                                     skip_transaction_check: nil,
+                                                                     return_updated_account: true)
             var maybeResultOfRunExecutor: TSDKResultOfRunExecutor?
             group.enter()
             client.tvm.run_executor(paramsOfRunExecutor) { (response) in
@@ -357,15 +363,16 @@ final class TvmTests: XCTestCase {
                 }
             }
             group.wait()
-
-            XCTAssertEqual(maybeParsed?.parsed.toDictionary()?["balance"] as? String, originalBalance)
+            
+            XCTAssertNotEqual(maybeParsed?.parsed.toDictionary()?["balance"] as? String, originalBalance)
 
             // check standard run
             paramsOfRunExecutor = .init(message: encodedMessage.message,
                                         account: TSDKAccountForExecutor(type: .Account, boc: account, unlimited_balance: nil),
                                         execution_options: nil,
                                         abi: abi,
-                                        skip_transaction_check: nil)
+                                        skip_transaction_check: nil,
+                                        return_updated_account: true)
             var maybeCheckResultOfRunExecutor: TSDKResultOfRunExecutor?
             group.enter()
             client.tvm.run_executor(paramsOfRunExecutor) { (response) in
@@ -385,6 +392,7 @@ final class TvmTests: XCTestCase {
             XCTAssertEqual(checkResultOfRunExecutor.transaction.toDictionary()?["in_msg"] as? String, encodedMessage.message_id)
             XCTAssertTrue(checkResultOfRunExecutor.fees.total_account_fees > 0)
 
+            Log.warn("ACCOUNT", result)
             return result
         }
     }
@@ -396,7 +404,8 @@ final class TvmTests: XCTestCase {
                                                                      account: TSDKAccountForExecutor(type: .None),
                                                                      execution_options: nil,
                                                                      abi: nil,
-                                                                     skip_transaction_check: true)
+                                                                     skip_transaction_check: true,
+                                                                     return_updated_account: true)
             var maybeResultOfRunExecutor: TSDKResultOfRunExecutor?
             group.enter()
             client.tvm.run_executor(paramsOfRunExecutor) { (response) in
@@ -450,7 +459,8 @@ final class TvmTests: XCTestCase {
                                                                      account: TSDKAccountForExecutor(type: .Uninit),
                                                                      execution_options: nil,
                                                                      abi: nil,
-                                                                     skip_transaction_check: nil)
+                                                                     skip_transaction_check: nil,
+                                                                     return_updated_account: true)
             var maybeResultOfRunExecutor: TSDKResultOfRunExecutor?
             group.enter()
             client.tvm.run_executor(paramsOfRunExecutor) { (response) in

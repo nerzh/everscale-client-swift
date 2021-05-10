@@ -37,7 +37,8 @@ let package = Package(
             name: "TonClientSwiftTests",
             dependencies: [
                 .product(name: "SwiftRegularExpression", package: "SwiftRegularExpression"),
-                .byName(name: "TonClientSwift")
+                .byName(name: "TonClientSwift"),
+                .product(name: "FileUtils", package: "FileUtils"),
             ]),
     ],
     swiftLanguageVersions: [

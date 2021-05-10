@@ -9,6 +9,7 @@ import Foundation
 import TonClientSwift
 import XCTest
 import SwiftRegularExpression
+import FileUtils
 
 extension XCTestCase {
 
@@ -57,8 +58,10 @@ extension XCTestCase {
             return false
         }
 
-        if server_address[#"localhost"#] || server_address[#"127\.0\.0\.1"#] {
+        if (SimpleEnv["use_giver"] ?? SimpleEnv["giver_abi_name"]) ?? "" == "GiverNodeSE" {
             return self.getGramsFromGiverSyncNodeSE(client, accountAddress ?? testAddr, value)
+        } else if (SimpleEnv["use_giver"] ?? SimpleEnv["giver_abi_name"]) ?? "" == "GiverNodeSE_v2" {
+            return self.getGramsFromGiverSyncNodeSE_v2(client, accountAddress ?? testAddr, value)
         } else if server_address[#"net\.ton\.dev"#] {
             return self.getGramsFromGiverSyncNetDev(client, accountAddress ?? testAddr, value)
         } else {
@@ -136,16 +139,47 @@ extension XCTestCase {
                                      _ accountAddress: String,
                                      _ value: Int = 10_000_000_000
     ) -> Bool {
-        let walletAddress: String = SimpleEnv["giver_address"] ?? ""
+        let walletAddress: String = SimpleEnv["giver_address"] ?? "0:841288ed3b55d9cdafa806807f02a0ae0c169aa5edfe88a789a6482429756a94"
         let abiJSONValue: AnyValue = self.readAbi(SimpleEnv["giver_abi_name"] ?? "")
         let abi: TSDKAbi = .init(type: .Serialized, value: abiJSONValue)
         let callSetInput: AnyValue = .object(["dest" : .string(accountAddress), "amount": .int(Int(SimpleEnv["giver_amount"] ?? "") ?? value)])
-        let callSet: TSDKCallSet = .init(function_name: SimpleEnv["giver_function"] ?? "", header: nil, input: callSetInput)
+        let callSet: TSDKCallSet = .init(function_name: "sendGrams", header: nil, input: callSetInput)
         let paramsOfEncodedMessage: TSDKParamsOfEncodeMessage = .init(abi: abi,
                                                                       address: walletAddress,
                                                                       deploy_set: nil,
                                                                       call_set: callSet,
                                                                       signer: TSDKSigner(type: .None),
+                                                                      processing_try_index: nil)
+        let sendPaylod: TSDKParamsOfProcessMessage = .init(message_encode_params: paramsOfEncodedMessage, send_events: false)
+        let group: DispatchGroup = .init()
+        group.enter()
+        client.processing.process_message(sendPaylod) { (response) in
+            if response.finished {
+                group.leave()
+            }
+        }
+        group.wait()
+        return checkPositiveBallance(client, accountAddress)
+    }
+
+    func getGramsFromGiverSyncNodeSE_v2(_ client: TSDKClientModule,
+                                     _ accountAddress: String,
+                                     _ value: Int = 10_000_000_000
+    ) -> Bool {
+        let walletAddress: String = SimpleEnv["giver_address"] ?? "0:b5e9240fc2d2f1ff8cbb1d1dee7fb7cae155e5f6320e585fcc685698994a19a5"
+        let jsonKeys: TSDKKeyPair = self.readKeys(SimpleEnv["giver_abi_name"] ?? "")
+        let abiJSONValue: AnyValue = self.readAbi(SimpleEnv["giver_abi_name"] ?? "")
+        let abi: TSDKAbi = .init(type: .Serialized, value: abiJSONValue)
+        let callSetInput: AnyValue = .object(["dest" : .string(accountAddress),
+                                              "value": .int(Int(SimpleEnv["giver_amount"] ?? "") ?? value),
+                                              "bounce": .bool(false)])
+        let callSet: TSDKCallSet = .init(function_name: "sendTransaction", header: nil, input: callSetInput)
+        let paramsOfEncodedMessage: TSDKParamsOfEncodeMessage = .init(abi: abi,
+                                                                      address: walletAddress,
+                                                                      deploy_set: nil,
+                                                                      call_set: callSet,
+                                                                      signer: TSDKSigner(type: .Keys,
+                                                                                         keys: jsonKeys),
                                                                       processing_try_index: nil)
         let sendPaylod: TSDKParamsOfProcessMessage = .init(message_encode_params: paramsOfEncodedMessage, send_events: false)
         let group: DispatchGroup = .init()
@@ -237,6 +271,17 @@ extension XCTestCase {
             group.wait()
             return keys
         }
+    }
+
+    func readKeys(_ name: String) -> TSDKKeyPair {
+        let keysJSONPath: String = pathToRootDirectory + "/Tests/TonClientSwiftTests/Fixtures/abi/\(name).keys.json"
+        var keysJSON: String = .init()
+        DOFileReader.readFile(keysJSONPath) { (line) in
+            keysJSON.append(line)
+        }
+        guard let keys = keysJSON.toModel(model: TSDKKeyPair.self) else { fatalError("AbiJSON Not Parsed From File") }
+
+        return keys
     }
 
     func readAbi(_ name: String) -> AnyValue {
