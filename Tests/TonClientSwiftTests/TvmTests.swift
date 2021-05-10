@@ -248,7 +248,8 @@ final class TvmTests: XCTestCase {
             let paramsOfRunTvm: TSDKParamsOfRunTvm = .init(message: checkSubscriptionEncodeMessage.message,
                                                            account: account,
                                                            execution_options: nil,
-                                                           abi: abi)
+                                                           abi: abi,
+                                                           return_updated_account: false)
             var mayneResultOfRunTvm: TSDKResultOfRunTvm?
             group.enter()
 

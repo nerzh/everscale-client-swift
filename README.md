@@ -194,9 +194,7 @@ giver_function=grant
 nodeSE will start on localhost:80   
 ```
 server_address=http://localhost:80
-giver_address=0:841288ed3b55d9cdafa806807f02a0ae0c169aa5edfe88a789a6482429756a94
-giver_abi_name=GiverNodeSE
-giver_function=sendGrams
+giver_abi_name=GiverNodeSE_v2
 giver_amount=10000000000
 ```
 
