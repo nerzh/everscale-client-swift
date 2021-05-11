@@ -406,7 +406,7 @@ final class CryptoTests: XCTestCase {
             group.enter()
             let payload: TSDKParamsOfHDKeyPublicFromXPrv = .init(xprv: "xprv9s21ZrQH143K3M3Auzg5wmEcKzsVbpE9PdPam5QVjW76rZ59Cw8oTg2kEqFJkNx917D8opVbuuz2jTCUtfrB7oEHU99zmnGDtPggrXNSQHB")
             client.crypto.hdkey_public_from_xprv(payload) { [group] (response) in
-                XCTAssertEqual(response.result?.public, "02a2b8a753c8e6c3d057b6956d125935288e657eee5ae0950095b2660d0159727f")
+                XCTAssertEqual(response.result?.public, "01709823c5ada7fdede9b6a0f7f388eda0c29a54ead5ae90ede3b5baaeb242e3")
                 group.leave()
             }
             group.wait()
