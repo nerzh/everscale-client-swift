@@ -67,8 +67,8 @@ class CodeGenerator {
             }
         }
         result.append("}\n\n")
-        if let summary: String = swiftEnum.summary { result.append("/// \(summary.replace(#"\n"#, ""))\n\n") }
-        if let descr: String = swiftEnum.description { result.append("/// \(descr.replace(#"\n"#, ""))\n\n") }
+        if let summary: String = swiftEnum.summary { result.append("/// \(checkComment(summary))\n\n") }
+        if let descr: String = swiftEnum.description { result.append("/// \(checkComment(descr))\n\n") }
 
         return result
     }
@@ -76,8 +76,8 @@ class CodeGenerator {
     private func generateStruct(_ swiftStruct: SDKSwiftStruct) -> String {
         var result: String = "\(swiftStruct.accessType) struct \(swiftStruct.name): \(swiftStruct.parents.joined(separator: ", ")) {\n"
         for property in swiftStruct.properties {
-            if let summary: String = property.summary { result.append("\(tab)/// \(summary.replace(#"\n"#, ""))\n") }
-            if let descr: String = property.description { result.append("\(tab)/// \(descr.replace(#"\n"#, ""))\n") }
+            if let summary: String = property.summary { result.append("\(tab)/// \(checkComment(summary))\n") }
+            if let descr: String = property.description { result.append("\(tab)/// \(checkComment(descr))\n") }
             result.append("\(tab)\(property.accessType) var \(property.name): \(property.type)\n")
         }
         result.append("\n\(tab)public init(")
@@ -95,8 +95,8 @@ class CodeGenerator {
         }
         result.append("\(tab)}\n")
         result.append("}\n\n")
-        if let summary: String = swiftStruct.summary { result.append("/// \(summary.replace(#"\n"#, ""))\n") }
-        if let descr: String = swiftStruct.description { result.append("/// \(descr.replace(#"\n"#, ""))\n") }
+        if let summary: String = swiftStruct.summary { result.append("/// \(checkComment(summary))\n") }
+        if let descr: String = swiftStruct.description { result.append("/// \(checkComment(descr))\n") }
 
         return result
     }
@@ -113,8 +113,8 @@ class CodeGenerator {
 //    }
     private func generateFunction(_ swiftFunction: SDKSwiftFunction) -> String {
         var result: String = .init()
-        if let summary = swiftFunction.summary { result.append("\(tab)/// \(summary.replace(#"\n"#, ""))\n") }
-        if let description = swiftFunction.description { result.append("\(tab)/// \(description.replace(#"\n"#, ""))\n") }
+        if let summary = swiftFunction.summary { result.append("\(tab)/// \(checkComment(summary))\n") }
+        if let description = swiftFunction.description { result.append("\(tab)/// \(checkComment(description))\n") }
         result.append("\(tab)\(swiftFunction.accessType) func \(swiftFunction.name)(")
         for parameter in swiftFunction.params {
             result.append("_ \(parameter.name): \(parameter.type), ")
@@ -178,5 +178,19 @@ class CodeGenerator {
         result.append("}\n")
 
         return result
+    }
+
+    private func checkComment(_ string: String, tabs: Int = 1) -> String {
+        var replacedString: String = ".\n"
+        for _ in (1...tabs) {
+            replacedString.append(tab)
+        }
+        replacedString.append("/// ")
+        let symbolsWithSpace: String = #"\.\:\!\?"#
+        let regxp: String = "([^\(symbolsWithSpace)])\n"
+        return string.replace(#"\n+"#, "\n").replace(#" \n"#, "\n/// ").replace("\(symbolsWithSpace)\\s*\\n", replacedString).replace(regxp, []) { match in
+            let matches = match.regexp(regxp)
+            return "\(matches[1]!)"
+        }
     }
 }
