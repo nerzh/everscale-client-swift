@@ -153,7 +153,8 @@ public struct TSDKParamsOfAggregateCollection: Codable {
 
 public struct TSDKResultOfAggregateCollection: Codable {
     /// Values for requested fields.
-    /// Returns an array of strings. Each string refers to the corresponding `fields` item.Numeric value is returned as a decimal string representations.
+    /// Returns an array of strings. Each string refers to the corresponding `fields` item.
+    /// Numeric value is returned as a decimal string representations.
     public var values: AnyJSONType
 
     public init(values: AnyJSONType) {

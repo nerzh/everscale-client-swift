@@ -182,7 +182,8 @@ public struct TSDKParamsOfRunGet: Codable {
     /// Execution options
     public var execution_options: TSDKExecutionOptions?
     /// Convert lists based on nested tuples in the **result** into plain arrays.
-    /// Default is `false`. Input parameters may use any of lists representationsIf you receive this error on Web: "Runtime error. Unreachable code should not be executed...",set this flag to true.This may happen, for example, when elector contract contains too many participants
+    /// Default is `false`. Input parameters may use any of lists representationsIf you receive this error on Web: "Runtime error. Unreachable code should not be executed...",set this flag to true.
+    /// This may happen, for example, when elector contract contains too many participants
     public var tuple_list_as_array: Bool?
 
     public init(account: String, function_name: String, input: AnyValue? = nil, execution_options: TSDKExecutionOptions? = nil, tuple_list_as_array: Bool? = nil) {

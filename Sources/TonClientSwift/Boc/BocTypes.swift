@@ -174,7 +174,9 @@ public struct TSDKBuilderOp: Codable {
     /// Bit size of the value.
     public var size: UInt32?
     /// Value: - `Number` containing integer number.
-    /// e.g. `123`, `-123`. - Decimal string. e.g. `"123"`, `"-123"`.- `0x` prefixed hexadecimal string.  e.g `0x123`, `0X123`, `-0x123`.
+    /// e.g. `123`, `-123`. - Decimal string. e.g. `"123"`, `"-123"`.
+    /// - `0x` prefixed hexadecimal string.
+    ///   e.g `0x123`, `0X123`, `-0x123`.
     public var value: AnyJSONType?
     /// Nested cell builder
     public var builder: [TSDKBuilderOp]?

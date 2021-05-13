@@ -30,7 +30,8 @@ public final class TSDKNetModule {
     }
 
     /// Queries collection data
-    /// Queries data that satisfies the `filter` conditions,limits the number of returned records and orders them.The projection fields are limited to `result` fields
+    /// Queries data that satisfies the `filter` conditions,limits the number of returned records and orders them.
+    /// The projection fields are limited to `result` fields
     public func query_collection(_ payload: TSDKParamsOfQueryCollection, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfQueryCollection, TSDKClientError, TSDKDefault>) -> Void
     ) {
         let method: String = "query_collection"
@@ -54,7 +55,10 @@ public final class TSDKNetModule {
     }
 
     /// Returns an object that fulfills the conditions or waits for its appearance
-    /// Triggers only once.If object that satisfies the `filter` conditionsalready exists - returns it immediately.If not - waits for insert/update of data within the specified `timeout`,and returns it.The projection fields are limited to `result` fields
+    /// Triggers only once.
+    /// If object that satisfies the `filter` conditionsalready exists - returns it immediately.
+    /// If not - waits for insert/update of data within the specified `timeout`,and returns it.
+    /// The projection fields are limited to `result` fields
     public func wait_for_collection(_ payload: TSDKParamsOfWaitForCollection, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfWaitForCollection, TSDKClientError, TSDKDefault>) -> Void
     ) {
         let method: String = "wait_for_collection"
@@ -78,7 +82,23 @@ public final class TSDKNetModule {
     }
 
     /// Creates a subscription
-    /// Triggers for each insert/update of data that satisfiesthe `filter` conditions.The projection fields are limited to `result` fields.The subscription is a persistent communication channel betweenclient and Free TON Network.All changes in the blockchain will be reflected in realtime.Changes means inserts and updates of the blockchain entities.### Important Notes on SubscriptionsUnfortunately sometimes the connection with the network brakes down.In this situation the library attempts to reconnect to the network.This reconnection sequence can take significant time.All of this time the client is disconnected from the network.Bad news is that all blockchain changes that happened whilethe client was disconnected are lost.Good news is that the client report errors to the callback whenit loses and resumes connection.So, if the lost changes are important to the application thenthe application must handle these error reports.Library reports errors with `responseType` == 101and the error object passed via `params`.When the library has successfully reconnectedthe application receives callback with`responseType` == 101 and `params.code` == 614 (NetworkModuleResumed).Application can use several ways to handle this situation:- If application monitors changes for the single blockchainobject (for example specific account):  applicationcan perform a query for this object and handle actual data as aregular data from the subscription.- If application monitors sequence of some blockchain objects(for example transactions of the specific account): application mustrefresh all cached (or visible to user) lists where this sequences presents.
+    /// Triggers for each insert/update of data that satisfiesthe `filter` conditions.
+    /// The projection fields are limited to `result` fields.
+    /// The subscription is a persistent communication channel betweenclient and Free TON Network.
+    /// All changes in the blockchain will be reflected in realtime.
+    /// Changes means inserts and updates of the blockchain entities.
+    /// ### Important Notes on SubscriptionsUnfortunately sometimes the connection with the network brakes down.
+    /// In this situation the library attempts to reconnect to the network.
+    /// This reconnection sequence can take significant time.
+    /// All of this time the client is disconnected from the network.
+    /// Bad news is that all blockchain changes that happened whilethe client was disconnected are lost.
+    /// Good news is that the client report errors to the callback whenit loses and resumes connection.
+    /// So, if the lost changes are important to the application thenthe application must handle these error reports.
+    /// Library reports errors with `responseType` == 101and the error object passed via `params`.
+    /// When the library has successfully reconnectedthe application receives callback with`responseType` == 101 and `params.code` == 614 (NetworkModuleResumed).
+    /// Application can use several ways to handle this situation:
+    /// - If application monitors changes for the single blockchainobject (for example specific account):  applicationcan perform a query for this object and handle actual data as aregular data from the subscription.
+    /// - If application monitors sequence of some blockchain objects(for example transactions of the specific account): application mustrefresh all cached (or visible to user) lists where this sequences presents.
     public func subscribe_collection(_ payload: TSDKParamsOfSubscribeCollection, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfSubscribeCollection, TSDKClientError, TSDKDefault>) -> Void
     ) {
         let method: String = "subscribe_collection"

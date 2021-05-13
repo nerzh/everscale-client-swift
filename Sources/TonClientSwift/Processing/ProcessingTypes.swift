@@ -78,7 +78,9 @@ public struct TSDKParamsOfSendMessage: Codable {
     /// Message BOC.
     public var message: String
     /// Optional message ABI.
-    /// If this parameter is specified and the message has the`expire` header then expiration time will be checked againstthe current time to prevent unnecessary sending of already expired message.The `message already expired` error will be returned in thiscase.Note, that specifying `abi` for ABI compliant contracts isstrongly recommended, so that proper processing strategy can bechosen.
+    /// If this parameter is specified and the message has the`expire` header then expiration time will be checked againstthe current time to prevent unnecessary sending of already expired message.
+    /// The `message already expired` error will be returned in thiscase.
+    /// Note, that specifying `abi` for ABI compliant contracts isstrongly recommended, so that proper processing strategy can bechosen.
     public var abi: TSDKAbi?
     /// Flag for requesting events sending
     public var send_events: Bool
@@ -106,7 +108,8 @@ public struct TSDKResultOfSendMessage: Codable {
 
 public struct TSDKParamsOfWaitForTransaction: Codable {
     /// Optional ABI for decoding the transaction result.
-    /// If it is specified, then the output messages' bodies will bedecoded according to this ABI.The `abi_decoded` result field will be filled out.
+    /// If it is specified, then the output messages' bodies will bedecoded according to this ABI.
+    /// The `abi_decoded` result field will be filled out.
     public var abi: TSDKAbi?
     /// Message BOC.
     /// Encoded with `base64`.

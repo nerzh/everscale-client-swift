@@ -152,7 +152,8 @@ public final class TSDKCryptoModule {
     }
 
     /// Verifies the signature and returns the unsigned message
-    /// Verifies the signature in `signed` using the signer's public key `public`and returns the message `unsigned`.If the signature fails verification, crypto_sign_open raises an exception.
+    /// Verifies the signature in `signed` using the signer's public key `public`and returns the message `unsigned`.
+    /// If the signature fails verification, crypto_sign_open raises an exception.
     public func nacl_sign_open(_ payload: TSDKParamsOfNaclSignOpen, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfNaclSignOpen, TSDKClientError, TSDKDefault>) -> Void
     ) {
         let method: String = "nacl_sign_open"

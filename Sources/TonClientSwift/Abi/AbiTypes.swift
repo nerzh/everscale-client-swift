@@ -99,7 +99,10 @@ public struct TSDKDeploySet: Codable {
     /// List of initial values for contract's public variables.
     public var initial_data: AnyJSONType?
     /// Optional public key that can be provided in deploy set in order to substitute one in TVM file or provided by Signer.
-    /// Public key resolving priority:1. Public key from deploy set.2. Public key, specified in TVM file.3. Public key, provided by Signer.
+    /// Public key resolving priority:
+    /// 1. Public key from deploy set.
+    /// 2. Public key, specified in TVM file.
+    /// 3. Public key, provided by Signer.
     public var initial_pubkey: String?
 
     public init(tvc: String, workchain_id: Int32? = nil, initial_data: AnyJSONType? = nil, initial_pubkey: String? = nil) {
@@ -246,14 +249,18 @@ public struct TSDKParamsOfEncodeMessageBody: Codable {
     /// Contract ABI.
     public var abi: TSDKAbi
     /// Function call parameters.
-    /// Must be specified in non deploy message.In case of deploy message contains parameters of constructor.
+    /// Must be specified in non deploy message.
+    /// In case of deploy message contains parameters of constructor.
     public var call_set: TSDKCallSet
     /// True if internal message body must be encoded.
     public var is_internal: Bool
     /// Signing parameters.
     public var signer: TSDKSigner
     /// Processing try index.
-    /// Used in message processing with retries.Encoder uses the provided try index to calculate messageexpiration time.Expiration timeouts will grow with every retry.Default value is 0.
+    /// Used in message processing with retries.
+    /// Encoder uses the provided try index to calculate messageexpiration time.
+    /// Expiration timeouts will grow with every retry.
+    /// Default value is 0.
     public var processing_try_index: UInt8?
 
     public init(abi: TSDKAbi, call_set: TSDKCallSet, is_internal: Bool, signer: TSDKSigner, processing_try_index: UInt8? = nil) {
@@ -269,7 +276,8 @@ public struct TSDKResultOfEncodeMessageBody: Codable {
     /// Message body BOC encoded with `base64`.
     public var body: String
     /// Optional data to sign.
-    /// Encoded with `base64`. Presents when `message` is unsigned. Can be used for externalmessage signing. Is this case you need to sing this data andproduce signed message using `abi.attach_signature`.
+    /// Encoded with `base64`.
+    /// /// Presents when `message` is unsigned. Can be used for externalmessage signing. Is this case you need to sing this data andproduce signed message using `abi.attach_signature`.
     public var data_to_sign: String?
 
     public init(body: String, data_to_sign: String? = nil) {
@@ -317,12 +325,17 @@ public struct TSDKParamsOfEncodeMessage: Codable {
     /// Must be specified in case of deploy message.
     public var deploy_set: TSDKDeploySet?
     /// Function call parameters.
-    /// Must be specified in case of non-deploy message.In case of deploy message it is optional and contains parametersof the functions that will to be called upon deploy transaction.
+    /// Must be specified in case of non-deploy message.
+    /// In case of deploy message it is optional and contains parametersof the functions that will to be called upon deploy transaction.
     public var call_set: TSDKCallSet?
     /// Signing parameters.
     public var signer: TSDKSigner
     /// Processing try index.
-    /// Used in message processing with retries (if contract's ABI includes "expire" header).Encoder uses the provided try index to calculate messageexpiration time. The 1st message expiration time is specified inClient config.Expiration timeouts will grow with every retry.Retry grow factor is set in Client config:<.....add config parameter with default value here>Default value is 0.
+    /// Used in message processing with retries (if contract's ABI includes "expire" header).
+    /// Encoder uses the provided try index to calculate messageexpiration time. The 1st message expiration time is specified inClient config.
+    /// Expiration timeouts will grow with every retry.
+    /// Retry grow factor is set in Client config:
+    /// <.....add config parameter with default value here>Default value is 0.
     public var processing_try_index: UInt8?
 
     public init(abi: TSDKAbi, address: String? = nil, deploy_set: TSDKDeploySet? = nil, call_set: TSDKCallSet? = nil, signer: TSDKSigner, processing_try_index: UInt8? = nil) {
@@ -367,7 +380,8 @@ public struct TSDKParamsOfEncodeInternalMessage: Codable {
     /// Must be specified in case of deploy message.
     public var deploy_set: TSDKDeploySet?
     /// Function call parameters.
-    /// Must be specified in case of non-deploy message.In case of deploy message it is optional and contains parametersof the functions that will to be called upon deploy transaction.
+    /// Must be specified in case of non-deploy message.
+    /// In case of deploy message it is optional and contains parametersof the functions that will to be called upon deploy transaction.
     public var call_set: TSDKCallSet?
     /// Value in nanotokens to be sent with message.
     public var value: String
