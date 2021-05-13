@@ -181,14 +181,20 @@ class CodeGenerator {
     }
 
     private func checkComment(_ string: String, tabs: Int = 1) -> String {
-        var replacedString: String = ".\n"
+        var replacedString: String = "\n"
         for _ in (1...tabs) {
             replacedString.append(tab)
         }
         replacedString.append("/// ")
-        let symbolsWithSpace: String = #"\.\:\!\?"#
+        let symbolsWithSpace: String = #"\.|\:|\!|\?|\;"#
         let regxp: String = "([^\(symbolsWithSpace)])\n"
-        return string.replace(#"\n+"#, "\n").replace(#" \n"#, "\n/// ").replace("\(symbolsWithSpace)\\s*\\n", replacedString).replace(regxp, []) { match in
+        return string
+            .replace(#"\n+"#, "\n")
+            .replace(#" \n"#, "\n/// ")
+            .replace("(\(symbolsWithSpace))\\s*\\n", []) { match in
+                return "\(match)\(replacedString)"
+            }
+            .replace(regxp, []) { match in
             let matches = match.regexp(regxp)
             return "\(matches[1]!)"
         }
