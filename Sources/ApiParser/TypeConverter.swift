@@ -157,13 +157,6 @@ class SDKApi {
         return result
     }
 
-//    private func checkField(_ field: SDKApiJSON.Module.ModuleType.StructField) -> SDKApiJSON.Module.ModuleType.StructField {
-//        var result: SDKApiJSON.Module.ModuleType.StructField = .init(name: nil, type: nil, ref_name: nil, number_type: nil, number_size: nil, array_item: nil, optional_inner: nil, summary: nil, description: nil)
-//
-//
-//        return result
-//    }
-
     private func checkPropertyName(_ name: String?) -> String {
         var result: String = ""
         guard let name = name else {
@@ -180,7 +173,7 @@ class SDKApi {
     }
 
     private func isValidPropertyName(_ name: String?) -> Bool {
-        !(name ?? "")[#" "#]
+        !(name ?? " ")[#" "#]
     }
 
     func convertEnumOfConsts(_ from: SDKApiJSON.Module.ModuleType) -> SDKSwiftEnum {

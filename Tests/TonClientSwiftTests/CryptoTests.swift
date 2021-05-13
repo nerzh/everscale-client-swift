@@ -201,8 +201,8 @@ final class CryptoTests: XCTestCase {
         testAsyncMethods { (client, group) in
             group.enter()
             client.crypto.nacl_box_keypair() { [group] (response) in
-                XCTAssertEqual(response.result?.public is String, true)
-                XCTAssertEqual(response.result?.secret is String, true)
+                XCTAssertTrue(response.result?.public != nil)
+                XCTAssertTrue(response.result?.secret != nil)
                 XCTAssertEqual(response.result?.public.count, 64)
                 XCTAssertEqual(response.result?.secret.count, 64)
                 group.leave()
