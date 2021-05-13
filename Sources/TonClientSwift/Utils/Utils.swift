@@ -7,6 +7,7 @@ public final class TSDKUtilsModule {
         self.binding = binding
     }
 
+    /// Converts address from any TON format to any TON format
     public func convert_address(_ payload: TSDKParamsOfConvertAddress, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfConvertAddress, TSDKClientError, TSDKDefault>) -> Void
     ) {
         let method: String = "convert_address"
@@ -17,6 +18,7 @@ public final class TSDKUtilsModule {
         })
     }
 
+    /// Calculates storage fee for an account over a specified time period
     public func calc_storage_fee(_ payload: TSDKParamsOfCalcStorageFee, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfCalcStorageFee, TSDKClientError, TSDKDefault>) -> Void
     ) {
         let method: String = "calc_storage_fee"
@@ -27,6 +29,7 @@ public final class TSDKUtilsModule {
         })
     }
 
+    /// Compresses data using Zstandard algorithm
     public func compress_zstd(_ payload: TSDKParamsOfCompressZstd, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfCompressZstd, TSDKClientError, TSDKDefault>) -> Void
     ) {
         let method: String = "compress_zstd"
@@ -37,6 +40,7 @@ public final class TSDKUtilsModule {
         })
     }
 
+    /// Decompresses data using Zstandard algorithm
     public func decompress_zstd(_ payload: TSDKParamsOfDecompressZstd, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfDecompressZstd, TSDKClientError, TSDKDefault>) -> Void
     ) {
         let method: String = "decompress_zstd"

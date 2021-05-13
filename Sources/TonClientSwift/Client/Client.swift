@@ -25,6 +25,7 @@ public final class TSDKClientModule {
         self.debot = TSDKDebotModule(binding: binding)
     }
 
+    /// Returns Core Library API reference
     public func get_api_reference(_ handler: @escaping (TSDKBindingResponse<TSDKResultOfGetApiReference, TSDKClientError, TSDKDefault>) -> Void
     ) {
         let method: String = "get_api_reference"
@@ -35,6 +36,7 @@ public final class TSDKClientModule {
         })
     }
 
+    /// Returns Core Library version
     public func version(_ handler: @escaping (TSDKBindingResponse<TSDKResultOfVersion, TSDKClientError, TSDKDefault>) -> Void
     ) {
         let method: String = "version"
@@ -45,6 +47,7 @@ public final class TSDKClientModule {
         })
     }
 
+    /// Returns detailed information about this build.
     public func build_info(_ handler: @escaping (TSDKBindingResponse<TSDKResultOfBuildInfo, TSDKClientError, TSDKDefault>) -> Void
     ) {
         let method: String = "build_info"
@@ -55,6 +58,7 @@ public final class TSDKClientModule {
         })
     }
 
+    /// Resolves application request processing result
     public func resolve_app_request(_ payload: TSDKParamsOfResolveAppRequest, _ handler: @escaping (TSDKBindingResponse<TSDKNoneResult, TSDKClientError, TSDKDefault>) -> Void
     ) {
         let method: String = "resolve_app_request"

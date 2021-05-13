@@ -113,8 +113,8 @@ class CodeGenerator {
 //    }
     private func generateFunction(_ swiftFunction: SDKSwiftFunction) -> String {
         var result: String = .init()
-        if let summary = swiftFunction.summary { result.append("\(tab)/// \(summary)\n") }
-        if let description = swiftFunction.description { result.append("\(tab)/// \(description)\n") }
+        if let summary = swiftFunction.summary { result.append("\(tab)/// \(summary.replace(#"\n"#, ""))\n") }
+        if let description = swiftFunction.description { result.append("\(tab)/// \(description.replace(#"\n"#, ""))\n") }
         result.append("\(tab)\(swiftFunction.accessType) func \(swiftFunction.name)(")
         for parameter in swiftFunction.params {
             result.append("_ \(parameter.name): \(parameter.type), ")
