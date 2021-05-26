@@ -74,28 +74,40 @@ public struct TSDKNetworkConfig: Codable {
     /// Deprecated.
     /// You must use `network.max_reconnect_timeout` that allows to specify maximum network resolving timeout.
     public var network_retries_count: Int8?
-    /// Maximum time for sequential reconnections in ms.
-    /// Default value is 120000 (2 min)
+    /// Maximum time for sequential reconnections.
+    /// Must be specified in milliseconds. Default is 120000 (2 min).
     public var max_reconnect_timeout: UInt32?
     /// Deprecated
     public var reconnect_timeout: UInt32?
-    /// The number of automatic message processing retries that SDK performs in case of `Message Expired (507)` error - but only for those messages which local emulation was successful or failed with replay protection error. The default value is 5.
+    /// The number of automatic message processing retries that SDK performs in case of `Message Expired (507)` error - but only for those messages which local emulation was successful or failed with replay protection error.
+    /// Default is 5.
     public var message_retries_count: Int8?
     /// Timeout that is used to process message delivery for the contracts which ABI does not include "expire" header. If the message is not delivered within the specified timeout the appropriate error occurs.
+    /// Must be specified in milliseconds. Default is 40000 (40 sec).
     public var message_processing_timeout: UInt32?
-    /// Maximum timeout that is used for query response. The default value is 40 sec.
+    /// Maximum timeout that is used for query response.
+    /// Must be specified in milliseconds. Default is 40000 (40 sec).
     public var wait_for_timeout: UInt32?
     /// Maximum time difference between server and client.
     /// If client's device time is out of sync and difference is more than the threshold then error will occur. Also an error will occur if the specified threshold is more than`message_processing_timeout/2`.
-    /// The default value is 15 sec.
+    /// Must be specified in milliseconds. Default is 15000 (15 sec).
     public var out_of_sync_threshold: UInt32?
-    /// Maximum number of randomly chosen endpoints the library uses to send message. The default value is 2 endpoints.
+    /// Maximum number of randomly chosen endpoints the library uses to broadcast a message.
+    /// Default is 2.
     public var sending_endpoint_count: UInt8?
+    /// Frequency of sync latency detection.
+    /// Library periodically checks the current endpoint for blockchain data syncronization latency.
+    /// If the latency (time-lag) is less then `NetworkConfig.max_latency`then library selects another endpoint.
+    /// Must be specified in milliseconds. Default is 60000 (1 min).
+    public var latency_detection_interval: UInt32?
+    /// Maximum value for the endpoint's blockchain data syncronization latency (time-lag). Library periodically checks the current endpoint for blockchain data syncronization latency. If the latency (time-lag) is less then `NetworkConfig.max_latency` then library selects another endpoint.
+    /// Must be specified in milliseconds. Default is 60000 (1 min).
+    public var max_latency: UInt32?
     /// Access key to GraphQL API.
-    /// At the moment is not used in production
+    /// At the moment is not used in production.
     public var access_key: String?
 
-    public init(server_address: String? = nil, endpoints: [String]? = nil, network_retries_count: Int8? = nil, max_reconnect_timeout: UInt32? = nil, reconnect_timeout: UInt32? = nil, message_retries_count: Int8? = nil, message_processing_timeout: UInt32? = nil, wait_for_timeout: UInt32? = nil, out_of_sync_threshold: UInt32? = nil, sending_endpoint_count: UInt8? = nil, access_key: String? = nil) {
+    public init(server_address: String? = nil, endpoints: [String]? = nil, network_retries_count: Int8? = nil, max_reconnect_timeout: UInt32? = nil, reconnect_timeout: UInt32? = nil, message_retries_count: Int8? = nil, message_processing_timeout: UInt32? = nil, wait_for_timeout: UInt32? = nil, out_of_sync_threshold: UInt32? = nil, sending_endpoint_count: UInt8? = nil, latency_detection_interval: UInt32? = nil, max_latency: UInt32? = nil, access_key: String? = nil) {
         self.server_address = server_address
         self.endpoints = endpoints
         self.network_retries_count = network_retries_count
@@ -106,6 +118,8 @@ public struct TSDKNetworkConfig: Codable {
         self.wait_for_timeout = wait_for_timeout
         self.out_of_sync_threshold = out_of_sync_threshold
         self.sending_endpoint_count = sending_endpoint_count
+        self.latency_detection_interval = latency_detection_interval
+        self.max_latency = max_latency
         self.access_key = access_key
     }
 }

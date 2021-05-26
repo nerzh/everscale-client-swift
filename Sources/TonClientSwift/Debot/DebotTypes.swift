@@ -119,8 +119,10 @@ public struct TSDKDebotActivity: Codable {
     public var setcode: Bool?
     /// Public key from keypair that was used to sign external message.
     public var signkey: String?
+    /// Signing box handle used to sign external message.
+    public var signing_box_handle: UInt32?
 
-    public init(type: TSDKDebotActivityEnumTypes, msg: String? = nil, dst: String? = nil, out: [TSDKSpending]? = nil, fee: Int? = nil, setcode: Bool? = nil, signkey: String? = nil) {
+    public init(type: TSDKDebotActivityEnumTypes, msg: String? = nil, dst: String? = nil, out: [TSDKSpending]? = nil, fee: Int? = nil, setcode: Bool? = nil, signkey: String? = nil, signing_box_handle: UInt32? = nil) {
         self.type = type
         self.msg = msg
         self.dst = dst
@@ -128,6 +130,7 @@ public struct TSDKDebotActivity: Codable {
         self.fee = fee
         self.setcode = setcode
         self.signkey = signkey
+        self.signing_box_handle = signing_box_handle
     }
 }
 

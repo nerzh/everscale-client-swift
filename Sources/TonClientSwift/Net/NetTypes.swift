@@ -65,6 +65,67 @@ public struct TSDKFieldAggregation: Codable {
     }
 }
 
+public struct TSDKTransactionNode: Codable {
+    /// Transaction id.
+    public var id: String
+    /// In message id.
+    public var in_msg: String
+    /// Out message ids.
+    public var out_msgs: [String]
+    /// Account address.
+    public var account_addr: String
+    /// Transactions total fees.
+    public var total_fees: String
+    /// Aborted flag.
+    public var aborted: Bool
+    /// Compute phase exit code.
+    public var exit_code: UInt32?
+
+    public init(id: String, in_msg: String, out_msgs: [String], account_addr: String, total_fees: String, aborted: Bool, exit_code: UInt32? = nil) {
+        self.id = id
+        self.in_msg = in_msg
+        self.out_msgs = out_msgs
+        self.account_addr = account_addr
+        self.total_fees = total_fees
+        self.aborted = aborted
+        self.exit_code = exit_code
+    }
+}
+
+public struct TSDKMessageNode: Codable {
+    /// Message id.
+    public var id: String
+    /// Source transaction id.
+    /// This field is missing for an external inbound messages.
+    public var src_transaction_id: String?
+    /// Destination transaction id.
+    /// This field is missing for an external outbound messages.
+    public var dst_transaction_id: String?
+    /// Source address.
+    public var src: String?
+    /// Destination address.
+    public var dst: String?
+    /// Transferred tokens value.
+    public var value: String?
+    /// Bounce flag.
+    public var bounce: Bool
+    /// Decoded body.
+    /// Library tries to decode message body using provided `params.abi_registry`.
+    /// This field will be missing if none of the provided abi can be used to decode.
+    public var decoded_body: TSDKDecodedMessageBody?
+
+    public init(id: String, src_transaction_id: String? = nil, dst_transaction_id: String? = nil, src: String? = nil, dst: String? = nil, value: String? = nil, bounce: Bool, decoded_body: TSDKDecodedMessageBody? = nil) {
+        self.id = id
+        self.src_transaction_id = src_transaction_id
+        self.dst_transaction_id = dst_transaction_id
+        self.src = src
+        self.dst = dst
+        self.value = value
+        self.bounce = bounce
+        self.decoded_body = decoded_body
+    }
+}
+
 public struct TSDKParamsOfQuery: Codable {
     /// GraphQL query text.
     public var query: String
@@ -241,6 +302,18 @@ public struct TSDKEndpointsSet: Codable {
     }
 }
 
+public struct TSDKResultOfGetEndpoints: Codable {
+    /// Current query endpoint
+    public var query: String
+    /// List of all endpoints used by client
+    public var endpoints: [String]
+
+    public init(query: String, endpoints: [String]) {
+        self.query = query
+        self.endpoints = endpoints
+    }
+}
+
 public struct TSDKParamsOfQueryCounterparties: Codable {
     /// Account address
     public var account: String
@@ -256,6 +329,30 @@ public struct TSDKParamsOfQueryCounterparties: Codable {
         self.result = result
         self.first = first
         self.after = after
+    }
+}
+
+public struct TSDKParamsOfQueryTransactionTree: Codable {
+    /// Input message id.
+    public var in_msg: String
+    /// List of contract ABIs that will be used to decode message bodies. Library will try to decode each returned message body using any ABI from the registry.
+    public var abi_registry: [TSDKAbi]?
+
+    public init(in_msg: String, abi_registry: [TSDKAbi]? = nil) {
+        self.in_msg = in_msg
+        self.abi_registry = abi_registry
+    }
+}
+
+public struct TSDKResultOfQueryTransactionTree: Codable {
+    /// Messages.
+    public var messages: [TSDKMessageNode]
+    /// Transactions.
+    public var transactions: [TSDKTransactionNode]
+
+    public init(messages: [TSDKMessageNode], transactions: [TSDKTransactionNode]) {
+        self.messages = messages
+        self.transactions = transactions
     }
 }
 

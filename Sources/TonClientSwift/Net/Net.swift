@@ -164,6 +164,17 @@ public final class TSDKNetModule {
         })
     }
 
+    /// Requests the list of alternative endpoints from server
+    public func get_endpoints(_ handler: @escaping (TSDKBindingResponse<TSDKResultOfGetEndpoints, TSDKClientError, TSDKDefault>) -> Void
+    ) {
+        let method: String = "get_endpoints"
+        binding.requestLibraryAsync(methodName(module, method), "", { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKResultOfGetEndpoints, TSDKClientError, TSDKDefault> = .init()
+            response.update(requestId, params, responseType, finished)
+            handler(response)
+        })
+    }
+
     /// Allows to query and paginate through the list of accounts that the specified account has interacted with, sorted by the time of the last internal message between accounts
     /// *Attention* this query retrieves data from 'Counterparties' service which is not supported inthe opensource version of DApp Server (and will not be supported) as well as in TON OS SE (will be supported in SE in future),but is always accessible via [TON OS Devnet/Mainnet Clouds](https://docs.ton.dev/86757ecb2/p/85c869-networks)
     public func query_counterparties(_ payload: TSDKParamsOfQueryCounterparties, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfQueryCollection, TSDKClientError, TSDKDefault>) -> Void
@@ -171,6 +182,24 @@ public final class TSDKNetModule {
         let method: String = "query_counterparties"
         binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKResultOfQueryCollection, TSDKClientError, TSDKDefault> = .init()
+            response.update(requestId, params, responseType, finished)
+            handler(response)
+        })
+    }
+
+    /// Returns transactions tree for specific message.
+    /// Performs recursive retrieval of the transactions tree produced by the specific message:
+    /// in_msg -> dst_transaction -> out_messages -> dst_transaction -> ...
+    /// All retrieved messages and transactions will be includedinto `result.messages` and `result.transactions` respectively.
+    /// The retrieval process will stop when the retrieved transaction count is more than 50.
+    /// It is guaranteed that each message in `result.messages` has the corresponding transactionin the `result.transactions`.
+    /// But there are no guaranties that all messages from transactions `out_msgs` arepresented in `result.messages`.
+    /// So the application have to continue retrieval for missing messages if it requires.
+    public func query_transaction_tree(_ payload: TSDKParamsOfQueryTransactionTree, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfQueryTransactionTree, TSDKClientError, TSDKDefault>) -> Void
+    ) {
+        let method: String = "query_transaction_tree"
+        binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKResultOfQueryTransactionTree, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
             handler(response)
         })

@@ -202,12 +202,12 @@ public struct TSDKAbiEvent: Codable {
 }
 
 public struct TSDKAbiData: Codable {
-    public var key: Int
+    public var key: UInt32
     public var name: String
     public var type: String
     public var components: [TSDKAbiParam]?
 
-    public init(key: Int, name: String, type: String, components: [TSDKAbiParam]? = nil) {
+    public init(key: UInt32, name: String, type: String, components: [TSDKAbiParam]? = nil) {
         self.key = key
         self.name = name
         self.type = type
