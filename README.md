@@ -204,3 +204,16 @@ Run Tests inside Xcode
 __Linux:__  
 swift test --generate-linuxmain  
 swift test --enable-test-discovery  
+
+### Update SDK
+
+```bash
+
+cd ton-client-swift
+
+swift build -c release
+
+curl https://raw.githubusercontent.com/tonlabs/TON-SDK/master/tools/api.json > api.json
+
+./.build/x86_64-apple-macosx/release/ApiParser ./api.json
+```
