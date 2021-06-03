@@ -14,7 +14,7 @@ if [ -d "./TON-SDK" ]; then
 else
   git clone https://github.com/tonlabs/TON-SDK.git
 fi
-cd ./TON-SDK
+cd ./TON-SDK && git pull --ff-only
 cargo update
 cargo build --release
   
