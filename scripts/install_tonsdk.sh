@@ -44,7 +44,7 @@ Libs: -L${libdir} -lton_client'
 HEADER="$(pwd)/ton_client/tonclient.h"
 
 echo ""
-if [ -f "$HEADER" ]; then
+if [[ -f "$HEADER" ]]; then
   echo "CHECK: $HEADER - EXIST"
 else
   echo ""
@@ -52,7 +52,7 @@ else
   exit 1;
 fi
 
-if [ -f "./libton_client.pc" ]; then
+if [[ -f "./libton_client.pc" ]]; then
   rm ./libton_client.pc
 else
   echo "OK: libton_client.pc already deleted"
@@ -61,12 +61,20 @@ fi
 if [ `uname -s` = Linux ]; then
   echo ""
   echo "Create symbolic link tonclient.h"
-  sudo ln -s $HEADER /usr/include/tonclient.h || echo "OK: symbolic link tonclient.h already exist"
+  if [[ -h "/usr/include/tonclient.h" ]]; then
+    sudo rm /usr/include/tonclient.h
+    echo "OK: /usr/include/tonclient.h old symlink already deleted and will create new"
+  fi
+  sudo ln -s $HEADER /usr/include/tonclient.h || echo "ERROR: symbolic link tonclient.h already exist"
 
   DYLIB="$(pwd)/target/release/libton_client.so"
   echo ""
   echo "Create symbolic link libton_client.so"
-  sudo ln -s $DYLIB /usr/lib/libton_client.so || echo "OK: symbolic link libton_client.so already exist"
+  if [ -h "/usr/lib/libton_client.so" ]; then
+    sudo rm /usr/lib/libton_client.so
+    echo "OK: /usr/lib/libton_client.so old symlink already deleted and will create new"
+  fi
+  sudo ln -s $DYLIB /usr/lib/libton_client.so || echo "ERROR: symbolic link libton_client.so already exist"
 
   
   echo "$LINUX_PKG_CONFIG" >> libton_client.pc
@@ -74,15 +82,25 @@ if [ `uname -s` = Linux ]; then
 elif [ `uname -s` = Darwin ]; then
   echo ""
   echo "Create symbolic link tonclient.h"
-  ln -s $HEADER /usr/local/include/tonclient.h || echo "OK: symbolic link tonclient.h already exist"
+  if [[ -h "/usr/local/include/tonclient.h" ]]; then
+    sudo rm /usr/local/include/tonclient.h
+    echo "OK: /usr/local/include/tonclient.h old symlink already deleted and will create new"
+  fi
+  ln -s $HEADER /usr/local/include/tonclient.h || echo "ERROR: symbolic link tonclient.h already exist"
 
   DYLIB="$(pwd)/target/release/libton_client.dylib"
   echo ""
   echo "Create symbolic link libton_client.dylib"
-  ln -s $DYLIB /usr/local/lib/libton_client.dylib || echo "OK: symbolic link libton_client.dylib already exist"
+  if [[ -h "/usr/local/lib/libton_client.dylib" ]]; then
+    sudo rm /usr/local/lib/libton_client.dylib
+    echo "OK: /usr/local/lib/libton_client.dylib old symlink deleted and will create new"
+  fi
+  ln -s $DYLIB /usr/local/lib/libton_client.dylib || echo "ERROR: symbolic link libton_client.dylib already exist"
   
   echo "$MACOS_PKG_CONFIG" >> libton_client.pc
   mv libton_client.pc /usr/local/lib/pkgconfig/libton_client.pc
+else
+  echo "I CAN INSTALL ONLY LINUX(DEBIAN / UBUNTU / ...) OR MACOS"
 fi
 
 echo $'\nINSTALLATION TON-SDK COMPLETE'
