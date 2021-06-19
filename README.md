@@ -208,12 +208,14 @@ swift test --enable-test-discovery
 ### Update SDK
 
 ```bash
-
 cd ton-client-swift
-
+```
+```bash
 swift build -c release
-
+```
+```bash
 curl https://raw.githubusercontent.com/tonlabs/TON-SDK/master/tools/api.json > api.json
-
+```
+```bash
 ./.build/x86_64-apple-macosx/release/ApiParser ./api.json
 ```
