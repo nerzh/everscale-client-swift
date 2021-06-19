@@ -211,11 +211,5 @@ swift test --enable-test-discovery
 cd ton-client-swift
 ```
 ```bash
-swift build -c release
-```
-```bash
-curl https://raw.githubusercontent.com/tonlabs/TON-SDK/master/tools/api.json > api.json
-```
-```bash
-./.build/x86_64-apple-macosx/release/ApiParser ./api.json
+bash api_generate.sh
 ```
