@@ -74,6 +74,10 @@ class CodeGenerator {
     }
 
     private func generateStruct(_ swiftStruct: SDKSwiftStruct) -> String {
+        var swiftStruct = swiftStruct
+        if swiftStruct.name == "\(libPrefix)ClientError" {
+            swiftStruct.parents.append("Error")
+        }
         var result: String = "\(swiftStruct.accessType) struct \(swiftStruct.name): \(swiftStruct.parents.joined(separator: ", ")) {\n"
         for property in swiftStruct.properties {
             if let summary: String = property.summary { result.append("\(tab)/// \(checkComment(summary))\n") }

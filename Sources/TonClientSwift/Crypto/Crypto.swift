@@ -7,7 +7,9 @@ public final class TSDKCryptoModule {
         self.binding = binding
     }
 
-    /// Performs prime factorization – decomposition of a composite number into a product of smaller prime integers (factors). See [https://en.wikipedia.org/wiki/Integer_factorization]
+    /// Integer factorization
+    /// Performs prime factorization – decomposition of a composite numberinto a product of smaller prime integers (factors).
+    /// See [https://en.wikipedia.org/wiki/Integer_factorization]
     public func factorize(_ payload: TSDKParamsOfFactorize, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfFactorize, TSDKClientError, TSDKDefault>) -> Void
     ) {
         let method: String = "factorize"
@@ -18,7 +20,9 @@ public final class TSDKCryptoModule {
         })
     }
 
-    /// Performs modular exponentiation for big integers (`base`^`exponent` mod `modulus`). See [https://en.wikipedia.org/wiki/Modular_exponentiation]
+    /// Modular exponentiation
+    /// Performs modular exponentiation for big integers (`base`^`exponent` mod `modulus`).
+    /// See [https://en.wikipedia.org/wiki/Modular_exponentiation]
     public func modular_power(_ payload: TSDKParamsOfModularPower, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfModularPower, TSDKClientError, TSDKDefault>) -> Void
     ) {
         let method: String = "modular_power"
@@ -117,7 +121,9 @@ public final class TSDKCryptoModule {
         })
     }
 
-    /// Derives key from `password` and `key` using `scrypt` algorithm. See [https://en.wikipedia.org/wiki/Scrypt].
+    /// Perform `scrypt` encryption
+    /// Derives key from `password` and `key` using `scrypt` algorithm.
+    /// See [https://en.wikipedia.org/wiki/Scrypt].
     /// # Arguments- `log_n` - The log2 of the Scrypt parameter `N`- `r` - The Scrypt parameter `r`- `p` - The Scrypt parameter `p`# Conditions- `log_n` must be less than `64`- `r` must be greater than `0` and less than or equal to `4294967295`- `p` must be greater than `0` and less than `4294967295`# Recommended values sufficient for most use-cases- `log_n = 15` (`n = 32768`)- `r = 8`- `p = 1`
     public func scrypt(_ payload: TSDKParamsOfScrypt, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfScrypt, TSDKClientError, TSDKDefault>) -> Void
     ) {
@@ -265,6 +271,7 @@ public final class TSDKCryptoModule {
         })
     }
 
+    /// Generates a random mnemonic
     /// Generates a random mnemonic from the specified dictionary and word count
     public func mnemonic_from_random(_ payload: TSDKParamsOfMnemonicFromRandom, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfMnemonicFromRandom, TSDKClientError, TSDKDefault>) -> Void
     ) {
@@ -287,7 +294,8 @@ public final class TSDKCryptoModule {
         })
     }
 
-    /// The phrase supplied will be checked for word length and validated according to the checksum specified in BIP0039.
+    /// Validates a mnemonic phrase
+    /// The phrase supplied will be checked for word length and validated according to the checksumspecified in BIP0039.
     public func mnemonic_verify(_ payload: TSDKParamsOfMnemonicVerify, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfMnemonicVerify, TSDKClientError, TSDKDefault>) -> Void
     ) {
         let method: String = "mnemonic_verify"
@@ -298,7 +306,8 @@ public final class TSDKCryptoModule {
         })
     }
 
-    /// Validates the seed phrase, generates master key and then derives the key pair from the master key and the specified path
+    /// Derives a key pair for signing from the seed phrase
+    /// Validates the seed phrase, generates master key and then derivesthe key pair from the master key and the specified path
     public func mnemonic_derive_sign_keys(_ payload: TSDKParamsOfMnemonicDeriveSignKeys, _ handler: @escaping (TSDKBindingResponse<TSDKKeyPair, TSDKClientError, TSDKDefault>) -> Void
     ) {
         let method: String = "mnemonic_derive_sign_keys"

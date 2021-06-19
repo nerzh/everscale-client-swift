@@ -39,7 +39,7 @@ public enum TSDKAppRequestResultEnumTypes: String, Codable {
     case Ok = "Ok"
 }
 
-public struct TSDKClientError: Codable {
+public struct TSDKClientError: Codable, Error {
     public var code: UInt32
     public var message: String
     public var data: AnyJSONType

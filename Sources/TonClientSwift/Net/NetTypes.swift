@@ -337,10 +337,15 @@ public struct TSDKParamsOfQueryTransactionTree: Codable {
     public var in_msg: String
     /// List of contract ABIs that will be used to decode message bodies. Library will try to decode each returned message body using any ABI from the registry.
     public var abi_registry: [TSDKAbi]?
+    /// Timeout used to limit waiting time for the missing messages and transaction.
+    /// If some of the following messages and transactions are missing yetThe maximum waiting time is regulated by this option.
+    /// Default value is 60000 (1 min).
+    public var timeout: UInt32?
 
-    public init(in_msg: String, abi_registry: [TSDKAbi]? = nil) {
+    public init(in_msg: String, abi_registry: [TSDKAbi]? = nil, timeout: UInt32? = nil) {
         self.in_msg = in_msg
         self.abi_registry = abi_registry
+        self.timeout = timeout
     }
 }
 

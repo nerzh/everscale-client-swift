@@ -120,7 +120,9 @@ public struct TSDKParamsOfWaitForTransaction: Codable {
     /// Flag that enables/disables intermediate events
     public var send_events: Bool
     /// The list of endpoints to which the message was sent.
-    /// You must provide the same value as the `send_message` has returned.
+    /// Use this field to get more informative errors.
+    /// Provide the same value as the `send_message` has returned.
+    /// If the message was not delivered (expired), SDK will log the endpoint URLs, used for its sending.
     public var sending_endpoints: [String]?
 
     public init(abi: TSDKAbi? = nil, message: String, shard_block_id: String, send_events: Bool, sending_endpoints: [String]? = nil) {
