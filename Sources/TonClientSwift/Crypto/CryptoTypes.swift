@@ -1,5 +1,7 @@
 public typealias TSDKSigningBoxHandle = UInt32
 
+public typealias TSDKEncryptionBoxHandle = UInt32
+
 public enum TSDKCryptoErrorCode: Int, Codable {
     case InvalidPublicKey = 100
     case InvalidSecretKey = 101
@@ -21,6 +23,7 @@ public enum TSDKCryptoErrorCode: Int, Codable {
     case MnemonicFromEntropyFailed = 120
     case SigningBoxNotRegistered = 121
     case InvalidSignature = 122
+    case EncryptionBoxNotRegistered = 123
 }
 
 public enum TSDKParamsOfAppSigningBoxEnumTypes: String, Codable {
@@ -31,6 +34,36 @@ public enum TSDKParamsOfAppSigningBoxEnumTypes: String, Codable {
 public enum TSDKResultOfAppSigningBoxEnumTypes: String, Codable {
     case GetPublicKey = "GetPublicKey"
     case Sign = "Sign"
+}
+
+public enum TSDKParamsOfAppEncryptionBoxEnumTypes: String, Codable {
+    case GetInfo = "GetInfo"
+    case Encrypt = "Encrypt"
+    case Decrypt = "Decrypt"
+}
+
+public enum TSDKResultOfAppEncryptionBoxEnumTypes: String, Codable {
+    case GetInfo = "GetInfo"
+    case Encrypt = "Encrypt"
+    case Decrypt = "Decrypt"
+}
+
+public struct TSDKEncryptionBoxInfo: Codable {
+    /// Derivation path, for instance "m/44'/396'/0'/0/0"
+    public var hdpath: String?
+    /// Cryptographic algorithm, used by this encryption box
+    public var algorithm: String?
+    /// Options, depends on algorithm and specific encryption box implementation
+    public var options: AnyJSONType?
+    /// Public information, depends on algorithm
+    public var `public`: AnyJSONType?
+
+    public init(hdpath: String? = nil, algorithm: String? = nil, options: AnyJSONType? = nil, `public`: AnyJSONType? = nil) {
+        self.hdpath = hdpath
+        self.algorithm = algorithm
+        self.options = options
+        self.`public` = `public`
+    }
 }
 
 public struct TSDKParamsOfFactorize: Codable {
@@ -728,6 +761,101 @@ public struct TSDKResultOfSigningBoxSign: Codable {
 
     public init(signature: String) {
         self.signature = signature
+    }
+}
+
+public struct TSDKRegisteredEncryptionBox: Codable {
+    /// Handle of the encryption box
+    public var handle: TSDKEncryptionBoxHandle
+
+    public init(handle: TSDKEncryptionBoxHandle) {
+        self.handle = handle
+    }
+}
+
+public struct TSDKParamsOfAppEncryptionBox: Codable {
+    public var type: TSDKParamsOfAppEncryptionBoxEnumTypes
+    /// Data, encoded in Base64
+    public var data: String?
+
+    public init(type: TSDKParamsOfAppEncryptionBoxEnumTypes, data: String? = nil) {
+        self.type = type
+        self.data = data
+    }
+}
+
+/// Encryption box callbacks.
+public struct TSDKResultOfAppEncryptionBox: Codable {
+    public var type: TSDKResultOfAppEncryptionBoxEnumTypes
+    public var info: TSDKEncryptionBoxInfo?
+    /// Encrypted data, encoded in Base64
+    public var data: String?
+
+    public init(type: TSDKResultOfAppEncryptionBoxEnumTypes, info: TSDKEncryptionBoxInfo? = nil, data: String? = nil) {
+        self.type = type
+        self.info = info
+        self.data = data
+    }
+}
+
+/// Returning values from signing box callbacks.
+public struct TSDKParamsOfEncryptionBoxGetInfo: Codable {
+    /// Encryption box handle
+    public var encryption_box: TSDKEncryptionBoxHandle
+
+    public init(encryption_box: TSDKEncryptionBoxHandle) {
+        self.encryption_box = encryption_box
+    }
+}
+
+public struct TSDKResultOfEncryptionBoxGetInfo: Codable {
+    /// Encryption box information
+    public var info: TSDKEncryptionBoxInfo
+
+    public init(info: TSDKEncryptionBoxInfo) {
+        self.info = info
+    }
+}
+
+public struct TSDKParamsOfEncryptionBoxEncrypt: Codable {
+    /// Encryption box handle
+    public var encryption_box: TSDKEncryptionBoxHandle
+    /// Data to be encrypted, encoded in Base64
+    public var data: String
+
+    public init(encryption_box: TSDKEncryptionBoxHandle, data: String) {
+        self.encryption_box = encryption_box
+        self.data = data
+    }
+}
+
+public struct TSDKResultOfEncryptionBoxEncrypt: Codable {
+    /// Encrypted data, encoded in Base64
+    public var data: String
+
+    public init(data: String) {
+        self.data = data
+    }
+}
+
+public struct TSDKParamsOfEncryptionBoxDecrypt: Codable {
+    /// Encryption box handle
+    public var encryption_box: TSDKEncryptionBoxHandle
+    /// Data to be decrypted, encoded in Base64
+    public var data: String
+
+    public init(encryption_box: TSDKEncryptionBoxHandle, data: String) {
+        self.encryption_box = encryption_box
+        self.data = data
+    }
+}
+
+public struct TSDKResultOfEncryptionBoxDecrypt: Codable {
+    /// Decrypted data, encoded in Base64
+    public var data: String
+
+    public init(data: String) {
+        self.data = data
     }
 }
 

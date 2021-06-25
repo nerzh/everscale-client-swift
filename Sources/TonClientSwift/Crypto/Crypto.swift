@@ -439,4 +439,59 @@ public final class TSDKCryptoModule {
         })
     }
 
+    /// Register an application implemented encryption box.
+    public func register_encryption_box(_ handler: @escaping (TSDKBindingResponse<TSDKRegisteredEncryptionBox, TSDKClientError, TSDKDefault>) -> Void
+    ) {
+        let method: String = "register_encryption_box"
+        binding.requestLibraryAsync(methodName(module, method), "", { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKRegisteredEncryptionBox, TSDKClientError, TSDKDefault> = .init()
+            response.update(requestId, params, responseType, finished)
+            handler(response)
+        })
+    }
+
+    /// Removes encryption box from SDK
+    public func remove_encryption_box(_ payload: TSDKRegisteredEncryptionBox, _ handler: @escaping (TSDKBindingResponse<TSDKNoneResult, TSDKClientError, TSDKDefault>) -> Void
+    ) {
+        let method: String = "remove_encryption_box"
+        binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKNoneResult, TSDKClientError, TSDKDefault> = .init()
+            response.update(requestId, params, responseType, finished)
+            handler(response)
+        })
+    }
+
+    /// Queries info from the given encryption box
+    public func encryption_box_get_info(_ payload: TSDKParamsOfEncryptionBoxGetInfo, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfEncryptionBoxGetInfo, TSDKClientError, TSDKDefault>) -> Void
+    ) {
+        let method: String = "encryption_box_get_info"
+        binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKResultOfEncryptionBoxGetInfo, TSDKClientError, TSDKDefault> = .init()
+            response.update(requestId, params, responseType, finished)
+            handler(response)
+        })
+    }
+
+    /// Encrypts data using given encryption box
+    public func encryption_box_encrypt(_ payload: TSDKParamsOfEncryptionBoxEncrypt, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfEncryptionBoxEncrypt, TSDKClientError, TSDKDefault>) -> Void
+    ) {
+        let method: String = "encryption_box_encrypt"
+        binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKResultOfEncryptionBoxEncrypt, TSDKClientError, TSDKDefault> = .init()
+            response.update(requestId, params, responseType, finished)
+            handler(response)
+        })
+    }
+
+    /// Decrypts data using given encryption box
+    public func encryption_box_decrypt(_ payload: TSDKParamsOfEncryptionBoxDecrypt, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfEncryptionBoxDecrypt, TSDKClientError, TSDKDefault>) -> Void
+    ) {
+        let method: String = "encryption_box_decrypt"
+        binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKResultOfEncryptionBoxDecrypt, TSDKClientError, TSDKDefault> = .init()
+            response.update(requestId, params, responseType, finished)
+            handler(response)
+        })
+    }
+
 }
