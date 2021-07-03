@@ -151,6 +151,9 @@ cargo install cargo-lipo
 ```
 
 2. Build TON-SDK for iOS
+
+**Go to your project folder and:**
+
 ```bash
 git clone https://github.com/tonlabs/TON-SDK.git || true && \
 cd ./TON-SDK
@@ -176,10 +179,12 @@ cargo lipo --release
 
 #endif
 ```   
-5. Add path to search for bridge headers ( path to Tonclient-Bridging-Header.h )  
+5. Add path to Tonclient-Bridging-Header.h **$(PROJECT_DIR)Tonclient-Bridging-Header.h**
+
 ![](https://user-images.githubusercontent.com/10519803/101789966-9591bc80-3b0a-11eb-8918-1adf36130617.png)
 
-6. Add path to search for libraries ( path to directory withlibton_client.a )   
+6. Add path to search for libraries ( path to directory withlibton_client.a ) **$(PROJECT_DIR)/TON-SDK/target/universal/release**
+
 ![](https://user-images.githubusercontent.com/10519803/101791171-e524b800-3b0b-11eb-98fa-29b7a50c3b67.png)
 
 7. __File > Swift Packages > Add Package Dependency__  
