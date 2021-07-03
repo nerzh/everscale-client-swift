@@ -136,30 +136,36 @@ __Linux:__
 
 ## Setup TONSDK For iOS
 
-0.   For install Rust and rust dependencies you should download and execute the install_rust.sh script from scripts directory   
+0.   Install Rust
 
-```
-bash scripts/install_rust.sh
+```bash
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh || true && \
+source ~/.profile
 ```  
 
-⚠️ Wait installation
+1. Install "cargo lipo"
 
-1. Build TON-SDK for iOS
+```bash
+rustup target add aarch64-apple-ios x86_64-apple-ios || true && \
+cargo install cargo-lipo
 ```
+
+2. Build TON-SDK for iOS
+```bash
 git clone https://github.com/tonlabs/TON-SDK.git || true && \
 cd ./TON-SDK
 ```
 
-```
+```bash
 git pull --ff-only || true && \
 cargo update || true && \
 cargo lipo --release
 ```  
 ⚠️ Wait installation
 
-2. In xcode __File > Add files to "Name Your Project"__ navigate to ./TON-SDK/ton_client/tonclient.h
+3. In xcode __File > Add files to "Name Your Project"__ navigate to ./TON-SDK/ton_client/tonclient.h
 
-3. Create bridge. In xcode __File > New > File__, select Header File, set name for example Tonclient-Bridging-Header.h and add __#include <stdbool.h>__ and __#import "tonclient.h"__ like this:
+4. Create bridge. In xcode __File > New > File__, select Header File, set name for example Tonclient-Bridging-Header.h and add __#include <stdbool.h>__ and __#import "tonclient.h"__ like this:
 
 ```C
 #ifndef Tonclient_Bridging_Header_h
@@ -170,16 +176,16 @@ cargo lipo --release
 
 #endif
 ```   
-4. Add path to search for bridge headers ( path to Tonclient-Bridging-Header.h )  
+5. Add path to search for bridge headers ( path to Tonclient-Bridging-Header.h )  
 ![](https://user-images.githubusercontent.com/10519803/101789966-9591bc80-3b0a-11eb-8918-1adf36130617.png)
 
-5. Add path to search for libraries ( path to directory withlibton_client.a )   
+6. Add path to search for libraries ( path to directory withlibton_client.a )   
 ![](https://user-images.githubusercontent.com/10519803/101791171-e524b800-3b0b-11eb-98fa-29b7a50c3b67.png)
 
-6. __File > Swift Packages > Add Package Dependency__  
+7. __File > Swift Packages > Add Package Dependency__  
 ![](https://user-images.githubusercontent.com/10519803/101791238-fa99e200-3b0b-11eb-99f3-8e8120c57e96.png)
 
-7. Build project ...
+8. Build project ...
 
 ## Tests
 ### If you use Xcode for Test
