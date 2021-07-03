@@ -144,10 +144,15 @@ bash scripts/install_rust.sh
 
 ⚠️ Wait installation
 
-1. 
+1. Build TON-SDK for iOS
 ```
 git clone https://github.com/tonlabs/TON-SDK.git || true && \
-cd ./TON-SDK \
+cd ./TON-SDK
+```
+
+```
+git pull --ff-only || true && \
+cargo update || true && \
 cargo lipo --release
 ```  
 ⚠️ Wait installation
