@@ -137,13 +137,17 @@ __Linux:__
 ## Setup TONSDK For iOS
 
 0.   For install Rust and rust dependencies you should download and execute the install_rust.sh script from scripts directory   
-```bash install_rust.sh```  
+
+```
+bash scripts/install_rust.sh
+```  
+
 ⚠️ Wait installation
 
 1. 
 ```
-git clone https://github.com/tonlabs/TON-SDK.git
-cd ./TON-SDK
+git clone https://github.com/tonlabs/TON-SDK.git || true && \
+cd ./TON-SDK \
 cargo lipo --release
 ```  
 ⚠️ Wait installation
