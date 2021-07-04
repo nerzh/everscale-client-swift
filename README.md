@@ -189,13 +189,17 @@ like this:
 ```   
 5. Add path to Tonclient-Bridging-Header.h **$(PROJECT_DIR)/Tonclient-Bridging-Header.h**
 
+
 ![](https://user-images.githubusercontent.com/10519803/101789966-9591bc80-3b0a-11eb-8918-1adf36130617.png)
 
 6. Add path to search for libraries ( path to directory withlibton_client.a ) **$(PROJECT_DIR)/TON-SDK/target/universal/release**
 
+
 ![](https://user-images.githubusercontent.com/10519803/101791171-e524b800-3b0b-11eb-98fa-29b7a50c3b67.png)
 
-7. __File > Swift Packages > Add Package Dependency__  
+7. __File > Swift Packages > Add Package Dependency__  **https://github.com/nerzh/ton-client-swift**
+
+
 ![](https://user-images.githubusercontent.com/10519803/101791238-fa99e200-3b0b-11eb-99f3-8e8120c57e96.png)
 
 8. Build project ...
