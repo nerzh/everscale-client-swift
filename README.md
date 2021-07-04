@@ -187,7 +187,7 @@ like this:
 
 #endif
 ```   
-5. Add path to Tonclient-Bridging-Header.h **$(PROJECT_DIR)Tonclient-Bridging-Header.h**
+5. Add path to Tonclient-Bridging-Header.h **$(PROJECT_DIR)/Tonclient-Bridging-Header.h**
 
 ![](https://user-images.githubusercontent.com/10519803/101789966-9591bc80-3b0a-11eb-8918-1adf36130617.png)
 
