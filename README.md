@@ -168,7 +168,15 @@ cargo lipo --release
 
 3. In xcode __File > Add files to "Name Your Project"__ navigate to ./TON-SDK/ton_client/tonclient.h
 
-4. Create bridge. In xcode __File > New > File__, select Header File, set name for example Tonclient-Bridging-Header.h and add __#include <stdbool.h>__ and __#import "tonclient.h"__ like this:
+4. Create bridge. In xcode __File > New > File__, select Header File, set name for example **Tonclient-Bridging-Header.h** 
+
+and add 
+
+__#include <stdbool.h>__
+
+__#import "tonclient.h"__
+
+like this:
 
 ```C
 #ifndef Tonclient_Bridging_Header_h
