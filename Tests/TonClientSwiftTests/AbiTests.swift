@@ -184,7 +184,9 @@ final class AbiTests: XCTestCase {
                                                            message: "te6ccgEBAwEAvAABRYgAC31qq9KF9Oifst6LU9U6FQSQQRlCSEMo+A3LN5MvphIMAQHhrd/b+MJ5Za+AygBc5qS/dVIPnqxCsM9PvqfVxutK+lnQEKzQoRTLYO6+jfM8TF4841bdNjLQwIDWL4UVFdxIhdMfECP8d3ruNZAXul5xxahT91swIEkEHph08JVlwmUmQAAAXRnJcuDX1XMZBW+LBKACAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==")
             client.abi.decode_message(payload) { [group] (response) in
                 XCTAssertEqual(response.result?.body_type, .Input)
-                XCTAssertEqual(response.result?.value, AnyJSONType(["id": AnyJSONType("0x0000000000000000000000000000000000000000000000000000000000000000")]))
+                XCTAssertEqual(
+                    response.result?.value,
+                    ["id": "0x0000000000000000000000000000000000000000000000000000000000000000"].toAnyValue())
                 XCTAssertEqual(response.result?.header?.expire, 1599458404)
                 XCTAssertEqual(response.result?.header?.time, 1599458364291)
                 XCTAssertEqual(response.result?.header?.pubkey, "4c7c408ff1ddebb8d6405ee979c716a14fdd6cc08124107a61d3c25597099499")
@@ -204,7 +206,10 @@ final class AbiTests: XCTestCase {
                                                            message: "te6ccgEBAQEAVQAApeACvg5/pmQpY4m61HmJ0ne+zjHJu3MNG8rJxUDLbHKBu/AAAAAAAAAMJL6z6ro48sYvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABA")
             client.abi.decode_message(payload) { [group] (response) in
                 XCTAssertEqual(response.result?.body_type, .Event)
-                XCTAssertEqual(response.result?.value, AnyJSONType(["id": AnyJSONType("0x0000000000000000000000000000000000000000000000000000000000000000")]))
+                XCTAssertEqual(
+                    response.result?.value,
+                    ["id": "0x0000000000000000000000000000000000000000000000000000000000000000"].toAnyValue()
+                )
                 XCTAssertNil(response.result?.header)
                 group.leave()
             }
@@ -221,7 +226,10 @@ final class AbiTests: XCTestCase {
                                                            message: "te6ccgEBAQEAVQAApeACvg5/pmQpY4m61HmJ0ne+zjHJu3MNG8rJxUDLbHKBu/AAAAAAAAAMKr6z6rxK3xYJAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABA")
             client.abi.decode_message(payload) { [group] (response) in
                 XCTAssertEqual(response.result?.body_type, .Output)
-                XCTAssertEqual(response.result?.value, AnyJSONType(["value0": AnyJSONType("0x0000000000000000000000000000000000000000000000000000000000000000")]))
+                XCTAssertEqual(
+                    response.result?.value,
+                    ["value0": "0x0000000000000000000000000000000000000000000000000000000000000000"].toAnyValue()
+                )
                 XCTAssertNil(response.result?.header)
                 group.leave()
             }
@@ -240,7 +248,10 @@ final class AbiTests: XCTestCase {
                                                                is_internal: false)
             client.abi.decode_message_body(payload) { [group] (response) in
                 XCTAssertEqual(response.result?.body_type, .Input)
-                XCTAssertEqual(response.result?.value, AnyJSONType(["id": AnyJSONType("0x0000000000000000000000000000000000000000000000000000000000000000")]))
+                XCTAssertEqual(
+                    response.result?.value,
+                    ["id": "0x0000000000000000000000000000000000000000000000000000000000000000"].toAnyValue()
+                )
                 XCTAssertEqual(response.result?.header?.expire, 1599458404)
                 XCTAssertEqual(response.result?.header?.time, 1599458364291)
                 XCTAssertEqual(response.result?.header?.pubkey, "4c7c408ff1ddebb8d6405ee979c716a14fdd6cc08124107a61d3c25597099499")

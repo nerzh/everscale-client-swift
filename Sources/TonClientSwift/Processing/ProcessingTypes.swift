@@ -44,7 +44,7 @@ public struct TSDKProcessingEvent: Codable {
 public struct TSDKResultOfProcessMessage: Codable {
     /// Parsed transaction.
     /// In addition to the regular transaction fields there is a`boc` field encoded with `base64` which contains sourcetransaction BOC.
-    public var transaction: AnyJSONType
+    public var transaction: AnyValue
     /// List of output messages' BOCs.
     /// Encoded as `base64`
     public var out_messages: [String]
@@ -53,7 +53,7 @@ public struct TSDKResultOfProcessMessage: Codable {
     /// Transaction fees
     public var fees: TSDKTransactionFees
 
-    public init(transaction: AnyJSONType, out_messages: [String], decoded: TSDKDecodedOutput? = nil, fees: TSDKTransactionFees) {
+    public init(transaction: AnyValue, out_messages: [String], decoded: TSDKDecodedOutput? = nil, fees: TSDKTransactionFees) {
         self.transaction = transaction
         self.out_messages = out_messages
         self.decoded = decoded
@@ -66,9 +66,9 @@ public struct TSDKDecodedOutput: Codable {
     /// If the message can't be decoded, then `None` will be stored inthe appropriate position.
     public var out_messages: [TSDKDecodedMessageBody]?
     /// Decoded body of the function output message.
-    public var output: AnyJSONType?
+    public var output: AnyValue?
 
-    public init(out_messages: [TSDKDecodedMessageBody]? = nil, output: AnyJSONType? = nil) {
+    public init(out_messages: [TSDKDecodedMessageBody]? = nil, output: AnyValue? = nil) {
         self.out_messages = out_messages
         self.output = output
     }

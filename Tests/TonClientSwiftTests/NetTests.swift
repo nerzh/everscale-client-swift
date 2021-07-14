@@ -28,8 +28,8 @@ final class NetTests: XCTestCase {
                                                              order: nil,
                                                              limit: nil)
             client.net.query_collection(payload) { [group] (response) in
-                if let first = response.result?.result.first?.jsonValue as? [String: Any] {
-                    let created_at: Int? = (first["created_at"] as? AnyJSONType)?.jsonValue as? Int
+                if let first = response.result?.result.first?.toAny() as? [String: Any] {
+                    let created_at: Int? = first["created_at"] as? Int
                     XCTAssertTrue(created_at ?? 0 > 1562342740)
                 } else {
                     XCTAssertTrue(false, "No Data")
@@ -56,8 +56,8 @@ final class NetTests: XCTestCase {
                                                                timeout: nil)
             group.enter()
             client.net.wait_for_collection(payload) { [group] (response) in
-                if let json = response.result?.result.jsonValue as? [String: Any],
-                   let thisNow = (json["now"] as? AnyJSONType)?.jsonValue as? Int
+                if let json = response.result?.result.toAny() as? [String: Any],
+                   let thisNow = json["now"] as? Int
                 {
                     XCTAssertTrue(thisNow > now)
                 } else {
@@ -87,10 +87,10 @@ final class NetTests: XCTestCase {
                     BindingStore.deleteResponseHandler(response.requestId)
                     group.leave()
                     return
-                } else if let result = response.customResponse?.result?.jsonValue as? [String: AnyJSONType],
+                } else if let result = response.customResponse?.result?.toAny() as? [String: Any],
                           let account_addr = result["account_addr"]
                 {
-                    XCTAssertTrue((account_addr.jsonValue as? String) != nil)
+                    XCTAssertTrue((account_addr as? String) != nil)
                 }
                 if response.finished || response.customResponse != nil {
                     BindingStore.deleteResponseHandler(response.requestId)

@@ -98,7 +98,7 @@ public struct TSDKDeploySet: Codable {
     /// Default is `0`.
     public var workchain_id: Int32?
     /// List of initial values for contract's public variables.
-    public var initial_data: AnyJSONType?
+    public var initial_data: AnyValue?
     /// Optional public key that can be provided in deploy set in order to substitute one in TVM file or provided by Signer.
     /// Public key resolving priority:
     /// 1. Public key from deploy set.
@@ -106,7 +106,7 @@ public struct TSDKDeploySet: Codable {
     /// 3. Public key, provided by Signer.
     public var initial_pubkey: String?
 
-    public init(tvc: String, workchain_id: Int32? = nil, initial_data: AnyJSONType? = nil, initial_pubkey: String? = nil) {
+    public init(tvc: String, workchain_id: Int32? = nil, initial_data: AnyValue? = nil, initial_pubkey: String? = nil) {
         self.tvc = tvc
         self.workchain_id = workchain_id
         self.initial_data = initial_data
@@ -470,11 +470,11 @@ public struct TSDKDecodedMessageBody: Codable {
     /// Function or event name.
     public var name: String
     /// Parameters or result value.
-    public var value: AnyJSONType?
+    public var value: AnyValue?
     /// Function header.
     public var header: TSDKFunctionHeader?
 
-    public init(body_type: TSDKMessageBodyType, name: String, value: AnyJSONType? = nil, header: TSDKFunctionHeader? = nil) {
+    public init(body_type: TSDKMessageBodyType, name: String, value: AnyValue? = nil, header: TSDKFunctionHeader? = nil) {
         self.body_type = body_type
         self.name = name
         self.value = value
@@ -546,9 +546,9 @@ public struct TSDKParamsOfDecodeAccountData: Codable {
 
 public struct TSDKResultOfDecodeData: Codable {
     /// Decoded data as a JSON structure.
-    public var data: AnyJSONType
+    public var data: AnyValue
 
-    public init(data: AnyJSONType) {
+    public init(data: AnyValue) {
         self.data = data
     }
 }

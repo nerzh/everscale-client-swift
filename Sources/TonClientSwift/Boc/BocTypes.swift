@@ -41,9 +41,9 @@ public struct TSDKParamsOfParse: Codable {
 
 public struct TSDKResultOfParse: Codable {
     /// JSON containing parsed BOC
-    public var parsed: AnyJSONType
+    public var parsed: AnyValue
 
-    public init(parsed: AnyJSONType) {
+    public init(parsed: AnyValue) {
         self.parsed = parsed
     }
 }
@@ -177,13 +177,13 @@ public struct TSDKBuilderOp: Codable {
     /// e.g. `123`, `-123`. - Decimal string. e.g. `"123"`, `"-123"`.
     /// - `0x` prefixed hexadecimal string.
     ///   e.g `0x123`, `0X123`, `-0x123`.
-    public var value: AnyJSONType?
+    public var value: AnyValue?
     /// Nested cell builder
     public var builder: [TSDKBuilderOp]?
     /// Nested cell BOC encoded with `base64` or BOC cache key.
     public var boc: String?
 
-    public init(type: TSDKBuilderOpEnumTypes, size: UInt32? = nil, value: AnyJSONType? = nil, builder: [TSDKBuilderOp]? = nil, boc: String? = nil) {
+    public init(type: TSDKBuilderOpEnumTypes, size: UInt32? = nil, value: AnyValue? = nil, builder: [TSDKBuilderOp]? = nil, boc: String? = nil) {
         self.type = type
         self.size = size
         self.value = value

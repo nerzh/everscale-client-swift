@@ -54,11 +54,11 @@ public struct TSDKEncryptionBoxInfo: Codable {
     /// Cryptographic algorithm, used by this encryption box
     public var algorithm: String?
     /// Options, depends on algorithm and specific encryption box implementation
-    public var options: AnyJSONType?
+    public var options: AnyValue?
     /// Public information, depends on algorithm
-    public var `public`: AnyJSONType?
+    public var `public`: AnyValue?
 
-    public init(hdpath: String? = nil, algorithm: String? = nil, options: AnyJSONType? = nil, `public`: AnyJSONType? = nil) {
+    public init(hdpath: String? = nil, algorithm: String? = nil, options: AnyValue? = nil, `public`: AnyValue? = nil) {
         self.hdpath = hdpath
         self.algorithm = algorithm
         self.options = options

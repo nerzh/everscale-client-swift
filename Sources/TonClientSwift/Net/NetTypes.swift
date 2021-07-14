@@ -141,9 +141,9 @@ public struct TSDKParamsOfQuery: Codable {
 
 public struct TSDKResultOfQuery: Codable {
     /// Result provided by DAppServer.
-    public var result: AnyJSONType
+    public var result: AnyValue
 
-    public init(result: AnyJSONType) {
+    public init(result: AnyValue) {
         self.result = result
     }
 }
@@ -160,9 +160,9 @@ public struct TSDKParamsOfBatchQuery: Codable {
 public struct TSDKResultOfBatchQuery: Codable {
     /// Result values for batched queries.
     /// Returns an array of values. Each value corresponds to `queries` item.
-    public var results: [AnyJSONType]
+    public var results: [AnyValue]
 
-    public init(results: [AnyJSONType]) {
+    public init(results: [AnyValue]) {
         self.results = results
     }
 }
@@ -190,9 +190,9 @@ public struct TSDKParamsOfQueryCollection: Codable {
 
 public struct TSDKResultOfQueryCollection: Codable {
     /// Objects that match the provided criteria
-    public var result: [AnyJSONType]
+    public var result: [AnyValue]
 
-    public init(result: [AnyJSONType]) {
+    public init(result: [AnyValue]) {
         self.result = result
     }
 }
@@ -216,9 +216,9 @@ public struct TSDKResultOfAggregateCollection: Codable {
     /// Values for requested fields.
     /// Returns an array of strings. Each string refers to the corresponding `fields` item.
     /// Numeric value is returned as a decimal string representations.
-    public var values: AnyJSONType
+    public var values: AnyValue
 
-    public init(values: AnyJSONType) {
+    public init(values: AnyValue) {
         self.values = values
     }
 }
@@ -243,9 +243,9 @@ public struct TSDKParamsOfWaitForCollection: Codable {
 
 public struct TSDKResultOfWaitForCollection: Codable {
     /// First found object that matches the provided criteria
-    public var result: AnyJSONType
+    public var result: AnyValue
 
-    public init(result: AnyJSONType) {
+    public init(result: AnyValue) {
         self.result = result
     }
 }
@@ -493,15 +493,15 @@ public struct TSDKResultOfIteratorNext: Codable {
     /// Note that `iterator_next` can return an empty items and `has_more` equals to `true`.
     /// In this case the application have to continue iteration.
     /// Such situation can take place when there is no data yet butthe requested `end_time` is not reached.
-    public var items: [AnyJSONType]
+    public var items: [AnyValue]
     /// Indicates that there are more available items in iterated range.
     public var has_more: Bool
     /// Optional iterator state that can be used for resuming iteration.
     /// This field is returned only if the `return_resume_state` parameteris specified.
     /// Note that `resume_state` corresponds to the iteration positionafter the returned items.
-    public var resume_state: AnyJSONType?
+    public var resume_state: AnyValue?
 
-    public init(items: [AnyJSONType], has_more: Bool, resume_state: AnyJSONType? = nil) {
+    public init(items: [AnyValue], has_more: Bool, resume_state: AnyValue? = nil) {
         self.items = items
         self.has_more = has_more
         self.resume_state = resume_state

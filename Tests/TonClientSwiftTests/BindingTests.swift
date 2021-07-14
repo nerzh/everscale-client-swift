@@ -32,7 +32,7 @@ final class BindingTests: XCTestCase {
     struct TestError: Codable {
         var code: UInt32
         var message: String
-        var data: AnyJSONType
+        var data: AnyValue
     }
 
     func testRequestLibraryAsync() throws {

@@ -6,7 +6,7 @@ import Foundation
 
 public struct TSDKContextResponse: Codable {
     public var result: UInt32?
-    public var error: AnyJSONType?
+    public var error: AnyValue?
 }
 
 public struct TSDKBindingRequest<TSDKResult: Codable, TSDKError: Codable, TSDKCustom: Codable> {
@@ -26,12 +26,12 @@ public enum TSDKBindingResponseType: UInt32 {
 public struct TSDKNoneResult: Codable {}
 
 public struct TSDKDefault: Codable {
-    public var result: AnyJSONType?
-    public var error: AnyJSONType?
-    public var data: AnyJSONType?
-    public var message: AnyJSONType?
+    public var result: AnyValue?
+    public var error: AnyValue?
+    public var data: AnyValue?
+    public var message: AnyValue?
 
-    public init(result: AnyJSONType? = nil, error: AnyJSONType? = nil, data: AnyJSONType? = nil, message: AnyJSONType? = nil) {
+    public init(result: AnyValue? = nil, error: AnyValue? = nil, data: AnyValue? = nil, message: AnyValue? = nil) {
         self.result = result
         self.error = error
         self.data = data

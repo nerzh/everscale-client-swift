@@ -43,9 +43,9 @@ public enum TSDKAppRequestResultEnumTypes: String, Codable {
 public struct TSDKClientError: Codable, Error {
     public var code: UInt32
     public var message: String
-    public var data: AnyJSONType
+    public var data: AnyValue
 
-    public init(code: UInt32, message: String, data: AnyJSONType) {
+    public init(code: UInt32, message: String, data: AnyValue) {
         self.code = code
         self.message = message
         self.data = data
@@ -196,9 +196,9 @@ public struct TSDKAppRequestResult: Codable {
     /// Error description
     public var text: String?
     /// Request processing result
-    public var result: AnyJSONType?
+    public var result: AnyValue?
 
-    public init(type: TSDKAppRequestResultEnumTypes, text: String? = nil, result: AnyJSONType? = nil) {
+    public init(type: TSDKAppRequestResultEnumTypes, text: String? = nil, result: AnyValue? = nil) {
         self.type = type
         self.text = text
         self.result = result
@@ -206,9 +206,9 @@ public struct TSDKAppRequestResult: Codable {
 }
 
 public struct TSDKResultOfGetApiReference: Codable {
-    public var api: AnyJSONType
+    public var api: AnyValue
 
-    public init(api: AnyJSONType) {
+    public init(api: AnyValue) {
         self.api = api
     }
 }

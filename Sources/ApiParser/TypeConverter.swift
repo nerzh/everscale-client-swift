@@ -22,7 +22,7 @@ private let types: [String: String] = [
     "Int32": "Int32",
     "Int64": "Int64",
     "String": "String",
-    "Value": "AnyJSONType",
+    "Value": "AnyValue",
     "BigInt": "Int",
     "Boolean": "Bool"
 ]
@@ -140,7 +140,7 @@ class SDKApi {
         for field in (from.struct_fields ?? []) {
             if isValidPropertyName(field.name) {
                 var type: String = generateType(field)
-                if ((from.name ?? "")[#"Params"#] || (field.name ?? "")[#"input"#]) && type[#"AnyJSONType"#] {
+                if ((from.name ?? "")[#"Params"#] || (field.name ?? "")[#"input"#]) && type[#"AnyValue"#] {
                     let optional: String = type[#"\?"#] ? "?" : ""
                     type = "AnyValue\(optional)"
                 } else if type[#"AbiContract"#] {

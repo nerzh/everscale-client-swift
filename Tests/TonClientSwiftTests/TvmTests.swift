@@ -41,8 +41,8 @@ final class TvmTests: XCTestCase {
                                                     input: nil,
                                                     execution_options: nil)
             client.tvm.run_get(payload) { [group] (response) in
-                let first: String? = (((response.result?.output.jsonValue as? [AnyJSONType])?[0].jsonValue as? [AnyJSONType])?[0].jsonValue as? [AnyJSONType])?[0].jsonValue as? String
-                let last: String? = (((response.result?.output.jsonValue as? [AnyJSONType])?[0].jsonValue as? [AnyJSONType])?[0].jsonValue as? [AnyJSONType])?[1].jsonValue as? String
+                let first: String? = (((response.result?.output.toAny() as? [Any])?[0] as? [Any])?[0] as? [Any])?[0] as? String
+                let last: String? = (((response.result?.output.toAny() as? [Any])?[0] as? [Any])?[0] as? [Any])?[1] as? String
                 XCTAssertEqual(first, "0x0101b6d65a384b9c70deb49fd6c43ffc0f60ed22fcc3a4966f7043794a749228")
                 XCTAssertEqual(last, "60138000000000")
                 group.leave()
@@ -81,7 +81,7 @@ final class TvmTests: XCTestCase {
                                                     input: nil,
                                                     execution_options: nil)
             client.tvm.run_get(payload) { [group] (response) in
-                let first: String? = (((response.result?.output.jsonValue as? [AnyJSONType])?[0].jsonValue as? [AnyJSONType])?[0].jsonValue as? [AnyJSONType])?[0].jsonValue as? String
+                let first: String? = (((response.result?.output.toAny() as? [Any])?[0] as? [Any])?[0] as? [Any])?[0] as? String
                 XCTAssertEqual(first, "1588268660")
                 group.leave()
             }
@@ -120,7 +120,7 @@ final class TvmTests: XCTestCase {
                                                     input: input,
                                                     execution_options: nil)
             client.tvm.run_get(payload) { [group] (response) in
-                let first: String? = (response.result?.output.jsonValue as? [AnyJSONType])?[0].jsonValue as? String
+                let first: String? = (response.result?.output.toAny() as? [Any])?[0] as? String
                 XCTAssertEqual(first, "0")
                 group.leave()
             }
@@ -203,8 +203,8 @@ final class TvmTests: XCTestCase {
 //            Log.log("account BOC", resultOfWaitForCollection.result.toJSON())
             Log.log("account has been received")
 
-            guard let accountResult = resultOfWaitForCollection.result.jsonValue as? [String: AnyJSONType],
-                  let accountBOC: String = accountResult["boc"]?.jsonValue as? String
+            guard let accountResult = resultOfWaitForCollection.result.toAny() as? [String: Any],
+                  let accountBOC: String = accountResult["boc"] as? String
             else {
                 XCTAssertTrue(false, "accountBOC is nil")
                 return
