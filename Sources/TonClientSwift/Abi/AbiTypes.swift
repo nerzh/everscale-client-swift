@@ -13,6 +13,7 @@ public enum TSDKAbiErrorCode: Int, Codable {
     case InvalidSigner = 310
     case InvalidAbi = 311
     case InvalidFunctionId = 312
+    case InvalidData = 313
 }
 
 public enum TSDKAbiEnumTypes: String, Codable {
@@ -235,13 +236,15 @@ public struct TSDKAbiContract: Codable {
     public var functions: [TSDKAbiFunction]?
     public var events: [TSDKAbiEvent]?
     public var data: [TSDKAbiData]?
+    public var fields: [TSDKAbiParam]?
 
-    public init(abi_version: UInt32? = nil, header: [String]? = nil, functions: [TSDKAbiFunction]? = nil, events: [TSDKAbiEvent]? = nil, data: [TSDKAbiData]? = nil) {
+    public init(abi_version: UInt32? = nil, header: [String]? = nil, functions: [TSDKAbiFunction]? = nil, events: [TSDKAbiEvent]? = nil, data: [TSDKAbiData]? = nil, fields: [TSDKAbiParam]? = nil) {
         self.abi_version = abi_version
         self.header = header
         self.functions = functions
         self.events = events
         self.data = data
+        self.fields = fields
     }
 }
 
@@ -525,6 +528,28 @@ public struct TSDKResultOfEncodeAccount: Codable {
     public init(account: String, id: String) {
         self.account = account
         self.id = id
+    }
+}
+
+public struct TSDKParamsOfDecodeAccountData: Codable {
+    /// Contract ABI
+    public var abi: TSDKAbi
+    /// Data BOC
+    /// Must be encoded with base64
+    public var data: String
+
+    public init(abi: TSDKAbi, data: String) {
+        self.abi = abi
+        self.data = data
+    }
+}
+
+public struct TSDKResultOfDecodeData: Codable {
+    /// Decoded data as a JSON structure.
+    public var data: AnyJSONType
+
+    public init(data: AnyJSONType) {
+        self.data = data
     }
 }
 

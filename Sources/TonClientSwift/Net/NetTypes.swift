@@ -361,3 +361,150 @@ public struct TSDKResultOfQueryTransactionTree: Codable {
     }
 }
 
+public struct TSDKParamsOfCreateBlockIterator: Codable {
+    /// Starting time to iterate from.
+    /// If the application specifies this parameter then the iterationincludes blocks with `gen_utime` >= `start_time`.
+    /// Otherwise the iteration starts from zero state.
+    /// Must be specified in seconds.
+    public var start_time: UInt32?
+    /// Optional end time to iterate for.
+    /// If the application specifies this parameter then the iterationincludes blocks with `gen_utime` < `end_time`.
+    /// Otherwise the iteration never stops.
+    /// Must be specified in seconds.
+    public var end_time: UInt32?
+    /// Shard prefix filter.
+    /// If the application specifies this parameter and it is not the empty arraythen the iteration will include items related to accounts that belongs tothe specified shard prefixes.
+    /// Shard prefix must be represented as a string "workchain:prefix".
+    /// Where `workchain` is a signed integer and the `prefix` if a hexadecimalrepresentation if the 64-bit unsigned integer with tagged shard prefix.
+    /// For example: "0:3800000000000000".
+    public var shard_filter: [String]?
+    /// Projection (result) string.
+    /// List of the fields that must be returned for iterated items.
+    /// This field is the same as the `result` parameter ofthe `query_collection` function.
+    /// Note that iterated items can contains additional fields that arenot requested in the `result`.
+    public var result: String?
+
+    public init(start_time: UInt32? = nil, end_time: UInt32? = nil, shard_filter: [String]? = nil, result: String? = nil) {
+        self.start_time = start_time
+        self.end_time = end_time
+        self.shard_filter = shard_filter
+        self.result = result
+    }
+}
+
+public struct TSDKRegisteredIterator: Codable {
+    /// Iterator handle.
+    /// Must be removed using `remove_iterator`when it is no more needed for the application.
+    public var handle: UInt32
+
+    public init(handle: UInt32) {
+        self.handle = handle
+    }
+}
+
+public struct TSDKParamsOfResumeBlockIterator: Codable {
+    /// Iterator state from which to resume.
+    /// Same as value returned from `iterator_next`.
+    public var resume_state: AnyValue
+
+    public init(resume_state: AnyValue) {
+        self.resume_state = resume_state
+    }
+}
+
+public struct TSDKParamsOfCreateTransactionIterator: Codable {
+    /// Starting time to iterate from.
+    /// If the application specifies this parameter then the iterationincludes blocks with `gen_utime` >= `start_time`.
+    /// Otherwise the iteration starts from zero state.
+    /// Must be specified in seconds.
+    public var start_time: UInt32?
+    /// Optional end time to iterate for.
+    /// If the application specifies this parameter then the iterationincludes blocks with `gen_utime` < `end_time`.
+    /// Otherwise the iteration never stops.
+    /// Must be specified in seconds.
+    public var end_time: UInt32?
+    /// Shard prefix filters.
+    /// If the application specifies this parameter and it is not an empty arraythen the iteration will include items related to accounts that belongs tothe specified shard prefixes.
+    /// Shard prefix must be represented as a string "workchain:prefix".
+    /// Where `workchain` is a signed integer and the `prefix` if a hexadecimalrepresentation if the 64-bit unsigned integer with tagged shard prefix.
+    /// For example: "0:3800000000000000".
+    /// Account address conforms to the shard filter ifit belongs to the filter workchain and the first bits of address match tothe shard prefix. Only transactions with suitable account addresses are iterated.
+    public var shard_filter: [String]?
+    /// Account address filter.
+    /// Application can specify the list of accounts for whichit wants to iterate transactions.
+    /// If this parameter is missing or an empty list then the library iteratestransactions for all accounts that pass the shard filter.
+    /// Note that the library doesn't detect conflicts between the account filter and the shard filterif both are specified.
+    /// So it is an application responsibility to specify the correct filter combination.
+    public var accounts_filter: [String]?
+    /// Projection (result) string.
+    /// List of the fields that must be returned for iterated items.
+    /// This field is the same as the `result` parameter ofthe `query_collection` function.
+    /// Note that iterated items can contain additional fields that arenot requested in the `result`.
+    public var result: String?
+    /// Include `transfers` field in iterated transactions.
+    /// If this parameter is `true` then each transaction contains field`transfers` with list of transfer. See more about this structure in function description.
+    public var include_transfers: Bool?
+
+    public init(start_time: UInt32? = nil, end_time: UInt32? = nil, shard_filter: [String]? = nil, accounts_filter: [String]? = nil, result: String? = nil, include_transfers: Bool? = nil) {
+        self.start_time = start_time
+        self.end_time = end_time
+        self.shard_filter = shard_filter
+        self.accounts_filter = accounts_filter
+        self.result = result
+        self.include_transfers = include_transfers
+    }
+}
+
+public struct TSDKParamsOfResumeTransactionIterator: Codable {
+    /// Iterator state from which to resume.
+    /// Same as value returned from `iterator_next`.
+    public var resume_state: AnyValue
+    /// Account address filter.
+    /// Application can specify the list of accounts for whichit wants to iterate transactions.
+    /// If this parameter is missing or an empty list then the library iteratestransactions for all accounts that passes the shard filter.
+    /// Note that the library doesn't detect conflicts between the account filter and the shard filterif both are specified.
+    /// So it is the application's responsibility to specify the correct filter combination.
+    public var accounts_filter: [String]?
+
+    public init(resume_state: AnyValue, accounts_filter: [String]? = nil) {
+        self.resume_state = resume_state
+        self.accounts_filter = accounts_filter
+    }
+}
+
+public struct TSDKParamsOfIteratorNext: Codable {
+    /// Iterator handle
+    public var iterator: UInt32
+    /// Maximum count of the returned items.
+    /// If value is missing or is less than 1 the library uses 1.
+    public var limit: UInt32?
+    /// Indicates that function must return the iterator state that can be used for resuming iteration.
+    public var return_resume_state: Bool?
+
+    public init(iterator: UInt32, limit: UInt32? = nil, return_resume_state: Bool? = nil) {
+        self.iterator = iterator
+        self.limit = limit
+        self.return_resume_state = return_resume_state
+    }
+}
+
+public struct TSDKResultOfIteratorNext: Codable {
+    /// Next available items.
+    /// Note that `iterator_next` can return an empty items and `has_more` equals to `true`.
+    /// In this case the application have to continue iteration.
+    /// Such situation can take place when there is no data yet butthe requested `end_time` is not reached.
+    public var items: [AnyJSONType]
+    /// Indicates that there are more available items in iterated range.
+    public var has_more: Bool
+    /// Optional iterator state that can be used for resuming iteration.
+    /// This field is returned only if the `return_resume_state` parameteris specified.
+    /// Note that `resume_state` corresponds to the iteration positionafter the returned items.
+    public var resume_state: AnyJSONType?
+
+    public init(items: [AnyJSONType], has_more: Bool, resume_state: AnyJSONType? = nil) {
+        self.items = items
+        self.has_more = has_more
+        self.resume_state = resume_state
+    }
+}
+

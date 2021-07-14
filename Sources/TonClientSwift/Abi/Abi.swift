@@ -120,4 +120,16 @@ public final class TSDKAbiModule {
         })
     }
 
+    /// Decodes account data using provided data BOC and ABI.
+    /// Note: this feature requires ABI 2.1 or higher.
+    public func decode_account_data(_ payload: TSDKParamsOfDecodeAccountData, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfDecodeData, TSDKClientError, TSDKDefault>) -> Void
+    ) {
+        let method: String = "decode_account_data"
+        binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKResultOfDecodeData, TSDKClientError, TSDKDefault> = .init()
+            response.update(requestId, params, responseType, finished)
+            handler(response)
+        })
+    }
+
 }

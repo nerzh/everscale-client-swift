@@ -4,6 +4,12 @@ public enum TSDKAddressStringFormatEnumTypes: String, Codable {
     case Base64 = "Base64"
 }
 
+public enum TSDKAccountAddressType: String, Codable {
+    case AccountId = "AccountId"
+    case Hex = "Hex"
+    case Base64 = "Base64"
+}
+
 public struct TSDKAddressStringFormat: Codable {
     public var type: TSDKAddressStringFormatEnumTypes
     public var url: Bool?
@@ -36,6 +42,24 @@ public struct TSDKResultOfConvertAddress: Codable {
 
     public init(address: String) {
         self.address = address
+    }
+}
+
+public struct TSDKParamsOfGetAddressType: Codable {
+    /// Account address in any TON format.
+    public var address: String
+
+    public init(address: String) {
+        self.address = address
+    }
+}
+
+public struct TSDKResultOfGetAddressType: Codable {
+    /// Account address type.
+    public var address_type: TSDKAccountAddressType
+
+    public init(address_type: TSDKAccountAddressType) {
+        self.address_type = address_type
     }
 }
 

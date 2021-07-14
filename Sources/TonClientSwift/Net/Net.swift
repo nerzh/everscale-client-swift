@@ -205,4 +205,110 @@ public final class TSDKNetModule {
         })
     }
 
+    /// Creates block iterator.
+    /// Block iterator uses robust iteration methods that guaranties that everyblock in the specified range isn't missed or iterated twice.
+    /// Iterated range can be reduced with some filters:
+    /// - `start_time` – the bottom time range. Only blocks with `gen_utime`more or equal to this value is iterated. If this parameter is omitted then there isno bottom time edge, so all blocks since zero state is iterated.
+    /// - `end_time` – the upper time range. Only blocks with `gen_utime`less then this value is iterated. If this parameter is omitted then there isno upper time edge, so iterator never finishes.
+    /// - `shard_filter` – workchains and shard prefixes that reduce the set of interestingblocks. Block conforms to the shard filter if it belongs to the filter workchainand the first bits of block's `shard` fields matches to the shard prefix.
+    /// Only blocks with suitable shard are iterated.
+    /// Items iterated is a JSON objects with block data. The minimal set of returnedfields is:
+    /// ```textidgen_utimeworkchain_idshardafter_splitafter_mergeprev_ref {    root_hash}prev_alt_ref {    root_hash}```Application can request additional fields in the `result` parameter.
+    /// Application should call the `remove_iterator` when iterator is no longer required.
+    public func create_block_iterator(_ payload: TSDKParamsOfCreateBlockIterator, _ handler: @escaping (TSDKBindingResponse<TSDKRegisteredIterator, TSDKClientError, TSDKDefault>) -> Void
+    ) {
+        let method: String = "create_block_iterator"
+        binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKRegisteredIterator, TSDKClientError, TSDKDefault> = .init()
+            response.update(requestId, params, responseType, finished)
+            handler(response)
+        })
+    }
+
+    /// Resumes block iterator.
+    /// The iterator stays exactly at the same position where the `resume_state` was catched.
+    /// Application should call the `remove_iterator` when iterator is no longer required.
+    public func resume_block_iterator(_ payload: TSDKParamsOfResumeBlockIterator, _ handler: @escaping (TSDKBindingResponse<TSDKRegisteredIterator, TSDKClientError, TSDKDefault>) -> Void
+    ) {
+        let method: String = "resume_block_iterator"
+        binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKRegisteredIterator, TSDKClientError, TSDKDefault> = .init()
+            response.update(requestId, params, responseType, finished)
+            handler(response)
+        })
+    }
+
+    /// Creates transaction iterator.
+    /// Transaction iterator uses robust iteration methods that guaranty that everytransaction in the specified range isn't missed or iterated twice.
+    /// Iterated range can be reduced with some filters:
+    /// - `start_time` – the bottom time range. Only transactions with `now`more or equal to this value are iterated. If this parameter is omitted then there isno bottom time edge, so all the transactions since zero state are iterated.
+    /// - `end_time` – the upper time range. Only transactions with `now`less then this value are iterated. If this parameter is omitted then there isno upper time edge, so iterator never finishes.
+    /// - `shard_filter` – workchains and shard prefixes that reduce the set of interestingaccounts. Account address conforms to the shard filter ifit belongs to the filter workchain and the first bits of address match tothe shard prefix. Only transactions with suitable account addresses are iterated.
+    /// - `accounts_filter` – set of account addresses whose transactions must be iterated.
+    /// Note that accounts filter can conflict with shard filter so application must combinethese filters carefully.
+    /// Iterated item is a JSON objects with transaction data. The minimal set of returnedfields is:
+    /// ```textidaccount_addrnowbalance_delta(format:DEC)bounce { bounce_type }in_message {    id    value(format:DEC)    msg_type    src}out_messages {    id    value(format:DEC)    msg_type    dst}```Application can request an additional fields in the `result` parameter.
+    /// Another parameter that affects on the returned fields is the `include_transfers`.
+    /// When this parameter is `true` the iterator computes and adds `transfer` field containinglist of the useful `TransactionTransfer` objects.
+    /// Each transfer is calculated from the particular message related to the transactionand has the following structure:
+    /// - message – source message identifier.
+    /// - isBounced – indicates that the transaction is bounced, which means the value will be returned back to the sender.
+    /// - isDeposit – indicates that this transfer is the deposit (true) or withdraw (false).
+    /// - counterparty – account address of the transfer source or destination depending on `isDeposit`.
+    /// - value – amount of nano tokens transferred. The value is represented as a decimal stringbecause the actual value can be more precise than the JSON number can represent. Applicationmust use this string carefully – conversion to number can follow to loose of precision.
+    /// Application should call the `remove_iterator` when iterator is no longer required.
+    public func create_transaction_iterator(_ payload: TSDKParamsOfCreateTransactionIterator, _ handler: @escaping (TSDKBindingResponse<TSDKRegisteredIterator, TSDKClientError, TSDKDefault>) -> Void
+    ) {
+        let method: String = "create_transaction_iterator"
+        binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKRegisteredIterator, TSDKClientError, TSDKDefault> = .init()
+            response.update(requestId, params, responseType, finished)
+            handler(response)
+        })
+    }
+
+    /// Resumes transaction iterator.
+    /// The iterator stays exactly at the same position where the `resume_state` was caught.
+    /// Note that `resume_state` doesn't store the account filter. If the application requiresto use the same account filter as it was when the iterator was created then the applicationmust pass the account filter again in `accounts_filter` parameter.
+    /// Application should call the `remove_iterator` when iterator is no longer required.
+    public func resume_transaction_iterator(_ payload: TSDKParamsOfResumeTransactionIterator, _ handler: @escaping (TSDKBindingResponse<TSDKRegisteredIterator, TSDKClientError, TSDKDefault>) -> Void
+    ) {
+        let method: String = "resume_transaction_iterator"
+        binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKRegisteredIterator, TSDKClientError, TSDKDefault> = .init()
+            response.update(requestId, params, responseType, finished)
+            handler(response)
+        })
+    }
+
+    /// Returns next available items.
+    /// In addition to available items this function returns the `has_more` flagindicating that the iterator isn't reach the end of the iterated range yet.
+    /// This function can return the empty list of available items butindicates that there are more items is available.
+    /// This situation appears when the iterator doesn't reach iterated rangebut database doesn't contains available items yet.
+    /// If application requests resume state in `return_resume_state` parameterthen this function returns `resume_state` that can be used later toresume the iteration from the position after returned items.
+    /// The structure of the items returned depends on the iterator used.
+    /// See the description to the appropriated iterator creation function.
+    public func iterator_next(_ payload: TSDKParamsOfIteratorNext, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfIteratorNext, TSDKClientError, TSDKDefault>) -> Void
+    ) {
+        let method: String = "iterator_next"
+        binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKResultOfIteratorNext, TSDKClientError, TSDKDefault> = .init()
+            response.update(requestId, params, responseType, finished)
+            handler(response)
+        })
+    }
+
+    /// Removes an iterator
+    /// Frees all resources allocated in library to serve iterator.
+    /// Application always should call the `remove_iterator` when iteratoris no longer required.
+    public func remove_iterator(_ payload: TSDKRegisteredIterator, _ handler: @escaping (TSDKBindingResponse<TSDKNoneResult, TSDKClientError, TSDKDefault>) -> Void
+    ) {
+        let method: String = "remove_iterator"
+        binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKNoneResult, TSDKClientError, TSDKDefault> = .init()
+            response.update(requestId, params, responseType, finished)
+            handler(response)
+        })
+    }
+
 }

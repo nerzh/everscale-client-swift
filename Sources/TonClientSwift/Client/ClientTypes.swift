@@ -32,6 +32,7 @@ public enum TSDKClientErrorCode: Int, Codable {
     case UnexpectedCallbackResponse = 31
     case CanNotParseNumber = 32
     case InternalError = 33
+    case InvalidHandle = 34
 }
 
 public enum TSDKAppRequestResultEnumTypes: String, Codable {
