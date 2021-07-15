@@ -7,7 +7,20 @@ import Foundation
 public enum AnyValue: Decodable, Encodable, Equatable {
     case string(String)
     case int(Int)
+    case int8(Int8)
+    case int16(Int16)
+    case int32(Int32)
+    case int64(Int64)
+    case uint(UInt)
+    case uint8(UInt8)
+    case uint16(UInt16)
+    case uint32(UInt32)
+    case uint64(UInt64)
+    case float(Float)
+    case float32(Float32)
+    case float64(Float64)
     case double(Double)
+    case decimal(Decimal)
     case bool(Bool)
     case object([String: AnyValue])
     case array([AnyValue])
@@ -26,9 +39,35 @@ public enum AnyValue: Decodable, Encodable, Equatable {
             try container.encode(value)
         case let .array(value):
             try container.encode(value)
-        case let .nil(value):
-            try container.encode(value)
         case let .double(value):
+            try container.encode(value)
+        case let .int8(value):
+            try container.encode(value)
+        case let .int16(value):
+            try container.encode(value)
+        case let .int32(value):
+            try container.encode(value)
+        case let .int64(value):
+            try container.encode(value)
+        case let .uint(value):
+            try container.encode(value)
+        case let .uint8(value):
+            try container.encode(value)
+        case let .uint16(value):
+            try container.encode(value)
+        case let .uint32(value):
+            try container.encode(value)
+        case let .uint64(value):
+            try container.encode(value)
+        case let .float(value):
+            try container.encode(value)
+        case let .float32(value):
+            try container.encode(value)
+        case let .float64(value):
+            try container.encode(value)
+        case let .decimal(value):
+            try container.encode(value)
+        case let .nil(value):
             try container.encode(value)
         }
     }
@@ -124,6 +163,32 @@ public enum AnyValue: Decodable, Encodable, Equatable {
             result = nil
         case let .double(value):
             result = value
+        case let .int8(value):
+            result = value
+        case let .int16(value):
+            result = value
+        case let .int32(value):
+            result = value
+        case let .int64(value):
+            result = value
+        case let .uint(value):
+            result = value
+        case let .uint8(value):
+            result = value
+        case let .uint16(value):
+            result = value
+        case let .uint32(value):
+            result = value
+        case let .uint64(value):
+            result = value
+        case let .float(value):
+            result = value
+        case let .float32(value):
+            result = value
+        case let .float64(value):
+            result = value
+        case let .decimal(value):
+            result = value
         }
 
         return result
@@ -132,5 +197,59 @@ public enum AnyValue: Decodable, Encodable, Equatable {
     public func toDictionary() -> [String: Any?]? {
         toAny() as? [String: Any?]
     }
-
 }
+
+
+public func toAnyValue(_ value: Any) -> AnyValue {
+    if let value = value as? String {
+        return AnyValue.string(value)
+    } else if let value = value as? Int {
+        return AnyValue.int(value)
+    } else if let value = value as? Int8 {
+        return AnyValue.int8(value)
+    } else if let value = value as? Int16 {
+        return AnyValue.int16(value)
+    } else if let value = value as? Int32 {
+        return AnyValue.int32(value)
+    } else if let value = value as? Int64 {
+        return AnyValue.int64(value)
+    } else if let value = value as? UInt {
+        return AnyValue.uint(value)
+    } else if let value = value as? UInt8 {
+        return AnyValue.uint8(value)
+    } else if let value = value as? UInt16 {
+        return AnyValue.uint16(value)
+    } else if let value = value as? UInt32 {
+        return AnyValue.uint32(value)
+    } else if let value = value as? UInt64 {
+        return AnyValue.uint64(value)
+    } else if let value = value as? Float {
+        return AnyValue.float(value)
+    } else if let value = value as? Float32 {
+        return AnyValue.float32(value)
+    } else if let value = value as? Float64 {
+        return AnyValue.float64(value)
+    } else if let value = value as? Decimal {
+        return AnyValue.decimal(value)
+    } else if let value = value as? Double {
+        return AnyValue.double(value)
+    } else if let value = value as? Bool {
+        return AnyValue.bool(value)
+    } else if let value = value as? [String: Any] {
+        var dict: [String: AnyValue] = .init()
+        for (key, val) in value {
+            dict[key] = toAnyValue(val)
+        }
+        return AnyValue.object(dict)
+    } else if let value = value as? [Any] {
+        var array: [AnyValue] = .init()
+        for (val) in value {
+            array.append(toAnyValue(val))
+        }
+        return AnyValue.array(array)
+    } else {
+        return AnyValue.nil(nil)
+//            throw DecodingError.typeMismatch(JSONValue.self, DecodingError.Context(codingPath: container.codingPath, debugDescription: "Not a JSON"))
+    }
+}
+
