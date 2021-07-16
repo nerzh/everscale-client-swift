@@ -48,9 +48,9 @@ public struct TSDKBindingResponse<TSDKResult: Codable, TSDKError: Codable, TSDKC
     public var currentResponse: String?
 
     public mutating func update(_ requestId: UInt32,
-                _ stringResponse: String,
-                _ responseType: TSDKBindingResponseType,
-                _ finished: Bool
+                                _ stringResponse: String,
+                                _ responseType: TSDKBindingResponseType,
+                                _ finished: Bool
     ) {
         let response: String = stringResponse
         self.finished = finished
