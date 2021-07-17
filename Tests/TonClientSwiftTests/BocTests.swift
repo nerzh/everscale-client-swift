@@ -9,6 +9,7 @@ import XCTest
 import class Foundation.Bundle
 @testable import TonClientSwift
 @testable import CTonSDK
+@testable import BigInt
 
 final class BocTests: XCTestCase {
 

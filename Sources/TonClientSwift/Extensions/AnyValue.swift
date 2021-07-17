@@ -3,10 +3,12 @@
 //
 
 import Foundation
+import BigInt
 
 public enum AnyValue: Decodable, Encodable, Equatable {
     case string(String)
     case int(Int)
+    case bigInt(BigInt)
     case int8(Int8)
     case int16(Int16)
     case int32(Int32)
@@ -34,6 +36,8 @@ public enum AnyValue: Decodable, Encodable, Equatable {
         case let .string(value):
             try container.encode(value)
         case let .int(value):
+            try container.encode(value)
+        case let .bigInt(value):
             try container.encode(value)
         case let .object(value):
             try container.encode(value)
@@ -76,6 +80,8 @@ public enum AnyValue: Decodable, Encodable, Equatable {
         let container = try decoder.singleValueContainer()
         if let value = try? container.decode(String.self) {
             self = .string(value)
+        } else if let value = try? container.decode(BigInt.self) {
+            self = .bigInt(value)
         } else if let value = try? container.decode(Int.self) {
             self = .int(value)
         } else if let value = try? container.decode(Double.self) {
@@ -101,6 +107,8 @@ public enum AnyValue: Decodable, Encodable, Equatable {
         case let .string(value):
             result = "\"\(value)\""
         case let .int(value):
+            result = String(value)
+        case let .bigInt(value):
             result = String(value)
         case let .object(value):
             result.append("{")
@@ -146,6 +154,8 @@ public enum AnyValue: Decodable, Encodable, Equatable {
         case let .string(value):
             result = value
         case let .int(value):
+            result = value
+        case let .bigInt(value):
             result = value
         case let .object(value):
             var tmpResult: [String: Any?] = .init()
@@ -205,6 +215,8 @@ public func toAnyValue(_ value: Any) -> AnyValue {
         return AnyValue.string(value)
     } else if let value = value as? Int {
         return AnyValue.int(value)
+    } else if let value = value as? BigInt {
+        return AnyValue.bigInt(value)
     } else if let value = value as? Int8 {
         return AnyValue.int8(value)
     } else if let value = value as? Int16 {
