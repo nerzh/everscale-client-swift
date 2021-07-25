@@ -179,6 +179,13 @@ class CodeGenerator {
         for function in swiftModule.functions {
             result.append(generateFunction(function))
         }
+
+        /// PRINT DEBUG DEINIT CLIENT
+        result.append("\(tab)deinit {\n")
+        result.append("\(tab)\(tab)print(\"Client DEINIT !\")\n")
+        result.append("\(tab)}\n")
+        ///
+
         result.append("}\n")
 
         return result
