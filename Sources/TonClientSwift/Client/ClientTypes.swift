@@ -104,11 +104,15 @@ public struct TSDKNetworkConfig: Codable {
     /// Maximum value for the endpoint's blockchain data syncronization latency (time-lag). Library periodically checks the current endpoint for blockchain data syncronization latency. If the latency (time-lag) is less then `NetworkConfig.max_latency` then library selects another endpoint.
     /// Must be specified in milliseconds. Default is 60000 (1 min).
     public var max_latency: UInt32?
+    /// Default timeout for http requests.
+    /// Is is used when no timeout specified for the request to limit the answer waiting time. If no answer received during the timeout requests ends witherror.
+    /// Must be specified in milliseconds. Default is 60000 (1 min).
+    public var query_timeout: UInt32?
     /// Access key to GraphQL API.
     /// At the moment is not used in production.
     public var access_key: String?
 
-    public init(server_address: String? = nil, endpoints: [String]? = nil, network_retries_count: Int8? = nil, max_reconnect_timeout: UInt32? = nil, reconnect_timeout: UInt32? = nil, message_retries_count: Int8? = nil, message_processing_timeout: UInt32? = nil, wait_for_timeout: UInt32? = nil, out_of_sync_threshold: UInt32? = nil, sending_endpoint_count: UInt8? = nil, latency_detection_interval: UInt32? = nil, max_latency: UInt32? = nil, access_key: String? = nil) {
+    public init(server_address: String? = nil, endpoints: [String]? = nil, network_retries_count: Int8? = nil, max_reconnect_timeout: UInt32? = nil, reconnect_timeout: UInt32? = nil, message_retries_count: Int8? = nil, message_processing_timeout: UInt32? = nil, wait_for_timeout: UInt32? = nil, out_of_sync_threshold: UInt32? = nil, sending_endpoint_count: UInt8? = nil, latency_detection_interval: UInt32? = nil, max_latency: UInt32? = nil, query_timeout: UInt32? = nil, access_key: String? = nil) {
         self.server_address = server_address
         self.endpoints = endpoints
         self.network_retries_count = network_retries_count
@@ -121,6 +125,7 @@ public struct TSDKNetworkConfig: Codable {
         self.sending_endpoint_count = sending_endpoint_count
         self.latency_detection_interval = latency_detection_interval
         self.max_latency = max_latency
+        self.query_timeout = query_timeout
         self.access_key = access_key
     }
 }

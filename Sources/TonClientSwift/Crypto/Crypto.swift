@@ -136,6 +136,8 @@ public final class TSDKCryptoModule {
     }
 
     /// Generates a key pair for signing from the secret key
+    /// **NOTE:** In the result the secret key is actually the concatenationof secret and public keys (128 symbols hex string) by design of [NaCL](http://nacl.cr.yp.to/sign.html).
+    /// See also [the stackexchange question](https://crypto.stackexchange.com/questions/54353/).
     public func nacl_sign_keypair_from_secret_key(_ payload: TSDKParamsOfNaclSignKeyPairFromSecret, _ handler: @escaping (TSDKBindingResponse<TSDKKeyPair, TSDKClientError, TSDKDefault>) -> Void
     ) {
         let method: String = "nacl_sign_keypair_from_secret_key"

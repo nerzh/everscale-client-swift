@@ -232,14 +232,16 @@ public struct TSDKAbiFunction: Codable {
 
 public struct TSDKAbiContract: Codable {
     public var abi_version: UInt32?
+    public var version: String?
     public var header: [String]?
     public var functions: [TSDKAbiFunction]?
     public var events: [TSDKAbiEvent]?
     public var data: [TSDKAbiData]?
     public var fields: [TSDKAbiParam]?
 
-    public init(abi_version: UInt32? = nil, header: [String]? = nil, functions: [TSDKAbiFunction]? = nil, events: [TSDKAbiEvent]? = nil, data: [TSDKAbiData]? = nil, fields: [TSDKAbiParam]? = nil) {
+    public init(abi_version: UInt32? = nil, version: String? = nil, header: [String]? = nil, functions: [TSDKAbiFunction]? = nil, events: [TSDKAbiEvent]? = nil, data: [TSDKAbiData]? = nil, fields: [TSDKAbiParam]? = nil) {
         self.abi_version = abi_version
+        self.version = version
         self.header = header
         self.functions = functions
         self.events = events
@@ -534,8 +536,7 @@ public struct TSDKResultOfEncodeAccount: Codable {
 public struct TSDKParamsOfDecodeAccountData: Codable {
     /// Contract ABI
     public var abi: TSDKAbi
-    /// Data BOC
-    /// Must be encoded with base64
+    /// Data BOC or BOC handle
     public var data: String
 
     public init(abi: TSDKAbi, data: String) {
