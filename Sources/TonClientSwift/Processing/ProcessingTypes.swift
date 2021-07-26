@@ -64,11 +64,11 @@ public struct TSDKResultOfProcessMessage: Codable {
 public struct TSDKDecodedOutput: Codable {
     /// Decoded bodies of the out messages.
     /// If the message can't be decoded, then `None` will be stored inthe appropriate position.
-    public var out_messages: [TSDKDecodedMessageBody]?
+    public var out_messages: [TSDKDecodedMessageBody?]
     /// Decoded body of the function output message.
     public var output: AnyValue?
 
-    public init(out_messages: [TSDKDecodedMessageBody]? = nil, output: AnyValue? = nil) {
+    public init(out_messages: [TSDKDecodedMessageBody?], output: AnyValue? = nil) {
         self.out_messages = out_messages
         self.output = output
     }
