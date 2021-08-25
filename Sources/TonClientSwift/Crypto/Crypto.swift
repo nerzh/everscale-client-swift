@@ -474,7 +474,8 @@ public final class TSDKCryptoModule {
         })
     }
 
-    /// Encrypts data using given encryption box
+    /// Encrypts data using given encryption box Note.
+    /// Block cipher algorithms pad data to cipher block size so encrypted data can be longer then original data. Client should store the original data size after encryption and use it afterdecryption to retrieve the original data from decrypted data.
     public func encryption_box_encrypt(_ payload: TSDKParamsOfEncryptionBoxEncrypt, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfEncryptionBoxEncrypt, TSDKClientError, TSDKDefault>) -> Void
     ) {
         let method: String = "encryption_box_encrypt"
@@ -485,12 +486,24 @@ public final class TSDKCryptoModule {
         })
     }
 
-    /// Decrypts data using given encryption box
+    /// Decrypts data using given encryption box Note.
+    /// Block cipher algorithms pad data to cipher block size so encrypted data can be longer then original data. Client should store the original data size after encryption and use it afterdecryption to retrieve the original data from decrypted data.
     public func encryption_box_decrypt(_ payload: TSDKParamsOfEncryptionBoxDecrypt, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfEncryptionBoxDecrypt, TSDKClientError, TSDKDefault>) -> Void
     ) {
         let method: String = "encryption_box_decrypt"
         binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKResultOfEncryptionBoxDecrypt, TSDKClientError, TSDKDefault> = .init()
+            response.update(requestId, params, responseType, finished)
+            handler(response)
+        })
+    }
+
+    /// Creates encryption box with specified algorithm
+    public func create_encryption_box(_ payload: TSDKParamsOfCreateEncryptionBox, _ handler: @escaping (TSDKBindingResponse<TSDKRegisteredEncryptionBox, TSDKClientError, TSDKDefault>) -> Void
+    ) {
+        let method: String = "create_encryption_box"
+        binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKRegisteredEncryptionBox, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
             handler(response)
         })

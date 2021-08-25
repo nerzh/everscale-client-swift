@@ -22,7 +22,7 @@ public final class TSDKTvmModule {
     /// Transaction executor requires account BOC (bag of cells) as a parameter.
     /// To get the account BOC - use `net.query` method to download it from GraphQL API(field `boc` of `account`) or generate it with `abi.encode_account` method.
     /// Also it requires message BOC. To get the message BOC - use `abi.encode_message` or `abi.encode_internal_message`.
-    /// If you need this emulation to be as precise as possible (for instance - emulate transactionwith particular lt in particular block or use particular blockchain config,in case you want to download it from a particular key block - then specify `ParamsOfRunExecutor` parameter.
+    /// If you need this emulation to be as precise as possible (for instance - emulate transactionwith particular lt in particular block or use particular blockchain config,downloaded from a particular key block - then specify `execution_options` parameter.
     /// If you need to see the aborted transaction as a result, not as an error, set `skip_transaction_check` to `true`.
     public func run_executor(_ payload: TSDKParamsOfRunExecutor, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfRunExecutor, TSDKClientError, TSDKDefault>) -> Void
     ) {

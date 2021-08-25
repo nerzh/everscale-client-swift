@@ -24,6 +24,24 @@ public enum TSDKCryptoErrorCode: Int, Codable {
     case SigningBoxNotRegistered = 121
     case InvalidSignature = 122
     case EncryptionBoxNotRegistered = 123
+    case InvalidIvSize = 124
+    case UnsupportedCipherMode = 125
+    case CannotCreateCipher = 126
+    case EncryptDataError = 127
+    case DecryptDataError = 128
+    case IvRequired = 129
+}
+
+public enum TSDKEncryptionAlgorithmEnumTypes: String, Codable {
+    case AES = "AES"
+}
+
+public enum TSDKCipherMode: String, Codable {
+    case CBC = "CBC"
+    case CFB = "CFB"
+    case CTR = "CTR"
+    case ECB = "ECB"
+    case OFB = "OFB"
 }
 
 public enum TSDKParamsOfAppSigningBoxEnumTypes: String, Codable {
@@ -63,6 +81,36 @@ public struct TSDKEncryptionBoxInfo: Codable {
         self.algorithm = algorithm
         self.options = options
         self.`public` = `public`
+    }
+}
+
+public struct TSDKEncryptionAlgorithm: Codable {
+    public var type: TSDKEncryptionAlgorithmEnumTypes
+
+    public init(type: TSDKEncryptionAlgorithmEnumTypes) {
+        self.type = type
+    }
+}
+
+public struct TSDKAesParams: Codable {
+    public var mode: TSDKCipherMode
+    public var key: String
+    public var iv: String?
+
+    public init(mode: TSDKCipherMode, key: String, iv: String? = nil) {
+        self.mode = mode
+        self.key = key
+        self.iv = iv
+    }
+}
+
+public struct TSDKAesInfo: Codable {
+    public var mode: TSDKCipherMode
+    public var iv: String?
+
+    public init(mode: TSDKCipherMode, iv: String? = nil) {
+        self.mode = mode
+        self.iv = iv
     }
 }
 
@@ -830,7 +878,8 @@ public struct TSDKParamsOfEncryptionBoxEncrypt: Codable {
 }
 
 public struct TSDKResultOfEncryptionBoxEncrypt: Codable {
-    /// Encrypted data, encoded in Base64
+    /// Encrypted data, encoded in Base64.
+    /// Padded to cipher block size
     public var data: String
 
     public init(data: String) {
@@ -851,11 +900,20 @@ public struct TSDKParamsOfEncryptionBoxDecrypt: Codable {
 }
 
 public struct TSDKResultOfEncryptionBoxDecrypt: Codable {
-    /// Decrypted data, encoded in Base64
+    /// Decrypted data, encoded in Base64.
     public var data: String
 
     public init(data: String) {
         self.data = data
+    }
+}
+
+public struct TSDKParamsOfCreateEncryptionBox: Codable {
+    /// Encryption algorithm specifier including cipher parameters (key, IV, etc)
+    public var algorithm: TSDKEncryptionAlgorithm
+
+    public init(algorithm: TSDKEncryptionAlgorithm) {
+        self.algorithm = algorithm
     }
 }
 
