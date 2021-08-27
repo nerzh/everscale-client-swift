@@ -82,7 +82,7 @@ final class ProcessingTests: XCTestCase {
             }
             group.wait()
             XCTAssertEqual(resultOfProcessMessage?.out_messages.count, 0)
-            XCTAssertEqual(resultOfProcessMessage?.decoded?.out_messages?.count, 0)
+            XCTAssertEqual(resultOfProcessMessage?.decoded?.out_messages.count, 0)
             XCTAssertNil(resultOfProcessMessage?.decoded?.output)
         }
     }
@@ -139,7 +139,7 @@ final class ProcessingTests: XCTestCase {
             if let resultOfProcessMessage = resultOfProcessMessage {
                 XCTAssertTrue(resultOfProcessMessage.fees.total_account_fees > 0)
                 XCTAssertEqual(resultOfProcessMessage.out_messages.count, 0)
-                XCTAssertEqual(resultOfProcessMessage.decoded?.out_messages?.count, 0)
+                XCTAssertEqual(resultOfProcessMessage.decoded?.out_messages.count, 0)
                 XCTAssertNil(resultOfProcessMessage.decoded?.output)
             } else {
                 XCTAssertTrue(false, "resultOfProcessMessage is nil")
