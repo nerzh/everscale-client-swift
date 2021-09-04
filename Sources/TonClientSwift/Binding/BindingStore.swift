@@ -16,14 +16,14 @@ public final class BindingStore {
     public static var responses: [UInt32: (_ requestId: UInt32,
                                            _ stringResponse: String,
                                            _ responseType: TSDKBindingResponseType,
-                                           _ finished: Bool) throws -> Void] = .init()
+                                           _ finished: Bool) -> Void] = .init()
 
 
     public class func addResponseHandler(_ requestId: UInt32,
                                          _ response: @escaping (_ requestId: UInt32,
                                                                 _ stringResponse: String,
                                                                 _ responseType: TSDKBindingResponseType,
-                                                                _ finished: Bool) throws -> Void
+                                                                _ finished: Bool) -> Void
     ) {
         asyncResponseLock.lock()
         responses[requestId] = response

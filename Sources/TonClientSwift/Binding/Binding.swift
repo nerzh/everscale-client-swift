@@ -97,7 +97,7 @@ public final class TSDKBindingModule: TSDKBindingPrtcl {
                                     _ requestHandler: @escaping (_ requestId: UInt32,
                                                                  _ stringResponse: String,
                                                                  _ responseType: TSDKBindingResponseType,
-                                                                 _ finished: Bool) throws -> Void
+                                                                 _ finished: Bool) -> Void
     ) throws {
         try convertToTSDKString(methodName) { tsdkMethodName in
             let payload = payload.toJson() ?? ""
