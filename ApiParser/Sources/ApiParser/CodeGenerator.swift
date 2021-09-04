@@ -128,14 +128,14 @@ class CodeGenerator {
         let methodName: String = swiftFunction.name == "initialize" ? "init" : swiftFunction.name
         result.append("\(tab)\(tab)let method: String = \"\(methodName)\"\n")
         if swiftFunction.params.isEmpty {
-            result.append("\(tab)\(tab)try binding.requestLibraryAsync(methodName(module, method), \"\", { (requestId, params, responseType, finished) in\n")
+            result.append("\(tab)\(tab)try binding.requestLibraryAsync(methodName(module, method), \"\") { (requestId, params, responseType, finished) in\n")
         } else {
-            result.append("\(tab)\(tab)try binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in\n")
+            result.append("\(tab)\(tab)try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in\n")
         }
         result.append("\(tab)\(tab)\(tab)var response: TSDKBindingResponse<\(resultType), \(libPrefix)ClientError, \(libPrefix)Default> = .init()\n")
         result.append("\(tab)\(tab)\(tab)response.update(requestId, params, responseType, finished)\n")
         result.append("\(tab)\(tab)\(tab)try handler(response)\n")
-        result.append("\(tab)\(tab)})\n")
+        result.append("\(tab)\(tab)}\n")
         result.append("\(tab)}\n\n")
 
         return result
