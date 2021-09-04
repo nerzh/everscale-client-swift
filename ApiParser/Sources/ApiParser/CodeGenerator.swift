@@ -19,7 +19,7 @@ class CodeGenerator {
 
     func generate() {
         for module in swiftApi.modules {
-            let moduleClassFolder: String = "./Sources/TonClientSwift/\(module.name.capitalized)"
+            let moduleClassFolder: String = "./../Sources/TonClientSwift/\(module.name.capitalized)"
             let moduleClassFilePath: String = "\(moduleClassFolder)/\(module.name.capitalized).swift"
             var newModuleClass: String = ""
             if module.name == "client" {
@@ -105,14 +105,14 @@ class CodeGenerator {
         return result
     }
 
-//    public func factorize(_ payload: TSDKParamsOfFactorize,
-//                          _ handler: @escaping (TSDKBindingResponse<TSDKResultOfFactorize, TSDKClientError, TSDKDefault>) -> Void
-//    ) {
-//        let method: String = "factorize"
-//        binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
-//            var response: TSDKBindingResponse<TSDKResultOfFactorize, TSDKClientError, TSDKDefault> = .init()
+//    public func decode_message_body(_ payload: TSDKParamsOfDecodeMessageBody,
+//                                    _ handler: @escaping (TSDKBindingResponse<TSDKDecodedMessageBody, TSDKClientError, TSDKDefault>) throws -> Void
+//    ) throws {
+//        let method: String = "decode_message_body"
+//        try binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
+//            var response: TSDKBindingResponse<TSDKDecodedMessageBody, TSDKClientError, TSDKDefault> = .init()
 //            response.update(requestId, params, responseType, finished)
-//            handler(response)
+//            try handler(response)
 //        })
 //    }
     private func generateFunction(_ swiftFunction: SDKSwiftFunction) -> String {
@@ -124,17 +124,17 @@ class CodeGenerator {
             result.append("_ \(parameter.name): \(parameter.type), ")
         }
         let resultType: String = swiftFunction.willReturn.type == "Void" ? "\(libPrefix)NoneResult" : swiftFunction.willReturn.type
-        result.append("_ handler: @escaping (TSDKBindingResponse<\(resultType), \(libPrefix)ClientError, \(libPrefix)Default>) -> Void\n\(tab)) {\n")
+        result.append("_ handler: @escaping (TSDKBindingResponse<\(resultType), \(libPrefix)ClientError, \(libPrefix)Default>) throws -> Void\n\(tab)) throws {\n")
         let methodName: String = swiftFunction.name == "initialize" ? "init" : swiftFunction.name
         result.append("\(tab)\(tab)let method: String = \"\(methodName)\"\n")
         if swiftFunction.params.isEmpty {
-            result.append("\(tab)\(tab)binding.requestLibraryAsync(methodName(module, method), \"\", { (requestId, params, responseType, finished) in\n")
+            result.append("\(tab)\(tab)try binding.requestLibraryAsync(methodName(module, method), \"\", { (requestId, params, responseType, finished) in\n")
         } else {
-            result.append("\(tab)\(tab)binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in\n")
+            result.append("\(tab)\(tab)try binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in\n")
         }
         result.append("\(tab)\(tab)\(tab)var response: TSDKBindingResponse<\(resultType), \(libPrefix)ClientError, \(libPrefix)Default> = .init()\n")
         result.append("\(tab)\(tab)\(tab)response.update(requestId, params, responseType, finished)\n")
-        result.append("\(tab)\(tab)\(tab)handler(response)\n")
+        result.append("\(tab)\(tab)\(tab)try handler(response)\n")
         result.append("\(tab)\(tab)})\n")
         result.append("\(tab)}\n\n")
 
