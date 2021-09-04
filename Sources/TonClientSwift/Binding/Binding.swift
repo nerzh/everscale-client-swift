@@ -101,7 +101,7 @@ public final class TSDKBindingModule: TSDKBindingPrtcl {
                                     _ requestHandler: @escaping (_ requestId: UInt32,
                                                                  _ stringResponse: String,
                                                                  _ responseType: TSDKBindingResponseType,
-                                                                 _ finished: Bool) -> Void
+                                                                 _ finished: Bool) throws -> Void
     ) {
         convertToTSDKString(methodName) { tsdkMethodName in
             let payload = payload.toJson() ?? ""
@@ -115,8 +115,22 @@ public final class TSDKBindingModule: TSDKBindingPrtcl {
                 ) { (requestId: UInt32, params: TSDKString, responseType: UInt32, finished: Bool) in
                     let swiftString: String = TSDKBindingModule.convertFromTSDKString(params)
                     let responseType: TSDKBindingResponseType = (TSDKBindingResponseType.init(rawValue: responseType) ?? .unknown)!
-                    BindingStore.getResponseHandler(requestId)?(requestId, swiftString, responseType, finished)
-                    if finished {
+                    do {
+                        try BindingStore.getResponseHandler(requestId)?(requestId, swiftString, responseType, finished)
+                    } catch {
+                        try! BindingStore.getResponseHandler(requestId)?(
+                            requestId,
+                            [
+                                "code": 0,
+                                "message": error.localizedDescription,
+                                "data": [:].toAnyValue()
+                            ].toAnyValue().toJSON(),
+                            .responseError,
+                            false)
+                        BindingStore.deleteResponseHandler(requestId)
+                    }
+
+                    if finished || responseType == .responseError {
                         BindingStore.deleteResponseHandler(requestId)
                     }
                 }

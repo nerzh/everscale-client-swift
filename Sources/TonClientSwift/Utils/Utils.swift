@@ -14,12 +14,7 @@ public final class TSDKUtilsModule {
         binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKResultOfConvertAddress, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            do {
-                try handler(response)
-            } catch {
-                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
-                    try? handler(response)
-            }
+            try handler(response)
         }
     }
 
@@ -32,12 +27,7 @@ public final class TSDKUtilsModule {
         binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKResultOfGetAddressType, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            do {
-                try handler(response)
-            } catch {
-                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
-                    try? handler(response)
-            }
+            try handler(response)
         }
     }
 
@@ -48,12 +38,7 @@ public final class TSDKUtilsModule {
         binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKResultOfCalcStorageFee, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            do {
-                try handler(response)
-            } catch {
-                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
-                    try? handler(response)
-            }
+            try handler(response)
         }
     }
 
@@ -64,12 +49,7 @@ public final class TSDKUtilsModule {
         binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKResultOfCompressZstd, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            do {
-                try handler(response)
-            } catch {
-                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
-                    try? handler(response)
-            }
+            try handler(response)
         }
     }
 
@@ -80,12 +60,7 @@ public final class TSDKUtilsModule {
         binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKResultOfDecompressZstd, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            do {
-                try handler(response)
-            } catch {
-                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
-                    try? handler(response)
-            }
+            try handler(response)
         }
     }
 

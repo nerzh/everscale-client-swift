@@ -14,12 +14,7 @@ public final class TSDKNetModule {
         binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKResultOfQuery, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            do {
-                try handler(response)
-            } catch {
-                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
-                    try? handler(response)
-            }
+            try handler(response)
         }
     }
 
@@ -30,12 +25,7 @@ public final class TSDKNetModule {
         binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKResultOfBatchQuery, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            do {
-                try handler(response)
-            } catch {
-                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
-                    try? handler(response)
-            }
+            try handler(response)
         }
     }
 
@@ -48,12 +38,7 @@ public final class TSDKNetModule {
         binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKResultOfQueryCollection, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            do {
-                try handler(response)
-            } catch {
-                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
-                    try? handler(response)
-            }
+            try handler(response)
         }
     }
 
@@ -65,12 +50,7 @@ public final class TSDKNetModule {
         binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKResultOfAggregateCollection, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            do {
-                try handler(response)
-            } catch {
-                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
-                    try? handler(response)
-            }
+            try handler(response)
         }
     }
 
@@ -85,12 +65,7 @@ public final class TSDKNetModule {
         binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKResultOfWaitForCollection, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            do {
-                try handler(response)
-            } catch {
-                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
-                    try? handler(response)
-            }
+            try handler(response)
         }
     }
 
@@ -102,12 +77,7 @@ public final class TSDKNetModule {
         binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKNoneResult, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            do {
-                try handler(response)
-            } catch {
-                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
-                    try? handler(response)
-            }
+            try handler(response)
         }
     }
 
@@ -135,12 +105,7 @@ public final class TSDKNetModule {
         binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKResultOfSubscribeCollection, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            do {
-                try handler(response)
-            } catch {
-                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
-                    try? handler(response)
-            }
+            try handler(response)
         }
     }
 
@@ -151,12 +116,7 @@ public final class TSDKNetModule {
         binding.requestLibraryAsync(methodName(module, method), "") { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKNoneResult, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            do {
-                try handler(response)
-            } catch {
-                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
-                    try? handler(response)
-            }
+            try handler(response)
         }
     }
 
@@ -167,12 +127,7 @@ public final class TSDKNetModule {
         binding.requestLibraryAsync(methodName(module, method), "") { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKNoneResult, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            do {
-                try handler(response)
-            } catch {
-                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
-                    try? handler(response)
-            }
+            try handler(response)
         }
     }
 
@@ -183,12 +138,7 @@ public final class TSDKNetModule {
         binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKResultOfFindLastShardBlock, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            do {
-                try handler(response)
-            } catch {
-                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
-                    try? handler(response)
-            }
+            try handler(response)
         }
     }
 
@@ -199,12 +149,7 @@ public final class TSDKNetModule {
         binding.requestLibraryAsync(methodName(module, method), "") { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKEndpointsSet, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            do {
-                try handler(response)
-            } catch {
-                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
-                    try? handler(response)
-            }
+            try handler(response)
         }
     }
 
@@ -215,12 +160,7 @@ public final class TSDKNetModule {
         binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKNoneResult, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            do {
-                try handler(response)
-            } catch {
-                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
-                    try? handler(response)
-            }
+            try handler(response)
         }
     }
 
@@ -231,12 +171,7 @@ public final class TSDKNetModule {
         binding.requestLibraryAsync(methodName(module, method), "") { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKResultOfGetEndpoints, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            do {
-                try handler(response)
-            } catch {
-                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
-                    try? handler(response)
-            }
+            try handler(response)
         }
     }
 
@@ -248,12 +183,7 @@ public final class TSDKNetModule {
         binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKResultOfQueryCollection, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            do {
-                try handler(response)
-            } catch {
-                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
-                    try? handler(response)
-            }
+            try handler(response)
         }
     }
 
@@ -271,12 +201,7 @@ public final class TSDKNetModule {
         binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKResultOfQueryTransactionTree, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            do {
-                try handler(response)
-            } catch {
-                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
-                    try? handler(response)
-            }
+            try handler(response)
         }
     }
 
@@ -296,12 +221,7 @@ public final class TSDKNetModule {
         binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKRegisteredIterator, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            do {
-                try handler(response)
-            } catch {
-                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
-                    try? handler(response)
-            }
+            try handler(response)
         }
     }
 
@@ -314,12 +234,7 @@ public final class TSDKNetModule {
         binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKRegisteredIterator, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            do {
-                try handler(response)
-            } catch {
-                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
-                    try? handler(response)
-            }
+            try handler(response)
         }
     }
 
@@ -348,12 +263,7 @@ public final class TSDKNetModule {
         binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKRegisteredIterator, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            do {
-                try handler(response)
-            } catch {
-                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
-                    try? handler(response)
-            }
+            try handler(response)
         }
     }
 
@@ -367,12 +277,7 @@ public final class TSDKNetModule {
         binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKRegisteredIterator, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            do {
-                try handler(response)
-            } catch {
-                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
-                    try? handler(response)
-            }
+            try handler(response)
         }
     }
 
@@ -389,12 +294,7 @@ public final class TSDKNetModule {
         binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKResultOfIteratorNext, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            do {
-                try handler(response)
-            } catch {
-                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
-                    try? handler(response)
-            }
+            try handler(response)
         }
     }
 
@@ -407,12 +307,7 @@ public final class TSDKNetModule {
         binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKNoneResult, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            do {
-                try handler(response)
-            } catch {
-                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
-                    try? handler(response)
-            }
+            try handler(response)
         }
     }
 
