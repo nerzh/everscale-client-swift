@@ -8,24 +8,24 @@ public final class TSDKAbiModule {
     }
 
     /// Encodes message body according to ABI function call.
-    public func encode_message_body(_ payload: TSDKParamsOfEncodeMessageBody, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfEncodeMessageBody, TSDKClientError, TSDKDefault>) -> Void
+    public func encode_message_body(_ payload: TSDKParamsOfEncodeMessageBody, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfEncodeMessageBody, TSDKClientError, TSDKDefault>) throws -> Void
     ) {
         let method: String = "encode_message_body"
-        binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKResultOfEncodeMessageBody, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            handler(response)
-        })
+            try handler(response)
+        }
     }
 
-    public func attach_signature_to_message_body(_ payload: TSDKParamsOfAttachSignatureToMessageBody, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfAttachSignatureToMessageBody, TSDKClientError, TSDKDefault>) -> Void
+    public func attach_signature_to_message_body(_ payload: TSDKParamsOfAttachSignatureToMessageBody, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfAttachSignatureToMessageBody, TSDKClientError, TSDKDefault>) throws -> Void
     ) {
         let method: String = "attach_signature_to_message_body"
-        binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKResultOfAttachSignatureToMessageBody, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            handler(response)
-        })
+            try handler(response)
+        }
     }
 
     /// Encodes an ABI-compatible message
@@ -45,14 +45,14 @@ public final class TSDKAbiModule {
     /// 1. Public key from deploy set.
     /// 2. Public key, specified in TVM file.
     /// 3. Public key, provided by signer.
-    public func encode_message(_ payload: TSDKParamsOfEncodeMessage, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfEncodeMessage, TSDKClientError, TSDKDefault>) -> Void
+    public func encode_message(_ payload: TSDKParamsOfEncodeMessage, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfEncodeMessage, TSDKClientError, TSDKDefault>) throws -> Void
     ) {
         let method: String = "encode_message"
-        binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKResultOfEncodeMessage, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            handler(response)
-        })
+            try handler(response)
+        }
     }
 
     /// Encodes an internal ABI-compatible message
@@ -64,72 +64,72 @@ public final class TSDKAbiModule {
     /// Public key resolving priority:
     /// 1. Public key from deploy set.
     /// 2. Public key, specified in TVM file.
-    public func encode_internal_message(_ payload: TSDKParamsOfEncodeInternalMessage, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfEncodeInternalMessage, TSDKClientError, TSDKDefault>) -> Void
+    public func encode_internal_message(_ payload: TSDKParamsOfEncodeInternalMessage, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfEncodeInternalMessage, TSDKClientError, TSDKDefault>) throws -> Void
     ) {
         let method: String = "encode_internal_message"
-        binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKResultOfEncodeInternalMessage, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            handler(response)
-        })
+            try handler(response)
+        }
     }
 
     /// Combines `hex`-encoded `signature` with `base64`-encoded `unsigned_message`. Returns signed message encoded in `base64`.
-    public func attach_signature(_ payload: TSDKParamsOfAttachSignature, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfAttachSignature, TSDKClientError, TSDKDefault>) -> Void
+    public func attach_signature(_ payload: TSDKParamsOfAttachSignature, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfAttachSignature, TSDKClientError, TSDKDefault>) throws -> Void
     ) {
         let method: String = "attach_signature"
-        binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKResultOfAttachSignature, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            handler(response)
-        })
+            try handler(response)
+        }
     }
 
     /// Decodes message body using provided message BOC and ABI.
-    public func decode_message(_ payload: TSDKParamsOfDecodeMessage, _ handler: @escaping (TSDKBindingResponse<TSDKDecodedMessageBody, TSDKClientError, TSDKDefault>) -> Void
+    public func decode_message(_ payload: TSDKParamsOfDecodeMessage, _ handler: @escaping (TSDKBindingResponse<TSDKDecodedMessageBody, TSDKClientError, TSDKDefault>) throws -> Void
     ) {
         let method: String = "decode_message"
-        binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKDecodedMessageBody, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            handler(response)
-        })
+            try handler(response)
+        }
     }
 
     /// Decodes message body using provided body BOC and ABI.
-    public func decode_message_body(_ payload: TSDKParamsOfDecodeMessageBody, _ handler: @escaping (TSDKBindingResponse<TSDKDecodedMessageBody, TSDKClientError, TSDKDefault>) -> Void
+    public func decode_message_body(_ payload: TSDKParamsOfDecodeMessageBody, _ handler: @escaping (TSDKBindingResponse<TSDKDecodedMessageBody, TSDKClientError, TSDKDefault>) throws -> Void
     ) {
         let method: String = "decode_message_body"
-        binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKDecodedMessageBody, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            handler(response)
-        })
+            try handler(response)
+        }
     }
 
     /// Creates account state BOC
     /// Creates account state provided with one of these sets of data :
     /// 1. BOC of code, BOC of data, BOC of library2. TVC (string in `base64`), keys, init params
-    public func encode_account(_ payload: TSDKParamsOfEncodeAccount, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfEncodeAccount, TSDKClientError, TSDKDefault>) -> Void
+    public func encode_account(_ payload: TSDKParamsOfEncodeAccount, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfEncodeAccount, TSDKClientError, TSDKDefault>) throws -> Void
     ) {
         let method: String = "encode_account"
-        binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKResultOfEncodeAccount, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            handler(response)
-        })
+            try handler(response)
+        }
     }
 
     /// Decodes account data using provided data BOC and ABI.
     /// Note: this feature requires ABI 2.1 or higher.
-    public func decode_account_data(_ payload: TSDKParamsOfDecodeAccountData, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfDecodeData, TSDKClientError, TSDKDefault>) -> Void
+    public func decode_account_data(_ payload: TSDKParamsOfDecodeAccountData, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfDecodeData, TSDKClientError, TSDKDefault>) throws -> Void
     ) {
         let method: String = "decode_account_data"
-        binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKResultOfDecodeData, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            handler(response)
-        })
+            try handler(response)
+        }
     }
 
 }

@@ -43,7 +43,7 @@ extension XCTestCase {
     func testAsyncMethods<V>(_ handler: @escaping (_ client: TSDKClientModule, _ group: DispatchGroup) -> V) -> V {
         var config: TSDKClientConfig = .init()
         config.network = TSDKNetworkConfig(server_address: SimpleEnv["server_address"] ?? "")
-        let client: TSDKClientModule = .init(config: config)
+        let client: TSDKClientModule = try! .init(config: config)
         let group: DispatchGroup = .init()
         return handler(client, group)
     }

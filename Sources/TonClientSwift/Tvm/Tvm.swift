@@ -24,14 +24,14 @@ public final class TSDKTvmModule {
     /// Also it requires message BOC. To get the message BOC - use `abi.encode_message` or `abi.encode_internal_message`.
     /// If you need this emulation to be as precise as possible (for instance - emulate transactionwith particular lt in particular block or use particular blockchain config,downloaded from a particular key block - then specify `execution_options` parameter.
     /// If you need to see the aborted transaction as a result, not as an error, set `skip_transaction_check` to `true`.
-    public func run_executor(_ payload: TSDKParamsOfRunExecutor, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfRunExecutor, TSDKClientError, TSDKDefault>) -> Void
+    public func run_executor(_ payload: TSDKParamsOfRunExecutor, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfRunExecutor, TSDKClientError, TSDKDefault>) throws -> Void
     ) {
         let method: String = "run_executor"
-        binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKResultOfRunExecutor, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            handler(response)
-        })
+            try handler(response)
+        }
     }
 
     /// Executes get-methods of ABI-compatible contracts
@@ -40,26 +40,26 @@ public final class TSDKTvmModule {
     ///  To get the account BOC (bag of cells) - use `net.query` method to download it from GraphQL API(field `boc` of `account`) or generate it with `abi.encode_account method`.
     /// To get the message BOC - use `abi.encode_message` or prepare it any other way, for instance, with FIFT script.
     /// Attention! Updated account state is produces as well, but only`account_state.storage.state.data`  part of the BOC is updated.
-    public func run_tvm(_ payload: TSDKParamsOfRunTvm, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfRunTvm, TSDKClientError, TSDKDefault>) -> Void
+    public func run_tvm(_ payload: TSDKParamsOfRunTvm, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfRunTvm, TSDKClientError, TSDKDefault>) throws -> Void
     ) {
         let method: String = "run_tvm"
-        binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKResultOfRunTvm, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            handler(response)
-        })
+            try handler(response)
+        }
     }
 
     /// Executes a get-method of FIFT contract
     /// Executes a get-method of FIFT contract that fulfills the smc-guidelines https://test.ton.org/smc-guidelines.txtand returns the result data from TVM's stack
-    public func run_get(_ payload: TSDKParamsOfRunGet, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfRunGet, TSDKClientError, TSDKDefault>) -> Void
+    public func run_get(_ payload: TSDKParamsOfRunGet, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfRunGet, TSDKClientError, TSDKDefault>) throws -> Void
     ) {
         let method: String = "run_get"
-        binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKResultOfRunGet, TSDKClientError, TSDKDefault> = .init()
             response.update(requestId, params, responseType, finished)
-            handler(response)
-        })
+            try handler(response)
+        }
     }
 
 }

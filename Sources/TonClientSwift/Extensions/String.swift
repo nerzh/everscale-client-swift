@@ -27,11 +27,11 @@ public extension String {
         return try? JSONDecoder().decode(model, from: data)
     }
     
-    func getPointer<T>(_ handler: (_ pointer: UnsafePointer<T>, _ len: Int) -> Void) {
+    func getPointer<T>(_ handler: (_ pointer: UnsafePointer<T>, _ len: Int) throws -> Void) rethrows {
         var string = self
-        string.withUTF8 { (p: UnsafeBufferPointer<UInt8>) in
-            p.baseAddress?.withMemoryRebound(to: T.self, capacity: p.count) { (p2: UnsafePointer<T>) in
-                handler(p2, p.count)
+        try string.withUTF8 { (p: UnsafeBufferPointer<UInt8>) in
+            try p.baseAddress?.withMemoryRebound(to: T.self, capacity: p.count) { (p2: UnsafePointer<T>) in
+                try handler(p2, p.count)
             }
         }
     }

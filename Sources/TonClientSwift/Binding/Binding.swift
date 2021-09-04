@@ -20,7 +20,7 @@ public var TSDKRequestAsync = tc_request
 public protocol TSDKBindingPrtcl {
 
     var context: TSDKContext { get }
-    static func convertToTSDKString(_ string: String, _ handler: (_ tsdkString: TSDKString) -> Void)
+    static func convertToTSDKString(_ string: String, _ handler: (_ tsdkString: TSDKString) throws -> Void) rethrows
     static func convertFromTSDKString(_ tsdkString: TSDKString) -> String
     static func convertTSDKStringPointerToString(_ tsdkStringPointer: TSDKStringPointer) -> String
     static func convertTSDKStringToDictionary(_ tsdkString: TSDKString) -> [String: Any]?
@@ -40,13 +40,17 @@ public final class TSDKBindingModule: TSDKBindingPrtcl {
     var convertTSDKStringPointerToDictionary = TSDKBindingModule.convertTSDKStringPointerToDictionary
 
 
-    public init(config: TSDKClientConfig = TSDKClientConfig()) {
-        self.context = createContext(config: config)
+    public init(config: TSDKClientConfig = TSDKClientConfig()) throws {
+        self.context = try createContext(config: config)
     }
 
-    public static func convertToTSDKString(_ string: String, _ handler: (_ tsdkString: TSDKString) -> Void) {
-        string.getPointer { (ptr: UnsafePointer<Int8>, len: Int) in
-            handler(TSDKString.init(content: ptr, len: UInt32(len)))
+    public static func convertToTSDKString(_ string: String, _ handler: (_ tsdkString: TSDKString) throws -> Void) {
+        do {
+            try string.getPointer { (ptr: UnsafePointer<Int8>, len: Int) in
+                try handler(TSDKString.init(content: ptr, len: UInt32(len)))
+            }
+        } catch {
+            fatalError("convertToTSDKString \(error.localizedDescription)")
         }
     }
 
@@ -74,7 +78,7 @@ public final class TSDKBindingModule: TSDKBindingPrtcl {
         return string.toDictionary()
     }
 
-    private func createContext(config: TSDKClientConfig) -> UInt32 {
+    private func createContext(config: TSDKClientConfig) throws -> UInt32 {
         var contextId: UInt32 = .init()
         let json: String = config.toJson() ?? "{}"
         convertToTSDKString(json) { config in
@@ -97,7 +101,7 @@ public final class TSDKBindingModule: TSDKBindingPrtcl {
                                     _ requestHandler: @escaping (_ requestId: UInt32,
                                                                  _ stringResponse: String,
                                                                  _ responseType: TSDKBindingResponseType,
-                                                                 _ finished: Bool) -> Void
+                                                                 _ finished: Bool) throws -> Void
     ) {
         convertToTSDKString(methodName) { tsdkMethodName in
             let payload = payload.toJson() ?? ""
@@ -111,8 +115,22 @@ public final class TSDKBindingModule: TSDKBindingPrtcl {
                 ) { (requestId: UInt32, params: TSDKString, responseType: UInt32, finished: Bool) in
                     let swiftString: String = TSDKBindingModule.convertFromTSDKString(params)
                     let responseType: TSDKBindingResponseType = (TSDKBindingResponseType.init(rawValue: responseType) ?? .unknown)!
-                    BindingStore.getResponseHandler(requestId)?(requestId, swiftString, responseType, finished)
-                    if finished {
+                    do {
+                        try BindingStore.getResponseHandler(requestId)?(requestId, swiftString, responseType, finished)
+                    } catch {
+                        try! BindingStore.getResponseHandler(requestId)?(
+                            requestId,
+                            [
+                                "code": 0,
+                                "message": error.localizedDescription,
+                                "data": [:].toAnyValue()
+                            ].toAnyValue().toJSON(),
+                            .responseError,
+                            false)
+                        BindingStore.deleteResponseHandler(requestId)
+                    }
+
+                    if finished || responseType == .responseError {
                         BindingStore.deleteResponseHandler(requestId)
                     }
                 }
