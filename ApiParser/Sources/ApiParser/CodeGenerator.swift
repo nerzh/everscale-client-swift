@@ -124,7 +124,7 @@ class CodeGenerator {
             result.append("_ \(parameter.name): \(parameter.type), ")
         }
         let resultType: String = swiftFunction.willReturn.type == "Void" ? "\(libPrefix)NoneResult" : swiftFunction.willReturn.type
-        result.append("_ handler: @escaping (TSDKBindingResponse<\(resultType), \(libPrefix)ClientError, \(libPrefix)Default>) throws -> Void\n\(tab)) throws {\n")
+        result.append("_ handler: @escaping (TSDKBindingResponse<\(resultType), \(libPrefix)ClientError, \(libPrefix)Default>) throws -> Void\n\(tab)) {\n")
         let methodName: String = swiftFunction.name == "initialize" ? "init" : swiftFunction.name
         result.append("\(tab)\(tab)let method: String = \"\(methodName)\"\n")
         result.append("\(tab)\(tab)do {\n")
@@ -179,14 +179,10 @@ class CodeGenerator {
         result.append("\n")
         result.append("\(tab)public init(config: \(libPrefix)ClientConfig) throws {\n")
         result.append("\(tab)\(tab)self.config = config\n")
-        result.append("\(tab)\(tab)self.binding = \(libPrefix)BindingModule(config: config)\n")
+        result.append("\(tab)\(tab)self.binding = try \(libPrefix)BindingModule(config: config)\n")
         for module in modules {
             if module.name == "client" { continue }
-            if module.name == "binding" {
-                result.append("\(tab)\(tab)self.\(module.name) = try \(libPrefix)\(module.name.capitalized)Module(binding: binding)\n")
-            } else {
-                result.append("\(tab)\(tab)self.\(module.name) = \(libPrefix)\(module.name.capitalized)Module(binding: binding)\n")
-            }
+            result.append("\(tab)\(tab)self.\(module.name) = \(libPrefix)\(module.name.capitalized)Module(binding: binding)\n")
         }
         result.append("\(tab)}\n\n")
 
