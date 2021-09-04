@@ -12,20 +12,15 @@ public final class TSDKProcessingModule {
     public func send_message(_ payload: TSDKParamsOfSendMessage, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfSendMessage, TSDKClientError, TSDKDefault>) throws -> Void
     ) {
         let method: String = "send_message"
-        do {
-            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                var response: TSDKBindingResponse<TSDKResultOfSendMessage, TSDKClientError, TSDKDefault> = .init()
-                response.update(requestId, params, responseType, finished)
-                do {
-                    try handler(response)
-                }
-                catch {
-                    response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKResultOfSendMessage, TSDKClientError, TSDKDefault> = .init()
+            response.update(requestId, params, responseType, finished)
+            do {
+                try handler(response)
+            } catch {
+                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
                     try? handler(response)
-                }
             }
-        } catch {
-            try? handler(TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: 0, currentResponse: nil))
         }
     }
 
@@ -41,20 +36,15 @@ public final class TSDKProcessingModule {
     public func wait_for_transaction(_ payload: TSDKParamsOfWaitForTransaction, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfProcessMessage, TSDKClientError, TSDKDefault>) throws -> Void
     ) {
         let method: String = "wait_for_transaction"
-        do {
-            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                var response: TSDKBindingResponse<TSDKResultOfProcessMessage, TSDKClientError, TSDKDefault> = .init()
-                response.update(requestId, params, responseType, finished)
-                do {
-                    try handler(response)
-                }
-                catch {
-                    response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKResultOfProcessMessage, TSDKClientError, TSDKDefault> = .init()
+            response.update(requestId, params, responseType, finished)
+            do {
+                try handler(response)
+            } catch {
+                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
                     try? handler(response)
-                }
             }
-        } catch {
-            try? handler(TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: 0, currentResponse: nil))
         }
     }
 
@@ -68,20 +58,15 @@ public final class TSDKProcessingModule {
     public func process_message(_ payload: TSDKParamsOfProcessMessage, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfProcessMessage, TSDKClientError, TSDKDefault>) throws -> Void
     ) {
         let method: String = "process_message"
-        do {
-            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                var response: TSDKBindingResponse<TSDKResultOfProcessMessage, TSDKClientError, TSDKDefault> = .init()
-                response.update(requestId, params, responseType, finished)
-                do {
-                    try handler(response)
-                }
-                catch {
-                    response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKResultOfProcessMessage, TSDKClientError, TSDKDefault> = .init()
+            response.update(requestId, params, responseType, finished)
+            do {
+                try handler(response)
+            } catch {
+                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
                     try? handler(response)
-                }
             }
-        } catch {
-            try? handler(TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: 0, currentResponse: nil))
         }
     }
 

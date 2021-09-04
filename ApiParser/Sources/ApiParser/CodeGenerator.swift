@@ -127,25 +127,24 @@ class CodeGenerator {
         result.append("_ handler: @escaping (TSDKBindingResponse<\(resultType), \(libPrefix)ClientError, \(libPrefix)Default>) throws -> Void\n\(tab)) {\n")
         let methodName: String = swiftFunction.name == "initialize" ? "init" : swiftFunction.name
         result.append("\(tab)\(tab)let method: String = \"\(methodName)\"\n")
-        result.append("\(tab)\(tab)do {\n")
+//        result.append("\(tab)\(tab)do {\n")
         if swiftFunction.params.isEmpty {
-            result.append("\(tab)\(tab)\(tab)try binding.requestLibraryAsync(methodName(module, method), \"\") { (requestId, params, responseType, finished) in\n")
+            result.append("\(tab)\(tab)binding.requestLibraryAsync(methodName(module, method), \"\") { (requestId, params, responseType, finished) in\n")
         } else {
-            result.append("\(tab)\(tab)\(tab)try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in\n")
+            result.append("\(tab)\(tab)binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in\n")
         }
-        result.append("\(tab)\(tab)\(tab)\(tab)var response: TSDKBindingResponse<\(resultType), \(libPrefix)ClientError, \(libPrefix)Default> = .init()\n")
-        result.append("\(tab)\(tab)\(tab)\(tab)response.update(requestId, params, responseType, finished)\n")
-        result.append("\(tab)\(tab)\(tab)\(tab)do {\n")
-        result.append("\(tab)\(tab)\(tab)\(tab)\(tab)try handler(response)\n")
-        result.append("\(tab)\(tab)\(tab)\(tab)}\n")
-        result.append("\(tab)\(tab)\(tab)\(tab)catch {\n")
-        result.append("\(tab)\(tab)\(tab)\(tab)\(tab)response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)\n")
+        result.append("\(tab)\(tab)\(tab)var response: TSDKBindingResponse<\(resultType), \(libPrefix)ClientError, \(libPrefix)Default> = .init()\n")
+        result.append("\(tab)\(tab)\(tab)response.update(requestId, params, responseType, finished)\n")
+        result.append("\(tab)\(tab)\(tab)do {\n")
+        result.append("\(tab)\(tab)\(tab)\(tab)try handler(response)\n")
+        result.append("\(tab)\(tab)\(tab)} catch {\n")
+        result.append("\(tab)\(tab)\(tab)\(tab)response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)\n")
         result.append("\(tab)\(tab)\(tab)\(tab)\(tab)try? handler(response)\n")
-        result.append("\(tab)\(tab)\(tab)\(tab)}\n")
         result.append("\(tab)\(tab)\(tab)}\n")
-        result.append("\(tab)\(tab)} catch {\n")
-        result.append("\(tab)\(tab)\(tab)try? handler(TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: 0, currentResponse: nil))\n")
         result.append("\(tab)\(tab)}\n")
+//        result.append("\(tab)\(tab)} catch {\n")
+//        result.append("\(tab)\(tab)\(tab)try? handler(TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: 0, currentResponse: nil))\n")
+//        result.append("\(tab)\(tab)}\n")
         result.append("\(tab)}\n\n")
 
         return result

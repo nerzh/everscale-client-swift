@@ -11,40 +11,30 @@ public final class TSDKAbiModule {
     public func encode_message_body(_ payload: TSDKParamsOfEncodeMessageBody, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfEncodeMessageBody, TSDKClientError, TSDKDefault>) throws -> Void
     ) {
         let method: String = "encode_message_body"
-        do {
-            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                var response: TSDKBindingResponse<TSDKResultOfEncodeMessageBody, TSDKClientError, TSDKDefault> = .init()
-                response.update(requestId, params, responseType, finished)
-                do {
-                    try handler(response)
-                }
-                catch {
-                    response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKResultOfEncodeMessageBody, TSDKClientError, TSDKDefault> = .init()
+            response.update(requestId, params, responseType, finished)
+            do {
+                try handler(response)
+            } catch {
+                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
                     try? handler(response)
-                }
             }
-        } catch {
-            try? handler(TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: 0, currentResponse: nil))
         }
     }
 
     public func attach_signature_to_message_body(_ payload: TSDKParamsOfAttachSignatureToMessageBody, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfAttachSignatureToMessageBody, TSDKClientError, TSDKDefault>) throws -> Void
     ) {
         let method: String = "attach_signature_to_message_body"
-        do {
-            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                var response: TSDKBindingResponse<TSDKResultOfAttachSignatureToMessageBody, TSDKClientError, TSDKDefault> = .init()
-                response.update(requestId, params, responseType, finished)
-                do {
-                    try handler(response)
-                }
-                catch {
-                    response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKResultOfAttachSignatureToMessageBody, TSDKClientError, TSDKDefault> = .init()
+            response.update(requestId, params, responseType, finished)
+            do {
+                try handler(response)
+            } catch {
+                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
                     try? handler(response)
-                }
             }
-        } catch {
-            try? handler(TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: 0, currentResponse: nil))
         }
     }
 
@@ -68,20 +58,15 @@ public final class TSDKAbiModule {
     public func encode_message(_ payload: TSDKParamsOfEncodeMessage, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfEncodeMessage, TSDKClientError, TSDKDefault>) throws -> Void
     ) {
         let method: String = "encode_message"
-        do {
-            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                var response: TSDKBindingResponse<TSDKResultOfEncodeMessage, TSDKClientError, TSDKDefault> = .init()
-                response.update(requestId, params, responseType, finished)
-                do {
-                    try handler(response)
-                }
-                catch {
-                    response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKResultOfEncodeMessage, TSDKClientError, TSDKDefault> = .init()
+            response.update(requestId, params, responseType, finished)
+            do {
+                try handler(response)
+            } catch {
+                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
                     try? handler(response)
-                }
             }
-        } catch {
-            try? handler(TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: 0, currentResponse: nil))
         }
     }
 
@@ -97,20 +82,15 @@ public final class TSDKAbiModule {
     public func encode_internal_message(_ payload: TSDKParamsOfEncodeInternalMessage, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfEncodeInternalMessage, TSDKClientError, TSDKDefault>) throws -> Void
     ) {
         let method: String = "encode_internal_message"
-        do {
-            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                var response: TSDKBindingResponse<TSDKResultOfEncodeInternalMessage, TSDKClientError, TSDKDefault> = .init()
-                response.update(requestId, params, responseType, finished)
-                do {
-                    try handler(response)
-                }
-                catch {
-                    response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKResultOfEncodeInternalMessage, TSDKClientError, TSDKDefault> = .init()
+            response.update(requestId, params, responseType, finished)
+            do {
+                try handler(response)
+            } catch {
+                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
                     try? handler(response)
-                }
             }
-        } catch {
-            try? handler(TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: 0, currentResponse: nil))
         }
     }
 
@@ -118,20 +98,15 @@ public final class TSDKAbiModule {
     public func attach_signature(_ payload: TSDKParamsOfAttachSignature, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfAttachSignature, TSDKClientError, TSDKDefault>) throws -> Void
     ) {
         let method: String = "attach_signature"
-        do {
-            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                var response: TSDKBindingResponse<TSDKResultOfAttachSignature, TSDKClientError, TSDKDefault> = .init()
-                response.update(requestId, params, responseType, finished)
-                do {
-                    try handler(response)
-                }
-                catch {
-                    response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKResultOfAttachSignature, TSDKClientError, TSDKDefault> = .init()
+            response.update(requestId, params, responseType, finished)
+            do {
+                try handler(response)
+            } catch {
+                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
                     try? handler(response)
-                }
             }
-        } catch {
-            try? handler(TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: 0, currentResponse: nil))
         }
     }
 
@@ -139,20 +114,15 @@ public final class TSDKAbiModule {
     public func decode_message(_ payload: TSDKParamsOfDecodeMessage, _ handler: @escaping (TSDKBindingResponse<TSDKDecodedMessageBody, TSDKClientError, TSDKDefault>) throws -> Void
     ) {
         let method: String = "decode_message"
-        do {
-            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                var response: TSDKBindingResponse<TSDKDecodedMessageBody, TSDKClientError, TSDKDefault> = .init()
-                response.update(requestId, params, responseType, finished)
-                do {
-                    try handler(response)
-                }
-                catch {
-                    response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKDecodedMessageBody, TSDKClientError, TSDKDefault> = .init()
+            response.update(requestId, params, responseType, finished)
+            do {
+                try handler(response)
+            } catch {
+                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
                     try? handler(response)
-                }
             }
-        } catch {
-            try? handler(TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: 0, currentResponse: nil))
         }
     }
 
@@ -160,20 +130,15 @@ public final class TSDKAbiModule {
     public func decode_message_body(_ payload: TSDKParamsOfDecodeMessageBody, _ handler: @escaping (TSDKBindingResponse<TSDKDecodedMessageBody, TSDKClientError, TSDKDefault>) throws -> Void
     ) {
         let method: String = "decode_message_body"
-        do {
-            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                var response: TSDKBindingResponse<TSDKDecodedMessageBody, TSDKClientError, TSDKDefault> = .init()
-                response.update(requestId, params, responseType, finished)
-                do {
-                    try handler(response)
-                }
-                catch {
-                    response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKDecodedMessageBody, TSDKClientError, TSDKDefault> = .init()
+            response.update(requestId, params, responseType, finished)
+            do {
+                try handler(response)
+            } catch {
+                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
                     try? handler(response)
-                }
             }
-        } catch {
-            try? handler(TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: 0, currentResponse: nil))
         }
     }
 
@@ -183,20 +148,15 @@ public final class TSDKAbiModule {
     public func encode_account(_ payload: TSDKParamsOfEncodeAccount, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfEncodeAccount, TSDKClientError, TSDKDefault>) throws -> Void
     ) {
         let method: String = "encode_account"
-        do {
-            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                var response: TSDKBindingResponse<TSDKResultOfEncodeAccount, TSDKClientError, TSDKDefault> = .init()
-                response.update(requestId, params, responseType, finished)
-                do {
-                    try handler(response)
-                }
-                catch {
-                    response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKResultOfEncodeAccount, TSDKClientError, TSDKDefault> = .init()
+            response.update(requestId, params, responseType, finished)
+            do {
+                try handler(response)
+            } catch {
+                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
                     try? handler(response)
-                }
             }
-        } catch {
-            try? handler(TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: 0, currentResponse: nil))
         }
     }
 
@@ -205,20 +165,15 @@ public final class TSDKAbiModule {
     public func decode_account_data(_ payload: TSDKParamsOfDecodeAccountData, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfDecodeData, TSDKClientError, TSDKDefault>) throws -> Void
     ) {
         let method: String = "decode_account_data"
-        do {
-            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                var response: TSDKBindingResponse<TSDKResultOfDecodeData, TSDKClientError, TSDKDefault> = .init()
-                response.update(requestId, params, responseType, finished)
-                do {
-                    try handler(response)
-                }
-                catch {
-                    response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKResultOfDecodeData, TSDKClientError, TSDKDefault> = .init()
+            response.update(requestId, params, responseType, finished)
+            do {
+                try handler(response)
+            } catch {
+                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
                     try? handler(response)
-                }
             }
-        } catch {
-            try? handler(TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: 0, currentResponse: nil))
         }
     }
 

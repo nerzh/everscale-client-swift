@@ -13,20 +13,15 @@ public final class TSDKCryptoModule {
     public func factorize(_ payload: TSDKParamsOfFactorize, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfFactorize, TSDKClientError, TSDKDefault>) throws -> Void
     ) {
         let method: String = "factorize"
-        do {
-            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                var response: TSDKBindingResponse<TSDKResultOfFactorize, TSDKClientError, TSDKDefault> = .init()
-                response.update(requestId, params, responseType, finished)
-                do {
-                    try handler(response)
-                }
-                catch {
-                    response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKResultOfFactorize, TSDKClientError, TSDKDefault> = .init()
+            response.update(requestId, params, responseType, finished)
+            do {
+                try handler(response)
+            } catch {
+                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
                     try? handler(response)
-                }
             }
-        } catch {
-            try? handler(TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: 0, currentResponse: nil))
         }
     }
 
@@ -36,20 +31,15 @@ public final class TSDKCryptoModule {
     public func modular_power(_ payload: TSDKParamsOfModularPower, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfModularPower, TSDKClientError, TSDKDefault>) throws -> Void
     ) {
         let method: String = "modular_power"
-        do {
-            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                var response: TSDKBindingResponse<TSDKResultOfModularPower, TSDKClientError, TSDKDefault> = .init()
-                response.update(requestId, params, responseType, finished)
-                do {
-                    try handler(response)
-                }
-                catch {
-                    response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKResultOfModularPower, TSDKClientError, TSDKDefault> = .init()
+            response.update(requestId, params, responseType, finished)
+            do {
+                try handler(response)
+            } catch {
+                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
                     try? handler(response)
-                }
             }
-        } catch {
-            try? handler(TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: 0, currentResponse: nil))
         }
     }
 
@@ -57,20 +47,15 @@ public final class TSDKCryptoModule {
     public func ton_crc16(_ payload: TSDKParamsOfTonCrc16, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfTonCrc16, TSDKClientError, TSDKDefault>) throws -> Void
     ) {
         let method: String = "ton_crc16"
-        do {
-            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                var response: TSDKBindingResponse<TSDKResultOfTonCrc16, TSDKClientError, TSDKDefault> = .init()
-                response.update(requestId, params, responseType, finished)
-                do {
-                    try handler(response)
-                }
-                catch {
-                    response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKResultOfTonCrc16, TSDKClientError, TSDKDefault> = .init()
+            response.update(requestId, params, responseType, finished)
+            do {
+                try handler(response)
+            } catch {
+                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
                     try? handler(response)
-                }
             }
-        } catch {
-            try? handler(TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: 0, currentResponse: nil))
         }
     }
 
@@ -78,20 +63,15 @@ public final class TSDKCryptoModule {
     public func generate_random_bytes(_ payload: TSDKParamsOfGenerateRandomBytes, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfGenerateRandomBytes, TSDKClientError, TSDKDefault>) throws -> Void
     ) {
         let method: String = "generate_random_bytes"
-        do {
-            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                var response: TSDKBindingResponse<TSDKResultOfGenerateRandomBytes, TSDKClientError, TSDKDefault> = .init()
-                response.update(requestId, params, responseType, finished)
-                do {
-                    try handler(response)
-                }
-                catch {
-                    response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKResultOfGenerateRandomBytes, TSDKClientError, TSDKDefault> = .init()
+            response.update(requestId, params, responseType, finished)
+            do {
+                try handler(response)
+            } catch {
+                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
                     try? handler(response)
-                }
             }
-        } catch {
-            try? handler(TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: 0, currentResponse: nil))
         }
     }
 
@@ -99,20 +79,15 @@ public final class TSDKCryptoModule {
     public func convert_public_key_to_ton_safe_format(_ payload: TSDKParamsOfConvertPublicKeyToTonSafeFormat, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfConvertPublicKeyToTonSafeFormat, TSDKClientError, TSDKDefault>) throws -> Void
     ) {
         let method: String = "convert_public_key_to_ton_safe_format"
-        do {
-            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                var response: TSDKBindingResponse<TSDKResultOfConvertPublicKeyToTonSafeFormat, TSDKClientError, TSDKDefault> = .init()
-                response.update(requestId, params, responseType, finished)
-                do {
-                    try handler(response)
-                }
-                catch {
-                    response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKResultOfConvertPublicKeyToTonSafeFormat, TSDKClientError, TSDKDefault> = .init()
+            response.update(requestId, params, responseType, finished)
+            do {
+                try handler(response)
+            } catch {
+                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
                     try? handler(response)
-                }
             }
-        } catch {
-            try? handler(TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: 0, currentResponse: nil))
         }
     }
 
@@ -120,20 +95,15 @@ public final class TSDKCryptoModule {
     public func generate_random_sign_keys(_ handler: @escaping (TSDKBindingResponse<TSDKKeyPair, TSDKClientError, TSDKDefault>) throws -> Void
     ) {
         let method: String = "generate_random_sign_keys"
-        do {
-            try binding.requestLibraryAsync(methodName(module, method), "") { (requestId, params, responseType, finished) in
-                var response: TSDKBindingResponse<TSDKKeyPair, TSDKClientError, TSDKDefault> = .init()
-                response.update(requestId, params, responseType, finished)
-                do {
-                    try handler(response)
-                }
-                catch {
-                    response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
+        binding.requestLibraryAsync(methodName(module, method), "") { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKKeyPair, TSDKClientError, TSDKDefault> = .init()
+            response.update(requestId, params, responseType, finished)
+            do {
+                try handler(response)
+            } catch {
+                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
                     try? handler(response)
-                }
             }
-        } catch {
-            try? handler(TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: 0, currentResponse: nil))
         }
     }
 
@@ -141,20 +111,15 @@ public final class TSDKCryptoModule {
     public func sign(_ payload: TSDKParamsOfSign, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfSign, TSDKClientError, TSDKDefault>) throws -> Void
     ) {
         let method: String = "sign"
-        do {
-            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                var response: TSDKBindingResponse<TSDKResultOfSign, TSDKClientError, TSDKDefault> = .init()
-                response.update(requestId, params, responseType, finished)
-                do {
-                    try handler(response)
-                }
-                catch {
-                    response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKResultOfSign, TSDKClientError, TSDKDefault> = .init()
+            response.update(requestId, params, responseType, finished)
+            do {
+                try handler(response)
+            } catch {
+                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
                     try? handler(response)
-                }
             }
-        } catch {
-            try? handler(TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: 0, currentResponse: nil))
         }
     }
 
@@ -162,20 +127,15 @@ public final class TSDKCryptoModule {
     public func verify_signature(_ payload: TSDKParamsOfVerifySignature, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfVerifySignature, TSDKClientError, TSDKDefault>) throws -> Void
     ) {
         let method: String = "verify_signature"
-        do {
-            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                var response: TSDKBindingResponse<TSDKResultOfVerifySignature, TSDKClientError, TSDKDefault> = .init()
-                response.update(requestId, params, responseType, finished)
-                do {
-                    try handler(response)
-                }
-                catch {
-                    response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKResultOfVerifySignature, TSDKClientError, TSDKDefault> = .init()
+            response.update(requestId, params, responseType, finished)
+            do {
+                try handler(response)
+            } catch {
+                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
                     try? handler(response)
-                }
             }
-        } catch {
-            try? handler(TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: 0, currentResponse: nil))
         }
     }
 
@@ -183,20 +143,15 @@ public final class TSDKCryptoModule {
     public func sha256(_ payload: TSDKParamsOfHash, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfHash, TSDKClientError, TSDKDefault>) throws -> Void
     ) {
         let method: String = "sha256"
-        do {
-            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                var response: TSDKBindingResponse<TSDKResultOfHash, TSDKClientError, TSDKDefault> = .init()
-                response.update(requestId, params, responseType, finished)
-                do {
-                    try handler(response)
-                }
-                catch {
-                    response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKResultOfHash, TSDKClientError, TSDKDefault> = .init()
+            response.update(requestId, params, responseType, finished)
+            do {
+                try handler(response)
+            } catch {
+                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
                     try? handler(response)
-                }
             }
-        } catch {
-            try? handler(TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: 0, currentResponse: nil))
         }
     }
 
@@ -204,20 +159,15 @@ public final class TSDKCryptoModule {
     public func sha512(_ payload: TSDKParamsOfHash, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfHash, TSDKClientError, TSDKDefault>) throws -> Void
     ) {
         let method: String = "sha512"
-        do {
-            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                var response: TSDKBindingResponse<TSDKResultOfHash, TSDKClientError, TSDKDefault> = .init()
-                response.update(requestId, params, responseType, finished)
-                do {
-                    try handler(response)
-                }
-                catch {
-                    response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKResultOfHash, TSDKClientError, TSDKDefault> = .init()
+            response.update(requestId, params, responseType, finished)
+            do {
+                try handler(response)
+            } catch {
+                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
                     try? handler(response)
-                }
             }
-        } catch {
-            try? handler(TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: 0, currentResponse: nil))
         }
     }
 
@@ -228,20 +178,15 @@ public final class TSDKCryptoModule {
     public func scrypt(_ payload: TSDKParamsOfScrypt, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfScrypt, TSDKClientError, TSDKDefault>) throws -> Void
     ) {
         let method: String = "scrypt"
-        do {
-            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                var response: TSDKBindingResponse<TSDKResultOfScrypt, TSDKClientError, TSDKDefault> = .init()
-                response.update(requestId, params, responseType, finished)
-                do {
-                    try handler(response)
-                }
-                catch {
-                    response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKResultOfScrypt, TSDKClientError, TSDKDefault> = .init()
+            response.update(requestId, params, responseType, finished)
+            do {
+                try handler(response)
+            } catch {
+                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
                     try? handler(response)
-                }
             }
-        } catch {
-            try? handler(TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: 0, currentResponse: nil))
         }
     }
 
@@ -251,20 +196,15 @@ public final class TSDKCryptoModule {
     public func nacl_sign_keypair_from_secret_key(_ payload: TSDKParamsOfNaclSignKeyPairFromSecret, _ handler: @escaping (TSDKBindingResponse<TSDKKeyPair, TSDKClientError, TSDKDefault>) throws -> Void
     ) {
         let method: String = "nacl_sign_keypair_from_secret_key"
-        do {
-            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                var response: TSDKBindingResponse<TSDKKeyPair, TSDKClientError, TSDKDefault> = .init()
-                response.update(requestId, params, responseType, finished)
-                do {
-                    try handler(response)
-                }
-                catch {
-                    response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKKeyPair, TSDKClientError, TSDKDefault> = .init()
+            response.update(requestId, params, responseType, finished)
+            do {
+                try handler(response)
+            } catch {
+                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
                     try? handler(response)
-                }
             }
-        } catch {
-            try? handler(TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: 0, currentResponse: nil))
         }
     }
 
@@ -272,20 +212,15 @@ public final class TSDKCryptoModule {
     public func nacl_sign(_ payload: TSDKParamsOfNaclSign, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfNaclSign, TSDKClientError, TSDKDefault>) throws -> Void
     ) {
         let method: String = "nacl_sign"
-        do {
-            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                var response: TSDKBindingResponse<TSDKResultOfNaclSign, TSDKClientError, TSDKDefault> = .init()
-                response.update(requestId, params, responseType, finished)
-                do {
-                    try handler(response)
-                }
-                catch {
-                    response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKResultOfNaclSign, TSDKClientError, TSDKDefault> = .init()
+            response.update(requestId, params, responseType, finished)
+            do {
+                try handler(response)
+            } catch {
+                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
                     try? handler(response)
-                }
             }
-        } catch {
-            try? handler(TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: 0, currentResponse: nil))
         }
     }
 
@@ -295,20 +230,15 @@ public final class TSDKCryptoModule {
     public func nacl_sign_open(_ payload: TSDKParamsOfNaclSignOpen, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfNaclSignOpen, TSDKClientError, TSDKDefault>) throws -> Void
     ) {
         let method: String = "nacl_sign_open"
-        do {
-            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                var response: TSDKBindingResponse<TSDKResultOfNaclSignOpen, TSDKClientError, TSDKDefault> = .init()
-                response.update(requestId, params, responseType, finished)
-                do {
-                    try handler(response)
-                }
-                catch {
-                    response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKResultOfNaclSignOpen, TSDKClientError, TSDKDefault> = .init()
+            response.update(requestId, params, responseType, finished)
+            do {
+                try handler(response)
+            } catch {
+                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
                     try? handler(response)
-                }
             }
-        } catch {
-            try? handler(TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: 0, currentResponse: nil))
         }
     }
 
@@ -317,20 +247,15 @@ public final class TSDKCryptoModule {
     public func nacl_sign_detached(_ payload: TSDKParamsOfNaclSign, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfNaclSignDetached, TSDKClientError, TSDKDefault>) throws -> Void
     ) {
         let method: String = "nacl_sign_detached"
-        do {
-            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                var response: TSDKBindingResponse<TSDKResultOfNaclSignDetached, TSDKClientError, TSDKDefault> = .init()
-                response.update(requestId, params, responseType, finished)
-                do {
-                    try handler(response)
-                }
-                catch {
-                    response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKResultOfNaclSignDetached, TSDKClientError, TSDKDefault> = .init()
+            response.update(requestId, params, responseType, finished)
+            do {
+                try handler(response)
+            } catch {
+                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
                     try? handler(response)
-                }
             }
-        } catch {
-            try? handler(TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: 0, currentResponse: nil))
         }
     }
 
@@ -338,20 +263,15 @@ public final class TSDKCryptoModule {
     public func nacl_sign_detached_verify(_ payload: TSDKParamsOfNaclSignDetachedVerify, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfNaclSignDetachedVerify, TSDKClientError, TSDKDefault>) throws -> Void
     ) {
         let method: String = "nacl_sign_detached_verify"
-        do {
-            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                var response: TSDKBindingResponse<TSDKResultOfNaclSignDetachedVerify, TSDKClientError, TSDKDefault> = .init()
-                response.update(requestId, params, responseType, finished)
-                do {
-                    try handler(response)
-                }
-                catch {
-                    response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKResultOfNaclSignDetachedVerify, TSDKClientError, TSDKDefault> = .init()
+            response.update(requestId, params, responseType, finished)
+            do {
+                try handler(response)
+            } catch {
+                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
                     try? handler(response)
-                }
             }
-        } catch {
-            try? handler(TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: 0, currentResponse: nil))
         }
     }
 
@@ -359,20 +279,15 @@ public final class TSDKCryptoModule {
     public func nacl_box_keypair(_ handler: @escaping (TSDKBindingResponse<TSDKKeyPair, TSDKClientError, TSDKDefault>) throws -> Void
     ) {
         let method: String = "nacl_box_keypair"
-        do {
-            try binding.requestLibraryAsync(methodName(module, method), "") { (requestId, params, responseType, finished) in
-                var response: TSDKBindingResponse<TSDKKeyPair, TSDKClientError, TSDKDefault> = .init()
-                response.update(requestId, params, responseType, finished)
-                do {
-                    try handler(response)
-                }
-                catch {
-                    response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
+        binding.requestLibraryAsync(methodName(module, method), "") { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKKeyPair, TSDKClientError, TSDKDefault> = .init()
+            response.update(requestId, params, responseType, finished)
+            do {
+                try handler(response)
+            } catch {
+                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
                     try? handler(response)
-                }
             }
-        } catch {
-            try? handler(TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: 0, currentResponse: nil))
         }
     }
 
@@ -380,20 +295,15 @@ public final class TSDKCryptoModule {
     public func nacl_box_keypair_from_secret_key(_ payload: TSDKParamsOfNaclBoxKeyPairFromSecret, _ handler: @escaping (TSDKBindingResponse<TSDKKeyPair, TSDKClientError, TSDKDefault>) throws -> Void
     ) {
         let method: String = "nacl_box_keypair_from_secret_key"
-        do {
-            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                var response: TSDKBindingResponse<TSDKKeyPair, TSDKClientError, TSDKDefault> = .init()
-                response.update(requestId, params, responseType, finished)
-                do {
-                    try handler(response)
-                }
-                catch {
-                    response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKKeyPair, TSDKClientError, TSDKDefault> = .init()
+            response.update(requestId, params, responseType, finished)
+            do {
+                try handler(response)
+            } catch {
+                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
                     try? handler(response)
-                }
             }
-        } catch {
-            try? handler(TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: 0, currentResponse: nil))
         }
     }
 
@@ -402,20 +312,15 @@ public final class TSDKCryptoModule {
     public func nacl_box(_ payload: TSDKParamsOfNaclBox, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfNaclBox, TSDKClientError, TSDKDefault>) throws -> Void
     ) {
         let method: String = "nacl_box"
-        do {
-            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                var response: TSDKBindingResponse<TSDKResultOfNaclBox, TSDKClientError, TSDKDefault> = .init()
-                response.update(requestId, params, responseType, finished)
-                do {
-                    try handler(response)
-                }
-                catch {
-                    response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKResultOfNaclBox, TSDKClientError, TSDKDefault> = .init()
+            response.update(requestId, params, responseType, finished)
+            do {
+                try handler(response)
+            } catch {
+                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
                     try? handler(response)
-                }
             }
-        } catch {
-            try? handler(TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: 0, currentResponse: nil))
         }
     }
 
@@ -423,20 +328,15 @@ public final class TSDKCryptoModule {
     public func nacl_box_open(_ payload: TSDKParamsOfNaclBoxOpen, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfNaclBoxOpen, TSDKClientError, TSDKDefault>) throws -> Void
     ) {
         let method: String = "nacl_box_open"
-        do {
-            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                var response: TSDKBindingResponse<TSDKResultOfNaclBoxOpen, TSDKClientError, TSDKDefault> = .init()
-                response.update(requestId, params, responseType, finished)
-                do {
-                    try handler(response)
-                }
-                catch {
-                    response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKResultOfNaclBoxOpen, TSDKClientError, TSDKDefault> = .init()
+            response.update(requestId, params, responseType, finished)
+            do {
+                try handler(response)
+            } catch {
+                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
                     try? handler(response)
-                }
             }
-        } catch {
-            try? handler(TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: 0, currentResponse: nil))
         }
     }
 
@@ -444,20 +344,15 @@ public final class TSDKCryptoModule {
     public func nacl_secret_box(_ payload: TSDKParamsOfNaclSecretBox, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfNaclBox, TSDKClientError, TSDKDefault>) throws -> Void
     ) {
         let method: String = "nacl_secret_box"
-        do {
-            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                var response: TSDKBindingResponse<TSDKResultOfNaclBox, TSDKClientError, TSDKDefault> = .init()
-                response.update(requestId, params, responseType, finished)
-                do {
-                    try handler(response)
-                }
-                catch {
-                    response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKResultOfNaclBox, TSDKClientError, TSDKDefault> = .init()
+            response.update(requestId, params, responseType, finished)
+            do {
+                try handler(response)
+            } catch {
+                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
                     try? handler(response)
-                }
             }
-        } catch {
-            try? handler(TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: 0, currentResponse: nil))
         }
     }
 
@@ -465,20 +360,15 @@ public final class TSDKCryptoModule {
     public func nacl_secret_box_open(_ payload: TSDKParamsOfNaclSecretBoxOpen, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfNaclBoxOpen, TSDKClientError, TSDKDefault>) throws -> Void
     ) {
         let method: String = "nacl_secret_box_open"
-        do {
-            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                var response: TSDKBindingResponse<TSDKResultOfNaclBoxOpen, TSDKClientError, TSDKDefault> = .init()
-                response.update(requestId, params, responseType, finished)
-                do {
-                    try handler(response)
-                }
-                catch {
-                    response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKResultOfNaclBoxOpen, TSDKClientError, TSDKDefault> = .init()
+            response.update(requestId, params, responseType, finished)
+            do {
+                try handler(response)
+            } catch {
+                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
                     try? handler(response)
-                }
             }
-        } catch {
-            try? handler(TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: 0, currentResponse: nil))
         }
     }
 
@@ -486,20 +376,15 @@ public final class TSDKCryptoModule {
     public func mnemonic_words(_ payload: TSDKParamsOfMnemonicWords, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfMnemonicWords, TSDKClientError, TSDKDefault>) throws -> Void
     ) {
         let method: String = "mnemonic_words"
-        do {
-            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                var response: TSDKBindingResponse<TSDKResultOfMnemonicWords, TSDKClientError, TSDKDefault> = .init()
-                response.update(requestId, params, responseType, finished)
-                do {
-                    try handler(response)
-                }
-                catch {
-                    response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKResultOfMnemonicWords, TSDKClientError, TSDKDefault> = .init()
+            response.update(requestId, params, responseType, finished)
+            do {
+                try handler(response)
+            } catch {
+                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
                     try? handler(response)
-                }
             }
-        } catch {
-            try? handler(TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: 0, currentResponse: nil))
         }
     }
 
@@ -508,20 +393,15 @@ public final class TSDKCryptoModule {
     public func mnemonic_from_random(_ payload: TSDKParamsOfMnemonicFromRandom, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfMnemonicFromRandom, TSDKClientError, TSDKDefault>) throws -> Void
     ) {
         let method: String = "mnemonic_from_random"
-        do {
-            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                var response: TSDKBindingResponse<TSDKResultOfMnemonicFromRandom, TSDKClientError, TSDKDefault> = .init()
-                response.update(requestId, params, responseType, finished)
-                do {
-                    try handler(response)
-                }
-                catch {
-                    response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKResultOfMnemonicFromRandom, TSDKClientError, TSDKDefault> = .init()
+            response.update(requestId, params, responseType, finished)
+            do {
+                try handler(response)
+            } catch {
+                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
                     try? handler(response)
-                }
             }
-        } catch {
-            try? handler(TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: 0, currentResponse: nil))
         }
     }
 
@@ -529,20 +409,15 @@ public final class TSDKCryptoModule {
     public func mnemonic_from_entropy(_ payload: TSDKParamsOfMnemonicFromEntropy, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfMnemonicFromEntropy, TSDKClientError, TSDKDefault>) throws -> Void
     ) {
         let method: String = "mnemonic_from_entropy"
-        do {
-            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                var response: TSDKBindingResponse<TSDKResultOfMnemonicFromEntropy, TSDKClientError, TSDKDefault> = .init()
-                response.update(requestId, params, responseType, finished)
-                do {
-                    try handler(response)
-                }
-                catch {
-                    response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKResultOfMnemonicFromEntropy, TSDKClientError, TSDKDefault> = .init()
+            response.update(requestId, params, responseType, finished)
+            do {
+                try handler(response)
+            } catch {
+                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
                     try? handler(response)
-                }
             }
-        } catch {
-            try? handler(TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: 0, currentResponse: nil))
         }
     }
 
@@ -551,20 +426,15 @@ public final class TSDKCryptoModule {
     public func mnemonic_verify(_ payload: TSDKParamsOfMnemonicVerify, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfMnemonicVerify, TSDKClientError, TSDKDefault>) throws -> Void
     ) {
         let method: String = "mnemonic_verify"
-        do {
-            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                var response: TSDKBindingResponse<TSDKResultOfMnemonicVerify, TSDKClientError, TSDKDefault> = .init()
-                response.update(requestId, params, responseType, finished)
-                do {
-                    try handler(response)
-                }
-                catch {
-                    response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKResultOfMnemonicVerify, TSDKClientError, TSDKDefault> = .init()
+            response.update(requestId, params, responseType, finished)
+            do {
+                try handler(response)
+            } catch {
+                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
                     try? handler(response)
-                }
             }
-        } catch {
-            try? handler(TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: 0, currentResponse: nil))
         }
     }
 
@@ -573,20 +443,15 @@ public final class TSDKCryptoModule {
     public func mnemonic_derive_sign_keys(_ payload: TSDKParamsOfMnemonicDeriveSignKeys, _ handler: @escaping (TSDKBindingResponse<TSDKKeyPair, TSDKClientError, TSDKDefault>) throws -> Void
     ) {
         let method: String = "mnemonic_derive_sign_keys"
-        do {
-            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                var response: TSDKBindingResponse<TSDKKeyPair, TSDKClientError, TSDKDefault> = .init()
-                response.update(requestId, params, responseType, finished)
-                do {
-                    try handler(response)
-                }
-                catch {
-                    response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKKeyPair, TSDKClientError, TSDKDefault> = .init()
+            response.update(requestId, params, responseType, finished)
+            do {
+                try handler(response)
+            } catch {
+                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
                     try? handler(response)
-                }
             }
-        } catch {
-            try? handler(TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: 0, currentResponse: nil))
         }
     }
 
@@ -594,20 +459,15 @@ public final class TSDKCryptoModule {
     public func hdkey_xprv_from_mnemonic(_ payload: TSDKParamsOfHDKeyXPrvFromMnemonic, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfHDKeyXPrvFromMnemonic, TSDKClientError, TSDKDefault>) throws -> Void
     ) {
         let method: String = "hdkey_xprv_from_mnemonic"
-        do {
-            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                var response: TSDKBindingResponse<TSDKResultOfHDKeyXPrvFromMnemonic, TSDKClientError, TSDKDefault> = .init()
-                response.update(requestId, params, responseType, finished)
-                do {
-                    try handler(response)
-                }
-                catch {
-                    response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKResultOfHDKeyXPrvFromMnemonic, TSDKClientError, TSDKDefault> = .init()
+            response.update(requestId, params, responseType, finished)
+            do {
+                try handler(response)
+            } catch {
+                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
                     try? handler(response)
-                }
             }
-        } catch {
-            try? handler(TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: 0, currentResponse: nil))
         }
     }
 
@@ -615,20 +475,15 @@ public final class TSDKCryptoModule {
     public func hdkey_derive_from_xprv(_ payload: TSDKParamsOfHDKeyDeriveFromXPrv, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfHDKeyDeriveFromXPrv, TSDKClientError, TSDKDefault>) throws -> Void
     ) {
         let method: String = "hdkey_derive_from_xprv"
-        do {
-            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                var response: TSDKBindingResponse<TSDKResultOfHDKeyDeriveFromXPrv, TSDKClientError, TSDKDefault> = .init()
-                response.update(requestId, params, responseType, finished)
-                do {
-                    try handler(response)
-                }
-                catch {
-                    response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKResultOfHDKeyDeriveFromXPrv, TSDKClientError, TSDKDefault> = .init()
+            response.update(requestId, params, responseType, finished)
+            do {
+                try handler(response)
+            } catch {
+                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
                     try? handler(response)
-                }
             }
-        } catch {
-            try? handler(TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: 0, currentResponse: nil))
         }
     }
 
@@ -636,20 +491,15 @@ public final class TSDKCryptoModule {
     public func hdkey_derive_from_xprv_path(_ payload: TSDKParamsOfHDKeyDeriveFromXPrvPath, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfHDKeyDeriveFromXPrvPath, TSDKClientError, TSDKDefault>) throws -> Void
     ) {
         let method: String = "hdkey_derive_from_xprv_path"
-        do {
-            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                var response: TSDKBindingResponse<TSDKResultOfHDKeyDeriveFromXPrvPath, TSDKClientError, TSDKDefault> = .init()
-                response.update(requestId, params, responseType, finished)
-                do {
-                    try handler(response)
-                }
-                catch {
-                    response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKResultOfHDKeyDeriveFromXPrvPath, TSDKClientError, TSDKDefault> = .init()
+            response.update(requestId, params, responseType, finished)
+            do {
+                try handler(response)
+            } catch {
+                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
                     try? handler(response)
-                }
             }
-        } catch {
-            try? handler(TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: 0, currentResponse: nil))
         }
     }
 
@@ -657,20 +507,15 @@ public final class TSDKCryptoModule {
     public func hdkey_secret_from_xprv(_ payload: TSDKParamsOfHDKeySecretFromXPrv, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfHDKeySecretFromXPrv, TSDKClientError, TSDKDefault>) throws -> Void
     ) {
         let method: String = "hdkey_secret_from_xprv"
-        do {
-            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                var response: TSDKBindingResponse<TSDKResultOfHDKeySecretFromXPrv, TSDKClientError, TSDKDefault> = .init()
-                response.update(requestId, params, responseType, finished)
-                do {
-                    try handler(response)
-                }
-                catch {
-                    response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKResultOfHDKeySecretFromXPrv, TSDKClientError, TSDKDefault> = .init()
+            response.update(requestId, params, responseType, finished)
+            do {
+                try handler(response)
+            } catch {
+                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
                     try? handler(response)
-                }
             }
-        } catch {
-            try? handler(TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: 0, currentResponse: nil))
         }
     }
 
@@ -678,20 +523,15 @@ public final class TSDKCryptoModule {
     public func hdkey_public_from_xprv(_ payload: TSDKParamsOfHDKeyPublicFromXPrv, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfHDKeyPublicFromXPrv, TSDKClientError, TSDKDefault>) throws -> Void
     ) {
         let method: String = "hdkey_public_from_xprv"
-        do {
-            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                var response: TSDKBindingResponse<TSDKResultOfHDKeyPublicFromXPrv, TSDKClientError, TSDKDefault> = .init()
-                response.update(requestId, params, responseType, finished)
-                do {
-                    try handler(response)
-                }
-                catch {
-                    response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKResultOfHDKeyPublicFromXPrv, TSDKClientError, TSDKDefault> = .init()
+            response.update(requestId, params, responseType, finished)
+            do {
+                try handler(response)
+            } catch {
+                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
                     try? handler(response)
-                }
             }
-        } catch {
-            try? handler(TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: 0, currentResponse: nil))
         }
     }
 
@@ -699,20 +539,15 @@ public final class TSDKCryptoModule {
     public func chacha20(_ payload: TSDKParamsOfChaCha20, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfChaCha20, TSDKClientError, TSDKDefault>) throws -> Void
     ) {
         let method: String = "chacha20"
-        do {
-            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                var response: TSDKBindingResponse<TSDKResultOfChaCha20, TSDKClientError, TSDKDefault> = .init()
-                response.update(requestId, params, responseType, finished)
-                do {
-                    try handler(response)
-                }
-                catch {
-                    response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKResultOfChaCha20, TSDKClientError, TSDKDefault> = .init()
+            response.update(requestId, params, responseType, finished)
+            do {
+                try handler(response)
+            } catch {
+                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
                     try? handler(response)
-                }
             }
-        } catch {
-            try? handler(TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: 0, currentResponse: nil))
         }
     }
 
@@ -720,20 +555,15 @@ public final class TSDKCryptoModule {
     public func register_signing_box(_ handler: @escaping (TSDKBindingResponse<TSDKRegisteredSigningBox, TSDKClientError, TSDKDefault>) throws -> Void
     ) {
         let method: String = "register_signing_box"
-        do {
-            try binding.requestLibraryAsync(methodName(module, method), "") { (requestId, params, responseType, finished) in
-                var response: TSDKBindingResponse<TSDKRegisteredSigningBox, TSDKClientError, TSDKDefault> = .init()
-                response.update(requestId, params, responseType, finished)
-                do {
-                    try handler(response)
-                }
-                catch {
-                    response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
+        binding.requestLibraryAsync(methodName(module, method), "") { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKRegisteredSigningBox, TSDKClientError, TSDKDefault> = .init()
+            response.update(requestId, params, responseType, finished)
+            do {
+                try handler(response)
+            } catch {
+                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
                     try? handler(response)
-                }
             }
-        } catch {
-            try? handler(TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: 0, currentResponse: nil))
         }
     }
 
@@ -741,20 +571,15 @@ public final class TSDKCryptoModule {
     public func get_signing_box(_ payload: TSDKKeyPair, _ handler: @escaping (TSDKBindingResponse<TSDKRegisteredSigningBox, TSDKClientError, TSDKDefault>) throws -> Void
     ) {
         let method: String = "get_signing_box"
-        do {
-            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                var response: TSDKBindingResponse<TSDKRegisteredSigningBox, TSDKClientError, TSDKDefault> = .init()
-                response.update(requestId, params, responseType, finished)
-                do {
-                    try handler(response)
-                }
-                catch {
-                    response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKRegisteredSigningBox, TSDKClientError, TSDKDefault> = .init()
+            response.update(requestId, params, responseType, finished)
+            do {
+                try handler(response)
+            } catch {
+                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
                     try? handler(response)
-                }
             }
-        } catch {
-            try? handler(TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: 0, currentResponse: nil))
         }
     }
 
@@ -762,20 +587,15 @@ public final class TSDKCryptoModule {
     public func signing_box_get_public_key(_ payload: TSDKRegisteredSigningBox, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfSigningBoxGetPublicKey, TSDKClientError, TSDKDefault>) throws -> Void
     ) {
         let method: String = "signing_box_get_public_key"
-        do {
-            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                var response: TSDKBindingResponse<TSDKResultOfSigningBoxGetPublicKey, TSDKClientError, TSDKDefault> = .init()
-                response.update(requestId, params, responseType, finished)
-                do {
-                    try handler(response)
-                }
-                catch {
-                    response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKResultOfSigningBoxGetPublicKey, TSDKClientError, TSDKDefault> = .init()
+            response.update(requestId, params, responseType, finished)
+            do {
+                try handler(response)
+            } catch {
+                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
                     try? handler(response)
-                }
             }
-        } catch {
-            try? handler(TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: 0, currentResponse: nil))
         }
     }
 
@@ -783,20 +603,15 @@ public final class TSDKCryptoModule {
     public func signing_box_sign(_ payload: TSDKParamsOfSigningBoxSign, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfSigningBoxSign, TSDKClientError, TSDKDefault>) throws -> Void
     ) {
         let method: String = "signing_box_sign"
-        do {
-            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                var response: TSDKBindingResponse<TSDKResultOfSigningBoxSign, TSDKClientError, TSDKDefault> = .init()
-                response.update(requestId, params, responseType, finished)
-                do {
-                    try handler(response)
-                }
-                catch {
-                    response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKResultOfSigningBoxSign, TSDKClientError, TSDKDefault> = .init()
+            response.update(requestId, params, responseType, finished)
+            do {
+                try handler(response)
+            } catch {
+                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
                     try? handler(response)
-                }
             }
-        } catch {
-            try? handler(TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: 0, currentResponse: nil))
         }
     }
 
@@ -804,20 +619,15 @@ public final class TSDKCryptoModule {
     public func remove_signing_box(_ payload: TSDKRegisteredSigningBox, _ handler: @escaping (TSDKBindingResponse<TSDKNoneResult, TSDKClientError, TSDKDefault>) throws -> Void
     ) {
         let method: String = "remove_signing_box"
-        do {
-            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                var response: TSDKBindingResponse<TSDKNoneResult, TSDKClientError, TSDKDefault> = .init()
-                response.update(requestId, params, responseType, finished)
-                do {
-                    try handler(response)
-                }
-                catch {
-                    response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKNoneResult, TSDKClientError, TSDKDefault> = .init()
+            response.update(requestId, params, responseType, finished)
+            do {
+                try handler(response)
+            } catch {
+                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
                     try? handler(response)
-                }
             }
-        } catch {
-            try? handler(TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: 0, currentResponse: nil))
         }
     }
 
@@ -825,20 +635,15 @@ public final class TSDKCryptoModule {
     public func register_encryption_box(_ handler: @escaping (TSDKBindingResponse<TSDKRegisteredEncryptionBox, TSDKClientError, TSDKDefault>) throws -> Void
     ) {
         let method: String = "register_encryption_box"
-        do {
-            try binding.requestLibraryAsync(methodName(module, method), "") { (requestId, params, responseType, finished) in
-                var response: TSDKBindingResponse<TSDKRegisteredEncryptionBox, TSDKClientError, TSDKDefault> = .init()
-                response.update(requestId, params, responseType, finished)
-                do {
-                    try handler(response)
-                }
-                catch {
-                    response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
+        binding.requestLibraryAsync(methodName(module, method), "") { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKRegisteredEncryptionBox, TSDKClientError, TSDKDefault> = .init()
+            response.update(requestId, params, responseType, finished)
+            do {
+                try handler(response)
+            } catch {
+                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
                     try? handler(response)
-                }
             }
-        } catch {
-            try? handler(TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: 0, currentResponse: nil))
         }
     }
 
@@ -846,20 +651,15 @@ public final class TSDKCryptoModule {
     public func remove_encryption_box(_ payload: TSDKRegisteredEncryptionBox, _ handler: @escaping (TSDKBindingResponse<TSDKNoneResult, TSDKClientError, TSDKDefault>) throws -> Void
     ) {
         let method: String = "remove_encryption_box"
-        do {
-            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                var response: TSDKBindingResponse<TSDKNoneResult, TSDKClientError, TSDKDefault> = .init()
-                response.update(requestId, params, responseType, finished)
-                do {
-                    try handler(response)
-                }
-                catch {
-                    response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKNoneResult, TSDKClientError, TSDKDefault> = .init()
+            response.update(requestId, params, responseType, finished)
+            do {
+                try handler(response)
+            } catch {
+                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
                     try? handler(response)
-                }
             }
-        } catch {
-            try? handler(TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: 0, currentResponse: nil))
         }
     }
 
@@ -867,20 +667,15 @@ public final class TSDKCryptoModule {
     public func encryption_box_get_info(_ payload: TSDKParamsOfEncryptionBoxGetInfo, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfEncryptionBoxGetInfo, TSDKClientError, TSDKDefault>) throws -> Void
     ) {
         let method: String = "encryption_box_get_info"
-        do {
-            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                var response: TSDKBindingResponse<TSDKResultOfEncryptionBoxGetInfo, TSDKClientError, TSDKDefault> = .init()
-                response.update(requestId, params, responseType, finished)
-                do {
-                    try handler(response)
-                }
-                catch {
-                    response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKResultOfEncryptionBoxGetInfo, TSDKClientError, TSDKDefault> = .init()
+            response.update(requestId, params, responseType, finished)
+            do {
+                try handler(response)
+            } catch {
+                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
                     try? handler(response)
-                }
             }
-        } catch {
-            try? handler(TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: 0, currentResponse: nil))
         }
     }
 
@@ -889,20 +684,15 @@ public final class TSDKCryptoModule {
     public func encryption_box_encrypt(_ payload: TSDKParamsOfEncryptionBoxEncrypt, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfEncryptionBoxEncrypt, TSDKClientError, TSDKDefault>) throws -> Void
     ) {
         let method: String = "encryption_box_encrypt"
-        do {
-            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                var response: TSDKBindingResponse<TSDKResultOfEncryptionBoxEncrypt, TSDKClientError, TSDKDefault> = .init()
-                response.update(requestId, params, responseType, finished)
-                do {
-                    try handler(response)
-                }
-                catch {
-                    response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKResultOfEncryptionBoxEncrypt, TSDKClientError, TSDKDefault> = .init()
+            response.update(requestId, params, responseType, finished)
+            do {
+                try handler(response)
+            } catch {
+                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
                     try? handler(response)
-                }
             }
-        } catch {
-            try? handler(TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: 0, currentResponse: nil))
         }
     }
 
@@ -911,20 +701,15 @@ public final class TSDKCryptoModule {
     public func encryption_box_decrypt(_ payload: TSDKParamsOfEncryptionBoxDecrypt, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfEncryptionBoxDecrypt, TSDKClientError, TSDKDefault>) throws -> Void
     ) {
         let method: String = "encryption_box_decrypt"
-        do {
-            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                var response: TSDKBindingResponse<TSDKResultOfEncryptionBoxDecrypt, TSDKClientError, TSDKDefault> = .init()
-                response.update(requestId, params, responseType, finished)
-                do {
-                    try handler(response)
-                }
-                catch {
-                    response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKResultOfEncryptionBoxDecrypt, TSDKClientError, TSDKDefault> = .init()
+            response.update(requestId, params, responseType, finished)
+            do {
+                try handler(response)
+            } catch {
+                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
                     try? handler(response)
-                }
             }
-        } catch {
-            try? handler(TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: 0, currentResponse: nil))
         }
     }
 
@@ -932,20 +717,15 @@ public final class TSDKCryptoModule {
     public func create_encryption_box(_ payload: TSDKParamsOfCreateEncryptionBox, _ handler: @escaping (TSDKBindingResponse<TSDKRegisteredEncryptionBox, TSDKClientError, TSDKDefault>) throws -> Void
     ) {
         let method: String = "create_encryption_box"
-        do {
-            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                var response: TSDKBindingResponse<TSDKRegisteredEncryptionBox, TSDKClientError, TSDKDefault> = .init()
-                response.update(requestId, params, responseType, finished)
-                do {
-                    try handler(response)
-                }
-                catch {
-                    response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKRegisteredEncryptionBox, TSDKClientError, TSDKDefault> = .init()
+            response.update(requestId, params, responseType, finished)
+            do {
+                try handler(response)
+            } catch {
+                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
                     try? handler(response)
-                }
             }
-        } catch {
-            try? handler(TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: 0, currentResponse: nil))
         }
     }
 

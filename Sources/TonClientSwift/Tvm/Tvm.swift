@@ -27,20 +27,15 @@ public final class TSDKTvmModule {
     public func run_executor(_ payload: TSDKParamsOfRunExecutor, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfRunExecutor, TSDKClientError, TSDKDefault>) throws -> Void
     ) {
         let method: String = "run_executor"
-        do {
-            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                var response: TSDKBindingResponse<TSDKResultOfRunExecutor, TSDKClientError, TSDKDefault> = .init()
-                response.update(requestId, params, responseType, finished)
-                do {
-                    try handler(response)
-                }
-                catch {
-                    response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKResultOfRunExecutor, TSDKClientError, TSDKDefault> = .init()
+            response.update(requestId, params, responseType, finished)
+            do {
+                try handler(response)
+            } catch {
+                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
                     try? handler(response)
-                }
             }
-        } catch {
-            try? handler(TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: 0, currentResponse: nil))
         }
     }
 
@@ -53,20 +48,15 @@ public final class TSDKTvmModule {
     public func run_tvm(_ payload: TSDKParamsOfRunTvm, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfRunTvm, TSDKClientError, TSDKDefault>) throws -> Void
     ) {
         let method: String = "run_tvm"
-        do {
-            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                var response: TSDKBindingResponse<TSDKResultOfRunTvm, TSDKClientError, TSDKDefault> = .init()
-                response.update(requestId, params, responseType, finished)
-                do {
-                    try handler(response)
-                }
-                catch {
-                    response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKResultOfRunTvm, TSDKClientError, TSDKDefault> = .init()
+            response.update(requestId, params, responseType, finished)
+            do {
+                try handler(response)
+            } catch {
+                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
                     try? handler(response)
-                }
             }
-        } catch {
-            try? handler(TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: 0, currentResponse: nil))
         }
     }
 
@@ -75,20 +65,15 @@ public final class TSDKTvmModule {
     public func run_get(_ payload: TSDKParamsOfRunGet, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfRunGet, TSDKClientError, TSDKDefault>) throws -> Void
     ) {
         let method: String = "run_get"
-        do {
-            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                var response: TSDKBindingResponse<TSDKResultOfRunGet, TSDKClientError, TSDKDefault> = .init()
-                response.update(requestId, params, responseType, finished)
-                do {
-                    try handler(response)
-                }
-                catch {
-                    response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKResultOfRunGet, TSDKClientError, TSDKDefault> = .init()
+            response.update(requestId, params, responseType, finished)
+            do {
+                try handler(response)
+            } catch {
+                response = TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: response.requestId, currentResponse: response.currentResponse)
                     try? handler(response)
-                }
             }
-        } catch {
-            try? handler(TSDKBindingResponse(result: nil, error: TSDKClientError(code: 0, message: error.localizedDescription, data: [:].toAnyValue()), customResponse: nil, finished: false, requestId: 0, currentResponse: nil))
         }
     }
 
