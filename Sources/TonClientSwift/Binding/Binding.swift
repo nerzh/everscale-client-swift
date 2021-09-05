@@ -118,7 +118,7 @@ public final class TSDKBindingModule: TSDKBindingPrtcl {
                     do {
                         try BindingStore.getResponseHandler(requestId)?(requestId, swiftString, responseType, finished)
                     } catch {
-                        try! BindingStore.getResponseHandler(requestId)?(
+                        try? BindingStore.getResponseHandler(requestId)?(
                             requestId,
                             [
                                 "code": 0,
