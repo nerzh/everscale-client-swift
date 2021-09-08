@@ -9,11 +9,11 @@ public final class TSDKProcessingModule {
 
     /// Sends message to the network
     /// Sends message to the network and returns the last generated shard block of the destination accountbefore the message was sent. It will be required later for message processing.
-    public func send_message(_ payload: TSDKParamsOfSendMessage, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfSendMessage, TSDKClientError, TSDKDefault>) throws -> Void
+    public func send_message(_ payload: TSDKParamsOfSendMessage, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfSendMessage, TSDKClientError>) throws -> Void
     ) {
         let method: String = "send_message"
         binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-            var response: TSDKBindingResponse<TSDKResultOfSendMessage, TSDKClientError, TSDKDefault> = .init()
+            var response: TSDKBindingResponse<TSDKResultOfSendMessage, TSDKClientError> = .init()
             response.update(requestId, params, responseType, finished)
             try handler(response)
         }
@@ -28,11 +28,11 @@ public final class TSDKProcessingModule {
     /// When the ABI header `expire` isn't present or `abi` parameterisn't specified, the processing uses `transaction waiting`strategy:
     /// - The maximum block gen time is set to  `now() + transaction_wait_timeout`.
     /// - If maximum block gen time is reached and no result transaction is found,the processing will exit with an error.
-    public func wait_for_transaction(_ payload: TSDKParamsOfWaitForTransaction, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfProcessMessage, TSDKClientError, TSDKDefault>) throws -> Void
+    public func wait_for_transaction(_ payload: TSDKParamsOfWaitForTransaction, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfProcessMessage, TSDKClientError>) throws -> Void
     ) {
         let method: String = "wait_for_transaction"
         binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-            var response: TSDKBindingResponse<TSDKResultOfProcessMessage, TSDKClientError, TSDKDefault> = .init()
+            var response: TSDKBindingResponse<TSDKResultOfProcessMessage, TSDKClientError> = .init()
             response.update(requestId, params, responseType, finished)
             try handler(response)
         }
@@ -45,11 +45,11 @@ public final class TSDKProcessingModule {
     /// The intermediate events, such as `WillFetchFirstBlock`, `WillSend`, `DidSend`,`WillFetchNextBlock`, etc - are switched on/off by `send_events` flagand logged into the supplied callback function.
     /// The retry configuration parameters are defined in the client's `NetworkConfig` and `AbiConfig`.
     /// If contract's ABI does not include "expire" headerthen, if no transaction is found within the network timeout (see config parameter ), exits with error.
-    public func process_message(_ payload: TSDKParamsOfProcessMessage, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfProcessMessage, TSDKClientError, TSDKDefault>) throws -> Void
+    public func process_message(_ payload: TSDKParamsOfProcessMessage, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfProcessMessage, TSDKClientError>) throws -> Void
     ) {
         let method: String = "process_message"
         binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-            var response: TSDKBindingResponse<TSDKResultOfProcessMessage, TSDKClientError, TSDKDefault> = .init()
+            var response: TSDKBindingResponse<TSDKResultOfProcessMessage, TSDKClientError> = .init()
             response.update(requestId, params, responseType, finished)
             try handler(response)
         }

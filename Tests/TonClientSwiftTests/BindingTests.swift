@@ -39,7 +39,7 @@ final class BindingTests: XCTestCase {
         let binding: TSDKBindingModule = try .init()
         for _ in 1...500 {
             try binding.requestLibraryAsync("client.version", "{}") { (requestId, params, responseType, finished) in
-                var response: TSDKBindingResponse<Test, TestError, Test> = .init()
+                var response: TSDKBindingResponse<Test, TestError> = .init()
                 response.update(requestId, params, responseType, finished)
                 XCTAssertTrue(response.result?.version != nil)
                 XCTAssertEqual(response.error?.message, nil)

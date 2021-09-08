@@ -8,22 +8,22 @@ public final class TSDKNetModule {
     }
 
     /// Performs DAppServer GraphQL query.
-    public func query(_ payload: TSDKParamsOfQuery, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfQuery, TSDKClientError, TSDKDefault>) throws -> Void
+    public func query(_ payload: TSDKParamsOfQuery, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfQuery, TSDKClientError>) throws -> Void
     ) {
         let method: String = "query"
         binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-            var response: TSDKBindingResponse<TSDKResultOfQuery, TSDKClientError, TSDKDefault> = .init()
+            var response: TSDKBindingResponse<TSDKResultOfQuery, TSDKClientError> = .init()
             response.update(requestId, params, responseType, finished)
             try handler(response)
         }
     }
 
     /// Performs multiple queries per single fetch.
-    public func batch_query(_ payload: TSDKParamsOfBatchQuery, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfBatchQuery, TSDKClientError, TSDKDefault>) throws -> Void
+    public func batch_query(_ payload: TSDKParamsOfBatchQuery, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfBatchQuery, TSDKClientError>) throws -> Void
     ) {
         let method: String = "batch_query"
         binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-            var response: TSDKBindingResponse<TSDKResultOfBatchQuery, TSDKClientError, TSDKDefault> = .init()
+            var response: TSDKBindingResponse<TSDKResultOfBatchQuery, TSDKClientError> = .init()
             response.update(requestId, params, responseType, finished)
             try handler(response)
         }
@@ -32,11 +32,11 @@ public final class TSDKNetModule {
     /// Queries collection data
     /// Queries data that satisfies the `filter` conditions,limits the number of returned records and orders them.
     /// The projection fields are limited to `result` fields
-    public func query_collection(_ payload: TSDKParamsOfQueryCollection, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfQueryCollection, TSDKClientError, TSDKDefault>) throws -> Void
+    public func query_collection(_ payload: TSDKParamsOfQueryCollection, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfQueryCollection, TSDKClientError>) throws -> Void
     ) {
         let method: String = "query_collection"
         binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-            var response: TSDKBindingResponse<TSDKResultOfQueryCollection, TSDKClientError, TSDKDefault> = .init()
+            var response: TSDKBindingResponse<TSDKResultOfQueryCollection, TSDKClientError> = .init()
             response.update(requestId, params, responseType, finished)
             try handler(response)
         }
@@ -44,11 +44,11 @@ public final class TSDKNetModule {
 
     /// Aggregates collection data.
     /// Aggregates values from the specified `fields` for recordsthat satisfies the `filter` conditions,
-    public func aggregate_collection(_ payload: TSDKParamsOfAggregateCollection, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfAggregateCollection, TSDKClientError, TSDKDefault>) throws -> Void
+    public func aggregate_collection(_ payload: TSDKParamsOfAggregateCollection, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfAggregateCollection, TSDKClientError>) throws -> Void
     ) {
         let method: String = "aggregate_collection"
         binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-            var response: TSDKBindingResponse<TSDKResultOfAggregateCollection, TSDKClientError, TSDKDefault> = .init()
+            var response: TSDKBindingResponse<TSDKResultOfAggregateCollection, TSDKClientError> = .init()
             response.update(requestId, params, responseType, finished)
             try handler(response)
         }
@@ -59,11 +59,11 @@ public final class TSDKNetModule {
     /// If object that satisfies the `filter` conditionsalready exists - returns it immediately.
     /// If not - waits for insert/update of data within the specified `timeout`,and returns it.
     /// The projection fields are limited to `result` fields
-    public func wait_for_collection(_ payload: TSDKParamsOfWaitForCollection, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfWaitForCollection, TSDKClientError, TSDKDefault>) throws -> Void
+    public func wait_for_collection(_ payload: TSDKParamsOfWaitForCollection, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfWaitForCollection, TSDKClientError>) throws -> Void
     ) {
         let method: String = "wait_for_collection"
         binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-            var response: TSDKBindingResponse<TSDKResultOfWaitForCollection, TSDKClientError, TSDKDefault> = .init()
+            var response: TSDKBindingResponse<TSDKResultOfWaitForCollection, TSDKClientError> = .init()
             response.update(requestId, params, responseType, finished)
             try handler(response)
         }
@@ -71,11 +71,11 @@ public final class TSDKNetModule {
 
     /// Cancels a subscription
     /// Cancels a subscription specified by its handle.
-    public func unsubscribe(_ payload: TSDKResultOfSubscribeCollection, _ handler: @escaping (TSDKBindingResponse<TSDKNoneResult, TSDKClientError, TSDKDefault>) throws -> Void
+    public func unsubscribe(_ payload: TSDKResultOfSubscribeCollection, _ handler: @escaping (TSDKBindingResponse<TSDKNoneResult, TSDKClientError>) throws -> Void
     ) {
         let method: String = "unsubscribe"
         binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-            var response: TSDKBindingResponse<TSDKNoneResult, TSDKClientError, TSDKDefault> = .init()
+            var response: TSDKBindingResponse<TSDKNoneResult, TSDKClientError> = .init()
             response.update(requestId, params, responseType, finished)
             try handler(response)
         }
@@ -99,77 +99,77 @@ public final class TSDKNetModule {
     /// Application can use several ways to handle this situation:
     /// - If application monitors changes for the single blockchainobject (for example specific account):  applicationcan perform a query for this object and handle actual data as aregular data from the subscription.
     /// - If application monitors sequence of some blockchain objects(for example transactions of the specific account): application mustrefresh all cached (or visible to user) lists where this sequences presents.
-    public func subscribe_collection(_ payload: TSDKParamsOfSubscribeCollection, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfSubscribeCollection, TSDKClientError, TSDKDefault>) throws -> Void
+    public func subscribe_collection(_ payload: TSDKParamsOfSubscribeCollection, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfSubscribeCollection, TSDKClientError>) throws -> Void
     ) {
         let method: String = "subscribe_collection"
         binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-            var response: TSDKBindingResponse<TSDKResultOfSubscribeCollection, TSDKClientError, TSDKDefault> = .init()
+            var response: TSDKBindingResponse<TSDKResultOfSubscribeCollection, TSDKClientError> = .init()
             response.update(requestId, params, responseType, finished)
             try handler(response)
         }
     }
 
     /// Suspends network module to stop any network activity
-    public func suspend(_ handler: @escaping (TSDKBindingResponse<TSDKNoneResult, TSDKClientError, TSDKDefault>) throws -> Void
+    public func suspend(_ handler: @escaping (TSDKBindingResponse<TSDKNoneResult, TSDKClientError>) throws -> Void
     ) {
         let method: String = "suspend"
         binding.requestLibraryAsync(methodName(module, method), "") { (requestId, params, responseType, finished) in
-            var response: TSDKBindingResponse<TSDKNoneResult, TSDKClientError, TSDKDefault> = .init()
+            var response: TSDKBindingResponse<TSDKNoneResult, TSDKClientError> = .init()
             response.update(requestId, params, responseType, finished)
             try handler(response)
         }
     }
 
     /// Resumes network module to enable network activity
-    public func resume(_ handler: @escaping (TSDKBindingResponse<TSDKNoneResult, TSDKClientError, TSDKDefault>) throws -> Void
+    public func resume(_ handler: @escaping (TSDKBindingResponse<TSDKNoneResult, TSDKClientError>) throws -> Void
     ) {
         let method: String = "resume"
         binding.requestLibraryAsync(methodName(module, method), "") { (requestId, params, responseType, finished) in
-            var response: TSDKBindingResponse<TSDKNoneResult, TSDKClientError, TSDKDefault> = .init()
+            var response: TSDKBindingResponse<TSDKNoneResult, TSDKClientError> = .init()
             response.update(requestId, params, responseType, finished)
             try handler(response)
         }
     }
 
     /// Returns ID of the last block in a specified account shard
-    public func find_last_shard_block(_ payload: TSDKParamsOfFindLastShardBlock, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfFindLastShardBlock, TSDKClientError, TSDKDefault>) throws -> Void
+    public func find_last_shard_block(_ payload: TSDKParamsOfFindLastShardBlock, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfFindLastShardBlock, TSDKClientError>) throws -> Void
     ) {
         let method: String = "find_last_shard_block"
         binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-            var response: TSDKBindingResponse<TSDKResultOfFindLastShardBlock, TSDKClientError, TSDKDefault> = .init()
+            var response: TSDKBindingResponse<TSDKResultOfFindLastShardBlock, TSDKClientError> = .init()
             response.update(requestId, params, responseType, finished)
             try handler(response)
         }
     }
 
     /// Requests the list of alternative endpoints from server
-    public func fetch_endpoints(_ handler: @escaping (TSDKBindingResponse<TSDKEndpointsSet, TSDKClientError, TSDKDefault>) throws -> Void
+    public func fetch_endpoints(_ handler: @escaping (TSDKBindingResponse<TSDKEndpointsSet, TSDKClientError>) throws -> Void
     ) {
         let method: String = "fetch_endpoints"
         binding.requestLibraryAsync(methodName(module, method), "") { (requestId, params, responseType, finished) in
-            var response: TSDKBindingResponse<TSDKEndpointsSet, TSDKClientError, TSDKDefault> = .init()
+            var response: TSDKBindingResponse<TSDKEndpointsSet, TSDKClientError> = .init()
             response.update(requestId, params, responseType, finished)
             try handler(response)
         }
     }
 
     /// Sets the list of endpoints to use on reinit
-    public func set_endpoints(_ payload: TSDKEndpointsSet, _ handler: @escaping (TSDKBindingResponse<TSDKNoneResult, TSDKClientError, TSDKDefault>) throws -> Void
+    public func set_endpoints(_ payload: TSDKEndpointsSet, _ handler: @escaping (TSDKBindingResponse<TSDKNoneResult, TSDKClientError>) throws -> Void
     ) {
         let method: String = "set_endpoints"
         binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-            var response: TSDKBindingResponse<TSDKNoneResult, TSDKClientError, TSDKDefault> = .init()
+            var response: TSDKBindingResponse<TSDKNoneResult, TSDKClientError> = .init()
             response.update(requestId, params, responseType, finished)
             try handler(response)
         }
     }
 
     /// Requests the list of alternative endpoints from server
-    public func get_endpoints(_ handler: @escaping (TSDKBindingResponse<TSDKResultOfGetEndpoints, TSDKClientError, TSDKDefault>) throws -> Void
+    public func get_endpoints(_ handler: @escaping (TSDKBindingResponse<TSDKResultOfGetEndpoints, TSDKClientError>) throws -> Void
     ) {
         let method: String = "get_endpoints"
         binding.requestLibraryAsync(methodName(module, method), "") { (requestId, params, responseType, finished) in
-            var response: TSDKBindingResponse<TSDKResultOfGetEndpoints, TSDKClientError, TSDKDefault> = .init()
+            var response: TSDKBindingResponse<TSDKResultOfGetEndpoints, TSDKClientError> = .init()
             response.update(requestId, params, responseType, finished)
             try handler(response)
         }
@@ -177,11 +177,11 @@ public final class TSDKNetModule {
 
     /// Allows to query and paginate through the list of accounts that the specified account has interacted with, sorted by the time of the last internal message between accounts
     /// *Attention* this query retrieves data from 'Counterparties' service which is not supported inthe opensource version of DApp Server (and will not be supported) as well as in TON OS SE (will be supported in SE in future),but is always accessible via [TON OS Devnet/Mainnet Clouds](https://docs.ton.dev/86757ecb2/p/85c869-networks)
-    public func query_counterparties(_ payload: TSDKParamsOfQueryCounterparties, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfQueryCollection, TSDKClientError, TSDKDefault>) throws -> Void
+    public func query_counterparties(_ payload: TSDKParamsOfQueryCounterparties, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfQueryCollection, TSDKClientError>) throws -> Void
     ) {
         let method: String = "query_counterparties"
         binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-            var response: TSDKBindingResponse<TSDKResultOfQueryCollection, TSDKClientError, TSDKDefault> = .init()
+            var response: TSDKBindingResponse<TSDKResultOfQueryCollection, TSDKClientError> = .init()
             response.update(requestId, params, responseType, finished)
             try handler(response)
         }
@@ -195,11 +195,11 @@ public final class TSDKNetModule {
     /// It is guaranteed that each message in `result.messages` has the corresponding transactionin the `result.transactions`.
     /// But there are no guaranties that all messages from transactions `out_msgs` arepresented in `result.messages`.
     /// So the application have to continue retrieval for missing messages if it requires.
-    public func query_transaction_tree(_ payload: TSDKParamsOfQueryTransactionTree, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfQueryTransactionTree, TSDKClientError, TSDKDefault>) throws -> Void
+    public func query_transaction_tree(_ payload: TSDKParamsOfQueryTransactionTree, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfQueryTransactionTree, TSDKClientError>) throws -> Void
     ) {
         let method: String = "query_transaction_tree"
         binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-            var response: TSDKBindingResponse<TSDKResultOfQueryTransactionTree, TSDKClientError, TSDKDefault> = .init()
+            var response: TSDKBindingResponse<TSDKResultOfQueryTransactionTree, TSDKClientError> = .init()
             response.update(requestId, params, responseType, finished)
             try handler(response)
         }
@@ -215,11 +215,11 @@ public final class TSDKNetModule {
     /// Items iterated is a JSON objects with block data. The minimal set of returnedfields is:
     /// ```textidgen_utimeworkchain_idshardafter_splitafter_mergeprev_ref {    root_hash}prev_alt_ref {    root_hash}```Application can request additional fields in the `result` parameter.
     /// Application should call the `remove_iterator` when iterator is no longer required.
-    public func create_block_iterator(_ payload: TSDKParamsOfCreateBlockIterator, _ handler: @escaping (TSDKBindingResponse<TSDKRegisteredIterator, TSDKClientError, TSDKDefault>) throws -> Void
+    public func create_block_iterator(_ payload: TSDKParamsOfCreateBlockIterator, _ handler: @escaping (TSDKBindingResponse<TSDKRegisteredIterator, TSDKClientError>) throws -> Void
     ) {
         let method: String = "create_block_iterator"
         binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-            var response: TSDKBindingResponse<TSDKRegisteredIterator, TSDKClientError, TSDKDefault> = .init()
+            var response: TSDKBindingResponse<TSDKRegisteredIterator, TSDKClientError> = .init()
             response.update(requestId, params, responseType, finished)
             try handler(response)
         }
@@ -228,11 +228,11 @@ public final class TSDKNetModule {
     /// Resumes block iterator.
     /// The iterator stays exactly at the same position where the `resume_state` was catched.
     /// Application should call the `remove_iterator` when iterator is no longer required.
-    public func resume_block_iterator(_ payload: TSDKParamsOfResumeBlockIterator, _ handler: @escaping (TSDKBindingResponse<TSDKRegisteredIterator, TSDKClientError, TSDKDefault>) throws -> Void
+    public func resume_block_iterator(_ payload: TSDKParamsOfResumeBlockIterator, _ handler: @escaping (TSDKBindingResponse<TSDKRegisteredIterator, TSDKClientError>) throws -> Void
     ) {
         let method: String = "resume_block_iterator"
         binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-            var response: TSDKBindingResponse<TSDKRegisteredIterator, TSDKClientError, TSDKDefault> = .init()
+            var response: TSDKBindingResponse<TSDKRegisteredIterator, TSDKClientError> = .init()
             response.update(requestId, params, responseType, finished)
             try handler(response)
         }
@@ -257,11 +257,11 @@ public final class TSDKNetModule {
     /// - counterparty – account address of the transfer source or destination depending on `isDeposit`.
     /// - value – amount of nano tokens transferred. The value is represented as a decimal stringbecause the actual value can be more precise than the JSON number can represent. Applicationmust use this string carefully – conversion to number can follow to loose of precision.
     /// Application should call the `remove_iterator` when iterator is no longer required.
-    public func create_transaction_iterator(_ payload: TSDKParamsOfCreateTransactionIterator, _ handler: @escaping (TSDKBindingResponse<TSDKRegisteredIterator, TSDKClientError, TSDKDefault>) throws -> Void
+    public func create_transaction_iterator(_ payload: TSDKParamsOfCreateTransactionIterator, _ handler: @escaping (TSDKBindingResponse<TSDKRegisteredIterator, TSDKClientError>) throws -> Void
     ) {
         let method: String = "create_transaction_iterator"
         binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-            var response: TSDKBindingResponse<TSDKRegisteredIterator, TSDKClientError, TSDKDefault> = .init()
+            var response: TSDKBindingResponse<TSDKRegisteredIterator, TSDKClientError> = .init()
             response.update(requestId, params, responseType, finished)
             try handler(response)
         }
@@ -271,11 +271,11 @@ public final class TSDKNetModule {
     /// The iterator stays exactly at the same position where the `resume_state` was caught.
     /// Note that `resume_state` doesn't store the account filter. If the application requiresto use the same account filter as it was when the iterator was created then the applicationmust pass the account filter again in `accounts_filter` parameter.
     /// Application should call the `remove_iterator` when iterator is no longer required.
-    public func resume_transaction_iterator(_ payload: TSDKParamsOfResumeTransactionIterator, _ handler: @escaping (TSDKBindingResponse<TSDKRegisteredIterator, TSDKClientError, TSDKDefault>) throws -> Void
+    public func resume_transaction_iterator(_ payload: TSDKParamsOfResumeTransactionIterator, _ handler: @escaping (TSDKBindingResponse<TSDKRegisteredIterator, TSDKClientError>) throws -> Void
     ) {
         let method: String = "resume_transaction_iterator"
         binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-            var response: TSDKBindingResponse<TSDKRegisteredIterator, TSDKClientError, TSDKDefault> = .init()
+            var response: TSDKBindingResponse<TSDKRegisteredIterator, TSDKClientError> = .init()
             response.update(requestId, params, responseType, finished)
             try handler(response)
         }
@@ -288,11 +288,11 @@ public final class TSDKNetModule {
     /// If application requests resume state in `return_resume_state` parameterthen this function returns `resume_state` that can be used later toresume the iteration from the position after returned items.
     /// The structure of the items returned depends on the iterator used.
     /// See the description to the appropriated iterator creation function.
-    public func iterator_next(_ payload: TSDKParamsOfIteratorNext, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfIteratorNext, TSDKClientError, TSDKDefault>) throws -> Void
+    public func iterator_next(_ payload: TSDKParamsOfIteratorNext, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfIteratorNext, TSDKClientError>) throws -> Void
     ) {
         let method: String = "iterator_next"
         binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-            var response: TSDKBindingResponse<TSDKResultOfIteratorNext, TSDKClientError, TSDKDefault> = .init()
+            var response: TSDKBindingResponse<TSDKResultOfIteratorNext, TSDKClientError> = .init()
             response.update(requestId, params, responseType, finished)
             try handler(response)
         }
@@ -301,11 +301,11 @@ public final class TSDKNetModule {
     /// Removes an iterator
     /// Frees all resources allocated in library to serve iterator.
     /// Application always should call the `remove_iterator` when iteratoris no longer required.
-    public func remove_iterator(_ payload: TSDKRegisteredIterator, _ handler: @escaping (TSDKBindingResponse<TSDKNoneResult, TSDKClientError, TSDKDefault>) throws -> Void
+    public func remove_iterator(_ payload: TSDKRegisteredIterator, _ handler: @escaping (TSDKBindingResponse<TSDKNoneResult, TSDKClientError>) throws -> Void
     ) {
         let method: String = "remove_iterator"
         binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-            var response: TSDKBindingResponse<TSDKNoneResult, TSDKClientError, TSDKDefault> = .init()
+            var response: TSDKBindingResponse<TSDKNoneResult, TSDKClientError> = .init()
             response.update(requestId, params, responseType, finished)
             try handler(response)
         }

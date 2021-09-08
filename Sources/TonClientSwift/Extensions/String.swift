@@ -22,7 +22,7 @@ public extension String {
     }
     
     // TO DECODABLE STRUCT
-    func toModel<T>(model: T.Type) -> T? where T : Decodable {
+    func toModel<T>(_ model: T.Type) -> T? where T : Decodable {
         guard let data = self.data(using: String.Encoding.utf8) else { return nil }
         return try? JSONDecoder().decode(model, from: data)
     }

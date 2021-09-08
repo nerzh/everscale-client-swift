@@ -82,7 +82,7 @@ public final class TSDKBindingModule: TSDKBindingPrtcl {
         var contextId: UInt32 = .init()
         let json: String = config.toJson() ?? "{}"
         convertToTSDKString(json) { config in
-            let contextResponse = convertFromTSDKString(TSDKReadString(TSDKCreateContext(config))).toModel(model: TSDKContextResponse.self)
+            let contextResponse = convertFromTSDKString(TSDKReadString(TSDKCreateContext(config))).toModel(TSDKContextResponse.self)
             if let context = contextResponse?.result {
                 contextId = context
             } else {

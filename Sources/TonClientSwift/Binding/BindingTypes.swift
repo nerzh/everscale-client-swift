@@ -39,32 +39,30 @@ public struct TSDKDefault: Codable {
     }
 }
 
-public struct TSDKBindingResponse<TSDKResult: Codable, TSDKError: Codable, TSDKCustom: Codable> {
+public struct TSDKBindingResponse<TSDKResult: Codable, TSDKError: Codable> {
     public var result: TSDKResult?
     public var error: TSDKError?
-    public var customResponse: TSDKCustom?
     public var finished: Bool = false
     public var requestId: UInt32 = 0
-    public var currentResponse: String?
+    public var rawResponse: String?
 
     public mutating func update(_ requestId: UInt32,
-                                _ stringResponse: String,
+                                _ rawResponse: String,
                                 _ responseType: TSDKBindingResponseType,
                                 _ finished: Bool
     ) {
-        let response: String = stringResponse
         self.finished = finished
         self.requestId = requestId
-        self.currentResponse = stringResponse
+        self.rawResponse = rawResponse
 
         switch responseType {
         case .responseSuccess:
-            result = response.toModel(model: TSDKResult.self)
+            result = rawResponse.toModel(TSDKResult.self)
         case .responseError:
-            error = response.toModel(model: TSDKError.self)
+            error = rawResponse.toModel(TSDKError.self)
             Log.warn(error ?? "RESPONSE TYPE ERROR, BUT ERROR IS NIL")
         default:
-            customResponse = response.toModel(model: TSDKCustom.self)
+            break
         }
     }
 }

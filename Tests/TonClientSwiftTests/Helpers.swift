@@ -279,7 +279,7 @@ extension XCTestCase {
         DOFileReader.readFile(keysJSONPath) { (line) in
             keysJSON.append(line)
         }
-        guard let keys = keysJSON.toModel(model: TSDKKeyPair.self) else { fatalError("AbiJSON Not Parsed From File") }
+        guard let keys = keysJSON.toModel(TSDKKeyPair.self) else { fatalError("AbiJSON Not Parsed From File") }
 
         return keys
     }

@@ -106,11 +106,11 @@ class CodeGenerator {
     }
 
 //    public func decode_message_body(_ payload: TSDKParamsOfDecodeMessageBody,
-//                                    _ handler: @escaping (TSDKBindingResponse<TSDKDecodedMessageBody, TSDKClientError, TSDKDefault>) throws -> Void
+//                                    _ handler: @escaping (TSDKBindingResponse<TSDKDecodedMessageBody, TSDKClientError>) throws -> Void
 //    ) throws {
 //        let method: String = "decode_message_body"
 //        try binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
-//            var response: TSDKBindingResponse<TSDKDecodedMessageBody, TSDKClientError, TSDKDefault> = .init()
+//            var response: TSDKBindingResponse<TSDKDecodedMessageBody, TSDKClientError> = .init()
 //            response.update(requestId, params, responseType, finished)
 //            try handler(response)
 //        })
@@ -124,7 +124,7 @@ class CodeGenerator {
             result.append("_ \(parameter.name): \(parameter.type), ")
         }
         let resultType: String = swiftFunction.willReturn.type == "Void" ? "\(libPrefix)NoneResult" : swiftFunction.willReturn.type
-        result.append("_ handler: @escaping (TSDKBindingResponse<\(resultType), \(libPrefix)ClientError, \(libPrefix)Default>) throws -> Void\n\(tab)) {\n")
+        result.append("_ handler: @escaping (TSDKBindingResponse<\(resultType), \(libPrefix)ClientError>) throws -> Void\n\(tab)) {\n")
         let methodName: String = swiftFunction.name == "initialize" ? "init" : swiftFunction.name
         result.append("\(tab)\(tab)let method: String = \"\(methodName)\"\n")
         if swiftFunction.params.isEmpty {
@@ -132,7 +132,7 @@ class CodeGenerator {
         } else {
             result.append("\(tab)\(tab)binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in\n")
         }
-        result.append("\(tab)\(tab)\(tab)var response: TSDKBindingResponse<\(resultType), \(libPrefix)ClientError, \(libPrefix)Default> = .init()\n")
+        result.append("\(tab)\(tab)\(tab)var response: TSDKBindingResponse<\(resultType), \(libPrefix)ClientError> = .init()\n")
         result.append("\(tab)\(tab)\(tab)response.update(requestId, params, responseType, finished)\n")
         result.append("\(tab)\(tab)\(tab)try handler(response)\n")
         result.append("\(tab)\(tab)}\n")
