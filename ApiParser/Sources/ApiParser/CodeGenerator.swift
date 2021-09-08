@@ -74,10 +74,15 @@ class CodeGenerator {
     }
 
     private func generateStruct(_ swiftStruct: SDKSwiftStruct) -> String {
-        var swiftStruct = swiftStruct
-        if swiftStruct.name == "\(libPrefix)ClientError" {
-            swiftStruct.parents.append("Error")
+        /// exclusive structs
+        switch swiftStruct.name {
+        case "\(libPrefix)ClientError":
+            return generateStructClientError(swiftStruct)
+        default:
+            break
         }
+
+
         var result: String = "\(swiftStruct.accessType) struct \(swiftStruct.name): \(swiftStruct.parents.joined(separator: ", ")) {\n"
         for property in swiftStruct.properties {
             if let summary: String = property.summary { result.append("\(tab)/// \(checkComment(summary))\n") }
@@ -209,5 +214,47 @@ class CodeGenerator {
             let matches = match.regexp(regxp)
             return "\(matches[1]!)"
         }
+    }
+}
+
+/// Additional functions
+extension CodeGenerator {
+    func generateStructClientError(_ swiftStruct: SDKSwiftStruct) -> String {
+        var swiftStruct = swiftStruct
+        swiftStruct.parents.append("Error")
+
+        var result: String = "\(swiftStruct.accessType) struct \(swiftStruct.name): \(swiftStruct.parents.joined(separator: ", ")) {\n"
+        for property in swiftStruct.properties {
+            if let summary: String = property.summary { result.append("\(tab)/// \(checkComment(summary))\n") }
+            if let descr: String = property.description { result.append("\(tab)/// \(checkComment(descr))\n") }
+            if property.name == "data" {
+                result.append("\(tab)\(property.accessType) var \(property.name): \(property.type) = [:].toAnyValue()\n")
+            } else {
+                result.append("\(tab)\(property.accessType) var \(property.name): \(property.type)\n")
+            }
+        }
+        result.append("\n\(tab)public init(")
+        for (index, property) in swiftStruct.properties.enumerated() {
+            if property.type[#"\?$"#] {
+                result.append("\(property.name): \(property.type) = nil")
+            } else {
+                if property.name == "data" {
+                    result.append("\(property.name): \(property.type) = [:].toAnyValue()")
+                } else {
+                    result.append("\(property.name): \(property.type)")
+                }
+            }
+            if index != swiftStruct.properties.count - 1 {result.append(", ")}
+        }
+        result.append(") {\n")
+        for property in swiftStruct.properties {
+            result.append("\(tab)\(tab)self.\(property.name) = \(property.name)\n")
+        }
+        result.append("\(tab)}\n")
+        result.append("}\n\n")
+        if let summary: String = swiftStruct.summary { result.append("/// \(checkComment(summary))\n") }
+        if let descr: String = swiftStruct.description { result.append("/// \(checkComment(descr))\n") }
+
+        return result
     }
 }
