@@ -1,6 +1,7 @@
-# Swift Client for [Free Ton SDK](https://github.com/tonlabs/TON-SDK)
+# Swift Client for Free Ton SDK
 
 [![SPM](https://img.shields.io/badge/swift-package%20manager-green)](https://swift.org/package-manager/)
+[![SPM](https://img.shields.io/badge/SDK%20VERSION-1.21.4-orange)](https://github.com/tonlabs/TON-SDK)
 
 Swift is a strongly typed language that has long been used not only for iOS development. Apple is actively promoting it to new platforms and today it can be used for almost any task. Thanks to this, this implementation provides the work of TonSDK on many platforms at once, including the native one for mobile phones. Let me remind you that swift can also be built for android.
 
