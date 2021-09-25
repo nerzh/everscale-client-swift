@@ -134,7 +134,7 @@ public final class TSDKBocModule {
         }
     }
 
-    /// Encodes BOC from builder operations.
+    /// Encodes bag of cells (BOC) with builder operations. This method provides the same functionality as Solidity TvmBuilder. Resulting BOC of this method can be passed into Solidity and C++ contracts as TvmCell type
     public func encode_boc(_ payload: TSDKParamsOfEncodeBoc, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfEncodeBoc, TSDKClientError>) throws -> Void
     ) {
         let method: String = "encode_boc"
