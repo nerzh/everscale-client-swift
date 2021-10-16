@@ -14,6 +14,7 @@ public enum TSDKAbiErrorCode: Int, Codable {
     case InvalidAbi = 311
     case InvalidFunctionId = 312
     case InvalidData = 313
+    case EncodeInitialDataFailed = 314
 }
 
 public enum TSDKAbiEnumTypes: String, Codable {
@@ -551,6 +552,63 @@ public struct TSDKResultOfDecodeData: Codable {
 
     public init(data: AnyValue) {
         self.data = data
+    }
+}
+
+public struct TSDKParamsOfUpdateInitialData: Codable {
+    /// Contract ABI
+    public var abi: TSDKAbi?
+    /// Data BOC or BOC handle
+    public var data: String
+    /// List of initial values for contract's static variables.
+    /// `abi` parameter should be provided to set initial data
+    public var initial_data: AnyValue?
+    /// Initial account owner's public key to set into account data
+    public var initial_pubkey: String?
+    /// Cache type to put the result. The BOC itself returned if no cache type provided.
+    public var boc_cache: TSDKBocCacheType?
+
+    public init(abi: TSDKAbi? = nil, data: String, initial_data: AnyValue? = nil, initial_pubkey: String? = nil, boc_cache: TSDKBocCacheType? = nil) {
+        self.abi = abi
+        self.data = data
+        self.initial_data = initial_data
+        self.initial_pubkey = initial_pubkey
+        self.boc_cache = boc_cache
+    }
+}
+
+public struct TSDKResultOfUpdateInitialData: Codable {
+    /// Updated data BOC or BOC handle
+    public var data: String
+
+    public init(data: String) {
+        self.data = data
+    }
+}
+
+public struct TSDKParamsOfDecodeInitialData: Codable {
+    /// Contract ABI.
+    /// Initial data is decoded if this parameter is provided
+    public var abi: TSDKAbi?
+    /// Data BOC or BOC handle
+    public var data: String
+
+    public init(abi: TSDKAbi? = nil, data: String) {
+        self.abi = abi
+        self.data = data
+    }
+}
+
+public struct TSDKResultOfDecodeInitialData: Codable {
+    /// List of initial values of contract's public variables.
+    /// Initial data is decoded if `abi` input parameter is provided
+    public var initial_data: AnyValue?
+    /// Initial account owner's public key
+    public var initial_pubkey: String
+
+    public init(initial_data: AnyValue? = nil, initial_pubkey: String) {
+        self.initial_data = initial_data
+        self.initial_pubkey = initial_pubkey
     }
 }
 

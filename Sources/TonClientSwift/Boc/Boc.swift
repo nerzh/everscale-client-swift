@@ -145,4 +145,60 @@ public final class TSDKBocModule {
         }
     }
 
+    /// Returns the contract code's salt if it is present.
+    public func get_code_salt(_ payload: TSDKParamsOfGetCodeSalt, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfGetCodeSalt, TSDKClientError>) throws -> Void
+    ) {
+        let method: String = "get_code_salt"
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKResultOfGetCodeSalt, TSDKClientError> = .init()
+            response.update(requestId, params, responseType, finished)
+            try handler(response)
+        }
+    }
+
+    /// Sets new salt to contract code.
+    /// Returns the new contract code with salt.
+    public func set_code_salt(_ payload: TSDKParamsOfSetCodeSalt, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfSetCodeSalt, TSDKClientError>) throws -> Void
+    ) {
+        let method: String = "set_code_salt"
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKResultOfSetCodeSalt, TSDKClientError> = .init()
+            response.update(requestId, params, responseType, finished)
+            try handler(response)
+        }
+    }
+
+    /// Decodes tvc into code, data, libraries and special options.
+    public func decode_tvc(_ payload: TSDKParamsOfDecodeTvc, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfDecodeTvc, TSDKClientError>) throws -> Void
+    ) {
+        let method: String = "decode_tvc"
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKResultOfDecodeTvc, TSDKClientError> = .init()
+            response.update(requestId, params, responseType, finished)
+            try handler(response)
+        }
+    }
+
+    /// Encodes tvc from code, data, libraries ans special options (see input params)
+    public func encode_tvc(_ payload: TSDKParamsOfEncodeTvc, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfEncodeTvc, TSDKClientError>) throws -> Void
+    ) {
+        let method: String = "encode_tvc"
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKResultOfEncodeTvc, TSDKClientError> = .init()
+            response.update(requestId, params, responseType, finished)
+            try handler(response)
+        }
+    }
+
+    /// Returns the compiler version used to compile the code.
+    public func get_compiler_version(_ payload: TSDKParamsOfGetCompilerVersion, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfGetCompilerVersion, TSDKClientError>) throws -> Void
+    ) {
+        let method: String = "get_compiler_version"
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKResultOfGetCompilerVersion, TSDKClientError> = .init()
+            response.update(requestId, params, responseType, finished)
+            try handler(response)
+        }
+    }
+
 }

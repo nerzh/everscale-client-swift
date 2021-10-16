@@ -132,4 +132,26 @@ public final class TSDKAbiModule {
         }
     }
 
+    /// Updates initial account data with initial values for the contract's static variables and owner's public key. This operation is applicable only for initial account data (before deploy). If the contract is already deployed, its data doesn't contain this data section any more.
+    public func update_initial_data(_ payload: TSDKParamsOfUpdateInitialData, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfUpdateInitialData, TSDKClientError>) throws -> Void
+    ) {
+        let method: String = "update_initial_data"
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKResultOfUpdateInitialData, TSDKClientError> = .init()
+            response.update(requestId, params, responseType, finished)
+            try handler(response)
+        }
+    }
+
+    /// Decodes initial values of a contract's static variables and owner's public key from account initial data This operation is applicable only for initial account data (before deploy). If the contract is already deployed, its data doesn't contain this data section any more.
+    public func decode_initial_data(_ payload: TSDKParamsOfDecodeInitialData, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfDecodeInitialData, TSDKClientError>) throws -> Void
+    ) {
+        let method: String = "decode_initial_data"
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKResultOfDecodeInitialData, TSDKClientError> = .init()
+            response.update(requestId, params, responseType, finished)
+            try handler(response)
+        }
+    }
+
 }

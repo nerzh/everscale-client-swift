@@ -100,7 +100,7 @@ public struct TSDKResultOfGetBocHash: Codable {
 }
 
 public struct TSDKParamsOfGetCodeFromTvc: Codable {
-    /// Contract TVC image encoded as base64
+    /// Contract TVC image or image BOC handle
     public var tvc: String
 
     public init(tvc: String) {
@@ -211,6 +211,148 @@ public struct TSDKResultOfEncodeBoc: Codable {
 
     public init(boc: String) {
         self.boc = boc
+    }
+}
+
+public struct TSDKParamsOfGetCodeSalt: Codable {
+    /// Contract code BOC encoded as base64 or code BOC handle
+    public var code: String
+    /// Cache type to put the result. The BOC itself returned if no cache type provided.
+    public var boc_cache: TSDKBocCacheType?
+
+    public init(code: String, boc_cache: TSDKBocCacheType? = nil) {
+        self.code = code
+        self.boc_cache = boc_cache
+    }
+}
+
+public struct TSDKResultOfGetCodeSalt: Codable {
+    /// Contract code salt if present.
+    /// BOC encoded as base64 or BOC handle
+    public var salt: String?
+
+    public init(salt: String? = nil) {
+        self.salt = salt
+    }
+}
+
+public struct TSDKParamsOfSetCodeSalt: Codable {
+    /// Contract code BOC encoded as base64 or code BOC handle
+    public var code: String
+    /// Code salt to set.
+    /// BOC encoded as base64 or BOC handle
+    public var salt: String
+    /// Cache type to put the result. The BOC itself returned if no cache type provided.
+    public var boc_cache: TSDKBocCacheType?
+
+    public init(code: String, salt: String, boc_cache: TSDKBocCacheType? = nil) {
+        self.code = code
+        self.salt = salt
+        self.boc_cache = boc_cache
+    }
+}
+
+public struct TSDKResultOfSetCodeSalt: Codable {
+    /// Contract code with salt set.
+    /// BOC encoded as base64 or BOC handle
+    public var code: String
+
+    public init(code: String) {
+        self.code = code
+    }
+}
+
+public struct TSDKParamsOfDecodeTvc: Codable {
+    /// Contract TVC image BOC encoded as base64 or BOC handle
+    public var tvc: String
+    /// Cache type to put the result. The BOC itself returned if no cache type provided.
+    public var boc_cache: TSDKBocCacheType?
+
+    public init(tvc: String, boc_cache: TSDKBocCacheType? = nil) {
+        self.tvc = tvc
+        self.boc_cache = boc_cache
+    }
+}
+
+public struct TSDKResultOfDecodeTvc: Codable {
+    /// Contract code BOC encoded as base64 or BOC handle
+    public var code: String?
+    /// Contract data BOC encoded as base64 or BOC handle
+    public var data: String?
+    /// Contract library BOC encoded as base64 or BOC handle
+    public var library: String?
+    /// `special.tick` field.
+    /// Specifies the contract ability to handle tick transactions
+    public var tick: Bool?
+    /// `special.tock` field.
+    /// Specifies the contract ability to handle tock transactions
+    public var tock: Bool?
+    /// Is present and non-zero only in instances of large smart contracts
+    public var split_depth: UInt32?
+
+    public init(code: String? = nil, data: String? = nil, library: String? = nil, tick: Bool? = nil, tock: Bool? = nil, split_depth: UInt32? = nil) {
+        self.code = code
+        self.data = data
+        self.library = library
+        self.tick = tick
+        self.tock = tock
+        self.split_depth = split_depth
+    }
+}
+
+public struct TSDKParamsOfEncodeTvc: Codable {
+    /// Contract code BOC encoded as base64 or BOC handle
+    public var code: String?
+    /// Contract data BOC encoded as base64 or BOC handle
+    public var data: String?
+    /// Contract library BOC encoded as base64 or BOC handle
+    public var library: String?
+    /// `special.tick` field.
+    /// Specifies the contract ability to handle tick transactions
+    public var tick: Bool?
+    /// `special.tock` field.
+    /// Specifies the contract ability to handle tock transactions
+    public var tock: Bool?
+    /// Is present and non-zero only in instances of large smart contracts
+    public var split_depth: UInt32?
+    /// Cache type to put the result. The BOC itself returned if no cache type provided.
+    public var boc_cache: TSDKBocCacheType?
+
+    public init(code: String? = nil, data: String? = nil, library: String? = nil, tick: Bool? = nil, tock: Bool? = nil, split_depth: UInt32? = nil, boc_cache: TSDKBocCacheType? = nil) {
+        self.code = code
+        self.data = data
+        self.library = library
+        self.tick = tick
+        self.tock = tock
+        self.split_depth = split_depth
+        self.boc_cache = boc_cache
+    }
+}
+
+public struct TSDKResultOfEncodeTvc: Codable {
+    /// Contract TVC image BOC encoded as base64 or BOC handle of boc_cache parameter was specified
+    public var tvc: String
+
+    public init(tvc: String) {
+        self.tvc = tvc
+    }
+}
+
+public struct TSDKParamsOfGetCompilerVersion: Codable {
+    /// Contract code BOC encoded as base64 or code BOC handle
+    public var code: String
+
+    public init(code: String) {
+        self.code = code
+    }
+}
+
+public struct TSDKResultOfGetCompilerVersion: Codable {
+    /// Compiler version, for example 'sol 0.49.0'
+    public var version: String?
+
+    public init(version: String? = nil) {
+        self.version = version
     }
 }
 
