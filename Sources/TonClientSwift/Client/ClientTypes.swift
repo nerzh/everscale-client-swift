@@ -33,6 +33,7 @@ public enum TSDKClientErrorCode: Int, Codable {
     case CanNotParseNumber = 32
     case InternalError = 33
     case InvalidHandle = 34
+    case LocalStorageError = 35
 }
 
 public enum TSDKAppRequestResultEnumTypes: String, Codable {
@@ -57,12 +58,17 @@ public struct TSDKClientConfig: Codable {
     public var crypto: TSDKCryptoConfig?
     public var abi: TSDKAbiConfig?
     public var boc: TSDKBocConfig?
+    public var proofs: TSDKProofsConfig?
+    /// For file based storage is a folder name where SDK will store its data. For browser based is a browser async storage key prefix. Default (recommended) value is "~/.tonclient" for native environments and ".tonclient" for web-browser.
+    public var local_storage_path: String?
 
-    public init(network: TSDKNetworkConfig? = nil, crypto: TSDKCryptoConfig? = nil, abi: TSDKAbiConfig? = nil, boc: TSDKBocConfig? = nil) {
+    public init(network: TSDKNetworkConfig? = nil, crypto: TSDKCryptoConfig? = nil, abi: TSDKAbiConfig? = nil, boc: TSDKBocConfig? = nil, proofs: TSDKProofsConfig? = nil, local_storage_path: String? = nil) {
         self.network = network
         self.crypto = crypto
         self.abi = abi
         self.boc = boc
+        self.proofs = proofs
+        self.local_storage_path = local_storage_path
     }
 }
 
@@ -101,7 +107,7 @@ public struct TSDKNetworkConfig: Codable {
     /// If the latency (time-lag) is less then `NetworkConfig.max_latency`then library selects another endpoint.
     /// Must be specified in milliseconds. Default is 60000 (1 min).
     public var latency_detection_interval: UInt32?
-    /// Maximum value for the endpoint's blockchain data syncronization latency (time-lag). Library periodically checks the current endpoint for blockchain data syncronization latency. If the latency (time-lag) is less then `NetworkConfig.max_latency` then library selects another endpoint.
+    /// Maximum value for the endpoint's blockchain data syncronization latency (time-lag). Library periodically checks the current endpoint for blockchain data synchronization latency. If the latency (time-lag) is less then `NetworkConfig.max_latency` then library selects another endpoint.
     /// Must be specified in milliseconds. Default is 60000 (1 min).
     public var max_latency: UInt32?
     /// Default timeout for http requests.
@@ -167,6 +173,16 @@ public struct TSDKBocConfig: Codable {
 
     public init(cache_max_size: UInt32? = nil) {
         self.cache_max_size = cache_max_size
+    }
+}
+
+public struct TSDKProofsConfig: Codable {
+    /// Cache proofs in the local storage.
+    /// Default is `true`. If this value is set to `true`, downloaded proofs and master-chain BOCs are saved into thepersistent local storage (e.g. file system for native environments or browser's IndexedDBfor the web); otherwise all the data is cached only in memory in current client's contextand will be lost after destruction of the client.
+    public var cache_in_local_storage: Bool?
+
+    public init(cache_in_local_storage: Bool? = nil) {
+        self.cache_in_local_storage = cache_in_local_storage
     }
 }
 

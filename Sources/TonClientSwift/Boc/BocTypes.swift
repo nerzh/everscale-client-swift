@@ -82,7 +82,7 @@ public struct TSDKResultOfGetBlockchainConfig: Codable {
 }
 
 public struct TSDKParamsOfGetBocHash: Codable {
-    /// BOC encoded as base64
+    /// BOC encoded as base64 or BOC handle
     public var boc: String
 
     public init(boc: String) {
@@ -96,6 +96,24 @@ public struct TSDKResultOfGetBocHash: Codable {
 
     public init(hash: String) {
         self.hash = hash
+    }
+}
+
+public struct TSDKParamsOfGetBocDepth: Codable {
+    /// BOC encoded as base64 or BOC handle
+    public var boc: String
+
+    public init(boc: String) {
+        self.boc = boc
+    }
+}
+
+public struct TSDKResultOfGetBocDepth: Codable {
+    /// BOC root cell depth
+    public var depth: UInt32
+
+    public init(depth: UInt32) {
+        self.depth = depth
     }
 }
 
@@ -277,8 +295,16 @@ public struct TSDKParamsOfDecodeTvc: Codable {
 public struct TSDKResultOfDecodeTvc: Codable {
     /// Contract code BOC encoded as base64 or BOC handle
     public var code: String?
+    /// Contract code hash
+    public var code_hash: String?
+    /// Contract code depth
+    public var code_depth: UInt32?
     /// Contract data BOC encoded as base64 or BOC handle
     public var data: String?
+    /// Contract data hash
+    public var data_hash: String?
+    /// Contract data depth
+    public var data_depth: UInt32?
     /// Contract library BOC encoded as base64 or BOC handle
     public var library: String?
     /// `special.tick` field.
@@ -289,14 +315,21 @@ public struct TSDKResultOfDecodeTvc: Codable {
     public var tock: Bool?
     /// Is present and non-zero only in instances of large smart contracts
     public var split_depth: UInt32?
+    /// Compiler version, for example 'sol 0.49.0'
+    public var compiler_version: String?
 
-    public init(code: String? = nil, data: String? = nil, library: String? = nil, tick: Bool? = nil, tock: Bool? = nil, split_depth: UInt32? = nil) {
+    public init(code: String? = nil, code_hash: String? = nil, code_depth: UInt32? = nil, data: String? = nil, data_hash: String? = nil, data_depth: UInt32? = nil, library: String? = nil, tick: Bool? = nil, tock: Bool? = nil, split_depth: UInt32? = nil, compiler_version: String? = nil) {
         self.code = code
+        self.code_hash = code_hash
+        self.code_depth = code_depth
         self.data = data
+        self.data_hash = data_hash
+        self.data_depth = data_depth
         self.library = library
         self.tick = tick
         self.tock = tock
         self.split_depth = split_depth
+        self.compiler_version = compiler_version
     }
 }
 

@@ -546,7 +546,7 @@ public struct TSDKParamsOfDecodeAccountData: Codable {
     }
 }
 
-public struct TSDKResultOfDecodeData: Codable {
+public struct TSDKResultOfDecodeAccountData: Codable {
     /// Decoded data as a JSON structure.
     public var data: AnyValue
 
@@ -609,6 +609,29 @@ public struct TSDKResultOfDecodeInitialData: Codable {
     public init(initial_data: AnyValue? = nil, initial_pubkey: String) {
         self.initial_data = initial_data
         self.initial_pubkey = initial_pubkey
+    }
+}
+
+public struct TSDKParamsOfDecodeBoc: Codable {
+    /// Parameters to decode from BOC
+    public var params: [TSDKAbiParam]
+    /// Data BOC or BOC handle
+    public var boc: String
+    public var allow_partial: Bool
+
+    public init(params: [TSDKAbiParam], boc: String, allow_partial: Bool) {
+        self.params = params
+        self.boc = boc
+        self.allow_partial = allow_partial
+    }
+}
+
+public struct TSDKResultOfDecodeBoc: Codable {
+    /// Decoded data as a JSON structure.
+    public var data: AnyValue
+
+    public init(data: AnyValue) {
+        self.data = data
     }
 }
 

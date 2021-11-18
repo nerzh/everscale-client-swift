@@ -89,6 +89,17 @@ public final class TSDKBocModule {
         }
     }
 
+    /// Calculates BOC depth
+    public func get_boc_depth(_ payload: TSDKParamsOfGetBocDepth, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfGetBocDepth, TSDKClientError>) throws -> Void
+    ) {
+        let method: String = "get_boc_depth"
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKResultOfGetBocDepth, TSDKClientError> = .init()
+            response.update(requestId, params, responseType, finished)
+            try handler(response)
+        }
+    }
+
     /// Extracts code from TVC contract image
     public func get_code_from_tvc(_ payload: TSDKParamsOfGetCodeFromTvc, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfGetCodeFromTvc, TSDKClientError>) throws -> Void
     ) {

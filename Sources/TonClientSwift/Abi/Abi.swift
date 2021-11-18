@@ -122,11 +122,11 @@ public final class TSDKAbiModule {
 
     /// Decodes account data using provided data BOC and ABI.
     /// Note: this feature requires ABI 2.1 or higher.
-    public func decode_account_data(_ payload: TSDKParamsOfDecodeAccountData, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfDecodeData, TSDKClientError>) throws -> Void
+    public func decode_account_data(_ payload: TSDKParamsOfDecodeAccountData, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfDecodeAccountData, TSDKClientError>) throws -> Void
     ) {
         let method: String = "decode_account_data"
         binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-            var response: TSDKBindingResponse<TSDKResultOfDecodeData, TSDKClientError> = .init()
+            var response: TSDKBindingResponse<TSDKResultOfDecodeAccountData, TSDKClientError> = .init()
             response.update(requestId, params, responseType, finished)
             try handler(response)
         }
@@ -149,6 +149,22 @@ public final class TSDKAbiModule {
         let method: String = "decode_initial_data"
         binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKResultOfDecodeInitialData, TSDKClientError> = .init()
+            response.update(requestId, params, responseType, finished)
+            try handler(response)
+        }
+    }
+
+    /// Decodes BOC into JSON as a set of provided parameters.
+    /// Solidity functions use ABI types for [builder encoding](https://github.com/tonlabs/TON-Solidity-Compiler/blob/master/API.md#tvmbuilderstore).
+    /// The simplest way to decode such a BOC is to use ABI decoding.
+    /// ABI has it own rules for fields layout in cells so manually encodedBOC can not be described in terms of ABI rules.
+    /// To solve this problem we introduce a new ABI type `Ref(<ParamType>)`which allows to store `ParamType` ABI parameter in cell reference and, thus,decode manually encoded BOCs. This type is available only in `decode_boc` functionand will not be available in ABI messages encoding until it is included into some ABI revision.
+    /// Such BOC descriptions covers most users needs. If someone wants to decode some BOC whichcan not be described by these rules (i.e. BOC with TLB containing constructors of flagsdefining some parsing conditions) then they can decode the fields up to fork condition,check the parsed data manually, expand the parsing schema and then decode the whole BOCwith the full schema.
+    public func decode_boc(_ payload: TSDKParamsOfDecodeBoc, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfDecodeBoc, TSDKClientError>) throws -> Void
+    ) {
+        let method: String = "decode_boc"
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKResultOfDecodeBoc, TSDKClientError> = .init()
             response.update(requestId, params, responseType, finished)
             try handler(response)
         }

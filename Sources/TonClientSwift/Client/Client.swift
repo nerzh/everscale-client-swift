@@ -11,6 +11,7 @@ public final class TSDKClientModule {
     public var tvm: TSDKTvmModule
     public var net: TSDKNetModule
     public var debot: TSDKDebotModule
+    public var proofs: TSDKProofsModule
 
     public init(config: TSDKClientConfig) throws {
         self.config = config
@@ -23,6 +24,7 @@ public final class TSDKClientModule {
         self.tvm = TSDKTvmModule(binding: binding)
         self.net = TSDKNetModule(binding: binding)
         self.debot = TSDKDebotModule(binding: binding)
+        self.proofs = TSDKProofsModule(binding: binding)
     }
 
     /// Returns Core Library API reference
