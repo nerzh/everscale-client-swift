@@ -19,7 +19,12 @@ cargo update
 cargo build --release
   
   
-  LINUX_PKG_CONFIG=$'prefix=/usr
+
+MACOS_LIB_INCLUDE_DIR="/usr/local"
+LINUX_LIB_INCLUDE_DIR="/usr"
+  
+  
+LINUX_PKG_CONFIG=$'prefix='"$LINUX_LIB_INCLUDE_DIR"'
 exec_prefix=${prefix}
 includedir=${prefix}/include
 libdir=${exec_prefix}/lib
@@ -30,7 +35,7 @@ Version: 1.0.0
 Cflags: -I${includedir}
 Libs: -L${libdir} -lton_client'
 
-  MACOS_PKG_CONFIG=$'prefix=/usr/local
+MACOS_PKG_CONFIG=$'prefix='"$MACOS_LIB_INCLUDE_DIR"'
 exec_prefix=${prefix}
 includedir=${prefix}/include
 libdir=${exec_prefix}/lib
@@ -61,44 +66,49 @@ fi
 if [ `uname -s` = Linux ]; then
   echo ""
   echo "Create symbolic link tonclient.h"
-  if [[ -h "/usr/include/tonclient.h" ]]; then
-    sudo rm /usr/include/tonclient.h
-    echo "OK: /usr/include/tonclient.h old symlink already deleted and will create new"
+  if [[ -h "${LINUX_LIB_INCLUDE_DIR}/include/tonclient.h" ]]; then
+    sudo rm ${LINUX_LIB_INCLUDE_DIR}/include/tonclient.h
+    echo "OK: ${LINUX_LIB_INCLUDE_DIR}/include/tonclient.h old symlink already deleted and will create new"
   fi
-  sudo ln -s $HEADER /usr/include/tonclient.h || echo "ERROR: symbolic link tonclient.h already exist"
+  sudo ln -s $HEADER ${LINUX_LIB_INCLUDE_DIR}/include/tonclient.h || echo "ERROR: symbolic link tonclient.h already exist"
 
   DYLIB="$(pwd)/target/release/libton_client.so"
   echo ""
   echo "Create symbolic link libton_client.so"
-  if [ -h "/usr/lib/libton_client.so" ]; then
-    sudo rm /usr/lib/libton_client.so
-    echo "OK: /usr/lib/libton_client.so old symlink already deleted and will create new"
+  if [ -h "${LINUX_LIB_INCLUDE_DIR}/lib/libton_client.so" ]; then
+    sudo rm ${LINUX_LIB_INCLUDE_DIR}/lib/libton_client.so
+    echo "OK: ${LINUX_LIB_INCLUDE_DIR}/lib/libton_client.so old symlink already deleted and will create new"
   fi
-  sudo ln -s $DYLIB /usr/lib/libton_client.so || echo "ERROR: symbolic link libton_client.so already exist"
+  sudo ln -s $DYLIB ${LINUX_LIB_INCLUDE_DIR}/lib/libton_client.so || echo "ERROR: symbolic link libton_client.so already exist"
 
   
   echo "$LINUX_PKG_CONFIG" >> libton_client.pc
-  sudo mv libton_client.pc /usr/lib/pkgconfig/libton_client.pc
+  sudo mv libton_client.pc ${LINUX_LIB_INCLUDE_DIR}/lib/pkgconfig/libton_client.pc
+  
+  
+  
 elif [ `uname -s` = Darwin ]; then
   echo ""
   echo "Create symbolic link tonclient.h"
-  if [[ -h "/usr/local/include/tonclient.h" ]]; then
-    sudo rm /usr/local/include/tonclient.h
-    echo "OK: /usr/local/include/tonclient.h old symlink already deleted and will create new"
+  if [[ -h "${MACOS_LIB_INCLUDE_DIR}/include/tonclient.h" ]]; then
+    sudo rm ${MACOS_LIB_INCLUDE_DIR}/include/tonclient.h
+    echo "OK: ${MACOS_LIB_INCLUDE_DIR}/include/tonclient.h old symlink deleted and will create new"
   fi
-  ln -s $HEADER /usr/local/include/tonclient.h || echo "ERROR: symbolic link tonclient.h already exist"
+  sudo ln -s $HEADER ${MACOS_LIB_INCLUDE_DIR}/include/tonclient.h || echo "ERROR: symbolic link tonclient.h already exist"
 
   DYLIB="$(pwd)/target/release/libton_client.dylib"
   echo ""
   echo "Create symbolic link libton_client.dylib"
-  if [[ -h "/usr/local/lib/libton_client.dylib" ]]; then
-    sudo rm /usr/local/lib/libton_client.dylib
-    echo "OK: /usr/local/lib/libton_client.dylib old symlink deleted and will create new"
+  if [[ -h "${MACOS_LIB_INCLUDE_DIR}/lib/libton_client.dylib" ]]; then
+    sudo rm ${MACOS_LIB_INCLUDE_DIR}/lib/libton_client.dylib
+    echo "OK: ${MACOS_LIB_INCLUDE_DIR}/lib/libton_client.dylib old symlink deleted and will create new"
   fi
-  ln -s $DYLIB /usr/local/lib/libton_client.dylib || echo "ERROR: symbolic link libton_client.dylib already exist"
+  sudo ln -s $DYLIB ${MACOS_LIB_INCLUDE_DIR}/lib/libton_client.dylib || echo "ERROR: symbolic link libton_client.dylib already exist"
   
+  echo ""
+  echo "Copy pc file"
   echo "$MACOS_PKG_CONFIG" >> libton_client.pc
-  mv libton_client.pc /usr/local/lib/pkgconfig/libton_client.pc
+  sudo mv libton_client.pc ${MACOS_LIB_INCLUDE_DIR}/lib/pkgconfig/libton_client.pc
 else
   echo "I CAN INSTALL ONLY LINUX(DEBIAN / UBUNTU / ...) OR MACOS"
 fi
