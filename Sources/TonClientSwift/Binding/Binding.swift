@@ -126,7 +126,7 @@ public final class TSDKBindingModule: TSDKBindingPrtcl {
                                 "data": [:].toAnyValue()
                             ].toAnyValue().toJSON(),
                             .responseError,
-                            false)
+                            true)
                         BindingStore.deleteResponseHandler(requestId)
                     }
 
