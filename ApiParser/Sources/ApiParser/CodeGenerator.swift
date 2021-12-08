@@ -31,10 +31,11 @@ class CodeGenerator {
                 FileUtils.deleteFileOrFolder(URL(string: moduleClassFolder))
             }
             FileUtils.createFolder(URL(fileURLWithPath: moduleClassFolder, isDirectory: true))
+            newModuleClass = clearFile(content: newModuleClass)
             FileUtils.writeFile(to: moduleClassFilePath, newModuleClass)
 
+            
             var newTypes: String = ""
-
             for newAlias in module.alias {
                 newTypes.append(generateAlias(newAlias))
             }
@@ -48,8 +49,13 @@ class CodeGenerator {
             }
 
             let moduleTypesFilePath: String = "\(moduleClassFolder)/\(module.name.capitalized)Types.swift"
+            newTypes = clearFile(content: newTypes)
             FileUtils.writeFile(to: moduleTypesFilePath, newTypes)
         }
+    }
+    
+    private func clearFile(content: String) -> String {
+        content.replace(#"\?+\s"#, "? ")
     }
 
     private func generateAlias(_ swiftAlias: SDKSwiftTypeAlias) -> String {
