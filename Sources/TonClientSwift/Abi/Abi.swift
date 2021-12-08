@@ -143,6 +143,18 @@ public final class TSDKAbiModule {
         }
     }
 
+    /// Encodes initial account data with initial values for the contract's static variables and owner's public key into a data BOC that can be passed to `encode_tvc` function afterwards.
+    /// This function is analogue of `tvm.buildDataInit` function in Solidity.
+    public func encode_initial_data(_ payload: TSDKParamsOfEncodeInitialData, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfEncodeInitialData, TSDKClientError>) throws -> Void
+    ) {
+        let method: String = "encode_initial_data"
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKResultOfEncodeInitialData, TSDKClientError> = .init()
+            response.update(requestId, params, responseType, finished)
+            try handler(response)
+        }
+    }
+
     /// Decodes initial values of a contract's static variables and owner's public key from account initial data This operation is applicable only for initial account data (before deploy). If the contract is already deployed, its data doesn't contain this data section any more.
     public func decode_initial_data(_ payload: TSDKParamsOfDecodeInitialData, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfDecodeInitialData, TSDKClientError>) throws -> Void
     ) {

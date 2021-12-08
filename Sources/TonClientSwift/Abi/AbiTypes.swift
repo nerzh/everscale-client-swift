@@ -140,12 +140,12 @@ public struct TSDKStateInitSource: Codable {
     public var data: String?
     /// Library BOC.
     /// Encoded in `base64`.
-    public var library: String??
+    public var library: String?
     public var tvc: String?
-    public var public_key: String??
-    public var init_params: TSDKStateInitParams??
+    public var public_key: String?
+    public var init_params: TSDKStateInitParams?
 
-    public init(type: TSDKStateInitSourceEnumTypes, source: TSDKMessageSource? = nil, code: String? = nil, data: String? = nil, library: String?? = nil, tvc: String? = nil, public_key: String?? = nil, init_params: TSDKStateInitParams?? = nil) {
+    public init(type: TSDKStateInitSourceEnumTypes, source: TSDKMessageSource? = nil, code: String? = nil, data: String? = nil, library: String? = nil, tvc: String? = nil, public_key: String? = nil, init_params: TSDKStateInitParams? = nil) {
         self.type = type
         self.source = source
         self.code = code
@@ -170,9 +170,9 @@ public struct TSDKStateInitParams: Codable {
 public struct TSDKMessageSource: Codable {
     public var type: TSDKMessageSourceEnumTypes
     public var message: String?
-    public var abi: TSDKAbi??
+    public var abi: TSDKAbi?
 
-    public init(type: TSDKMessageSourceEnumTypes, message: String? = nil, abi: TSDKAbi?? = nil) {
+    public init(type: TSDKMessageSourceEnumTypes, message: String? = nil, abi: TSDKAbi? = nil) {
         self.type = type
         self.message = message
         self.abi = abi
@@ -578,6 +578,34 @@ public struct TSDKParamsOfUpdateInitialData: Codable {
 }
 
 public struct TSDKResultOfUpdateInitialData: Codable {
+    /// Updated data BOC or BOC handle
+    public var data: String
+
+    public init(data: String) {
+        self.data = data
+    }
+}
+
+public struct TSDKParamsOfEncodeInitialData: Codable {
+    /// Contract ABI
+    public var abi: TSDKAbi?
+    /// List of initial values for contract's static variables.
+    /// `abi` parameter should be provided to set initial data
+    public var initial_data: AnyValue?
+    /// Initial account owner's public key to set into account data
+    public var initial_pubkey: String?
+    /// Cache type to put the result. The BOC itself returned if no cache type provided.
+    public var boc_cache: TSDKBocCacheType?
+
+    public init(abi: TSDKAbi? = nil, initial_data: AnyValue? = nil, initial_pubkey: String? = nil, boc_cache: TSDKBocCacheType? = nil) {
+        self.abi = abi
+        self.initial_data = initial_data
+        self.initial_pubkey = initial_pubkey
+        self.boc_cache = boc_cache
+    }
+}
+
+public struct TSDKResultOfEncodeInitialData: Codable {
     /// Updated data BOC or BOC handle
     public var data: String
 

@@ -13,6 +13,7 @@ public enum TSDKDebotErrorCode: Int, Codable {
     case DebotExternalCallFailed = 810
     case DebotBrowserCallbackFailed = 811
     case DebotOperationRejected = 812
+    case DebotNoCode = 813
 }
 
 public enum TSDKDebotActivityEnumTypes: String, Codable {
@@ -89,8 +90,10 @@ public struct TSDKDebotInfo: Codable {
     public var icon: String?
     /// Vector with IDs of DInterfaces used by DeBot.
     public var interfaces: [String]
+    /// ABI version ("x.y") supported by DeBot
+    public var dabiVersion: String
 
-    public init(name: String? = nil, version: String? = nil, publisher: String? = nil, caption: String? = nil, author: String? = nil, support: String? = nil, hello: String? = nil, language: String? = nil, dabi: String? = nil, icon: String? = nil, interfaces: [String]) {
+    public init(name: String? = nil, version: String? = nil, publisher: String? = nil, caption: String? = nil, author: String? = nil, support: String? = nil, hello: String? = nil, language: String? = nil, dabi: String? = nil, icon: String? = nil, interfaces: [String], dabiVersion: String) {
         self.name = name
         self.version = version
         self.publisher = publisher
@@ -102,6 +105,7 @@ public struct TSDKDebotInfo: Codable {
         self.dabi = dabi
         self.icon = icon
         self.interfaces = interfaces
+        self.dabiVersion = dabiVersion
     }
 }
 

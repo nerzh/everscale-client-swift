@@ -55,7 +55,7 @@ class CodeGenerator {
     }
     
     private func clearFile(content: String) -> String {
-        content.replace(#"\?+\s"#, "? ")
+        content.replace(#"\?+ "#, "? ").replace(#"\?+\n"#, "?\n")
     }
 
     private func generateAlias(_ swiftAlias: SDKSwiftTypeAlias) -> String {

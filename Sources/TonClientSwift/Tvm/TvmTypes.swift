@@ -46,9 +46,9 @@ public struct TSDKAccountForExecutor: Codable {
     public var boc: String?
     /// Flag for running account with the unlimited balance.
     /// Can be used to calculate transaction fees without balance check
-    public var unlimited_balance: Bool??
+    public var unlimited_balance: Bool?
 
-    public init(type: TSDKAccountForExecutorEnumTypes, boc: String? = nil, unlimited_balance: Bool?? = nil) {
+    public init(type: TSDKAccountForExecutorEnumTypes, boc: String? = nil, unlimited_balance: Bool? = nil) {
         self.type = type
         self.boc = boc
         self.unlimited_balance = unlimited_balance
