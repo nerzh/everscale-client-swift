@@ -81,7 +81,7 @@ public final class TSDKNetModule {
         }
     }
 
-    /// Creates a subscription
+    /// Creates a collection subscription
     /// Triggers for each insert/update of data that satisfiesthe `filter` conditions.
     /// The projection fields are limited to `result` fields.
     /// The subscription is a persistent communication channel betweenclient and Free TON Network.
@@ -102,6 +102,30 @@ public final class TSDKNetModule {
     public func subscribe_collection(_ payload: TSDKParamsOfSubscribeCollection, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfSubscribeCollection, TSDKClientError>) throws -> Void
     ) {
         let method: String = "subscribe_collection"
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKResultOfSubscribeCollection, TSDKClientError> = .init()
+            response.update(requestId, params, responseType, finished)
+            try handler(response)
+        }
+    }
+
+    /// Creates a subscription
+    /// The subscription is a persistent communication channel betweenclient and Everscale Network.
+    /// ### Important Notes on SubscriptionsUnfortunately sometimes the connection with the network brakes down.
+    /// In this situation the library attempts to reconnect to the network.
+    /// This reconnection sequence can take significant time.
+    /// All of this time the client is disconnected from the network.
+    /// Bad news is that all changes that happened whilethe client was disconnected are lost.
+    /// Good news is that the client report errors to the callback whenit loses and resumes connection.
+    /// So, if the lost changes are important to the application thenthe application must handle these error reports.
+    /// Library reports errors with `responseType` == 101and the error object passed via `params`.
+    /// When the library has successfully reconnectedthe application receives callback with`responseType` == 101 and `params.code` == 614 (NetworkModuleResumed).
+    /// Application can use several ways to handle this situation:
+    /// - If application monitors changes for the singleobject (for example specific account):  applicationcan perform a query for this object and handle actual data as aregular data from the subscription.
+    /// - If application monitors sequence of some objects(for example transactions of the specific account): application mustrefresh all cached (or visible to user) lists where this sequences presents.
+    public func subscribe(_ payload: TSDKParamsOfSubscribe, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfSubscribeCollection, TSDKClientError>) throws -> Void
+    ) {
+        let method: String = "subscribe"
         binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKResultOfSubscribeCollection, TSDKClientError> = .init()
             response.update(requestId, params, responseType, finished)

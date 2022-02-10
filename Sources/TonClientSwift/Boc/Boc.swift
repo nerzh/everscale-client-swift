@@ -145,7 +145,7 @@ public final class TSDKBocModule {
         }
     }
 
-    /// Encodes bag of cells (BOC) with builder operations. This method provides the same functionality as Solidity TvmBuilder. Resulting BOC of this method can be passed into Solidity and C++ contracts as TvmCell type
+    /// Encodes bag of cells (BOC) with builder operations. This method provides the same functionality as Solidity TvmBuilder. Resulting BOC of this method can be passed into Solidity and C++ contracts as TvmCell type.
     public func encode_boc(_ payload: TSDKParamsOfEncodeBoc, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfEncodeBoc, TSDKClientError>) throws -> Void
     ) {
         let method: String = "encode_boc"
@@ -196,6 +196,18 @@ public final class TSDKBocModule {
         let method: String = "encode_tvc"
         binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKResultOfEncodeTvc, TSDKClientError> = .init()
+            response.update(requestId, params, responseType, finished)
+            try handler(response)
+        }
+    }
+
+    /// Encodes a message
+    /// Allows to encode any external inbound message.
+    public func encode_external_in_message(_ payload: TSDKParamsOfEncodeExternalInMessage, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfEncodeExternalInMessage, TSDKClientError>) throws -> Void
+    ) {
+        let method: String = "encode_external_in_message"
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKResultOfEncodeExternalInMessage, TSDKClientError> = .init()
             response.update(requestId, params, responseType, finished)
             try handler(response)
         }

@@ -275,6 +275,19 @@ public struct TSDKParamsOfSubscribeCollection: Codable {
     }
 }
 
+public struct TSDKParamsOfSubscribe: Codable {
+    /// GraphQL subscription text.
+    public var subscription: String
+    /// Variables used in subscription.
+    /// Must be a map with named values that can be used in query.
+    public var variables: AnyValue?
+
+    public init(subscription: String, variables: AnyValue? = nil) {
+        self.subscription = subscription
+        self.variables = variables
+    }
+}
+
 public struct TSDKParamsOfFindLastShardBlock: Codable {
     /// Account address
     public var address: String

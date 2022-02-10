@@ -182,4 +182,15 @@ public final class TSDKAbiModule {
         }
     }
 
+    /// Encodes given parameters in JSON into a BOC using param types from ABI.
+    public func encode_boc(_ payload: TSDKParamsOfAbiEncodeBoc, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfAbiEncodeBoc, TSDKClientError>) throws -> Void
+    ) {
+        let method: String = "encode_boc"
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKResultOfAbiEncodeBoc, TSDKClientError> = .init()
+            response.update(requestId, params, responseType, finished)
+            try handler(response)
+        }
+    }
+
 }

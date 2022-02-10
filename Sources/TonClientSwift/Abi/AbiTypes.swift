@@ -663,3 +663,28 @@ public struct TSDKResultOfDecodeBoc: Codable {
     }
 }
 
+public struct TSDKParamsOfAbiEncodeBoc: Codable {
+    /// Parameters to encode into BOC
+    public var params: [TSDKAbiParam]
+    /// Parameters and values as a JSON structure
+    public var data: AnyValue
+    /// Cache type to put the result.
+    /// The BOC itself returned if no cache type provided
+    public var boc_cache: TSDKBocCacheType?
+
+    public init(params: [TSDKAbiParam], data: AnyValue, boc_cache: TSDKBocCacheType? = nil) {
+        self.params = params
+        self.data = data
+        self.boc_cache = boc_cache
+    }
+}
+
+public struct TSDKResultOfAbiEncodeBoc: Codable {
+    /// BOC encoded as base64
+    public var boc: String
+
+    public init(boc: String) {
+        self.boc = boc
+    }
+}
+

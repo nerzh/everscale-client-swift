@@ -18,6 +18,7 @@ public enum TSDKBuilderOpEnumTypes: String, Codable {
     case BitString = "BitString"
     case Cell = "Cell"
     case CellBoc = "CellBoc"
+    case Address = "Address"
 }
 
 public struct TSDKBocCacheType: Codable {
@@ -196,17 +197,20 @@ public struct TSDKBuilderOp: Codable {
     /// - `0x` prefixed hexadecimal string.
     ///   e.g `0x123`, `0X123`, `-0x123`.
     public var value: AnyValue?
-    /// Nested cell builder
+    /// Nested cell builder.
     public var builder: [TSDKBuilderOp]?
     /// Nested cell BOC encoded with `base64` or BOC cache key.
     public var boc: String?
+    /// Address in a common `workchain:account` or base64 format.
+    public var address: String?
 
-    public init(type: TSDKBuilderOpEnumTypes, size: UInt32? = nil, value: AnyValue? = nil, builder: [TSDKBuilderOp]? = nil, boc: String? = nil) {
+    public init(type: TSDKBuilderOpEnumTypes, size: UInt32? = nil, value: AnyValue? = nil, builder: [TSDKBuilderOp]? = nil, boc: String? = nil, address: String? = nil) {
         self.type = type
         self.size = size
         self.value = value
         self.builder = builder
         self.boc = boc
+        self.address = address
     }
 }
 
@@ -368,6 +372,40 @@ public struct TSDKResultOfEncodeTvc: Codable {
 
     public init(tvc: String) {
         self.tvc = tvc
+    }
+}
+
+public struct TSDKParamsOfEncodeExternalInMessage: Codable {
+    /// Source address.
+    public var src: String?
+    /// Destination address.
+    public var dst: String
+    /// Bag of cells with state init (used in deploy messages).
+    public var init: String?
+    /// Bag of cells with the message body encoded as base64.
+    public var body: String?
+    /// Cache type to put the result.
+    /// The BOC itself returned if no cache type provided
+    public var boc_cache: TSDKBocCacheType?
+
+    public init(src: String? = nil, dst: String, init: String? = nil, body: String? = nil, boc_cache: TSDKBocCacheType? = nil) {
+        self.src = src
+        self.dst = dst
+        self.init = init
+        self.body = body
+        self.boc_cache = boc_cache
+    }
+}
+
+public struct TSDKResultOfEncodeExternalInMessage: Codable {
+    /// Message BOC encoded with `base64`.
+    public var message: String
+    /// Message id.
+    public var message_id: String
+
+    public init(message: String, message_id: String) {
+        self.message = message
+        self.message_id = message_id
     }
 }
 
