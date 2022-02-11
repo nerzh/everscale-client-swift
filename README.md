@@ -1,9 +1,9 @@
-# Swift Client for Free Ton SDK
+# Swift Client for Everscale SDK
 
 [![SPM](https://img.shields.io/badge/swift-package%20manager-green)](https://swift.org/package-manager/)
 [![SPM](https://img.shields.io/badge/SDK%20VERSION-1.30.0-orange)](https://github.com/tonlabs/TON-SDK)
 
-Swift is a strongly typed language that has long been used not only for iOS development. Apple is actively promoting it to new platforms and today it can be used for almost any task. Thanks to this, this implementation provides the work of TonSDK on many platforms at once, including the native one for mobile phones. Let me remind you that swift can also be built for android.
+Swift is a strongly typed language that has long been used not only for iOS development. Apple is actively promoting it to new platforms and today it can be used for almost any task. Thanks to this, this implementation provides the work of Everscale SDK on many platforms at once, including the native one for mobile phones. Let me remind you that swift can also be built for android.
 
 | OS | Result |
 | ----------- | ----------- |
@@ -17,7 +17,7 @@ Swift is a strongly typed language that has long been used not only for iOS deve
 All requests are async
 
 ```swift
-import TonClientSwift
+import EverscaleClientSwift
 
 var config: TSDKClientConfig = .init()
 config.network = TSDKNetworkConfig(server_address: "https://net.ton.dev")
@@ -56,7 +56,7 @@ client.crypto.factorize(TSDKParamsOfFactorize(composite: "17ED48941A08F981")) { 
  
 0. This download TON-SDK to current dirrectory, compile it and add library symlinks to your system   
 ```sh
-cd ton-client-swift
+cd everscale-client-swift
 ```
 
 ```sh
@@ -219,7 +219,7 @@ set to tag __"LaunchAction"__ absolute path to this library with options:
 
 ### Tests
 
-1. inside root directory of ton-client-swift create **.env.debug** file with
+1. inside root directory of everscale-client-swift create **.env.debug** file with
 NET TON DEV
 ```
 server_address=https://net.ton.dev
@@ -247,7 +247,7 @@ swift test --enable-test-discovery
 ### Update SDK
 
 ```bash
-cd ton-client-swift
+cd everscale-client-swift
 ```
 ```bash
 bash api_generate.sh
