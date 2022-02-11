@@ -7,7 +7,7 @@
 
 import XCTest
 import class Foundation.Bundle
-@testable import TonClientSwift
+@testable import EverscaleClientSwift
 @testable import CTonSDK
 
 final class ProcessingTests: XCTestCase {

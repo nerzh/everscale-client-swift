@@ -10,6 +10,6 @@ import Foundation
 public extension Dictionary {
 
     func toAnyValue() -> AnyValue {
-        TonClientSwift.toAnyValue(self)
+        EverscaleClientSwift.toAnyValue(self)
     }
 }

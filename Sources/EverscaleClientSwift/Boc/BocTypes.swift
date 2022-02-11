@@ -381,17 +381,17 @@ public struct TSDKParamsOfEncodeExternalInMessage: Codable {
     /// Destination address.
     public var dst: String
     /// Bag of cells with state init (used in deploy messages).
-    public var init: String?
+    public var `init`: String?
     /// Bag of cells with the message body encoded as base64.
     public var body: String?
     /// Cache type to put the result.
     /// The BOC itself returned if no cache type provided
     public var boc_cache: TSDKBocCacheType?
 
-    public init(src: String? = nil, dst: String, init: String? = nil, body: String? = nil, boc_cache: TSDKBocCacheType? = nil) {
+    public init(src: String? = nil, dst: String, `init`: String? = nil, body: String? = nil, boc_cache: TSDKBocCacheType? = nil) {
         self.src = src
         self.dst = dst
-        self.init = init
+        self.`init` = `init`
         self.body = body
         self.boc_cache = boc_cache
     }

@@ -1,6 +1,6 @@
 import XCTest
 
-import TonClientSwiftTests
+import EverscaleClientSwiftTests
 
 var tests = [XCTestCaseEntry]()
 

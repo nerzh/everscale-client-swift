@@ -7,7 +7,7 @@
 
 import XCTest
 import class Foundation.Bundle
-@testable import TonClientSwift
+@testable import EverscaleClientSwift
 
 final class UtilsTests: XCTestCase {
 

@@ -1,3 +1,8 @@
+commandExist() {
+  which $1 > /dev/null && echo '1' && return;
+  echo '0';
+}
+
 if [ `uname -s` = Linux ]; then
   sudo echo $(whoami)
 fi
@@ -16,11 +21,40 @@ else
 fi
 cd ./TON-SDK && git pull --ff-only
 cargo update
-cargo build --release
-  
+if [ `uname -s` = Darwin ]; then
+  if [ `uname -m` = arm64 ]; then
+    rustup target add x86_64-apple-darwin
+    cargo build --release --target x86_64-apple-darwin
+  else
+    cargo build --release
+  fi
+else
+  cargo build --release
+fi
+
   
 
-MACOS_LIB_INCLUDE_DIR="/usr/local"
+if [ $(commandExist 'port') == "1" ]; then
+  MACOS_LIB_INCLUDE_DIR="/opt/local"
+  echo "CHOOSE MACOS MACPORT INCLUDE DIR";
+fi
+if [ $(commandExist 'brew') == "1" ]; then
+  if [ -d "/opt/homebrew" ]; then
+    MACOS_LIB_INCLUDE_DIR="/opt/homebrew"
+    echo "CHOOSE MACOS HOMEBREW /opt/homebrew";
+  else
+    MACOS_LIB_INCLUDE_DIR="/usr/local"
+    echo "CHOOSE MACOS HOMEBREW /usr/local";
+  fi
+fi
+if [ $(commandExist 'port') == "1" ]; then
+  echo "...";
+elif [ $(commandExist 'brew') == "1" ]; then
+  echo "...";
+else
+  echo 'ERROR: homebrew or macport is not installed'
+fi
+
 LINUX_LIB_INCLUDE_DIR="/usr"
   
   
@@ -94,9 +128,14 @@ elif [ `uname -s` = Darwin ]; then
     sudo rm ${MACOS_LIB_INCLUDE_DIR}/include/tonclient.h
     echo "OK: ${MACOS_LIB_INCLUDE_DIR}/include/tonclient.h old symlink deleted and will create new"
   fi
+  echo "$HEADER ${MACOS_LIB_INCLUDE_DIR}/include/tonclient.h"
   sudo ln -s $HEADER ${MACOS_LIB_INCLUDE_DIR}/include/tonclient.h || echo "ERROR: symbolic link tonclient.h already exist"
-
-  DYLIB="$(pwd)/target/release/libton_client.dylib"
+  
+  if [ `uname -m` = arm64 ]; then
+    DYLIB="$(pwd)/target/x86_64-apple-darwin/release/libton_client.dylib"
+  else
+    DYLIB="$(pwd)/target/release/libton_client.dylib"
+  fi
   echo ""
   echo "Create symbolic link libton_client.dylib"
   if [[ -h "${MACOS_LIB_INCLUDE_DIR}/lib/libton_client.dylib" ]]; then
@@ -109,6 +148,7 @@ elif [ `uname -s` = Darwin ]; then
   echo "Copy pc file"
   echo "$MACOS_PKG_CONFIG" >> libton_client.pc
   sudo mv libton_client.pc ${MACOS_LIB_INCLUDE_DIR}/lib/pkgconfig/libton_client.pc
+  echo "libton_client.pc to ${MACOS_LIB_INCLUDE_DIR}/lib/pkgconfig/libton_client.pc"
 else
   echo "I CAN INSTALL ONLY LINUX(DEBIAN / UBUNTU / ...) OR MACOS"
 fi

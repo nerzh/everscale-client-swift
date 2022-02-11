@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import TonClientSwift
+import EverscaleClientSwift
 import XCTest
 import SwiftRegularExpression
 import FileUtils
