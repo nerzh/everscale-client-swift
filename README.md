@@ -1,3 +1,9 @@
+# Moved to [https://github.com/bytehubio/everscale-client-swift](https://github.com/bytehubio/everscale-client-swift)
+
+
+
+
+
 # Swift Client for Free Ton SDK
 
 [![SPM](https://img.shields.io/badge/swift-package%20manager-green)](https://swift.org/package-manager/)
