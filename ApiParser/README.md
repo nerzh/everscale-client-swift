@@ -1,9 +1,9 @@
-# Api Parser For Ton Swift Client [Swift Free Ton SDK](https://github.com/nerzh/ton-client-swift)  
+# Api Parser For Everscale Swift Client [Swift Everscale SDK](https://github.com/nerzh/everscale-client-swift)  
 
 ### Update SDK
 
 ```bash
-cd ton-client-swift
+cd everscale-client-swift
 ```
 ```bash
 bash api_generate.sh

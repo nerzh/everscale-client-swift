@@ -19,7 +19,7 @@ class CodeGenerator {
 
     func generate() {
         for module in swiftApi.modules {
-            let moduleClassFolder: String = "./../Sources/TonClientSwift/\(module.name.capitalized)"
+            let moduleClassFolder: String = "./../Sources/EverscaleClientSwift/\(module.name.capitalized)"
             let moduleClassFilePath: String = "\(moduleClassFolder)/\(module.name.capitalized).swift"
             var newModuleClass: String = ""
             if module.name == "client" {
