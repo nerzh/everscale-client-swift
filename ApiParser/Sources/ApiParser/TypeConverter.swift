@@ -165,6 +165,8 @@ class SDKApi {
         switch name {
         case "public":
             result = "`public`"
+        case "init":
+            result = "`init`"
         default:
             result = name
         }
