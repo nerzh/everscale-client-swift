@@ -2,6 +2,8 @@ public typealias TSDKSigningBoxHandle = UInt32
 
 public typealias TSDKEncryptionBoxHandle = UInt32
 
+public typealias TSDKCryptoBoxHandle = UInt32
+
 public enum TSDKCryptoErrorCode: Int, Codable {
     case InvalidPublicKey = 100
     case InvalidSecretKey = 101
@@ -30,10 +32,17 @@ public enum TSDKCryptoErrorCode: Int, Codable {
     case EncryptDataError = 127
     case DecryptDataError = 128
     case IvRequired = 129
+    case CryptoBoxNotRegistered = 130
+    case InvalidCryptoBoxType = 131
+    case CryptoBoxSecretSerializationError = 132
+    case CryptoBoxSecretDeserializationError = 133
 }
 
 public enum TSDKEncryptionAlgorithmEnumTypes: String, Codable {
     case AES = "AES"
+    case ChaCha20 = "ChaCha20"
+    case NaclBox = "NaclBox"
+    case NaclSecretBox = "NaclSecretBox"
 }
 
 public enum TSDKCipherMode: String, Codable {
@@ -42,6 +51,26 @@ public enum TSDKCipherMode: String, Codable {
     case CTR = "CTR"
     case ECB = "ECB"
     case OFB = "OFB"
+}
+
+public enum TSDKCryptoBoxSecretEnumTypes: String, Codable {
+    case RandomSeedPhrase = "RandomSeedPhrase"
+    case PredefinedSeedPhrase = "PredefinedSeedPhrase"
+    case EncryptedSecret = "EncryptedSecret"
+}
+
+public enum TSDKBoxEncryptionAlgorithmEnumTypes: String, Codable {
+    case ChaCha20 = "ChaCha20"
+    case NaclBox = "NaclBox"
+    case NaclSecretBox = "NaclSecretBox"
+}
+
+public enum TSDKParamsOfAppPasswordProviderEnumTypes: String, Codable {
+    case GetPassword = "GetPassword"
+}
+
+public enum TSDKResultOfAppPasswordProviderEnumTypes: String, Codable {
+    case GetPassword = "GetPassword"
 }
 
 public enum TSDKParamsOfAppSigningBoxEnumTypes: String, Codable {
@@ -92,7 +121,7 @@ public struct TSDKEncryptionAlgorithm: Codable {
     }
 }
 
-public struct TSDKAesParams: Codable {
+public struct TSDKAesParamsEB: Codable {
     public var mode: TSDKCipherMode
     public var key: String
     public var iv: String?
@@ -111,6 +140,109 @@ public struct TSDKAesInfo: Codable {
     public init(mode: TSDKCipherMode, iv: String? = nil) {
         self.mode = mode
         self.iv = iv
+    }
+}
+
+public struct TSDKChaCha20ParamsEB: Codable {
+    /// 256-bit key.
+    /// Must be encoded with `hex`.
+    public var key: String
+    /// 96-bit nonce.
+    /// Must be encoded with `hex`.
+    public var nonce: String
+
+    public init(key: String, nonce: String) {
+        self.key = key
+        self.nonce = nonce
+    }
+}
+
+public struct TSDKNaclBoxParamsEB: Codable {
+    /// 256-bit key.
+    /// Must be encoded with `hex`.
+    public var their_public: String
+    /// 256-bit key.
+    /// Must be encoded with `hex`.
+    public var secret: String
+    /// 96-bit nonce.
+    /// Must be encoded with `hex`.
+    public var nonce: String
+
+    public init(their_public: String, secret: String, nonce: String) {
+        self.their_public = their_public
+        self.secret = secret
+        self.nonce = nonce
+    }
+}
+
+public struct TSDKNaclSecretBoxParamsEB: Codable {
+    /// Secret key - unprefixed 0-padded to 64 symbols hex string
+    public var key: String
+    /// Nonce in `hex`
+    public var nonce: String
+
+    public init(key: String, nonce: String) {
+        self.key = key
+        self.nonce = nonce
+    }
+}
+
+public struct TSDKCryptoBoxSecret: Codable {
+    public var type: TSDKCryptoBoxSecretEnumTypes
+    public var dictionary: TSDKMnemonicDictionary?
+    public var wordcount: UInt8?
+    public var phrase: String?
+    /// It is an object, containing encrypted seed phrase or private key (now we support only seed phrase).
+    public var encrypted_secret: String?
+
+    public init(type: TSDKCryptoBoxSecretEnumTypes, dictionary: TSDKMnemonicDictionary? = nil, wordcount: UInt8? = nil, phrase: String? = nil, encrypted_secret: String? = nil) {
+        self.type = type
+        self.dictionary = dictionary
+        self.wordcount = wordcount
+        self.phrase = phrase
+        self.encrypted_secret = encrypted_secret
+    }
+}
+
+/// Crypto Box Secret.
+public struct TSDKBoxEncryptionAlgorithm: Codable {
+    public var type: TSDKBoxEncryptionAlgorithmEnumTypes
+
+    public init(type: TSDKBoxEncryptionAlgorithmEnumTypes) {
+        self.type = type
+    }
+}
+
+public struct TSDKChaCha20ParamsCB: Codable {
+    /// 96-bit nonce.
+    /// Must be encoded with `hex`.
+    public var nonce: String
+
+    public init(nonce: String) {
+        self.nonce = nonce
+    }
+}
+
+public struct TSDKNaclBoxParamsCB: Codable {
+    /// 256-bit key.
+    /// Must be encoded with `hex`.
+    public var their_public: String
+    /// 96-bit nonce.
+    /// Must be encoded with `hex`.
+    public var nonce: String
+
+    public init(their_public: String, nonce: String) {
+        self.their_public = their_public
+        self.nonce = nonce
+    }
+}
+
+public struct TSDKNaclSecretBoxParamsCB: Codable {
+    /// Nonce in `hex`
+    public var nonce: String
+
+    public init(nonce: String) {
+        self.nonce = nonce
     }
 }
 
@@ -449,6 +581,7 @@ public struct TSDKParamsOfNaclBoxOpen: Codable {
     /// Data that must be decrypted.
     /// Encoded with `base64`.
     public var encrypted: String
+    /// Nonce
     public var nonce: String
     /// Sender's public key - unprefixed 0-padded to 64 symbols hex string
     public var their_public: String
@@ -494,7 +627,7 @@ public struct TSDKParamsOfNaclSecretBoxOpen: Codable {
     public var encrypted: String
     /// Nonce in `hex`
     public var nonce: String
-    /// Public key - unprefixed 0-padded to 64 symbols hex string
+    /// Secret key - unprefixed 0-padded to 64 symbols hex string
     public var key: String
 
     public init(encrypted: String, nonce: String, key: String) {
@@ -743,11 +876,125 @@ public struct TSDKResultOfChaCha20: Codable {
     }
 }
 
+public struct TSDKParamsOfCreateCryptoBox: Codable {
+    /// Salt used for secret encryption. For example, a mobile device can use device ID as salt.
+    public var secret_encryption_salt: String
+    /// Cryptobox secret
+    public var secret: TSDKCryptoBoxSecret
+
+    public init(secret_encryption_salt: String, secret: TSDKCryptoBoxSecret) {
+        self.secret_encryption_salt = secret_encryption_salt
+        self.secret = secret
+    }
+}
+
+public struct TSDKRegisteredCryptoBox: Codable {
+    public var handle: TSDKCryptoBoxHandle
+
+    public init(handle: TSDKCryptoBoxHandle) {
+        self.handle = handle
+    }
+}
+
+public struct TSDKParamsOfAppPasswordProvider: Codable {
+    public var type: TSDKParamsOfAppPasswordProviderEnumTypes
+    /// Temporary library pubkey, that is used on application side for password encryption, along with application temporary private key and nonce. Used for password decryption on library side.
+    public var encryption_public_key: String?
+
+    public init(type: TSDKParamsOfAppPasswordProviderEnumTypes, encryption_public_key: String? = nil) {
+        self.type = type
+        self.encryption_public_key = encryption_public_key
+    }
+}
+
+/// Interface that provides a callback that returns an encrypted password, used for cryptobox secret encryption
+/// To secure the password while passing it from application to the library,the library generates a temporary key pair, passes the pubkeyto the passwordProvider, decrypts the received password with private key,and deletes the key pair right away.
+    /// Application should generate a temporary nacl_box_keypairand encrypt the password with naclbox function using nacl_box_keypair.secretand encryption_public_key keys + nonce = 24-byte prefix of encryption_public_key.
+public struct TSDKResultOfAppPasswordProvider: Codable {
+    public var type: TSDKResultOfAppPasswordProviderEnumTypes
+    /// Password, encrypted and encoded to base64. Crypto box uses this password to decrypt its secret (seed phrase).
+    public var encrypted_password: String?
+    /// Hex encoded public key of a temporary key pair, used for password encryption on application side.
+    /// Used together with `encryption_public_key` to decode `encrypted_password`.
+    public var app_encryption_pubkey: String?
+
+    public init(type: TSDKResultOfAppPasswordProviderEnumTypes, encrypted_password: String? = nil, app_encryption_pubkey: String? = nil) {
+        self.type = type
+        self.encrypted_password = encrypted_password
+        self.app_encryption_pubkey = app_encryption_pubkey
+    }
+}
+
+public struct TSDKResultOfGetCryptoBoxInfo: Codable {
+    /// Secret (seed phrase) encrypted with salt and password.
+    public var encrypted_secret: String
+
+    public init(encrypted_secret: String) {
+        self.encrypted_secret = encrypted_secret
+    }
+}
+
+public struct TSDKResultOfGetCryptoBoxSeedPhrase: Codable {
+    public var phrase: String
+    public var dictionary: TSDKMnemonicDictionary
+    public var wordcount: UInt8
+
+    public init(phrase: String, dictionary: TSDKMnemonicDictionary, wordcount: UInt8) {
+        self.phrase = phrase
+        self.dictionary = dictionary
+        self.wordcount = wordcount
+    }
+}
+
+public struct TSDKParamsOfGetSigningBoxFromCryptoBox: Codable {
+    /// Crypto Box Handle.
+    public var handle: UInt32
+    /// HD key derivation path.
+    /// By default, Everscale HD path is used.
+    public var hdpath: String?
+    /// Store derived secret for this lifetime (in ms). The timer starts after each signing box operation. Secrets will be deleted immediately after each signing box operation, if this value is not set.
+    public var secret_lifetime: UInt32?
+
+    public init(handle: UInt32, hdpath: String? = nil, secret_lifetime: UInt32? = nil) {
+        self.handle = handle
+        self.hdpath = hdpath
+        self.secret_lifetime = secret_lifetime
+    }
+}
+
 public struct TSDKRegisteredSigningBox: Codable {
     /// Handle of the signing box.
     public var handle: TSDKSigningBoxHandle
 
     public init(handle: TSDKSigningBoxHandle) {
+        self.handle = handle
+    }
+}
+
+public struct TSDKParamsOfGetEncryptionBoxFromCryptoBox: Codable {
+    /// Crypto Box Handle.
+    public var handle: UInt32
+    /// HD key derivation path.
+    /// By default, Everscale HD path is used.
+    public var hdpath: String?
+    /// Encryption algorithm.
+    public var algorithm: TSDKBoxEncryptionAlgorithm
+    /// Store derived secret for encryption algorithm for this lifetime (in ms). The timer starts after each encryption box operation. Secrets will be deleted (overwritten with zeroes) after each encryption operation, if this value is not set.
+    public var secret_lifetime: UInt32?
+
+    public init(handle: UInt32, hdpath: String? = nil, algorithm: TSDKBoxEncryptionAlgorithm, secret_lifetime: UInt32? = nil) {
+        self.handle = handle
+        self.hdpath = hdpath
+        self.algorithm = algorithm
+        self.secret_lifetime = secret_lifetime
+    }
+}
+
+public struct TSDKRegisteredEncryptionBox: Codable {
+    /// Handle of the encryption box.
+    public var handle: TSDKEncryptionBoxHandle
+
+    public init(handle: TSDKEncryptionBoxHandle) {
         self.handle = handle
     }
 }
@@ -812,15 +1059,6 @@ public struct TSDKResultOfSigningBoxSign: Codable {
     }
 }
 
-public struct TSDKRegisteredEncryptionBox: Codable {
-    /// Handle of the encryption box
-    public var handle: TSDKEncryptionBoxHandle
-
-    public init(handle: TSDKEncryptionBoxHandle) {
-        self.handle = handle
-    }
-}
-
 public struct TSDKParamsOfAppEncryptionBox: Codable {
     public var type: TSDKParamsOfAppEncryptionBoxEnumTypes
     /// Data, encoded in Base64
@@ -832,7 +1070,7 @@ public struct TSDKParamsOfAppEncryptionBox: Codable {
     }
 }
 
-/// Encryption box callbacks.
+/// Interface for data encryption/decryption
 public struct TSDKResultOfAppEncryptionBox: Codable {
     public var type: TSDKResultOfAppEncryptionBoxEnumTypes
     public var info: TSDKEncryptionBoxInfo?

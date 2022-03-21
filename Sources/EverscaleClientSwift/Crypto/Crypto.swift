@@ -386,6 +386,90 @@ public final class TSDKCryptoModule {
         }
     }
 
+    /// Creates a Crypto Box instance.
+    /// Crypto Box is a root crypto object, that encapsulates some secret (seed phrase usually)in encrypted form and acts as a factory for all crypto primitives used in SDK:
+    /// keys for signing and encryption, derived from this secret.
+    /// Crypto Box encrypts original Seed Phrase with salt and password that is retrievedfrom `password_provider` callback, implemented on Application side.
+    /// When used, decrypted secret shows up in core library's memory for a very short periodof time and then is immediately overwritten with zeroes.
+    public func create_crypto_box(_ payload: TSDKParamsOfCreateCryptoBox, _ handler: @escaping (TSDKBindingResponse<TSDKRegisteredCryptoBox, TSDKClientError>) throws -> Void
+    ) {
+        let method: String = "create_crypto_box"
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKRegisteredCryptoBox, TSDKClientError> = .init()
+            response.update(requestId, params, responseType, finished)
+            try handler(response)
+        }
+    }
+
+    /// Removes Crypto Box. Clears all secret data.
+    public func remove_crypto_box(_ payload: TSDKRegisteredCryptoBox, _ handler: @escaping (TSDKBindingResponse<TSDKNoneResult, TSDKClientError>) throws -> Void
+    ) {
+        let method: String = "remove_crypto_box"
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKNoneResult, TSDKClientError> = .init()
+            response.update(requestId, params, responseType, finished)
+            try handler(response)
+        }
+    }
+
+    /// Get Crypto Box Info. Used to get `encrypted_secret` that should be used for all the cryptobox initializations except the first one.
+    public func get_crypto_box_info(_ payload: TSDKRegisteredCryptoBox, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfGetCryptoBoxInfo, TSDKClientError>) throws -> Void
+    ) {
+        let method: String = "get_crypto_box_info"
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKResultOfGetCryptoBoxInfo, TSDKClientError> = .init()
+            response.update(requestId, params, responseType, finished)
+            try handler(response)
+        }
+    }
+
+    /// Get Crypto Box Seed Phrase.
+    /// Attention! Store this data in your application for a very short period of time and overwrite it with zeroes ASAP.
+    public func get_crypto_box_seed_phrase(_ payload: TSDKRegisteredCryptoBox, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfGetCryptoBoxSeedPhrase, TSDKClientError>) throws -> Void
+    ) {
+        let method: String = "get_crypto_box_seed_phrase"
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKResultOfGetCryptoBoxSeedPhrase, TSDKClientError> = .init()
+            response.update(requestId, params, responseType, finished)
+            try handler(response)
+        }
+    }
+
+    /// Get handle of Signing Box derived from Crypto Box.
+    public func get_signing_box_from_crypto_box(_ payload: TSDKParamsOfGetSigningBoxFromCryptoBox, _ handler: @escaping (TSDKBindingResponse<TSDKRegisteredSigningBox, TSDKClientError>) throws -> Void
+    ) {
+        let method: String = "get_signing_box_from_crypto_box"
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKRegisteredSigningBox, TSDKClientError> = .init()
+            response.update(requestId, params, responseType, finished)
+            try handler(response)
+        }
+    }
+
+    /// Gets Encryption Box from Crypto Box.
+    /// Derives encryption keypair from cryptobox secret and hdpath andstores it in cache for `secret_lifetime`or until explicitly cleared by `clear_crypto_box_secret_cache` method.
+    /// If `secret_lifetime` is not specified - overwrites encryption secret with zeroes immediately afterencryption operation.
+    public func get_encryption_box_from_crypto_box(_ payload: TSDKParamsOfGetEncryptionBoxFromCryptoBox, _ handler: @escaping (TSDKBindingResponse<TSDKRegisteredEncryptionBox, TSDKClientError>) throws -> Void
+    ) {
+        let method: String = "get_encryption_box_from_crypto_box"
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKRegisteredEncryptionBox, TSDKClientError> = .init()
+            response.update(requestId, params, responseType, finished)
+            try handler(response)
+        }
+    }
+
+    /// Removes cached secrets (overwrites with zeroes) from all signing and encryption boxes, derived from crypto box.
+    public func clear_crypto_box_secret_cache(_ payload: TSDKRegisteredCryptoBox, _ handler: @escaping (TSDKBindingResponse<TSDKNoneResult, TSDKClientError>) throws -> Void
+    ) {
+        let method: String = "clear_crypto_box_secret_cache"
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKNoneResult, TSDKClientError> = .init()
+            response.update(requestId, params, responseType, finished)
+            try handler(response)
+        }
+    }
+
     /// Register an application implemented signing box.
     public func register_signing_box(_ handler: @escaping (TSDKBindingResponse<TSDKRegisteredSigningBox, TSDKClientError>) throws -> Void
     ) {
