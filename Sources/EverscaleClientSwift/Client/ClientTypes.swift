@@ -36,6 +36,13 @@ public enum TSDKClientErrorCode: Int, Codable {
     case LocalStorageError = 35
 }
 
+public enum TSDKNetworkQueriesProtocol: String, Codable {
+    case HTTP = "HTTP"
+    case WS = "WS"
+}
+
+/// Network protocol used to perform GraphQL queries.
+
 public enum TSDKAppRequestResultEnumTypes: String, Codable {
     case Error = "Error"
     case Ok = "Ok"
@@ -114,11 +121,15 @@ public struct TSDKNetworkConfig: Codable {
     /// Is is used when no timeout specified for the request to limit the answer waiting time. If no answer received during the timeout requests ends witherror.
     /// Must be specified in milliseconds. Default is 60000 (1 min).
     public var query_timeout: UInt32?
+    /// Queries protocol.
+    /// `HTTP` or `WS`.
+    /// /// Default is `HTTP`.
+    public var queries_protocol: TSDKNetworkQueriesProtocol?
     /// Access key to GraphQL API.
     /// At the moment is not used in production.
     public var access_key: String?
 
-    public init(server_address: String? = nil, endpoints: [String]? = nil, network_retries_count: Int8? = nil, max_reconnect_timeout: UInt32? = nil, reconnect_timeout: UInt32? = nil, message_retries_count: Int8? = nil, message_processing_timeout: UInt32? = nil, wait_for_timeout: UInt32? = nil, out_of_sync_threshold: UInt32? = nil, sending_endpoint_count: UInt8? = nil, latency_detection_interval: UInt32? = nil, max_latency: UInt32? = nil, query_timeout: UInt32? = nil, access_key: String? = nil) {
+    public init(server_address: String? = nil, endpoints: [String]? = nil, network_retries_count: Int8? = nil, max_reconnect_timeout: UInt32? = nil, reconnect_timeout: UInt32? = nil, message_retries_count: Int8? = nil, message_processing_timeout: UInt32? = nil, wait_for_timeout: UInt32? = nil, out_of_sync_threshold: UInt32? = nil, sending_endpoint_count: UInt8? = nil, latency_detection_interval: UInt32? = nil, max_latency: UInt32? = nil, query_timeout: UInt32? = nil, queries_protocol: TSDKNetworkQueriesProtocol? = nil, access_key: String? = nil) {
         self.server_address = server_address
         self.endpoints = endpoints
         self.network_retries_count = network_retries_count
@@ -132,6 +143,7 @@ public struct TSDKNetworkConfig: Codable {
         self.latency_detection_interval = latency_detection_interval
         self.max_latency = max_latency
         self.query_timeout = query_timeout
+        self.queries_protocol = queries_protocol
         self.access_key = access_key
     }
 }
