@@ -460,10 +460,13 @@ public struct TSDKParamsOfDecodeMessage: Codable {
     public var abi: TSDKAbi
     /// Message BOC
     public var message: String
+    /// Flag allowing partial BOC decoding when ABI doesn't describe the full body BOC. Controls decoder behaviour when after decoding all described in ABI params there are some data left in BOC: `true` - return decoded values `false` - return error of incomplete BOC deserialization (default)
+    public var allow_partial: Bool?
 
-    public init(abi: TSDKAbi, message: String) {
+    public init(abi: TSDKAbi, message: String, allow_partial: Bool? = nil) {
         self.abi = abi
         self.message = message
+        self.allow_partial = allow_partial
     }
 }
 
@@ -492,11 +495,14 @@ public struct TSDKParamsOfDecodeMessageBody: Codable {
     public var body: String
     /// True if the body belongs to the internal message.
     public var is_internal: Bool
+    /// Flag allowing partial BOC decoding when ABI doesn't describe the full body BOC. Controls decoder behaviour when after decoding all described in ABI params there are some data left in BOC: `true` - return decoded values `false` - return error of incomplete BOC deserialization (default)
+    public var allow_partial: Bool?
 
-    public init(abi: TSDKAbi, body: String, is_internal: Bool) {
+    public init(abi: TSDKAbi, body: String, is_internal: Bool, allow_partial: Bool? = nil) {
         self.abi = abi
         self.body = body
         self.is_internal = is_internal
+        self.allow_partial = allow_partial
     }
 }
 
@@ -539,10 +545,13 @@ public struct TSDKParamsOfDecodeAccountData: Codable {
     public var abi: TSDKAbi
     /// Data BOC or BOC handle
     public var data: String
+    /// Flag allowing partial BOC decoding when ABI doesn't describe the full body BOC. Controls decoder behaviour when after decoding all described in ABI params there are some data left in BOC: `true` - return decoded values `false` - return error of incomplete BOC deserialization (default)
+    public var allow_partial: Bool?
 
-    public init(abi: TSDKAbi, data: String) {
+    public init(abi: TSDKAbi, data: String, allow_partial: Bool? = nil) {
         self.abi = abi
         self.data = data
+        self.allow_partial = allow_partial
     }
 }
 
@@ -620,10 +629,13 @@ public struct TSDKParamsOfDecodeInitialData: Codable {
     public var abi: TSDKAbi?
     /// Data BOC or BOC handle
     public var data: String
+    /// Flag allowing partial BOC decoding when ABI doesn't describe the full body BOC. Controls decoder behaviour when after decoding all described in ABI params there are some data left in BOC: `true` - return decoded values `false` - return error of incomplete BOC deserialization (default)
+    public var allow_partial: Bool?
 
-    public init(abi: TSDKAbi? = nil, data: String) {
+    public init(abi: TSDKAbi? = nil, data: String, allow_partial: Bool? = nil) {
         self.abi = abi
         self.data = data
+        self.allow_partial = allow_partial
     }
 }
 

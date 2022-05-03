@@ -36,6 +36,7 @@ public enum TSDKCryptoErrorCode: Int, Codable {
     case InvalidCryptoBoxType = 131
     case CryptoBoxSecretSerializationError = 132
     case CryptoBoxSecretDeserializationError = 133
+    case InvalidNonceSize = 134
 }
 
 public enum TSDKEncryptionAlgorithmEnumTypes: String, Codable {

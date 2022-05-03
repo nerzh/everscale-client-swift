@@ -12,6 +12,9 @@ public enum TSDKProcessingErrorCode: Int, Codable {
     case BlockNotFound = 511
     case InvalidData = 512
     case ExternalSignerMustNotBeUsed = 513
+    case MessageRejected = 514
+    case InvalidRempStatus = 515
+    case NextRempStatusTimeout = 516
 }
 
 public enum TSDKProcessingEventEnumTypes: String, Codable {
@@ -23,6 +26,11 @@ public enum TSDKProcessingEventEnumTypes: String, Codable {
     case WillFetchNextBlock = "WillFetchNextBlock"
     case FetchNextBlockFailed = "FetchNextBlockFailed"
     case MessageExpired = "MessageExpired"
+    case RempSentToValidators = "RempSentToValidators"
+    case RempIncludedIntoBlock = "RempIncludedIntoBlock"
+    case RempIncludedIntoAcceptedBlock = "RempIncludedIntoAcceptedBlock"
+    case RempOther = "RempOther"
+    case RempError = "RempError"
 }
 
 public struct TSDKProcessingEvent: Codable {
@@ -31,13 +39,17 @@ public struct TSDKProcessingEvent: Codable {
     public var shard_block_id: String?
     public var message_id: String?
     public var message: String?
+    public var timestamp: Int?
+    public var json: AnyValue?
 
-    public init(type: TSDKProcessingEventEnumTypes, error: TSDKClientError? = nil, shard_block_id: String? = nil, message_id: String? = nil, message: String? = nil) {
+    public init(type: TSDKProcessingEventEnumTypes, error: TSDKClientError? = nil, shard_block_id: String? = nil, message_id: String? = nil, message: String? = nil, timestamp: Int? = nil, json: AnyValue? = nil) {
         self.type = type
         self.error = error
         self.shard_block_id = shard_block_id
         self.message_id = message_id
         self.message = message
+        self.timestamp = timestamp
+        self.json = json
     }
 }
 

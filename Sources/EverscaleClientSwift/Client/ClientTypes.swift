@@ -80,10 +80,11 @@ public struct TSDKClientConfig: Codable {
 }
 
 public struct TSDKNetworkConfig: Codable {
-    /// DApp Server public address. For instance, for `net.ton.dev/graphql` GraphQL endpoint the server address will be net.ton.dev
+    /// **This field is deprecated, but left for backward-compatibility.** DApp Server public address.
     public var server_address: String?
     /// List of DApp Server addresses.
-    /// Any correct URL format can be specified, including IP addresses This parameter is prevailing over `server_address`.
+    /// Any correct URL format can be specified, including IP addresses. This parameter is prevailing over `server_address`.
+    /// Check the full list of [supported network endpoints](../ton-os-api/networks.md).
     public var endpoints: [String]?
     /// Deprecated.
     /// You must use `network.max_reconnect_timeout` that allows to specify maximum network resolving timeout.
@@ -107,7 +108,7 @@ public struct TSDKNetworkConfig: Codable {
     /// Must be specified in milliseconds. Default is 15000 (15 sec).
     public var out_of_sync_threshold: UInt32?
     /// Maximum number of randomly chosen endpoints the library uses to broadcast a message.
-    /// Default is 2.
+    /// Default is 1.
     public var sending_endpoint_count: UInt8?
     /// Frequency of sync latency detection.
     /// Library periodically checks the current endpoint for blockchain data syncronization latency.
@@ -125,11 +126,19 @@ public struct TSDKNetworkConfig: Codable {
     /// `HTTP` or `WS`.
     /// /// Default is `HTTP`.
     public var queries_protocol: TSDKNetworkQueriesProtocol?
+    /// UNSTABLE.
+    /// First REMP status awaiting timeout. If no status recieved during the timeout than fallback transaction scenario is activated.
+    /// Must be specified in milliseconds. Default is 1000 (1 sec).
+    public var first_remp_status_timeout: UInt32?
+    /// UNSTABLE.
+    /// Subsequent REMP status awaiting timeout. If no status recieved during the timeout than fallback transaction scenario is activated.
+    /// Must be specified in milliseconds. Default is 5000 (5 sec).
+    public var next_remp_status_timeout: UInt32?
     /// Access key to GraphQL API.
     /// At the moment is not used in production.
     public var access_key: String?
 
-    public init(server_address: String? = nil, endpoints: [String]? = nil, network_retries_count: Int8? = nil, max_reconnect_timeout: UInt32? = nil, reconnect_timeout: UInt32? = nil, message_retries_count: Int8? = nil, message_processing_timeout: UInt32? = nil, wait_for_timeout: UInt32? = nil, out_of_sync_threshold: UInt32? = nil, sending_endpoint_count: UInt8? = nil, latency_detection_interval: UInt32? = nil, max_latency: UInt32? = nil, query_timeout: UInt32? = nil, queries_protocol: TSDKNetworkQueriesProtocol? = nil, access_key: String? = nil) {
+    public init(server_address: String? = nil, endpoints: [String]? = nil, network_retries_count: Int8? = nil, max_reconnect_timeout: UInt32? = nil, reconnect_timeout: UInt32? = nil, message_retries_count: Int8? = nil, message_processing_timeout: UInt32? = nil, wait_for_timeout: UInt32? = nil, out_of_sync_threshold: UInt32? = nil, sending_endpoint_count: UInt8? = nil, latency_detection_interval: UInt32? = nil, max_latency: UInt32? = nil, query_timeout: UInt32? = nil, queries_protocol: TSDKNetworkQueriesProtocol? = nil, first_remp_status_timeout: UInt32? = nil, next_remp_status_timeout: UInt32? = nil, access_key: String? = nil) {
         self.server_address = server_address
         self.endpoints = endpoints
         self.network_retries_count = network_retries_count
@@ -144,6 +153,8 @@ public struct TSDKNetworkConfig: Codable {
         self.max_latency = max_latency
         self.query_timeout = query_timeout
         self.queries_protocol = queries_protocol
+        self.first_remp_status_timeout = first_remp_status_timeout
+        self.next_remp_status_timeout = next_remp_status_timeout
         self.access_key = access_key
     }
 }
