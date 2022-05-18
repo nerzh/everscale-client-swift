@@ -4,6 +4,7 @@
 
 import Foundation
 import BigInt
+import SwiftRegularExpression
 
 public enum AnyValue: Decodable, Encodable, Equatable {
     case string(String)
@@ -105,7 +106,7 @@ public enum AnyValue: Decodable, Encodable, Equatable {
         case let .bool(value):
             result = String(value)
         case let .string(value):
-            result = "\"\(value)\""
+            result = "\"\(value.replace(#"""#, "\\\""))\""
         case let .int(value):
             result = String(value)
         case let .bigInt(value):
