@@ -56,20 +56,39 @@ public struct TSDKAccountForExecutor: Codable {
 }
 
 public struct TSDKTransactionFees: Codable {
+    /// Deprecated.
+    /// Left for backward compatibility. Does not participate in account transaction fees calculation.
     public var in_msg_fwd_fee: Int
+    /// Fee for account storage
     public var storage_fee: Int
+    /// Fee for processing
     public var gas_fee: Int
+    /// Deprecated.
+    /// Contains the same data as total_fwd_fees field. Deprecated because of its confusing name, that is not the same with GraphQL API Transaction type's field.
     public var out_msgs_fwd_fee: Int
+    /// Deprecated.
+    /// This is the field that is named as `total_fees` in GraphQL API Transaction type. `total_account_fees` name is misleading, because it does not mean account fees, instead it meansvalidators total fees received for the transaction execution. It does not include some forward fees that accountactually pays now, but validators will receive later during value delivery to another account (not even in the receivingtransaction).
+    /// Because of all of this, this field is not interesting for those who wants to understandthe real account fees, this is why it is deprecated and left for backward compatibility.
     public var total_account_fees: Int
+    /// Deprecated because it means total value sent in the transaction, which does not relate to any fees.
     public var total_output: Int
+    /// Fee for inbound external message import.
+    public var ext_in_msg_fee: Int
+    /// Total fees the account pays for message forwarding
+    public var total_fwd_fees: Int
+    /// Total account fees for the transaction execution. Compounds of storage_fee + gas_fee + ext_in_msg_fee + total_fwd_fees
+    public var account_fees: Int
 
-    public init(in_msg_fwd_fee: Int, storage_fee: Int, gas_fee: Int, out_msgs_fwd_fee: Int, total_account_fees: Int, total_output: Int) {
+    public init(in_msg_fwd_fee: Int, storage_fee: Int, gas_fee: Int, out_msgs_fwd_fee: Int, total_account_fees: Int, total_output: Int, ext_in_msg_fee: Int, total_fwd_fees: Int, account_fees: Int) {
         self.in_msg_fwd_fee = in_msg_fwd_fee
         self.storage_fee = storage_fee
         self.gas_fee = gas_fee
         self.out_msgs_fwd_fee = out_msgs_fwd_fee
         self.total_account_fees = total_account_fees
         self.total_output = total_output
+        self.ext_in_msg_fee = ext_in_msg_fee
+        self.total_fwd_fees = total_fwd_fees
+        self.account_fees = account_fees
     }
 }
 

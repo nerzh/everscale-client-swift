@@ -49,6 +49,17 @@ public final class TSDKClientModule {
         }
     }
 
+    /// Returns Core Library API reference
+    public func config(_ handler: @escaping (TSDKBindingResponse<TSDKClientConfig, TSDKClientError>) throws -> Void
+    ) {
+        let method: String = "config"
+        binding.requestLibraryAsync(methodName(module, method), "") { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKClientConfig, TSDKClientError> = .init()
+            response.update(requestId, params, responseType, finished)
+            try handler(response)
+        }
+    }
+
     /// Returns detailed information about this build.
     public func build_info(_ handler: @escaping (TSDKBindingResponse<TSDKResultOfBuildInfo, TSDKClientError>) throws -> Void
     ) {
