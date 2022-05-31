@@ -30,12 +30,14 @@ public struct TSDKDefault: Codable {
     public var error: AnyValue?
     public var data: AnyValue?
     public var message: AnyValue?
+    public var code: AnyValue?
 
-    public init(result: AnyValue? = nil, error: AnyValue? = nil, data: AnyValue? = nil, message: AnyValue? = nil) {
+    public init(result: AnyValue? = nil, error: AnyValue? = nil, data: AnyValue? = nil, message: AnyValue? = nil, code: AnyValue? = nil) {
         self.result = result
         self.error = error
         self.data = data
         self.message = message
+        self.code = code
     }
 }
 

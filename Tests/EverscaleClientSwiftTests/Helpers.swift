@@ -42,7 +42,7 @@ extension XCTestCase {
 
     func testAsyncMethods<V>(_ handler: @escaping (_ client: TSDKClientModule, _ group: DispatchGroup) -> V) -> V {
         var config: TSDKClientConfig = .init()
-        config.network = TSDKNetworkConfig(server_address: SimpleEnv["server_address"] ?? "")
+        config.network = TSDKNetworkConfig(endpoints: SimpleEnv["server_address"]?.toModel([String].self) ?? [])
         let client: TSDKClientModule = try! .init(config: config)
         let group: DispatchGroup = .init()
         return handler(client, group)
@@ -53,16 +53,17 @@ extension XCTestCase {
                                _ accountAddress: String? = nil,
                                _ value: Int = 10_000_000_000
     ) -> Bool {
-        guard let server_address = client.config.network?.server_address else {
+        guard let server_address = client.config.network?.endpoints, !server_address.isEmpty else {
             Log.warn("Please, set client network for Giver work!")
             return false
         }
+        
 
         if (SimpleEnv["use_giver"] ?? SimpleEnv["giver_abi_name"]) ?? "" == "GiverNodeSE" {
             return self.getGramsFromGiverSyncNodeSE(client, accountAddress ?? testAddr, value)
         } else if (SimpleEnv["use_giver"] ?? SimpleEnv["giver_abi_name"]) ?? "" == "GiverNodeSE_v2" {
             return self.getGramsFromGiverSyncNodeSE_v2(client, accountAddress ?? testAddr, value)
-        } else if server_address[#"net\.ton\.dev"#] {
+        } else if server_address.contains("https://eri01.net.everos.dev") {
             return self.getGramsFromGiverSyncNetDev(client, accountAddress ?? testAddr, value)
         } else {
             Log.warn("No Giver for this network: \(server_address)")
@@ -274,7 +275,7 @@ extension XCTestCase {
     }
 
     func readKeys(_ name: String) -> TSDKKeyPair {
-        let keysJSONPath: String = pathToRootDirectory + "/Tests/TonClientSwiftTests/Fixtures/abi/\(name).keys.json"
+        let keysJSONPath: String = pathToRootDirectory + "/Tests/EverscaleClientSwiftTests/Fixtures/abi/\(name).keys.json"
         var keysJSON: String = .init()
         DOFileReader.readFile(keysJSONPath) { (line) in
             keysJSON.append(line)
@@ -285,7 +286,7 @@ extension XCTestCase {
     }
 
     func readAbi(_ name: String) -> AnyValue {
-        let abiJSON: String = pathToRootDirectory + "/Tests/TonClientSwiftTests/Fixtures/abi/\(name).abi.json"
+        let abiJSON: String = pathToRootDirectory + "/Tests/EverscaleClientSwiftTests/Fixtures/abi/\(name).abi.json"
         var abiText: String = .init()
         DOFileReader.readFile(abiJSON) { (line) in
             abiText.append(line)
@@ -296,7 +297,7 @@ extension XCTestCase {
     }
 
     func readTvc(_ name: String) -> Data {
-        let tvc: String = pathToRootDirectory + "/Tests/TonClientSwiftTests/Fixtures/abi/\(name).tvc"
+        let tvc: String = pathToRootDirectory + "/Tests/EverscaleClientSwiftTests/Fixtures/abi/\(name).tvc"
         guard let data = FileManager.default.contents(atPath: tvc) else { fatalError("tvc not read") }
 
         return data
