@@ -44,6 +44,7 @@ public struct TSDKDefault: Codable {
 public struct TSDKBindingResponse<TSDKResult: Codable, TSDKError: Codable> {
     public var result: TSDKResult?
     public var error: TSDKError?
+    public var dappError: TSDKError?
     public var finished: Bool = false
     public var requestId: UInt32 = 0
     public var rawResponse: String = .init()
@@ -66,11 +67,10 @@ public struct TSDKBindingResponse<TSDKResult: Codable, TSDKError: Codable> {
         case .responseCustom:
             result = rawResponse.toModel(TSDKResult.self)
         case .responseNop:
-//            result = rawResponse.toModel(TSDKResult.self)
-            break
+            result = rawResponse.toModel(TSDKResult.self)
         default:
-            error = rawResponse.toModel(TSDKError.self)
-            Log.warn(error ?? "responseType NOT FOUND and TSDKError not parsed")
+            dappError = rawResponse.toModel(TSDKError.self)
+            Log.warn(error ?? "responseType NOT FOUND and dappError not parsed")
         }
     }
 }
