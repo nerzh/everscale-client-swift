@@ -87,12 +87,12 @@ final class NetTests: XCTestCase {
                     BindingStore.deleteResponseHandler(response.requestId)
                     group.leave()
                     return
-                } else if let result = response.rawResponse?.toModel(TSDKDefault.self)?.result?.toAny() as? [String: Any],
+                } else if let result = response.rawResponse.toModel(TSDKDefault.self)?.result?.toAny() as? [String: Any],
                           let account_addr = result["account_addr"]
                 {
                     XCTAssertTrue((account_addr as? String) != nil)
                 }
-                if response.finished || response.rawResponse != nil {
+                if response.finished {
                     BindingStore.deleteResponseHandler(response.requestId)
                     group.leave()
                 }

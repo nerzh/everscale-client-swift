@@ -238,6 +238,9 @@ extension CodeGenerator {
             } else {
                 result.append("\(tab)\(property.accessType) var \(property.name): \(property.type)\n")
             }
+            if property.name == "message" {
+                result.append("\(tab)public var localizedDescription: String { self.message }\n")
+            }
         }
         result.append("\n\(tab)public init(")
         for (index, property) in swiftStruct.properties.enumerated() {

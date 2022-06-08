@@ -46,7 +46,7 @@ public struct TSDKBindingResponse<TSDKResult: Codable, TSDKError: Codable> {
     public var error: TSDKError?
     public var finished: Bool = false
     public var requestId: UInt32 = 0
-    public var rawResponse: String?
+    public var rawResponse: String = .init()
 
     public mutating func update(_ requestId: UInt32,
                                 _ rawResponse: String,
@@ -63,8 +63,14 @@ public struct TSDKBindingResponse<TSDKResult: Codable, TSDKError: Codable> {
         case .responseError:
             error = rawResponse.toModel(TSDKError.self)
             Log.warn(error ?? "RESPONSE TYPE ERROR, BUT ERROR IS NIL")
-        default:
+        case .responseCustom:
+            result = rawResponse.toModel(TSDKResult.self)
+        case .responseNop:
+//            result = rawResponse.toModel(TSDKResult.self)
             break
+        default:
+            error = rawResponse.toModel(TSDKError.self)
+            Log.warn(error ?? "responseType NOT FOUND and TSDKError not parsed")
         }
     }
 }
