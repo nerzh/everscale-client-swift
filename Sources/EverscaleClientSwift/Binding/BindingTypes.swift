@@ -70,7 +70,7 @@ public struct TSDKBindingResponse<TSDKResult: Codable, TSDKError: Codable> {
             result = rawResponse.toModel(TSDKResult.self)
         default:
             dappError = rawResponse.toModel(TSDKError.self)
-            Log.warn(error ?? "responseType NOT FOUND and dappError not parsed")
+            Log.warn(error ?? "responseType NOT FOUND and dappError not parsed. Raw Response\n\(rawResponse)")
         }
     }
 }
