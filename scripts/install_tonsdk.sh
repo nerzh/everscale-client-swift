@@ -11,7 +11,7 @@ fi
 # INSTALL RUST
 SCRIPTPATH="$( cd "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 bash "$SCRIPTPATH/install_rust.sh"
-
+source ~/.profile
 
 # INSTALL TON-SDK
 if [ -d "./TON-SDK" ]; then
@@ -33,26 +33,27 @@ else
 fi
 
   
-
-if [ $(commandExist 'port') == "1" ]; then
-  MACOS_LIB_INCLUDE_DIR="/opt/local"
-  echo "CHOOSE MACOS MACPORT INCLUDE DIR";
-fi
-if [ $(commandExist 'brew') == "1" ]; then
-  if [ -d "/opt/homebrew" ]; then
-    MACOS_LIB_INCLUDE_DIR="/opt/homebrew"
-    echo "CHOOSE MACOS HOMEBREW /opt/homebrew";
-  else
-    MACOS_LIB_INCLUDE_DIR="/usr/local"
-    echo "CHOOSE MACOS HOMEBREW /usr/local";
+if [ `uname -s` = Darwin ]; then
+  if [ $(commandExist 'port') == "1" ]; then
+    MACOS_LIB_INCLUDE_DIR="/opt/local"
+    echo "CHOOSE MACOS MACPORT INCLUDE DIR";
   fi
-fi
-if [ $(commandExist 'port') == "1" ]; then
-  echo "...";
-elif [ $(commandExist 'brew') == "1" ]; then
-  echo "...";
-else
-  echo 'ERROR: homebrew or macport is not installed'
+  if [ $(commandExist 'brew') == "1" ]; then
+    if [ -d "/opt/homebrew" ]; then
+      MACOS_LIB_INCLUDE_DIR="/opt/homebrew"
+      echo "CHOOSE MACOS HOMEBREW /opt/homebrew";
+    else
+      MACOS_LIB_INCLUDE_DIR="/usr/local"
+      echo "CHOOSE MACOS HOMEBREW /usr/local";
+    fi
+  fi
+  if [ $(commandExist 'port') == "1" ]; then
+    echo "...";
+  elif [ $(commandExist 'brew') == "1" ]; then
+    echo "...";
+  else
+    echo 'ERROR: homebrew or macport is not installed'
+  fi
 fi
 
 LINUX_LIB_INCLUDE_DIR="/usr"
