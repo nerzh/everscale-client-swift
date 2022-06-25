@@ -51,8 +51,8 @@ public enum TSDKAppRequestResultEnumTypes: String, Codable {
 public struct TSDKClientError: Codable, Error {
     public var code: UInt32
     public var message: String
-    public var data: AnyValue = [:].toAnyValue()
     public var localizedDescription: String { self.message }
+    public var data: AnyValue = [:].toAnyValue()
 
     public init(code: UInt32, message: String, data: AnyValue = [:].toAnyValue()) {
         self.code = code
