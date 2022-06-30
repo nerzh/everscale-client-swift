@@ -8,6 +8,7 @@
 import XCTest
 import class Foundation.Bundle
 @testable import EverscaleClientSwift
+@testable import SwiftExtensionsPack
 
 final class TvmTests: XCTestCase {
 

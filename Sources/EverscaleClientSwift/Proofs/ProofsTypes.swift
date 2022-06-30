@@ -1,3 +1,6 @@
+import SwiftExtensionsPack
+
+
 public enum TSDKProofsErrorCode: Int, Codable {
     case InvalidData = 901
     case ProofCheckFailed = 902

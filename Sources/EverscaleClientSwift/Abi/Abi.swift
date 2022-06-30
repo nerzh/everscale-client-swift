@@ -193,4 +193,15 @@ public final class TSDKAbiModule {
         }
     }
 
+    /// Calculates contract function ID by contract ABI
+    public func calc_function_id(_ payload: TSDKParamsOfCalcFunctionId, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfCalcFunctionId, TSDKClientError>) throws -> Void
+    ) {
+        let method: String = "calc_function_id"
+        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKResultOfCalcFunctionId, TSDKClientError> = .init()
+            response.update(requestId, params, responseType, finished)
+            try handler(response)
+        }
+    }
+
 }

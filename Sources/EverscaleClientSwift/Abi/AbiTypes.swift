@@ -1,3 +1,6 @@
+import SwiftExtensionsPack
+
+
 public typealias TSDKAbiHandle = UInt32
 
 public enum TSDKAbiErrorCode: Int, Codable {
@@ -15,6 +18,7 @@ public enum TSDKAbiErrorCode: Int, Codable {
     case InvalidFunctionId = 312
     case InvalidData = 313
     case EncodeInitialDataFailed = 314
+    case InvalidFunctionName = 315
 }
 
 public enum TSDKAbiEnumTypes: String, Codable {
@@ -697,6 +701,30 @@ public struct TSDKResultOfAbiEncodeBoc: Codable {
 
     public init(boc: String) {
         self.boc = boc
+    }
+}
+
+public struct TSDKParamsOfCalcFunctionId: Codable {
+    /// Contract ABI.
+    public var abi: TSDKAbi
+    /// Contract function name
+    public var function_name: String
+    /// If set to `true` output function ID will be returned which is used in contract response. Default is `false`
+    public var output: Bool?
+
+    public init(abi: TSDKAbi, function_name: String, output: Bool? = nil) {
+        self.abi = abi
+        self.function_name = function_name
+        self.output = output
+    }
+}
+
+public struct TSDKResultOfCalcFunctionId: Codable {
+    /// Contract function ID
+    public var function_id: UInt32
+
+    public init(function_id: UInt32) {
+        self.function_id = function_id
     }
 }
 

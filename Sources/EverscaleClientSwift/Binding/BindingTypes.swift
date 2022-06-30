@@ -3,6 +3,7 @@
 //
 
 import Foundation
+import SwiftExtensionsPack
 
 public struct TSDKContextResponse: Codable {
     public var result: UInt32?

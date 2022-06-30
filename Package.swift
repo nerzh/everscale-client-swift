@@ -16,6 +16,7 @@ let package = Package(
         .package(name: "SwiftRegularExpression", url: "https://github.com/nerzh/swift-regular-expression.git", .upToNextMajor(from: "0.2.4")),
         .package(name: "FileUtils", url: "https://github.com/nerzh/SwiftFileUtils", .upToNextMinor(from: "1.3.0")),
         .package(name: "BigInt", url: "https://github.com/bytehubio/BigInt", .exact("5.3.0")),
+        .package(name: "SwiftExtensionsPack", url: "https://github.com/nerzh/swift-extensions-pack", .upToNextMinor(from: "0.5.5")),
     ],
     targets: [
         .systemLibrary(name: "CTonSDK", pkgConfig: "libton_client"),
@@ -25,6 +26,7 @@ let package = Package(
                 .byName(name: "CTonSDK"),
                 .product(name: "SwiftRegularExpression", package: "SwiftRegularExpression"),
                 .product(name: "BigInt", package: "BigInt"),
+                .product(name: "SwiftExtensionsPack", package: "SwiftExtensionsPack"),
             ]),
         .testTarget(
             name: "EverscaleClientSwiftTests",
@@ -33,6 +35,7 @@ let package = Package(
                 .byName(name: "EverscaleClientSwift"),
                 .product(name: "FileUtils", package: "FileUtils"),
                 .product(name: "BigInt", package: "BigInt"),
+                .product(name: "SwiftExtensionsPack", package: "SwiftExtensionsPack"),
             ]),
     ],
     swiftLanguageVersions: [

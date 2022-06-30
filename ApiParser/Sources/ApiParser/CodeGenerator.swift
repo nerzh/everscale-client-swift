@@ -35,7 +35,7 @@ class CodeGenerator {
             FileUtils.writeFile(to: moduleClassFilePath, newModuleClass)
 
             
-            var newTypes: String = ""
+            var newTypes: String = "import SwiftExtensionsPack\n\n\n"
             for newAlias in module.alias {
                 newTypes.append(generateAlias(newAlias))
             }

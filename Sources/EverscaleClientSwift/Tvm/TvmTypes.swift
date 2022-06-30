@@ -1,3 +1,6 @@
+import SwiftExtensionsPack
+
+
 public enum TSDKTvmErrorCode: Int, Codable {
     case CanNotReadTransaction = 401
     case CanNotReadBlockchainConfig = 402
@@ -30,12 +33,15 @@ public struct TSDKExecutionOptions: Codable {
     public var block_lt: Int?
     /// transaction logical time
     public var transaction_lt: Int?
+    /// Overrides standard TVM behaviour. If set to `true` then CHKSIG always will return `true`.
+    public var chksig_always_succeed: Bool?
 
-    public init(blockchain_config: String? = nil, block_time: UInt32? = nil, block_lt: Int? = nil, transaction_lt: Int? = nil) {
+    public init(blockchain_config: String? = nil, block_time: UInt32? = nil, block_lt: Int? = nil, transaction_lt: Int? = nil, chksig_always_succeed: Bool? = nil) {
         self.blockchain_config = blockchain_config
         self.block_time = block_time
         self.block_lt = block_lt
         self.transaction_lt = transaction_lt
+        self.chksig_always_succeed = chksig_always_succeed
     }
 }
 

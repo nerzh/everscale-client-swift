@@ -10,6 +10,7 @@ import EverscaleClientSwift
 import XCTest
 import SwiftRegularExpression
 import FileUtils
+import SwiftExtensionsPack
 
 extension XCTestCase {
 

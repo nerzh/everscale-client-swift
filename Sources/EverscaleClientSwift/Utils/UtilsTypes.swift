@@ -1,3 +1,6 @@
+import SwiftExtensionsPack
+
+
 public enum TSDKAddressStringFormatEnumTypes: String, Codable {
     case AccountId = "AccountId"
     case Hex = "Hex"

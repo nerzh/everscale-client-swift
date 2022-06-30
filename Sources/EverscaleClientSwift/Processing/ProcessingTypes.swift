@@ -1,3 +1,6 @@
+import SwiftExtensionsPack
+
+
 public enum TSDKProcessingErrorCode: Int, Codable {
     case MessageAlreadyExpired = 501
     case MessageHasNotDestinationAddress = 502

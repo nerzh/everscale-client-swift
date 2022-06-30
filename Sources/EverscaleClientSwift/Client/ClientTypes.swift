@@ -1,3 +1,6 @@
+import SwiftExtensionsPack
+
+
 public enum TSDKClientErrorCode: Int, Codable {
     case NotImplemented = 1
     case InvalidHex = 2

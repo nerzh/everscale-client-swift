@@ -9,6 +9,7 @@ import XCTest
 import class Foundation.Bundle
 @testable import EverscaleClientSwift
 @testable import CTonSDK
+@testable import SwiftExtensionsPack
 
 final class ProcessingTests: XCTestCase {
 

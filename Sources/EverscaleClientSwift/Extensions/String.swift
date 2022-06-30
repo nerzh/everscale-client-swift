@@ -10,17 +10,6 @@ public extension String {
         self.data(using: using)?.count ?? 0
     }
     
-    func toDictionary() -> [String: Any]? {
-        if let data = self.data(using: .utf8) {
-            do {
-                return try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
-            } catch {
-                print(error.localizedDescription)
-            }
-        }
-        return nil
-    }
-    
     // TO DECODABLE STRUCT
     func toModel<T>(_ model: T.Type) -> T? where T : Decodable {
         guard let data = self.data(using: String.Encoding.utf8) else { return nil }
@@ -57,11 +46,3 @@ public extension String {
         return false
     }
 }
-
-public extension String {
-
-    func toAnyValue() -> AnyValue? {
-        self.toDictionary()?.toAnyValue()
-    }
-}
-

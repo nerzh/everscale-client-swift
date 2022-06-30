@@ -4,6 +4,7 @@
 
 import Foundation
 import CTonSDK
+import SwiftExtensionsPack
 
 public typealias TSDKString = tc_string_data_t
 public typealias TSDKStringPointer = OpaquePointer
