@@ -11,6 +11,8 @@ public final class SimpleEnv {
     private static let debugEnvName: String = "debug"
     private static let adhocEnvName: String = "production"
     private static let productionEnvName: String = "production"
+    
+    public static var path: String = "./"
 
     public class subscript(_ key: String) -> String? {
         if env.count == 0 {
@@ -29,10 +31,10 @@ public final class SimpleEnv {
         #endif
 
         let envFileName: String = ".env.\(environment)"
-        let envFilePath: String = "./\(envFileName)"
+        let envFilePath: String = "\(path)/\(envFileName)"
         if !FileManager.default.fileExists(atPath: envFilePath) { return }
 
-        DOFileReader.readFile("./\(envFileName)") { (line) in
+        DOFileReader.readFile("\(path)/\(envFileName)") { (line) in
             let line = line.trimmingCharacters(in: .whitespacesAndNewlines)
             let matchesWithQuotes: [Int: String] = line.regexp(#"\"([\s\S]+)\"\s*=\s*\"([\s\S]+)\""#)
             if line[#"^\/\/"#] { return }
