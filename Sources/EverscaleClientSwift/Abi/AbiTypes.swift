@@ -272,13 +272,17 @@ public struct TSDKParamsOfEncodeMessageBody: Codable {
     /// Expiration timeouts will grow with every retry.
     /// Default value is 0.
     public var processing_try_index: UInt8?
+    /// Destination address of the message
+    /// Since ABI version 2.3 destination address of external inbound message is used in messagebody signature calculation. Should be provided when signed external inbound message body iscreated. Otherwise can be omitted.
+    public var address: String?
 
-    public init(abi: TSDKAbi, call_set: TSDKCallSet, is_internal: Bool, signer: TSDKSigner, processing_try_index: UInt8? = nil) {
+    public init(abi: TSDKAbi, call_set: TSDKCallSet, is_internal: Bool, signer: TSDKSigner, processing_try_index: UInt8? = nil, address: String? = nil) {
         self.abi = abi
         self.call_set = call_set
         self.is_internal = is_internal
         self.signer = signer
         self.processing_try_index = processing_try_index
+        self.address = address
     }
 }
 
