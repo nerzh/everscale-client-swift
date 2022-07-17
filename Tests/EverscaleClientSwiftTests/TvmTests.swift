@@ -13,7 +13,7 @@ import class Foundation.Bundle
 final class TvmTests: XCTestCase {
 
     func testRun_getParticipantList() throws {
-        testAsyncMethods { (client, group) in
+        try testAsyncMethods { (client, group) in
             group.enter()
 
             let stateInitSource: TSDKStateInitSource = .init(type: .StateInit,
@@ -29,7 +29,7 @@ final class TvmTests: XCTestCase {
                                                                         last_trans_lt: nil,
                                                                         last_paid: nil)
             var accountBase64: String = .init()
-            client.abi.encode_account(payloadEncodeAccount) { (response) in
+            try client.abi.encode_account(payloadEncodeAccount) { (response) in
                 accountBase64 = response.result?.account ?? ""
                 group.leave()
             }
@@ -41,7 +41,7 @@ final class TvmTests: XCTestCase {
                                                     function_name: "participant_list",
                                                     input: nil,
                                                     execution_options: nil)
-            client.tvm.run_get(payload) { [group] (response) in
+            try client.tvm.run_get(payload) { [group] (response) in
                 let first: String? = (((response.result?.output.toAny() as? [Any])?[0] as? [Any])?[0] as? [Any])?[0] as? String
                 let last: String? = (((response.result?.output.toAny() as? [Any])?[0] as? [Any])?[0] as? [Any])?[1] as? String
                 XCTAssertEqual(first, "0x0101b6d65a384b9c70deb49fd6c43ffc0f60ed22fcc3a4966f7043794a749228")
@@ -53,7 +53,7 @@ final class TvmTests: XCTestCase {
     }
 
     func testRun_getPast_elections() throws {
-        testAsyncMethods { (client, group) in
+        try testAsyncMethods { (client, group) in
             group.enter()
 
             let stateInitSource: TSDKStateInitSource = .init(type: .StateInit,
@@ -69,7 +69,7 @@ final class TvmTests: XCTestCase {
                                                                         last_trans_lt: nil,
                                                                         last_paid: nil)
             var accountBase64: String = .init()
-            client.abi.encode_account(payloadEncodeAccount) { (response) in
+            try client.abi.encode_account(payloadEncodeAccount) { (response) in
                 accountBase64 = response.result?.account ?? ""
                 group.leave()
             }
@@ -81,7 +81,7 @@ final class TvmTests: XCTestCase {
                                                     function_name: "past_elections",
                                                     input: nil,
                                                     execution_options: nil)
-            client.tvm.run_get(payload) { [group] (response) in
+            try client.tvm.run_get(payload) { [group] (response) in
                 let first: String? = (((response.result?.output.toAny() as? [Any])?[0] as? [Any])?[0] as? [Any])?[0] as? String
                 XCTAssertEqual(first, "1588268660")
                 group.leave()
@@ -91,7 +91,7 @@ final class TvmTests: XCTestCase {
     }
 
     func testRun_getCompute_returned_stake() throws {
-        testAsyncMethods { (client, group) in
+        try testAsyncMethods { (client, group) in
             group.enter()
 
             let stateInitSource: TSDKStateInitSource = .init(type: .StateInit,
@@ -107,7 +107,7 @@ final class TvmTests: XCTestCase {
                                                                         last_trans_lt: nil,
                                                                         last_paid: nil)
             var accountBase64: String = .init()
-            client.abi.encode_account(payloadEncodeAccount) { (response) in
+            try client.abi.encode_account(payloadEncodeAccount) { (response) in
                 accountBase64 = response.result?.account ?? ""
                 group.leave()
             }
@@ -120,7 +120,7 @@ final class TvmTests: XCTestCase {
                                                     function_name: "compute_returned_stake",
                                                     input: input,
                                                     execution_options: nil)
-            client.tvm.run_get(payload) { [group] (response) in
+            try client.tvm.run_get(payload) { [group] (response) in
                 let first: String? = (response.result?.output.toAny() as? [Any])?[0] as? String
                 XCTAssertEqual(first, "0")
                 group.leave()
@@ -132,16 +132,16 @@ final class TvmTests: XCTestCase {
     private func runMessage(_ handler: @escaping (_ client: TSDKClientModule,
                                                   _ message: TSDKResultOfEncodeMessage,
                                                   _ abi: TSDKAbi,
-                                                  _ account: String) -> String
-    ) {
-        testAsyncMethods { (client, group) in
+                                                  _ account: String) throws -> String
+    ) throws {
+        try testAsyncMethods { (client, group) in
             /// abi, tvc
             let abiName: String = "Subscription"
             let abiJSONValue: AnyValue = self.readAbi(abiName)
             let abi: TSDKAbi = .init(type: .Serialized, value: abiJSONValue)
             let tvc: Data = self.readTvc(abiName)
             /// keys
-            let keys: TSDKKeyPair = self.generateKeys()
+            let keys: TSDKKeyPair = try self.generateKeys()
             let wallet_address: String = "0:2222222222222222222222222222222222222222222222222222222222222222"
 
             /// Encode Message (message)
@@ -160,7 +160,7 @@ final class TvmTests: XCTestCase {
                                                                          signer: signer,
                                                                          processing_try_index: nil)
 
-            let resultOfEncodeMessage: TSDKResultOfEncodeMessage = self.abiEncodeMessage(nameAbi: abiName,
+            let resultOfEncodeMessage: TSDKResultOfEncodeMessage = try self.abiEncodeMessage(nameAbi: abiName,
                                                                                          nameTvc: abiName,
                                                                                          address: nil,
                                                                                          public: keys.public,
@@ -170,11 +170,11 @@ final class TvmTests: XCTestCase {
                                                                                          callSetHeader: callSet.header,
                                                                                          callSetInput: callSet.input)
             Log.log("Message has been received")
-            self.getGramsFromGiverSync(client, resultOfEncodeMessage.address)
+            try self.getGramsFromGiverSync(client, resultOfEncodeMessage.address)
             Log.log("Grams was sent")
             let paramsOfProcessMessage: TSDKParamsOfProcessMessage = .init(message_encode_params: paramsOfEncodeMessage, send_events: false)
             group.enter()
-            client.processing.process_message(paramsOfProcessMessage) { (response) in
+            try client.processing.process_message(paramsOfProcessMessage) { (response) in
                 if response.finished {
                     group.leave()
                 }
@@ -188,7 +188,7 @@ final class TvmTests: XCTestCase {
                                                                                  timeout: nil)
             var maybeResultOfWaitForCollection: TSDKResultOfWaitForCollection?
             group.enter()
-            client.net.wait_for_collection(paramsOfWaitForCollection) { (response) in
+            try client.net.wait_for_collection(paramsOfWaitForCollection) { (response) in
                 if response.result != nil {
                     maybeResultOfWaitForCollection = response.result
                 }
@@ -219,7 +219,7 @@ final class TvmTests: XCTestCase {
                 "period": .string("0x456")
             ])
 
-            let subscriptionEncodeMessage: TSDKResultOfEncodeMessage = self.abiEncodeMessage(nameAbi: abiName,
+            let subscriptionEncodeMessage: TSDKResultOfEncodeMessage = try self.abiEncodeMessage(nameAbi: abiName,
                                                                                              nameTvc: nil,
                                                                                              address: resultOfEncodeMessage.address,
                                                                                              public: keys.public,
@@ -230,14 +230,14 @@ final class TvmTests: XCTestCase {
                                                                                              callSetInput: subscribeParams)
             //MARK: CALL HANDLER
 
-            let account: String = handler(client, subscriptionEncodeMessage, abi, accountBOC)
+            let account: String = try handler(client, subscriptionEncodeMessage, abi, accountBOC)
             XCTAssertTrue(account != "", "RUN_TVM. Account is empty string")
 
             Log.log("Check subscription")
             let checkSubscribeParams: AnyValue = .object([
                 "subscriptionId": .string("0x1111111111111111111111111111111111111111111111111111111111111111")
             ])
-            let checkSubscriptionEncodeMessage: TSDKResultOfEncodeMessage = self.abiEncodeMessage(nameAbi: abiName,
+            let checkSubscriptionEncodeMessage: TSDKResultOfEncodeMessage = try self.abiEncodeMessage(nameAbi: abiName,
                                                                                                   nameTvc: nil,
                                                                                                   address: resultOfEncodeMessage.address,
                                                                                                   public: keys.public,
@@ -254,7 +254,7 @@ final class TvmTests: XCTestCase {
             var mayneResultOfRunTvm: TSDKResultOfRunTvm?
             group.enter()
 
-            client.tvm.run_tvm(paramsOfRunTvm) { (response) in
+            try client.tvm.run_tvm(paramsOfRunTvm) { (response) in
                 if response.result != nil {
                     mayneResultOfRunTvm = response.result
                 }
@@ -282,7 +282,7 @@ final class TvmTests: XCTestCase {
     }
 
     func testRun_tvm() throws {
-        runMessage { (client, encodedMessage, abi, account) -> String in
+        try runMessage { (client, encodedMessage, abi, account) -> String in
             let group: DispatchGroup = .init()
             let paramsOfRunTvm: TSDKParamsOfRunTvm = .init(message: encodedMessage.message,
                                                            account: account,
@@ -292,7 +292,7 @@ final class TvmTests: XCTestCase {
             group.enter()
             var result: String = .init()
             Log.warn(paramsOfRunTvm)
-            client.tvm.run_tvm(paramsOfRunTvm) { (response) in
+            try client.tvm.run_tvm(paramsOfRunTvm) { (response) in
                 if response.result != nil {
 //                    Log.warn(response.result)
                     result = response.result!.account
@@ -308,12 +308,12 @@ final class TvmTests: XCTestCase {
     }
 
     func testRun_executor() throws {
-        runMessage { (client, encodedMessage, abi, account) -> String in
+        try runMessage { (client, encodedMessage, abi, account) -> String in
             let group: DispatchGroup = .init()
             var result: String = .init()
             var maybeParsed: TSDKResultOfParse?
             group.enter()
-            client.boc.parse_account(TSDKParamsOfParse(boc: account)) { (response) in
+            try client.boc.parse_account(TSDKParamsOfParse(boc: account)) { (response) in
                 if response.result != nil {
                     maybeParsed = response.result
                 }
@@ -341,7 +341,7 @@ final class TvmTests: XCTestCase {
                                                                      return_updated_account: true)
             var maybeResultOfRunExecutor: TSDKResultOfRunExecutor?
             group.enter()
-            client.tvm.run_executor(paramsOfRunExecutor) { (response) in
+            try client.tvm.run_executor(paramsOfRunExecutor) { (response) in
                 if response.result != nil {
                     maybeResultOfRunExecutor = response.result
                 }
@@ -356,7 +356,7 @@ final class TvmTests: XCTestCase {
             }
 
             group.enter()
-            client.boc.parse_account(TSDKParamsOfParse(boc: resultOfRunExecutor.account)) { (response) in
+            try client.boc.parse_account(TSDKParamsOfParse(boc: resultOfRunExecutor.account)) { (response) in
                 if response.result != nil {
                     maybeParsed = response.result
                 }
@@ -377,7 +377,7 @@ final class TvmTests: XCTestCase {
                                         return_updated_account: true)
             var maybeCheckResultOfRunExecutor: TSDKResultOfRunExecutor?
             group.enter()
-            client.tvm.run_executor(paramsOfRunExecutor) { (response) in
+            try client.tvm.run_executor(paramsOfRunExecutor) { (response) in
                 if response.result != nil {
                     maybeCheckResultOfRunExecutor = response.result
                 }
@@ -400,7 +400,7 @@ final class TvmTests: XCTestCase {
     }
 
     func testRun_account_none() throws {
-        testAsyncMethods { (client, group) in
+        try testAsyncMethods { (client, group) in
             let message: String = "te6ccgEBAQEAXAAAs0gAV2lB0HI8/VEO/pBKDJJJeoOcIh+dL9JzpmRzM8PfdicAPGNEGwRWGaJsR6UYmnsFVC2llSo1ZZN5mgUnCiHf7ZaUBKgXyAAGFFhgAAAB69+UmQS/LjmiQA=="
             let paramsOfRunExecutor: TSDKParamsOfRunExecutor = .init(message: message,
                                                                      account: TSDKAccountForExecutor(type: .None),
@@ -410,7 +410,7 @@ final class TvmTests: XCTestCase {
                                                                      return_updated_account: true)
             var maybeResultOfRunExecutor: TSDKResultOfRunExecutor?
             group.enter()
-            client.tvm.run_executor(paramsOfRunExecutor) { (response) in
+            try client.tvm.run_executor(paramsOfRunExecutor) { (response) in
                 if response.result != nil {
                     maybeResultOfRunExecutor = response.result
                 }
@@ -426,7 +426,7 @@ final class TvmTests: XCTestCase {
 
             group.enter()
             var maybeResultOfParse: TSDKResultOfParse?
-            client.boc.parse_account(TSDKParamsOfParse(boc: resultOfRunExecutor.account)) { (response) in
+            try client.boc.parse_account(TSDKParamsOfParse(boc: resultOfRunExecutor.account)) { (response) in
                 if response.result != nil {
                     maybeResultOfParse = response.result
                 }
@@ -445,10 +445,10 @@ final class TvmTests: XCTestCase {
     }
 
     func testRun_account_uinit() throws {
-        testAsyncMethods { (client, group) in
+        try testAsyncMethods { (client, group) in
             let abiName: String = "Hello"
-            let keys: TSDKKeyPair = self.generateKeys()
-            let message: TSDKResultOfEncodeMessage = self.abiEncodeMessage(nameAbi: abiName,
+            let keys: TSDKKeyPair = try self.generateKeys()
+            let message: TSDKResultOfEncodeMessage = try self.abiEncodeMessage(nameAbi: abiName,
                                                                            nameTvc: abiName,
                                                                            address: nil,
                                                                            public: keys.public,
@@ -465,7 +465,7 @@ final class TvmTests: XCTestCase {
                                                                      return_updated_account: true)
             var maybeResultOfRunExecutor: TSDKResultOfRunExecutor?
             group.enter()
-            client.tvm.run_executor(paramsOfRunExecutor) { (response) in
+            try client.tvm.run_executor(paramsOfRunExecutor) { (response) in
                 if response.result != nil {
                     maybeResultOfRunExecutor = response.result
                 }
@@ -481,7 +481,7 @@ final class TvmTests: XCTestCase {
 
             group.enter()
             var maybeResultOfParse: TSDKResultOfParse?
-            client.boc.parse_account(TSDKParamsOfParse(boc: resultOfRunExecutor.account)) { (response) in
+            try client.boc.parse_account(TSDKParamsOfParse(boc: resultOfRunExecutor.account)) { (response) in
                 if response.result != nil {
                     maybeResultOfParse = response.result
                 }

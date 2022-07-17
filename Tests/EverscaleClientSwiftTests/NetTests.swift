@@ -14,7 +14,7 @@ import class Foundation.Bundle
 final class NetTests: XCTestCase {
 
     func testQuery_collection() throws {
-        testAsyncMethods { (client, group) in
+        try testAsyncMethods { (client, group) in
             group.enter()
             let any = AnyValue.object(
                 [
@@ -28,7 +28,7 @@ final class NetTests: XCTestCase {
                                                              result: "body created_at",
                                                              order: nil,
                                                              limit: nil)
-            client.net.query_collection(payload) { [group] (response) in
+            try client.net.query_collection(payload) { [group] (response) in
                 if let first = response.result?.result.first?.toAny() as? [String: Any] {
                     let created_at: Int? = first["created_at"] as? Int
                     XCTAssertTrue(created_at ?? 0 > 1562342740)
@@ -42,7 +42,7 @@ final class NetTests: XCTestCase {
     }
 
     func testWait_for_collection() throws {
-        testAsyncMethods { (client, group) in
+        try testAsyncMethods { (client, group) in
             let now: Int = Int(Date().timeIntervalSince1970)
             let any = AnyValue.object(
                 [
@@ -56,7 +56,7 @@ final class NetTests: XCTestCase {
                                                                result: "id now",
                                                                timeout: nil)
             group.enter()
-            client.net.wait_for_collection(payload) { [group] (response) in
+            try client.net.wait_for_collection(payload) { [group] (response) in
                 if let json = response.result?.result.toAny() as? [String: Any],
                    let thisNow = json["now"] as? Int
                 {
@@ -70,7 +70,7 @@ final class NetTests: XCTestCase {
                 // Just generate transactions
                 usleep(1_000_000)
                 for _ in 1...2 {
-                    self.getGramsFromGiverSync(client)
+                    _ = try? self.getGramsFromGiverSync(client)
                 }
             }.start()
             group.wait()
@@ -78,12 +78,12 @@ final class NetTests: XCTestCase {
     }
 
     func testSubscribe_collection() throws {
-        testAsyncMethods { (client, group) in
+        try testAsyncMethods { (client, group) in
             group.enter()
             let payload: TSDKParamsOfSubscribeCollection = .init(collection: "transactions",
                                                                  filter: nil,
                                                                  result: "id account_addr")
-            client.net.subscribe_collection(payload) { [group] (response) in
+            try client.net.subscribe_collection(payload) { [group] (response) in
                 if response.result?.handle != nil {
                     BindingStore.deleteResponseHandler(response.requestId)
                     group.leave()
@@ -104,7 +104,7 @@ final class NetTests: XCTestCase {
 
 
     func testUnsubscribe() throws {
-        testAsyncMethods { (client, group) in
+        try testAsyncMethods { (client, group) in
             /// groupCounter - for safe exit from response if execute "UNSUBSCRIBE THREAD"
             var groupCounter: Int = .init()
             let groupCounterLock: NSLock = .init()
@@ -118,7 +118,7 @@ final class NetTests: XCTestCase {
             var requestId: UInt32 = .init()
             let handleGroup: DispatchGroup = .init()
             handleGroup.enter()
-            client.net.subscribe_collection(payload) { [group, handleGroup, groupCounterLock] (response) in
+            try client.net.subscribe_collection(payload) { [group, handleGroup, groupCounterLock] (response) in
                 groupCounterLock.lock()
                 if response.result != nil {
                     XCTAssertTrue(response.result?.handle != nil)
@@ -155,7 +155,7 @@ final class NetTests: XCTestCase {
             group.enter()
             groupCounter += 1
             let payloadUnsubscribe: TSDKResultOfSubscribeCollection = .init(handle: handle)
-            client.net.unsubscribe(payloadUnsubscribe) { [group, groupCounterLock] (response) in
+            try client.net.unsubscribe(payloadUnsubscribe) { [group, groupCounterLock] (response) in
                 groupCounterLock.lock()
                 if groupCounter > 0 {
                     groupCounter -= 1

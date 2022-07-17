@@ -12,7 +12,7 @@ final class BindingTests: XCTestCase {
 
     func testConvertToTSDKString() throws {
         var string: TSDKString = .init()
-        TSDKBindingModule.convertToTSDKString("Hello😀") { tsdkString in
+        try TSDKBindingModule.convertToTSDKString("Hello😀") { tsdkString in
             string = tsdkString
         }
         XCTAssertEqual(string.len, 9)
@@ -20,8 +20,8 @@ final class BindingTests: XCTestCase {
 
     func testConvertFromTSDKString() throws {
         var swiftString: String = .init()
-        TSDKBindingModule.convertToTSDKString("Hello😀") { tsdkString in
-            swiftString = TSDKBindingModule.convertFromTSDKString(tsdkString)
+        try TSDKBindingModule.convertToTSDKString("Hello😀") { tsdkString in
+            swiftString = try TSDKBindingModule.convertFromTSDKString(tsdkString)
         }
         XCTAssertEqual(swiftString, "Hello😀")
     }

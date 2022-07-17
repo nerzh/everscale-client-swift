@@ -41,19 +41,19 @@ extension XCTestCase {
         return workingDirectory
     }
 
-    func testAsyncMethods<V>(_ handler: @escaping (_ client: TSDKClientModule, _ group: DispatchGroup) -> V) -> V {
+    func testAsyncMethods<V>(_ handler: @escaping (_ client: TSDKClientModule, _ group: DispatchGroup) throws -> V) throws -> V {
         var config: TSDKClientConfig = .init()
         config.network = TSDKNetworkConfig(endpoints: SimpleEnv["server_address"]?.toModel([String].self) ?? [])
         let client: TSDKClientModule = try! .init(config: config)
         let group: DispatchGroup = .init()
-        return handler(client, group)
+        return try handler(client, group)
     }
 
     @discardableResult
     func getGramsFromGiverSync(_ client: TSDKClientModule,
                                _ accountAddress: String? = nil,
                                _ value: Int = 10_000_000_000
-    ) -> Bool {
+    ) throws -> Bool {
         guard let server_address = client.config.network?.endpoints, !server_address.isEmpty else {
             Log.warn("Please, set client network for Giver work!")
             return false
@@ -61,11 +61,11 @@ extension XCTestCase {
         
 
         if (SimpleEnv["use_giver"] ?? SimpleEnv["giver_abi_name"]) ?? "" == "GiverNodeSE" {
-            return self.getGramsFromGiverSyncNodeSE(client, accountAddress ?? testAddr, value)
+            return try self.getGramsFromGiverSyncNodeSE(client, accountAddress ?? testAddr, value)
         } else if (SimpleEnv["use_giver"] ?? SimpleEnv["giver_abi_name"]) ?? "" == "GiverNodeSE_v2" {
-            return self.getGramsFromGiverSyncNodeSE_v2(client, accountAddress ?? testAddr, value)
+            return try self.getGramsFromGiverSyncNodeSE_v2(client, accountAddress ?? testAddr, value)
         } else if server_address.contains("https://eri01.net.everos.dev") {
-            return self.getGramsFromGiverSyncNetDev(client, accountAddress ?? testAddr, value)
+            return try self.getGramsFromGiverSyncNetDev(client, accountAddress ?? testAddr, value)
         } else {
             Log.warn("No Giver for this network: \(server_address)")
         }
@@ -73,7 +73,7 @@ extension XCTestCase {
         return false
     }
 
-    func checkPositiveBallance(_ client: TSDKClientModule, _ accountAddress: String) -> Bool {
+    func checkPositiveBallance(_ client: TSDKClientModule, _ accountAddress: String) throws -> Bool {
         var tokensReceived: Bool = false
         var fuseCounter: Int = 0
         let group: DispatchGroup = .init()
@@ -88,7 +88,7 @@ extension XCTestCase {
                                                                                  ]),
                                                                                  result: "id balance(format: DEC)",
                                                                                  timeout: nil)
-            client.net.wait_for_collection(paramsOfWaitForCollection) { (response) in
+            try client.net.wait_for_collection(paramsOfWaitForCollection) { (response) in
                 if let result = response.result?.result.toDictionary(), let balance: Int = Int(result["balance"] as? String ?? "") {
                     if balance > 0 {
                         tokensReceived = true
@@ -113,7 +113,7 @@ extension XCTestCase {
     func getGramsFromGiverSyncNetDev(_ client: TSDKClientModule,
                                      _ accountAddress: String,
                                      _ value: Int? = nil
-    ) -> Bool {
+    ) throws -> Bool {
         let walletAddress: String = SimpleEnv["giver_address"] ?? ""
         let abiJSONValue: AnyValue = self.readAbi(SimpleEnv["giver_abi_name"] ?? "")
         let abi: TSDKAbi = .init(type: .Serialized, value: abiJSONValue)
@@ -128,19 +128,19 @@ extension XCTestCase {
         let sendPaylod: TSDKParamsOfProcessMessage = .init(message_encode_params: paramsOfEncodedMessage, send_events: false)
         let group: DispatchGroup = .init()
         group.enter()
-        client.processing.process_message(sendPaylod) { (response) in
+        try client.processing.process_message(sendPaylod) { (response) in
             if response.finished {
                 group.leave()
             }
         }
         group.wait()
-        return checkPositiveBallance(client, accountAddress)
+        return try checkPositiveBallance(client, accountAddress)
     }
 
     func getGramsFromGiverSyncNodeSE(_ client: TSDKClientModule,
                                      _ accountAddress: String,
                                      _ value: Int = 10_000_000_000
-    ) -> Bool {
+    ) throws -> Bool {
         let walletAddress: String = SimpleEnv["giver_address"] ?? "0:841288ed3b55d9cdafa806807f02a0ae0c169aa5edfe88a789a6482429756a94"
         let abiJSONValue: AnyValue = self.readAbi(SimpleEnv["giver_abi_name"] ?? "")
         let abi: TSDKAbi = .init(type: .Serialized, value: abiJSONValue)
@@ -155,19 +155,19 @@ extension XCTestCase {
         let sendPaylod: TSDKParamsOfProcessMessage = .init(message_encode_params: paramsOfEncodedMessage, send_events: false)
         let group: DispatchGroup = .init()
         group.enter()
-        client.processing.process_message(sendPaylod) { (response) in
+        try client.processing.process_message(sendPaylod) { (response) in
             if response.finished {
                 group.leave()
             }
         }
         group.wait()
-        return checkPositiveBallance(client, accountAddress)
+        return try checkPositiveBallance(client, accountAddress)
     }
 
     func getGramsFromGiverSyncNodeSE_v2(_ client: TSDKClientModule,
                                      _ accountAddress: String,
                                      _ value: Int = 10_000_000_000
-    ) -> Bool {
+    ) throws -> Bool {
         let walletAddress: String = SimpleEnv["giver_address"] ?? "0:b5e9240fc2d2f1ff8cbb1d1dee7fb7cae155e5f6320e585fcc685698994a19a5"
         let jsonKeys: TSDKKeyPair = self.readKeys(SimpleEnv["giver_abi_name"] ?? "")
         let abiJSONValue: AnyValue = self.readAbi(SimpleEnv["giver_abi_name"] ?? "")
@@ -186,13 +186,13 @@ extension XCTestCase {
         let sendPaylod: TSDKParamsOfProcessMessage = .init(message_encode_params: paramsOfEncodedMessage, send_events: false)
         let group: DispatchGroup = .init()
         group.enter()
-        client.processing.process_message(sendPaylod) { (response) in
+        try client.processing.process_message(sendPaylod) { (response) in
             if response.finished {
                 group.leave()
             }
         }
         group.wait()
-        return checkPositiveBallance(client, accountAddress)
+        return try checkPositiveBallance(client, accountAddress)
     }
 
 
@@ -205,8 +205,8 @@ extension XCTestCase {
                           callSetFunction_name: String?,
                           callSetHeader: TSDKFunctionHeader?,
                           callSetInput: AnyValue?
-    ) -> TSDKResultOfEncodeMessage {
-        testAsyncMethods { (client, group) -> TSDKResultOfEncodeMessage in
+    ) throws -> TSDKResultOfEncodeMessage {
+        try testAsyncMethods { (client, group) -> TSDKResultOfEncodeMessage in
             let abiJSONValue: AnyValue = self.readAbi(nameAbi)
             let abi: TSDKAbi = .init(type: .Serialized, value: abiJSONValue)
             var deploySet: TSDKDeploySet?
@@ -249,7 +249,7 @@ extension XCTestCase {
                                                            processing_try_index: nil)
             var result: TSDKResultOfEncodeMessage!
             group.enter()
-            client.abi.encode_message(payload) { [group] (response) in
+            try client.abi.encode_message(payload) { [group] (response) in
                 guard let responseResult = response.result else { fatalError("Abi EncodeMessage is nil") }
                 result = responseResult
                 group.leave()
@@ -260,11 +260,11 @@ extension XCTestCase {
         }
     }
 
-    func generateKeys() -> TSDKKeyPair {
-        testAsyncMethods { (client, group) in
+    func generateKeys() throws -> TSDKKeyPair {
+        try testAsyncMethods { (client, group) in
             group.enter()
             var keys: TSDKKeyPair = .init(public: "", secret: "")
-            client.crypto.generate_random_sign_keys() { [group] (response) in
+            try client.crypto.generate_random_sign_keys() { [group] (response) in
                 guard let result = response.result else { fatalError("BAD SDK RESPONSE") }
                 keys.public = result.public
                 keys.secret = result.secret

@@ -135,13 +135,13 @@ class CodeGenerator {
             result.append("_ \(parameter.name): \(parameter.type), ")
         }
         let resultType: String = swiftFunction.willReturn.type == "Void" ? "\(libPrefix)NoneResult" : swiftFunction.willReturn.type
-        result.append("_ handler: @escaping (TSDKBindingResponse<\(resultType), \(libPrefix)ClientError>) throws -> Void\n\(tab)) {\n")
+        result.append("_ handler: @escaping (TSDKBindingResponse<\(resultType), \(libPrefix)ClientError>) throws -> Void\n\(tab)) throws {\n")
         let methodName: String = swiftFunction.name == "initialize" ? "init" : swiftFunction.name
         result.append("\(tab)\(tab)let method: String = \"\(methodName)\"\n")
         if swiftFunction.params.isEmpty {
-            result.append("\(tab)\(tab)binding.requestLibraryAsync(methodName(module, method), \"\") { (requestId, params, responseType, finished) in\n")
+            result.append("\(tab)\(tab)try binding.requestLibraryAsync(methodName(module, method), \"\") { (requestId, params, responseType, finished) in\n")
         } else {
-            result.append("\(tab)\(tab)binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in\n")
+            result.append("\(tab)\(tab)try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in\n")
         }
         result.append("\(tab)\(tab)\(tab)var response: TSDKBindingResponse<\(resultType), \(libPrefix)ClientError> = .init()\n")
         result.append("\(tab)\(tab)\(tab)response.update(requestId, params, responseType, finished)\n")

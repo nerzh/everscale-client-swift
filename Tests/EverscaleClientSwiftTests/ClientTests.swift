@@ -13,9 +13,9 @@ import class Foundation.Bundle
 final class ClientTests: XCTestCase {
 
     func testGet_api_reference() throws {
-        testAsyncMethods { (client, group) in
+        try testAsyncMethods { (client, group) in
             group.enter()
-            client.get_api_reference { (response) in
+            try client.get_api_reference { (response) in
                 XCTAssertTrue(response.result?.api != nil)
                 group.leave()
             }
@@ -24,9 +24,9 @@ final class ClientTests: XCTestCase {
     }
 
     func testVersion() throws {
-        testAsyncMethods { (client, group) in
+        try testAsyncMethods { (client, group) in
             group.enter()
-            client.version { (response) in
+            try client.version { (response) in
                 XCTAssertTrue(response.result?.version != nil)
                 if response.finished {
                     group.leave()
@@ -37,9 +37,9 @@ final class ClientTests: XCTestCase {
     }
 
     func testBuild_info() throws {
-        testAsyncMethods { (client, group) in
+        try testAsyncMethods { (client, group) in
             group.enter()
-            client.build_info { (response) in
+            try client.build_info { (response) in
                 XCTAssertTrue(response.result?.build_number != nil)
                 if response.finished {
                     group.leave()

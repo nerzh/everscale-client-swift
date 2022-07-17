@@ -14,11 +14,11 @@ import class Foundation.Bundle
 final class ProcessingTests: XCTestCase {
 
     func testWait_for_transaction() throws {
-        testAsyncMethods { (client, group) in
+        try testAsyncMethods { (client, group) in
             let tvcData: Data = self.readTvc("Events")
             let abiJSONValue: AnyValue = self.readAbi("Events")
             let abi: TSDKAbi = .init(type: .Serialized, value: abiJSONValue)
-            let keys: TSDKKeyPair = self.generateKeys()
+            let keys: TSDKKeyPair = try self.generateKeys()
             let signer: TSDKSigner = .init(type: .Keys,
                                            public_key: nil,
                                            keys: keys,
@@ -37,7 +37,7 @@ final class ProcessingTests: XCTestCase {
                                                                         processing_try_index: nil)
             var encodedMessage: TSDKResultOfEncodeMessage!
             group.enter()
-            client.abi.encode_message(payloadEncodeMessage) { [group] (response) in
+            try client.abi.encode_message(payloadEncodeMessage) { [group] (response) in
                 guard let responseResult = response.result else {
                     XCTAssertTrue(response.result?.address != nil, "Must be not nil")
                     return
@@ -48,12 +48,12 @@ final class ProcessingTests: XCTestCase {
             group.wait()
             Log.warn("address - ", encodedMessage.address)
 
-            self.getGramsFromGiverSync(client, encodedMessage.address)
+            try self.getGramsFromGiverSync(client, encodedMessage.address)
 
             let paramsOfSendMessage: TSDKParamsOfSendMessage = .init(message: encodedMessage.message, abi: abi, send_events: true)
             var maybeResultOfSendMessage: TSDKResultOfSendMessage?
             group.enter()
-            client.processing.send_message(paramsOfSendMessage) { (response) in
+            try client.processing.send_message(paramsOfSendMessage) { (response) in
                 if response.result != nil {
                     maybeResultOfSendMessage = response.result
                 }
@@ -73,7 +73,7 @@ final class ProcessingTests: XCTestCase {
                                                                                    send_events: true)
             var resultOfProcessMessage: TSDKResultOfProcessMessage?
             group.enter()
-            client.processing.wait_for_transaction(paramsOfWaitForTransaction) { (response) in
+            try client.processing.wait_for_transaction(paramsOfWaitForTransaction) { (response) in
                 if response.result != nil {
                     resultOfProcessMessage = response.result
                 }
@@ -89,11 +89,11 @@ final class ProcessingTests: XCTestCase {
     }
 
     func testProcess_mesage() throws {
-        testAsyncMethods { (client, group) in
+        try testAsyncMethods { (client, group) in
             let tvcData: Data = self.generateAbiAndTvc("Events").tvc
             let abiJSONValue: AnyValue = self.generateAbiAndTvc("Events").abiJSON
             let abi: TSDKAbi = .init(type: .Serialized, value: abiJSONValue)
-            let keys: TSDKKeyPair = self.generateKeys()
+            let keys: TSDKKeyPair = try self.generateKeys()
             let signer: TSDKSigner = .init(type: .Keys,
                                            public_key: nil,
                                            keys: keys,
@@ -112,7 +112,7 @@ final class ProcessingTests: XCTestCase {
                                                                         processing_try_index: nil)
             var result: TSDKResultOfEncodeMessage!
             group.enter()
-            client.abi.encode_message(payloadEncodeMessage) { [group] (response) in
+            try client.abi.encode_message(payloadEncodeMessage) { [group] (response) in
                 guard let responseResult = response.result else {
                     XCTAssertTrue(response.result?.address != nil, "Must be not nil")
                     return
@@ -122,12 +122,12 @@ final class ProcessingTests: XCTestCase {
             }
             group.wait()
             Log.warn("address - ", result.address)
-            self.getGramsFromGiverSync(client, result.address)
+            try self.getGramsFromGiverSync(client, result.address)
 
             let payloadProcessMessage: TSDKParamsOfProcessMessage = .init(message_encode_params: payloadEncodeMessage, send_events: true)
             var resultOfProcessMessage: TSDKResultOfProcessMessage?
             group.enter()
-            client.processing.process_message(payloadProcessMessage) { [group] (response) in
+            try client.processing.process_message(payloadProcessMessage) { [group] (response) in
                 if let result = response.result {
                     resultOfProcessMessage = result
                 }

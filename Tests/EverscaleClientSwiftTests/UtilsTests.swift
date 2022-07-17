@@ -12,12 +12,12 @@ import class Foundation.Bundle
 final class UtilsTests: XCTestCase {
 
     func testAccountIdToHex() throws {
-        testAsyncMethods { [self] (client, group) in
+        try testAsyncMethods { [self] (client, group) in
             group.enter()
             let format: TSDKAddressStringFormat = .init(type: .Hex, url: nil, test: nil, bounce: nil)
             let payload: TSDKParamsOfConvertAddress = .init(address: self.accountId, output_format: format)
             var maybeResultOfConvertAddress: TSDKResultOfConvertAddress?
-            client.utils.convert_address(payload) { (response) in
+            try client.utils.convert_address(payload) { (response) in
                 if let result = response.result {
                     maybeResultOfConvertAddress = result
                 }
@@ -35,12 +35,12 @@ final class UtilsTests: XCTestCase {
     }
 
     func testAccountIdToAccountId() throws {
-        testAsyncMethods { [self] (client, group) in
+        try testAsyncMethods { [self] (client, group) in
             group.enter()
             let format: TSDKAddressStringFormat = .init(type: .AccountId, url: nil, test: nil, bounce: nil)
             let payload: TSDKParamsOfConvertAddress = .init(address: self.accountId, output_format: format)
             var maybeResultOfConvertAddress: TSDKResultOfConvertAddress?
-            client.utils.convert_address(payload) { (response) in
+            try client.utils.convert_address(payload) { (response) in
                 if let result = response.result {
                     maybeResultOfConvertAddress = result
                 }
@@ -58,12 +58,12 @@ final class UtilsTests: XCTestCase {
     }
 
     func testHexToBase64() throws {
-        testAsyncMethods { [self] (client, group) in
+        try testAsyncMethods { [self] (client, group) in
             group.enter()
             let format: TSDKAddressStringFormat = .init(type: .Base64, url: false, test: false, bounce: false)
             let payload: TSDKParamsOfConvertAddress = .init(address: self.hex, output_format: format)
             var maybeResultOfConvertAddress: TSDKResultOfConvertAddress?
-            client.utils.convert_address(payload) { (response) in
+            try client.utils.convert_address(payload) { (response) in
                 if let result = response.result {
                     maybeResultOfConvertAddress = result
                 }
@@ -81,12 +81,12 @@ final class UtilsTests: XCTestCase {
     }
 
     func testBase64ToBase64URL() throws {
-        testAsyncMethods { [self] (client, group) in
+        try testAsyncMethods { [self] (client, group) in
             group.enter()
             let format: TSDKAddressStringFormat = .init(type: .Base64, url: true, test: true, bounce: true)
             let payload: TSDKParamsOfConvertAddress = .init(address: self.base64, output_format: format)
             var maybeResultOfConvertAddress: TSDKResultOfConvertAddress?
-            client.utils.convert_address(payload) { (response) in
+            try client.utils.convert_address(payload) { (response) in
                 if let result = response.result {
                     maybeResultOfConvertAddress = result
                 }
@@ -104,12 +104,12 @@ final class UtilsTests: XCTestCase {
     }
 
     func testBase64URLToHex() throws {
-        testAsyncMethods { [self] (client, group) in
+        try testAsyncMethods { [self] (client, group) in
             group.enter()
             let format: TSDKAddressStringFormat = .init(type: .Hex, url: nil, test: nil, bounce: nil)
             let payload: TSDKParamsOfConvertAddress = .init(address: self.base64url, output_format: format)
             var maybeResultOfConvertAddress: TSDKResultOfConvertAddress?
-            client.utils.convert_address(payload) { (response) in
+            try client.utils.convert_address(payload) { (response) in
                 if let result = response.result {
                     maybeResultOfConvertAddress = result
                 }

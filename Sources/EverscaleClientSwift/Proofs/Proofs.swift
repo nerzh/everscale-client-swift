@@ -25,9 +25,9 @@ public final class TSDKProofsModule {
     /// By using trusted key-blocks, in order to prove any block, we can prove chain of key-blocks tothe closest previous trusted key-block, not only to the zero-state.
     /// But shard-blocks don't have proofs on DApp server. In this case, in order to prove any shard-block data, we search for a corresponding master-block, which contains the root hash of thisshard-block, or some shard block which is linked to that block in shard-chain. After provingthis master-block, we traverse through each link and calculate and compare hashes with links,one-by-one. After that we can ensure that this shard-block has also been proven.
     public func proof_block_data(_ payload: TSDKParamsOfProofBlockData, _ handler: @escaping (TSDKBindingResponse<TSDKNoneResult, TSDKClientError>) throws -> Void
-    ) {
+    ) throws {
         let method: String = "proof_block_data"
-        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+        try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKNoneResult, TSDKClientError> = .init()
             response.update(requestId, params, responseType, finished)
             try handler(response)
@@ -42,9 +42,9 @@ public final class TSDKProofsModule {
     /// Please note, that joins (like `account`, `in_message`, `out_messages`, etc. in `Transaction`entity) are separated entities and not supported, so function will throw an exception in a caseif JSON being checked has such entities in it.
     /// For more information about proofs checking, see description of `proof_block_data` function.
     public func proof_transaction_data(_ payload: TSDKParamsOfProofTransactionData, _ handler: @escaping (TSDKBindingResponse<TSDKNoneResult, TSDKClientError>) throws -> Void
-    ) {
+    ) throws {
         let method: String = "proof_transaction_data"
-        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+        try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKNoneResult, TSDKClientError> = .init()
             response.update(requestId, params, responseType, finished)
             try handler(response)
@@ -59,9 +59,9 @@ public final class TSDKProofsModule {
     /// Please note, that joins (like `block`, `dst_account`, `dst_transaction`, `src_account`,`src_transaction`, etc. in `Message` entity) are separated entities and not supported,so function will throw an exception in a case if JSON being checked has such entities in it.
     /// For more information about proofs checking, see description of `proof_block_data` function.
     public func proof_message_data(_ payload: TSDKParamsOfProofMessageData, _ handler: @escaping (TSDKBindingResponse<TSDKNoneResult, TSDKClientError>) throws -> Void
-    ) {
+    ) throws {
         let method: String = "proof_message_data"
-        binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+        try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
             var response: TSDKBindingResponse<TSDKNoneResult, TSDKClientError> = .init()
             response.update(requestId, params, responseType, finished)
             try handler(response)

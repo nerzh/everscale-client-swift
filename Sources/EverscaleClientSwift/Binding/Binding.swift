@@ -21,11 +21,11 @@ public var TSDKRequestAsync = tc_request
 public protocol TSDKBindingPrtcl {
     
     var context: TSDKContext { get }
-    static func convertToTSDKString(_ string: String, _ handler: (_ tsdkString: TSDKString) throws -> Void) rethrows
-    static func convertFromTSDKString(_ tsdkString: TSDKString) -> String
-    static func convertTSDKStringPointerToString(_ tsdkStringPointer: TSDKStringPointer) -> String
-    static func convertTSDKStringToDictionary(_ tsdkString: TSDKString) -> [String: Any]?
-    static func convertTSDKStringPointerToDictionary(_ tsdkStringPointer: TSDKStringPointer) -> [String: Any]?
+    static func convertToTSDKString(_ string: String, _ handler: (_ tsdkString: TSDKString) throws -> Void) throws
+    static func convertFromTSDKString(_ tsdkString: TSDKString) throws -> String
+    static func convertTSDKStringPointerToString(_ tsdkStringPointer: TSDKStringPointer) throws -> String
+    static func convertTSDKStringToDictionary(_ tsdkString: TSDKString) throws -> [String: Any]?
+    static func convertTSDKStringPointerToDictionary(_ tsdkStringPointer: TSDKStringPointer) throws -> [String: Any]?
 }
 
 
@@ -45,22 +45,18 @@ public final class TSDKBindingModule: TSDKBindingPrtcl {
         self.context = try createContext(config: config)
     }
     
-    public static func convertToTSDKString(_ string: String, _ handler: (_ tsdkString: TSDKString) throws -> Void) {
-        do {
-            try string.getPointer { (ptr: UnsafePointer<Int8>, len: Int) in
-                try handler(TSDKString.init(content: ptr, len: UInt32(len)))
-            }
-        } catch {
-            fatalError("convertToTSDKString \(error.localizedDescription)")
+    public static func convertToTSDKString(_ string: String, _ handler: (_ tsdkString: TSDKString) throws -> Void) throws {
+        try string.getPointer { (ptr: UnsafePointer<Int8>, len: Int) in
+            try handler(TSDKString.init(content: ptr, len: UInt32(len)))
         }
     }
     
-    public static func convertFromTSDKString(_ tsdkString: TSDKString) -> String {
+    public static func convertFromTSDKString(_ tsdkString: TSDKString) throws -> String {
         let data = Data(bytes: tsdkString.content, count: Int(tsdkString.len))
-        if let s = String(data: data, encoding: .utf8) {
-            return s
+        guard let s = String(data: data, encoding: .utf8) else {
+            throw TSDKClientError.init(code: 0, message: "convertFromTSDKString NOT VALID")
         }
-        return "NOT VALID"
+        return s
     }
     
     public static func convertTSDKStringPointerToString(_ tsdkStringPointer: TSDKStringPointer) -> String {
@@ -74,16 +70,16 @@ public final class TSDKBindingModule: TSDKBindingPrtcl {
         return string.toDictionary()
     }
     
-    public static func convertTSDKStringToDictionary(_ tsdkString: TSDKString) -> [String: Any]? {
-        let string: String = convertFromTSDKString(tsdkString)
+    public static func convertTSDKStringToDictionary(_ tsdkString: TSDKString) throws -> [String: Any]? {
+        let string: String = try convertFromTSDKString(tsdkString)
         return string.toDictionary()
     }
     
     private func createContext(config: TSDKClientConfig) throws -> UInt32 {
         var contextId: UInt32 = .init()
         let json: String = config.toJson() ?? "{}"
-        convertToTSDKString(json) { config in
-            let contextResponse = convertFromTSDKString(TSDKReadString(TSDKCreateContext(config))).toModel(TSDKContextResponse.self)
+        try convertToTSDKString(json) { config in
+            let contextResponse = try convertFromTSDKString(TSDKReadString(TSDKCreateContext(config))).toModel(TSDKContextResponse.self)
             if let context = contextResponse?.result {
                 contextId = context
             } else {
@@ -103,10 +99,10 @@ public final class TSDKBindingModule: TSDKBindingPrtcl {
                                                                  _ stringResponse: String,
                                                                  _ responseType: TSDKBindingResponseType,
                                                                  _ finished: Bool) throws -> Void
-    ) {
-        convertToTSDKString(methodName) { tsdkMethodName in
+    ) throws {
+        try convertToTSDKString(methodName) { tsdkMethodName in
             let payload = payload.toJson() ?? ""
-            convertToTSDKString(payload) { tsdkPayload in
+            try convertToTSDKString(payload) { tsdkPayload in
                 let requestId: UInt32 = BindingStore.generate_request_id()
                 BindingStore.addResponseHandler(requestId, requestHandler)
                 TSDKRequestAsync(self.context,
@@ -114,9 +110,9 @@ public final class TSDKBindingModule: TSDKBindingPrtcl {
                                  tsdkPayload,
                                  requestId
                 ) { (requestId: UInt32, params: TSDKString, responseType: UInt32, finished: Bool) in
-                    let swiftString: String = TSDKBindingModule.convertFromTSDKString(params)
-                    let responseType: TSDKBindingResponseType = (TSDKBindingResponseType.init(rawValue: responseType) ?? .unknown)!
                     do {
+                        let swiftString: String = try TSDKBindingModule.convertFromTSDKString(params)
+                        let responseType: TSDKBindingResponseType = (TSDKBindingResponseType.init(rawValue: responseType) ?? .unknown)!
                         let responseHandler = BindingStore.getResponseHandler(requestId)
                         if finished || responseType == .responseError {
                             BindingStore.deleteResponseHandler(requestId)
