@@ -242,6 +242,22 @@ extension CodeGenerator {
                 result.append("\(tab)public var localizedDescription: String { self.message }\n")
             }
         }
+        
+        let customInit: String = """
+    public init(_ error: Error) {
+        self.code = 0
+        self.message = error.localizedDescription
+        self.data = [:].toAnyValue()
+    }
+
+    public init(_ message: String) {
+        self.code = 0
+        self.message = message
+        self.data = [:].toAnyValue()
+    }\n\n
+"""
+        result.append(customInit)
+        
         result.append("\n\(tab)public init(")
         for (index, property) in swiftStruct.properties.enumerated() {
             if property.type[#"\?$"#] {
