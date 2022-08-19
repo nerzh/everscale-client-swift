@@ -244,7 +244,7 @@ extension CodeGenerator {
         }
         
         let customInit: String = """
-    public init(_ error: Error) {
+\n    public init(_ error: Error) {
         self.code = 0
         self.message = error.localizedDescription
         self.data = [:].toAnyValue()
@@ -254,7 +254,7 @@ extension CodeGenerator {
         self.code = 0
         self.message = message
         self.data = [:].toAnyValue()
-    }\n\n
+    }\n
 """
         result.append(customInit)
         
