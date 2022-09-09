@@ -111,7 +111,7 @@ public final class TSDKNetModule {
 
     /// Creates a subscription
     /// The subscription is a persistent communication channel betweenclient and Everscale Network.
-    /// ### Important Notes on SubscriptionsUnfortunately sometimes the connection with the network brakes down.
+    /// ### Important Notes on SubscriptionsUnfortunately sometimes the connection with the network breakes down.
     /// In this situation the library attempts to reconnect to the network.
     /// This reconnection sequence can take significant time.
     /// All of this time the client is disconnected from the network.

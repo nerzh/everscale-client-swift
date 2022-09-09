@@ -63,7 +63,7 @@ public struct TSDKAccountForExecutor: Codable {
 
 public struct TSDKTransactionFees: Codable {
     /// Deprecated.
-    /// Left for backward compatibility. Does not participate in account transaction fees calculation.
+    /// Contains the same data as ext_in_msg_fee field
     public var in_msg_fwd_fee: Int
     /// Fee for account storage
     public var storage_fee: Int
@@ -73,8 +73,7 @@ public struct TSDKTransactionFees: Codable {
     /// Contains the same data as total_fwd_fees field. Deprecated because of its confusing name, that is not the same with GraphQL API Transaction type's field.
     public var out_msgs_fwd_fee: Int
     /// Deprecated.
-    /// This is the field that is named as `total_fees` in GraphQL API Transaction type. `total_account_fees` name is misleading, because it does not mean account fees, instead it meansvalidators total fees received for the transaction execution. It does not include some forward fees that accountactually pays now, but validators will receive later during value delivery to another account (not even in the receivingtransaction).
-    /// Because of all of this, this field is not interesting for those who wants to understandthe real account fees, this is why it is deprecated and left for backward compatibility.
+    /// Contains the same data as account_fees field
     public var total_account_fees: Int
     /// Deprecated because it means total value sent in the transaction, which does not relate to any fees.
     public var total_output: Int

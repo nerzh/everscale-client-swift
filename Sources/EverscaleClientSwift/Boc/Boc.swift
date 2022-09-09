@@ -122,7 +122,7 @@ public final class TSDKBocModule {
         }
     }
 
-    /// Save BOC into cache
+    /// Save BOC into cache or increase pin counter for existing pinned BOC
     public func cache_set(_ payload: TSDKParamsOfBocCacheSet, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfBocCacheSet, TSDKClientError>) throws -> Void
     ) throws {
         let method: String = "cache_set"
@@ -133,8 +133,7 @@ public final class TSDKBocModule {
         }
     }
 
-    /// Unpin BOCs with specified pin.
-    /// BOCs which don't have another pins will be removed from cache
+    /// Unpin BOCs with specified pin defined in the `cache_set`. Decrease pin reference counter for BOCs with specified pin defined in the `cache_set`. BOCs which have only 1 pin and its reference counter become 0 will be removed from cache
     public func cache_unpin(_ payload: TSDKParamsOfBocCacheUnpin, _ handler: @escaping (TSDKBindingResponse<TSDKNoneResult, TSDKClientError>) throws -> Void
     ) throws {
         let method: String = "cache_unpin"
