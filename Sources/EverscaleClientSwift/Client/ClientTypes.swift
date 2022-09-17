@@ -55,10 +55,10 @@ public enum TSDKAppRequestResultEnumTypes: String, Codable {
 public struct TSDKClientError: Codable, LocalizedError {
     public var code: UInt32
     public var message: String
-    public var errorDescription: String { self.message }
-    public var failureReason: String { self.message }
-    public var recoverySuggestion: String { self.message }
-    public var helpAnchor: String { self.message }
+    public var errorDescription: String? { self.message }
+    public var failureReason: String? { self.message }
+    public var recoverySuggestion: String? { self.message }
+    public var helpAnchor: String? { self.message }
     public var data: AnyValue = [:].toAnyValue()
 
     public init(_ error: Error) {

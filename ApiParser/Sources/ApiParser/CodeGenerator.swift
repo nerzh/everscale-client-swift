@@ -242,10 +242,10 @@ extension CodeGenerator {
                 result.append("\(tab)\(property.accessType) var \(property.name): \(property.type)\n")
             }
             if property.name == "message" {
-                result.append("\(tab)public var errorDescription: String { self.message }\n")
-                result.append("\(tab)public var failureReason: String { self.message }\n")
-                result.append("\(tab)public var recoverySuggestion: String { self.message }\n")
-                result.append("\(tab)public var helpAnchor: String { self.message }\n")
+                result.append("\(tab)public var errorDescription: String? { self.message }\n")
+                result.append("\(tab)public var failureReason: String? { self.message }\n")
+                result.append("\(tab)public var recoverySuggestion: String? { self.message }\n")
+                result.append("\(tab)public var helpAnchor: String? { self.message }\n")
             }
         }
         

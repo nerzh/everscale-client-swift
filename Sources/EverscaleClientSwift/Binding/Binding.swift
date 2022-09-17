@@ -110,16 +110,16 @@ public final class TSDKBindingModule: TSDKBindingPrtcl {
                                  tsdkPayload,
                                  requestId
                 ) { (requestId: UInt32, params: TSDKString, responseType: UInt32, finished: Bool) in
+                    let responseHandler = BindingStore.getResponseHandler(requestId)
                     do {
                         let swiftString: String = try TSDKBindingModule.convertFromTSDKString(params)
                         let responseType: TSDKBindingResponseType = (TSDKBindingResponseType.init(rawValue: responseType) ?? .unknown)!
-                        let responseHandler = BindingStore.getResponseHandler(requestId)
+                        
+                        try responseHandler?(requestId, swiftString, responseType, finished)
                         if finished || responseType == .responseError {
                             BindingStore.deleteResponseHandler(requestId)
                         }
-                        try responseHandler?(requestId, swiftString, responseType, finished)
                     } catch {
-                        let responseHandler = BindingStore.getResponseHandler(requestId)
                         BindingStore.deleteResponseHandler(requestId)
                         try? responseHandler?(
                             requestId,
@@ -130,7 +130,6 @@ public final class TSDKBindingModule: TSDKBindingPrtcl {
                             ].toAnyValue().toJSON(),
                             .responseError,
                             true)
-                        
                     }
                 }
             }
