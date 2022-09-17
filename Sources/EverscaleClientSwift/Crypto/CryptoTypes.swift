@@ -1,3 +1,4 @@
+import Foundation
 import SwiftExtensionsPack
 
 
@@ -119,9 +120,11 @@ public struct TSDKEncryptionBoxInfo: Codable {
 
 public struct TSDKEncryptionAlgorithm: Codable {
     public var type: TSDKEncryptionAlgorithmEnumTypes
+    public var value: TSDKAesParamsEB?
 
-    public init(type: TSDKEncryptionAlgorithmEnumTypes) {
+    public init(type: TSDKEncryptionAlgorithmEnumTypes, value: TSDKAesParamsEB? = nil) {
         self.type = type
+        self.value = value
     }
 }
 
@@ -211,9 +214,11 @@ public struct TSDKCryptoBoxSecret: Codable {
 /// Crypto Box Secret.
 public struct TSDKBoxEncryptionAlgorithm: Codable {
     public var type: TSDKBoxEncryptionAlgorithmEnumTypes
+    public var value: TSDKChaCha20ParamsCB?
 
-    public init(type: TSDKBoxEncryptionAlgorithmEnumTypes) {
+    public init(type: TSDKBoxEncryptionAlgorithmEnumTypes, value: TSDKChaCha20ParamsCB? = nil) {
         self.type = type
+        self.value = value
     }
 }
 

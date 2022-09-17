@@ -1,3 +1,4 @@
+import Foundation
 import SwiftExtensionsPack
 
 
@@ -51,10 +52,13 @@ public enum TSDKAppRequestResultEnumTypes: String, Codable {
     case Ok = "Ok"
 }
 
-public struct TSDKClientError: Codable, Error {
+public struct TSDKClientError: Codable, LocalizedError {
     public var code: UInt32
     public var message: String
-    public var localizedDescription: String { self.message }
+    public var errorDescription: String { self.message }
+    public var failureReason: String { self.message }
+    public var recoverySuggestion: String { self.message }
+    public var helpAnchor: String { self.message }
     public var data: AnyValue = [:].toAnyValue()
 
     public init(_ error: Error) {
@@ -151,7 +155,8 @@ public struct TSDKNetworkConfig: Codable {
     /// Must be specified in milliseconds. Default is 5000 (5 sec).
     public var next_remp_status_timeout: UInt32?
     /// Access key to GraphQL API.
-    /// You can specify here Evercloud project secret ot serialized JWT.
+    /// You can specify here Basic Auth secret (Evercloud project secret) in hex stringor serialized JWT in base64 string.
+    /// Will be passed on as Authorization: Basic ... or Authorization: Bearer ... header.
     public var access_key: String?
 
     public init(server_address: String? = nil, endpoints: [String]? = nil, network_retries_count: Int8? = nil, max_reconnect_timeout: UInt32? = nil, reconnect_timeout: UInt32? = nil, message_retries_count: Int8? = nil, message_processing_timeout: UInt32? = nil, wait_for_timeout: UInt32? = nil, out_of_sync_threshold: UInt32? = nil, sending_endpoint_count: UInt8? = nil, latency_detection_interval: UInt32? = nil, max_latency: UInt32? = nil, query_timeout: UInt32? = nil, queries_protocol: TSDKNetworkQueriesProtocol? = nil, first_remp_status_timeout: UInt32? = nil, next_remp_status_timeout: UInt32? = nil, access_key: String? = nil) {
