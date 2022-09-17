@@ -35,7 +35,10 @@ class CodeGenerator {
             FileUtils.writeFile(to: moduleClassFilePath, newModuleClass)
 
             
-            var newTypes: String = "import SwiftExtensionsPack\n\n\n"
+            var newTypes: String = .init()
+            newTypes.append("import Foundation\n")
+            newTypes.append("import SwiftExtensionsPack\n")
+            newTypes.append("\n\n")
             for newAlias in module.alias {
                 newTypes.append(generateAlias(newAlias))
             }
@@ -227,7 +230,7 @@ class CodeGenerator {
 extension CodeGenerator {
     func generateStructClientError(_ swiftStruct: SDKSwiftStruct) -> String {
         var swiftStruct = swiftStruct
-        swiftStruct.parents.append("Error")
+        swiftStruct.parents.append("LocalizedError")
 
         var result: String = "\(swiftStruct.accessType) struct \(swiftStruct.name): \(swiftStruct.parents.joined(separator: ", ")) {\n"
         for property in swiftStruct.properties {
@@ -239,7 +242,10 @@ extension CodeGenerator {
                 result.append("\(tab)\(property.accessType) var \(property.name): \(property.type)\n")
             }
             if property.name == "message" {
-                result.append("\(tab)public var localizedDescription: String { self.message }\n")
+                result.append("\(tab)public var errorDescription: String { self.message }\n")
+                result.append("\(tab)public var failureReason: String { self.message }\n")
+                result.append("\(tab)public var recoverySuggestion: String { self.message }\n")
+                result.append("\(tab)public var helpAnchor: String { self.message }\n")
             }
         }
         
