@@ -59,21 +59,21 @@ public struct TSDKClientError: Codable, LocalizedError {
     public var failureReason: String? { self.message }
     public var recoverySuggestion: String? { self.message }
     public var helpAnchor: String? { self.message }
-    public var data: AnyValue = [:].toAnyValue()
+    public var data: AnyValue = ([:] as! [String: Any]).toAnyValue()
 
     public init(_ error: Error) {
         self.code = 0
         self.message = error.localizedDescription
-        self.data = [:].toAnyValue()
+        self.data = ([:] as [String: Any]).toAnyValue()
     }
 
     public init(_ message: String) {
         self.code = 0
         self.message = message
-        self.data = [:].toAnyValue()
+        self.data = ([:] as [String: Any]).toAnyValue()
     }
 
-    public init(code: UInt32, message: String, data: AnyValue = [:].toAnyValue()) {
+    public init(code: UInt32, message: String, data: AnyValue = ([:] as [String: Any]).toAnyValue()) {
         self.code = code
         self.message = message
         self.data = data
