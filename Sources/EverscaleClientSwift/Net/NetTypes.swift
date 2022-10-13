@@ -17,6 +17,7 @@ public enum TSDKNetErrorCode: Int, Codable {
     case NoEndpointsProvided = 612
     case GraphqlWebsocketInitError = 613
     case NetworkModuleResumed = 614
+    case Unauthorized = 615
 }
 
 public enum TSDKSortDirection: String, Codable {

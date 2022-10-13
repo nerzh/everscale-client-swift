@@ -100,11 +100,11 @@ public struct TSDKClientConfig: Codable {
 }
 
 public struct TSDKNetworkConfig: Codable {
-    /// **This field is deprecated, but left for backward-compatibility.** DApp Server public address.
+    /// **This field is deprecated, but left for backward-compatibility.** Evernode endpoint.
     public var server_address: String?
-    /// List of DApp Server addresses.
+    /// List of Evernode endpoints.
     /// Any correct URL format can be specified, including IP addresses. This parameter is prevailing over `server_address`.
-    /// Check the full list of [supported network endpoints](../ton-os-api/networks.md).
+    /// Check the full list of [supported network endpoints](https://docs.everos.dev/ever-sdk/reference/ever-os-api/networks).
     public var endpoints: [String]?
     /// Deprecated.
     /// You must use `network.max_reconnect_timeout` that allows to specify maximum network resolving timeout.
@@ -154,9 +154,7 @@ public struct TSDKNetworkConfig: Codable {
     /// Subsequent REMP status awaiting timeout. If no status recieved during the timeout than fallback transaction scenario is activated.
     /// Must be specified in milliseconds. Default is 5000 (5 sec).
     public var next_remp_status_timeout: UInt32?
-    /// Access key to GraphQL API.
-    /// You can specify here Basic Auth secret (Evercloud project secret) in hex stringor serialized JWT in base64 string.
-    /// Will be passed on as Authorization: Basic ... or Authorization: Bearer ... header.
+    /// Access key to GraphQL API (Project secret)
     public var access_key: String?
 
     public init(server_address: String? = nil, endpoints: [String]? = nil, network_retries_count: Int8? = nil, max_reconnect_timeout: UInt32? = nil, reconnect_timeout: UInt32? = nil, message_retries_count: Int8? = nil, message_processing_timeout: UInt32? = nil, wait_for_timeout: UInt32? = nil, out_of_sync_threshold: UInt32? = nil, sending_endpoint_count: UInt8? = nil, latency_detection_interval: UInt32? = nil, max_latency: UInt32? = nil, query_timeout: UInt32? = nil, queries_protocol: TSDKNetworkQueriesProtocol? = nil, first_remp_status_timeout: UInt32? = nil, next_remp_status_timeout: UInt32? = nil, access_key: String? = nil) {
