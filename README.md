@@ -20,7 +20,7 @@ All requests are async
 import EverscaleClientSwift
 
 var config: TSDKClientConfig = .init()
-config.network = TSDKNetworkConfig(server_address: "https://net.ton.dev")
+config.network = TSDKNetworkConfig(endpoints: ["https://net.ton.dev"])
 let client: TSDKClientModule = .init(config: config)
 
 // Crypto
