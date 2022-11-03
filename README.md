@@ -1,7 +1,7 @@
 # Swift Client for Everscale SDK
 
 [![SPM](https://img.shields.io/badge/swift-package%20manager-green)](https://swift.org/package-manager/)
-[![SPM](https://img.shields.io/badge/SDK%20VERSION-1.38.0-orange)](https://github.com/tonlabs/TON-SDK)
+[![SPM](https://img.shields.io/badge/SDK%20VERSION-1.38.0-orange)](https://github.com/tonlabs/ever-sdk)
 
 Swift is a strongly typed language that has long been used not only for iOS development. Apple is actively promoting it to new platforms and today it can be used for almost any task. Thanks to this, this implementation provides the work of Everscale SDK on many platforms at once, including the native one for mobile phones. Let me remind you that swift can also be built for android.
 
@@ -54,21 +54,14 @@ client.crypto.factorize(TSDKParamsOfFactorize(composite: "17ED48941A08F981")) { 
 
 ### Install sdk with bash script
  
-0. This download TON-SDK to current dirrectory, compile it and add library symlinks to your system   
+0. This download SDK to current dirrectory, compile it and add library symlinks to your system   
 ```sh
 cd everscale-client-swift
 ```
 
+1. For install or update the SDK version simply by running these command 
 ```sh
 bash scripts/install_tonsdk.sh
-```
-
-- __note:__ then you can update the TON-SDK version simply by running these commands:   
-```
-cd ton-client-swift/TON-SDK
-git pull
-cargo update
-cargo build --release
 ```
 
 ### Manual install sdk ( if you have any problem with script install_tonsdk.sh )
@@ -77,18 +70,18 @@ cargo build --release
   <summary>SPOILER: Manual installation</summary>
 
 0. Install Rust to your OS   
-1. git clone https://github.com/tonlabs/TON-SDK   
-2. cd ./TON-SDK
+1. git clone https://github.com/tonlabs/ever-sdk
+2. cd ./SDK
 3. cargo update
 4. cargo build --release
 5. copy or create symlink of dynamic library    
 __macOS :__  
-**./TON-SDK/target/release/libton_client.dylib**  
+**./SDK/target/release/libton_client.dylib**  
 to   
 **/usr/local/lib/libton_client.dylib**  
     
     __Linux :__  
-**./TON-SDK/target/release/libton_client.so**     
+**./SDK/target/release/libton_client.so**     
 to    
 **/usr/lib/libton_client.so**  
 6. Create pkgConfig file :  
@@ -126,7 +119,7 @@ Cflags: -I${includedir}
 Libs: -L${libdir} -lton_client
 ```
 7. Copy or create symlink of file   
-**/TON-SDK/ton_client/client/tonclient.h**  
+**/SDK/ton_client/client/tonclient.h**  
 to  
 __MacOS:__  
 **/usr/local/include/tonclient.h**  
@@ -151,13 +144,13 @@ rustup target add aarch64-apple-ios x86_64-apple-ios || true && \
 cargo install cargo-lipo
 ```
 
-2. Build TON-SDK for iOS
+2. Build SDK for iOS
 
 **Go to your project folder and:**
 
 ```bash
-git clone https://github.com/tonlabs/TON-SDK.git || true && \
-cd ./TON-SDK
+git clone https://github.com/tonlabs/SDK.git || true && \
+cd ./SDK
 ```
 
 ```bash
@@ -167,7 +160,7 @@ cargo lipo --release
 ```  
 ⚠️ Wait installation
 
-3. In xcode __File > Add files to "Name Your Project"__ navigate to ./TON-SDK/ton_client/tonclient.h
+3. In xcode __File > Add files to "Name Your Project"__ navigate to ./SDK/ton_client/tonclient.h
 
 4. Create bridge. In xcode __File > New > File__, select Header File, set name for example **Tonclient-Bridging-Header.h** 
 
@@ -193,7 +186,7 @@ like this:
 
 ![](https://user-images.githubusercontent.com/10519803/101789966-9591bc80-3b0a-11eb-8918-1adf36130617.png)
 
-6. Add path to search for libraries ( path to directory withlibton_client.a ) **$(PROJECT_DIR)/TON-SDK/target/universal/release**
+6. Add path to search for libraries ( path to directory withlibton_client.a ) **$(PROJECT_DIR)/SDK/target/universal/release**
 
 
 ![](https://user-images.githubusercontent.com/10519803/101791171-e524b800-3b0b-11eb-98fa-29b7a50c3b67.png)
