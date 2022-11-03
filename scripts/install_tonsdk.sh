@@ -13,25 +13,26 @@ SCRIPTPATH="$( cd "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 bash "$SCRIPTPATH/install_rust.sh"
 source ~/.profile
 
-# INSTALL TON-SDK
-if [ -d "./TON-SDK" ]; then
-  echo "TON-SDK FOLDER ALREADY EXISTS"
+# INSTALL SDK
+if [ -d "./SDK" ]; then
+  echo "SDK FOLDER ALREADY EXISTS"
 else
-  git clone https://github.com/tonlabs/TON-SDK.git
+  git clone https://github.com/tonlabs/ever-sdk.git ./SDK
 fi
-cd ./TON-SDK && git pull --ff-only
+cd ./SDK && git reset --hard HEAD && git pull --ff-only
 cargo update
-if [ `uname -s` = Darwin ]; then
-  if [ `uname -m` = arm64 ]; then
-    rustup target add x86_64-apple-darwin
-    cargo build --release --target x86_64-apple-darwin
-  else
-    cargo build --release
-  fi
-else
-  cargo build --release
-fi
 
+# if [ `uname -s` = Darwin ]; then
+#   if [ `uname -m` = arm64 ]; then
+#     rustup target add x86_64-apple-darwin
+#     cargo build --release --target x86_64-apple-darwin
+#   else
+#     cargo build --release
+#   fi
+# else
+#   cargo build --release
+# fi
+cargo build --release
   
 if [ `uname -s` = Darwin ]; then
   if [ $(commandExist 'port') == "1" ]; then
@@ -132,11 +133,12 @@ elif [ `uname -s` = Darwin ]; then
   echo "$HEADER ${MACOS_LIB_INCLUDE_DIR}/include/tonclient.h"
   sudo ln -s $HEADER ${MACOS_LIB_INCLUDE_DIR}/include/tonclient.h || echo "ERROR: symbolic link tonclient.h already exist"
   
-  if [ `uname -m` = arm64 ]; then
-    DYLIB="$(pwd)/target/x86_64-apple-darwin/release/libton_client.dylib"
-  else
-    DYLIB="$(pwd)/target/release/libton_client.dylib"
-  fi
+  # if [ `uname -m` = arm64 ]; then
+  #   DYLIB="$(pwd)/target/x86_64-apple-darwin/release/libton_client.dylib"
+  # else
+  #   DYLIB="$(pwd)/target/release/libton_client.dylib"
+  # fi
+  DYLIB="$(pwd)/target/release/libton_client.dylib"
   echo ""
   echo "Create symbolic link libton_client.dylib"
   if [[ -h "${MACOS_LIB_INCLUDE_DIR}/lib/libton_client.dylib" ]]; then
@@ -144,6 +146,7 @@ elif [ `uname -s` = Darwin ]; then
     echo "OK: ${MACOS_LIB_INCLUDE_DIR}/lib/libton_client.dylib old symlink deleted and will create new"
   fi
   sudo ln -s $DYLIB ${MACOS_LIB_INCLUDE_DIR}/lib/libton_client.dylib || echo "ERROR: symbolic link libton_client.dylib already exist"
+  echo "${DYLIB} to ${MACOS_LIB_INCLUDE_DIR}/lib/libton_client.dylib"
   
   echo ""
   echo "Copy pc file"
@@ -154,7 +157,7 @@ else
   echo "I CAN INSTALL ONLY LINUX(DEBIAN / UBUNTU / ...) OR MACOS"
 fi
 
-echo $'\nINSTALLATION TON-SDK COMPLETE'
+echo $'\nINSTALLATION SDK COMPLETE'
 
 
 
