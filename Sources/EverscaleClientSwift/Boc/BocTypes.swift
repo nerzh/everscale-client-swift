@@ -56,7 +56,7 @@ public struct TSDKResultOfParse: Codable {
 public struct TSDKParamsOfParseShardstate: Codable {
     /// BOC encoded as base64
     public var boc: String
-    /// Shardstate identificator
+    /// Shardstate identifier
     public var id: String
     /// Workchain shardstate belongs to
     public var workchain_id: Int32

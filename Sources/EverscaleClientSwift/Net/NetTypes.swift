@@ -18,6 +18,8 @@ public enum TSDKNetErrorCode: Int, Codable {
     case GraphqlWebsocketInitError = 613
     case NetworkModuleResumed = 614
     case Unauthorized = 615
+    case QueryTransactionTreeTimeout = 616
+    case GraphqlConnectionError = 617
 }
 
 public enum TSDKSortDirection: String, Codable {
@@ -357,13 +359,18 @@ public struct TSDKParamsOfQueryTransactionTree: Codable {
     public var abi_registry: [TSDKAbi]?
     /// Timeout used to limit waiting time for the missing messages and transaction.
     /// If some of the following messages and transactions are missing yetThe maximum waiting time is regulated by this option.
-    /// Default value is 60000 (1 min).
+    /// Default value is 60000 (1 min). If `timeout` is set to 0 then function will wait infinitelyuntil the whole transaction tree is executed
     public var timeout: UInt32?
+    /// Maximum transaction count to wait.
+    /// If transaction tree contains more transaction then this parameter then only first `transaction_max_count` transaction are awaited and returned.
+    /// Default value is 50. If `transaction_max_count` is set to 0 then no limitation ontransaction count is used and all transaction are returned.
+    public var transaction_max_count: UInt32?
 
-    public init(in_msg: String, abi_registry: [TSDKAbi]? = nil, timeout: UInt32? = nil) {
+    public init(in_msg: String, abi_registry: [TSDKAbi]? = nil, timeout: UInt32? = nil, transaction_max_count: UInt32? = nil) {
         self.in_msg = in_msg
         self.abi_registry = abi_registry
         self.timeout = timeout
+        self.transaction_max_count = transaction_max_count
     }
 }
 

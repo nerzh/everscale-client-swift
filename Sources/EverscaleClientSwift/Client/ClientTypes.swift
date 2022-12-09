@@ -131,11 +131,11 @@ public struct TSDKNetworkConfig: Codable {
     /// Default is 1.
     public var sending_endpoint_count: UInt8?
     /// Frequency of sync latency detection.
-    /// Library periodically checks the current endpoint for blockchain data syncronization latency.
+    /// Library periodically checks the current endpoint for blockchain data synchronization latency.
     /// If the latency (time-lag) is less then `NetworkConfig.max_latency`then library selects another endpoint.
     /// Must be specified in milliseconds. Default is 60000 (1 min).
     public var latency_detection_interval: UInt32?
-    /// Maximum value for the endpoint's blockchain data syncronization latency (time-lag). Library periodically checks the current endpoint for blockchain data synchronization latency. If the latency (time-lag) is less then `NetworkConfig.max_latency` then library selects another endpoint.
+    /// Maximum value for the endpoint's blockchain data synchronization latency (time-lag). Library periodically checks the current endpoint for blockchain data synchronization latency. If the latency (time-lag) is less then `NetworkConfig.max_latency` then library selects another endpoint.
     /// Must be specified in milliseconds. Default is 60000 (1 min).
     public var max_latency: UInt32?
     /// Default timeout for http requests.
@@ -147,11 +147,11 @@ public struct TSDKNetworkConfig: Codable {
     /// /// Default is `HTTP`.
     public var queries_protocol: TSDKNetworkQueriesProtocol?
     /// UNSTABLE.
-    /// First REMP status awaiting timeout. If no status recieved during the timeout than fallback transaction scenario is activated.
+    /// First REMP status awaiting timeout. If no status received during the timeout than fallback transaction scenario is activated.
     /// Must be specified in milliseconds. Default is 1000 (1 sec).
     public var first_remp_status_timeout: UInt32?
     /// UNSTABLE.
-    /// Subsequent REMP status awaiting timeout. If no status recieved during the timeout than fallback transaction scenario is activated.
+    /// Subsequent REMP status awaiting timeout. If no status received during the timeout than fallback transaction scenario is activated.
     /// Must be specified in milliseconds. Default is 5000 (5 sec).
     public var next_remp_status_timeout: UInt32?
     /// Access key to GraphQL API (Project secret)

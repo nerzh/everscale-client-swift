@@ -54,6 +54,11 @@ public enum TSDKMessageSourceEnumTypes: String, Codable {
     case EncodingParams = "EncodingParams"
 }
 
+public enum TSDKDataLayout: String, Codable {
+    case Input = "Input"
+    case Output = "Output"
+}
+
 public struct TSDKAbi: Codable {
     public var type: TSDKAbiEnumTypes
     public var value: AnyValue?
@@ -471,11 +476,16 @@ public struct TSDKParamsOfDecodeMessage: Codable {
     public var message: String
     /// Flag allowing partial BOC decoding when ABI doesn't describe the full body BOC. Controls decoder behaviour when after decoding all described in ABI params there are some data left in BOC: `true` - return decoded values `false` - return error of incomplete BOC deserialization (default)
     public var allow_partial: Bool?
+    /// Function name or function id if is known in advance
+    public var function_name: String?
+    public var data_layout: TSDKDataLayout?
 
-    public init(abi: TSDKAbi, message: String, allow_partial: Bool? = nil) {
+    public init(abi: TSDKAbi, message: String, allow_partial: Bool? = nil, function_name: String? = nil, data_layout: TSDKDataLayout? = nil) {
         self.abi = abi
         self.message = message
         self.allow_partial = allow_partial
+        self.function_name = function_name
+        self.data_layout = data_layout
     }
 }
 
@@ -506,12 +516,17 @@ public struct TSDKParamsOfDecodeMessageBody: Codable {
     public var is_internal: Bool
     /// Flag allowing partial BOC decoding when ABI doesn't describe the full body BOC. Controls decoder behaviour when after decoding all described in ABI params there are some data left in BOC: `true` - return decoded values `false` - return error of incomplete BOC deserialization (default)
     public var allow_partial: Bool?
+    /// Function name or function id if is known in advance
+    public var function_name: String?
+    public var data_layout: TSDKDataLayout?
 
-    public init(abi: TSDKAbi, body: String, is_internal: Bool, allow_partial: Bool? = nil) {
+    public init(abi: TSDKAbi, body: String, is_internal: Bool, allow_partial: Bool? = nil, function_name: String? = nil, data_layout: TSDKDataLayout? = nil) {
         self.abi = abi
         self.body = body
         self.is_internal = is_internal
         self.allow_partial = allow_partial
+        self.function_name = function_name
+        self.data_layout = data_layout
     }
 }
 

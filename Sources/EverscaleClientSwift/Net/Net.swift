@@ -111,7 +111,7 @@ public final class TSDKNetModule {
 
     /// Creates a subscription
     /// The subscription is a persistent communication channel betweenclient and Everscale Network.
-    /// ### Important Notes on SubscriptionsUnfortunately sometimes the connection with the network breakes down.
+    /// ### Important Notes on SubscriptionsUnfortunately sometimes the connection with the network breaks down.
     /// In this situation the library attempts to reconnect to the network.
     /// This reconnection sequence can take significant time.
     /// All of this time the client is disconnected from the network.
@@ -217,7 +217,7 @@ public final class TSDKNetModule {
     /// If the chain of transactions execution is in progress while the function is running,it will wait for the next transactions to appear until the full tree or more than 50 transactionsare received.
     /// All the retrieved messages and transactions are includedinto `result.messages` and `result.transactions` respectively.
     /// Function reads transactions layer by layer, by pages of 20 transactions.
-    /// The retrieval prosess goes like this:
+    /// The retrieval process goes like this:
     /// Let's assume we have an infinite chain of transactions and each transaction generates 5 messages.
     /// 1. Retrieve 1st message (input parameter) and corresponding transaction - put it into result.
     /// It is the first level of the tree of transactions - its root.
@@ -261,7 +261,7 @@ public final class TSDKNetModule {
     }
 
     /// Resumes block iterator.
-    /// The iterator stays exactly at the same position where the `resume_state` was catched.
+    /// The iterator stays exactly at the same position where the `resume_state` was caught.
     /// Application should call the `remove_iterator` when iterator is no longer required.
     public func resume_block_iterator(_ payload: TSDKParamsOfResumeBlockIterator, _ handler: @escaping (TSDKBindingResponse<TSDKRegisteredIterator, TSDKClientError>) throws -> Void
     ) throws {
