@@ -38,6 +38,7 @@ public enum TSDKClientErrorCode: Int, Codable {
     case InternalError = 33
     case InvalidHandle = 34
     case LocalStorageError = 35
+    case InvalidData = 36
 }
 
 public enum TSDKNetworkQueriesProtocol: String, Codable {

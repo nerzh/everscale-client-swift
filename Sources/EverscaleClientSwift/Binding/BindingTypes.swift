@@ -49,6 +49,21 @@ public struct TSDKBindingResponse<TSDKResult: Codable, TSDKError: Codable> {
     public var finished: Bool = false
     public var requestId: UInt32 = 0
     public var rawResponse: String = .init()
+    
+    public init(result: TSDKResult? = nil,
+                error: TSDKError? = nil,
+                dappError: TSDKError? = nil,
+                finished: Bool = false,
+                requestId: UInt32 = 0,
+                rawResponse: String = .init()
+    ) {
+        self.result = result
+        self.error = error
+        self.dappError = dappError
+        self.finished = finished
+        self.requestId = requestId
+        self.rawResponse = rawResponse
+    }
 
     public mutating func update(_ requestId: UInt32,
                                 _ rawResponse: String,

@@ -204,4 +204,15 @@ public final class TSDKAbiModule {
         }
     }
 
+    /// Extracts signature from message body and calculates hash to verify the signature
+    public func get_signature_data(_ payload: TSDKParamsOfGetSignatureData, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfGetSignatureData, TSDKClientError>) throws -> Void
+    ) throws {
+        let method: String = "get_signature_data"
+        try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKResultOfGetSignatureData, TSDKClientError> = .init()
+            response.update(requestId, params, responseType, finished)
+            try handler(response)
+        }
+    }
+
 }

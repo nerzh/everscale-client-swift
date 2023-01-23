@@ -748,3 +748,27 @@ public struct TSDKResultOfCalcFunctionId: Codable {
     }
 }
 
+public struct TSDKParamsOfGetSignatureData: Codable {
+    /// Contract ABI used to decode.
+    public var abi: TSDKAbi
+    /// Message BOC encoded in `base64`.
+    public var message: String
+
+    public init(abi: TSDKAbi, message: String) {
+        self.abi = abi
+        self.message = message
+    }
+}
+
+public struct TSDKResultOfGetSignatureData: Codable {
+    /// Signature from the message in `hex`.
+    public var signature: String
+    /// Hash to verify the signature in `base64`.
+    public var hash: String
+
+    public init(signature: String, hash: String) {
+        self.signature = signature
+        self.hash = hash
+    }
+}
+
