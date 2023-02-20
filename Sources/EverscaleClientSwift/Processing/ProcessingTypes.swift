@@ -39,18 +39,20 @@ public enum TSDKProcessingEventEnumTypes: String, Codable {
 
 public struct TSDKProcessingEvent: Codable {
     public var type: TSDKProcessingEventEnumTypes
+    public var message_id: String?
+    public var message_dst: String?
     public var error: TSDKClientError?
     public var shard_block_id: String?
-    public var message_id: String?
     public var message: String?
     public var timestamp: Int?
     public var json: AnyValue?
 
-    public init(type: TSDKProcessingEventEnumTypes, error: TSDKClientError? = nil, shard_block_id: String? = nil, message_id: String? = nil, message: String? = nil, timestamp: Int? = nil, json: AnyValue? = nil) {
+    public init(type: TSDKProcessingEventEnumTypes, message_id: String? = nil, message_dst: String? = nil, error: TSDKClientError? = nil, shard_block_id: String? = nil, message: String? = nil, timestamp: Int? = nil, json: AnyValue? = nil) {
         self.type = type
+        self.message_id = message_id
+        self.message_dst = message_dst
         self.error = error
         self.shard_block_id = shard_block_id
-        self.message_id = message_id
         self.message = message
         self.timestamp = timestamp
         self.json = json

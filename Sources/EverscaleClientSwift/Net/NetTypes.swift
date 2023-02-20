@@ -533,3 +533,12 @@ public struct TSDKResultOfIteratorNext: Codable {
     }
 }
 
+public struct TSDKResultOfGetSignatureId: Codable {
+    /// Signature ID for configured network if it should be used in messages signature
+    public var signature_id: Int32?
+
+    public init(signature_id: Int32? = nil) {
+        self.signature_id = signature_id
+    }
+}
+

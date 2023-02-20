@@ -281,14 +281,17 @@ public struct TSDKParamsOfEncodeMessageBody: Codable {
     /// Destination address of the message
     /// Since ABI version 2.3 destination address of external inbound message is used in messagebody signature calculation. Should be provided when signed external inbound message body iscreated. Otherwise can be omitted.
     public var address: String?
+    /// Signature ID to be used in data to sign preparing when CapSignatureWithId capability is enabled
+    public var signature_id: Int32?
 
-    public init(abi: TSDKAbi, call_set: TSDKCallSet, is_internal: Bool, signer: TSDKSigner, processing_try_index: UInt8? = nil, address: String? = nil) {
+    public init(abi: TSDKAbi, call_set: TSDKCallSet, is_internal: Bool, signer: TSDKSigner, processing_try_index: UInt8? = nil, address: String? = nil, signature_id: Int32? = nil) {
         self.abi = abi
         self.call_set = call_set
         self.is_internal = is_internal
         self.signer = signer
         self.processing_try_index = processing_try_index
         self.address = address
+        self.signature_id = signature_id
     }
 }
 
@@ -357,14 +360,17 @@ public struct TSDKParamsOfEncodeMessage: Codable {
     /// Retry grow factor is set in Client config:
     /// <.....add config parameter with default value here>Default value is 0.
     public var processing_try_index: UInt8?
+    /// Signature ID to be used in data to sign preparing when CapSignatureWithId capability is enabled
+    public var signature_id: Int32?
 
-    public init(abi: TSDKAbi, address: String? = nil, deploy_set: TSDKDeploySet? = nil, call_set: TSDKCallSet? = nil, signer: TSDKSigner, processing_try_index: UInt8? = nil) {
+    public init(abi: TSDKAbi, address: String? = nil, deploy_set: TSDKDeploySet? = nil, call_set: TSDKCallSet? = nil, signer: TSDKSigner, processing_try_index: UInt8? = nil, signature_id: Int32? = nil) {
         self.abi = abi
         self.address = address
         self.deploy_set = deploy_set
         self.call_set = call_set
         self.signer = signer
         self.processing_try_index = processing_try_index
+        self.signature_id = signature_id
     }
 }
 
@@ -753,22 +759,25 @@ public struct TSDKParamsOfGetSignatureData: Codable {
     public var abi: TSDKAbi
     /// Message BOC encoded in `base64`.
     public var message: String
+    /// Signature ID to be used in unsigned data preparing when CapSignatureWithId capability is enabled
+    public var signature_id: Int32?
 
-    public init(abi: TSDKAbi, message: String) {
+    public init(abi: TSDKAbi, message: String, signature_id: Int32? = nil) {
         self.abi = abi
         self.message = message
+        self.signature_id = signature_id
     }
 }
 
 public struct TSDKResultOfGetSignatureData: Codable {
     /// Signature from the message in `hex`.
     public var signature: String
-    /// Hash to verify the signature in `base64`.
-    public var hash: String
+    /// Data to verify the signature in `base64`.
+    public var unsigned: String
 
-    public init(signature: String, hash: String) {
+    public init(signature: String, unsigned: String) {
         self.signature = signature
-        self.hash = hash
+        self.unsigned = unsigned
     }
 }
 

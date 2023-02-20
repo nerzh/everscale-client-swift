@@ -70,6 +70,18 @@ public enum TSDKBoxEncryptionAlgorithmEnumTypes: String, Codable {
     case NaclSecretBox = "NaclSecretBox"
 }
 
+public enum TSDKMnemonicDictionary: Int, Codable {
+    case Ton = 0
+    case English = 1
+    case ChineseSimplified = 2
+    case ChineseTraditional = 3
+    case French = 4
+    case Italian = 5
+    case Japanese = 6
+    case Korean = 7
+    case Spanish = 8
+}
+
 public enum TSDKParamsOfAppPasswordProviderEnumTypes: String, Codable {
     case GetPassword = "GetPassword"
 }

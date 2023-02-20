@@ -36,13 +36,16 @@ public struct TSDKExecutionOptions: Codable {
     public var transaction_lt: Int?
     /// Overrides standard TVM behaviour. If set to `true` then CHKSIG always will return `true`.
     public var chksig_always_succeed: Bool?
+    /// Signature ID to be used in signature verifying instructions when CapSignatureWithId capability is enabled
+    public var signature_id: Int32?
 
-    public init(blockchain_config: String? = nil, block_time: UInt32? = nil, block_lt: Int? = nil, transaction_lt: Int? = nil, chksig_always_succeed: Bool? = nil) {
+    public init(blockchain_config: String? = nil, block_time: UInt32? = nil, block_lt: Int? = nil, transaction_lt: Int? = nil, chksig_always_succeed: Bool? = nil, signature_id: Int32? = nil) {
         self.blockchain_config = blockchain_config
         self.block_time = block_time
         self.block_lt = block_lt
         self.transaction_lt = transaction_lt
         self.chksig_always_succeed = chksig_always_succeed
+        self.signature_id = signature_id
     }
 }
 

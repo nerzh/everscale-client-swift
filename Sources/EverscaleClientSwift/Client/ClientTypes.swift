@@ -82,6 +82,7 @@ public struct TSDKClientError: Codable, LocalizedError {
 }
 
 public struct TSDKClientConfig: Codable {
+    public var binding: TSDKBindingConfig?
     public var network: TSDKNetworkConfig?
     public var crypto: TSDKCryptoConfig?
     public var abi: TSDKAbiConfig?
@@ -90,7 +91,8 @@ public struct TSDKClientConfig: Codable {
     /// For file based storage is a folder name where SDK will store its data. For browser based is a browser async storage key prefix. Default (recommended) value is "~/.tonclient" for native environments and ".tonclient" for web-browser.
     public var local_storage_path: String?
 
-    public init(network: TSDKNetworkConfig? = nil, crypto: TSDKCryptoConfig? = nil, abi: TSDKAbiConfig? = nil, boc: TSDKBocConfig? = nil, proofs: TSDKProofsConfig? = nil, local_storage_path: String? = nil) {
+    public init(binding: TSDKBindingConfig? = nil, network: TSDKNetworkConfig? = nil, crypto: TSDKCryptoConfig? = nil, abi: TSDKAbiConfig? = nil, boc: TSDKBocConfig? = nil, proofs: TSDKProofsConfig? = nil, local_storage_path: String? = nil) {
+        self.binding = binding
         self.network = network
         self.crypto = crypto
         self.abi = abi
@@ -155,10 +157,13 @@ public struct TSDKNetworkConfig: Codable {
     /// Subsequent REMP status awaiting timeout. If no status received during the timeout than fallback transaction scenario is activated.
     /// Must be specified in milliseconds. Default is 5000 (5 sec).
     public var next_remp_status_timeout: UInt32?
+    /// Network signature ID which is used by VM in signature verifying instructions if capability `CapSignatureWithId` is enabled in blockchain configuration parameters.
+    /// This parameter should be set to `global_id` field from any blockchain block if network cannot be reachable at the moment of message encoding and the message is aimed to be sent intonetwork with `CapSignatureWithId` enabled. Otherwise signature ID is detected automaticallyinside message encoding functions
+    public var signature_id: Int32?
     /// Access key to GraphQL API (Project secret)
     public var access_key: String?
 
-    public init(server_address: String? = nil, endpoints: [String]? = nil, network_retries_count: Int8? = nil, max_reconnect_timeout: UInt32? = nil, reconnect_timeout: UInt32? = nil, message_retries_count: Int8? = nil, message_processing_timeout: UInt32? = nil, wait_for_timeout: UInt32? = nil, out_of_sync_threshold: UInt32? = nil, sending_endpoint_count: UInt8? = nil, latency_detection_interval: UInt32? = nil, max_latency: UInt32? = nil, query_timeout: UInt32? = nil, queries_protocol: TSDKNetworkQueriesProtocol? = nil, first_remp_status_timeout: UInt32? = nil, next_remp_status_timeout: UInt32? = nil, access_key: String? = nil) {
+    public init(server_address: String? = nil, endpoints: [String]? = nil, network_retries_count: Int8? = nil, max_reconnect_timeout: UInt32? = nil, reconnect_timeout: UInt32? = nil, message_retries_count: Int8? = nil, message_processing_timeout: UInt32? = nil, wait_for_timeout: UInt32? = nil, out_of_sync_threshold: UInt32? = nil, sending_endpoint_count: UInt8? = nil, latency_detection_interval: UInt32? = nil, max_latency: UInt32? = nil, query_timeout: UInt32? = nil, queries_protocol: TSDKNetworkQueriesProtocol? = nil, first_remp_status_timeout: UInt32? = nil, next_remp_status_timeout: UInt32? = nil, signature_id: Int32? = nil, access_key: String? = nil) {
         self.server_address = server_address
         self.endpoints = endpoints
         self.network_retries_count = network_retries_count
@@ -175,19 +180,30 @@ public struct TSDKNetworkConfig: Codable {
         self.queries_protocol = queries_protocol
         self.first_remp_status_timeout = first_remp_status_timeout
         self.next_remp_status_timeout = next_remp_status_timeout
+        self.signature_id = signature_id
         self.access_key = access_key
     }
 }
 
+public struct TSDKBindingConfig: Codable {
+    public var library: String?
+    public var version: String?
+
+    public init(library: String? = nil, version: String? = nil) {
+        self.library = library
+        self.version = version
+    }
+}
+
 public struct TSDKCryptoConfig: Codable {
-    /// Mnemonic dictionary that will be used by default in crypto functions. If not specified, 1 dictionary will be used.
-    public var mnemonic_dictionary: UInt8?
+    /// Mnemonic dictionary that will be used by default in crypto functions. If not specified, `English` dictionary will be used.
+    public var mnemonic_dictionary: TSDKMnemonicDictionary?
     /// Mnemonic word count that will be used by default in crypto functions. If not specified the default value will be 12.
     public var mnemonic_word_count: UInt8?
     /// Derivation path that will be used by default in crypto functions. If not specified `m/44'/396'/0'/0/0` will be used.
     public var hdkey_derivation_path: String?
 
-    public init(mnemonic_dictionary: UInt8? = nil, mnemonic_word_count: UInt8? = nil, hdkey_derivation_path: String? = nil) {
+    public init(mnemonic_dictionary: TSDKMnemonicDictionary? = nil, mnemonic_word_count: UInt8? = nil, hdkey_derivation_path: String? = nil) {
         self.mnemonic_dictionary = mnemonic_dictionary
         self.mnemonic_word_count = mnemonic_word_count
         self.hdkey_derivation_path = hdkey_derivation_path

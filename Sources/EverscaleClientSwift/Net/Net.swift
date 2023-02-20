@@ -346,4 +346,15 @@ public final class TSDKNetModule {
         }
     }
 
+    /// Returns signature ID for configured network if it should be used in messages signature
+    public func get_signature_id(_ handler: @escaping (TSDKBindingResponse<TSDKResultOfGetSignatureId, TSDKClientError>) throws -> Void
+    ) throws {
+        let method: String = "get_signature_id"
+        try binding.requestLibraryAsync(methodName(module, method), "") { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKResultOfGetSignatureId, TSDKClientError> = .init()
+            response.update(requestId, params, responseType, finished)
+            try handler(response)
+        }
+    }
+
 }
