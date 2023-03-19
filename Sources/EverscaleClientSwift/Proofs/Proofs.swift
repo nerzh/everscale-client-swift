@@ -51,6 +51,8 @@ public final class TSDKProofsModule {
     /// In future SDK releases, one will also be able to provide their hashes of trusted blocks forother networks, besides for MainNet and DevNet.
     /// By using trusted key-blocks, in order to prove any block, we can prove chain of key-blocks tothe closest previous trusted key-block, not only to the zero-state.
     /// But shard-blocks don't have proofs on DApp server. In this case, in order to prove any shard-block data, we search for a corresponding master-block, which contains the root hash of thisshard-block, or some shard block which is linked to that block in shard-chain. After provingthis master-block, we traverse through each link and calculate and compare hashes with links,one-by-one. After that we can ensure that this shard-block has also been proven.
+    @available(iOS 13, *)
+    @available(macOS 12, *)
     public func proof_block_data(_ payload: TSDKParamsOfProofBlockData) async throws -> TSDKNoneResult {
         try await withCheckedThrowingContinuation { continuation in
             do {
@@ -96,6 +98,8 @@ public final class TSDKProofsModule {
     /// If transaction's BOC and/or `block_id` are not provided in the JSON, they will be queried fromTONOS API.
     /// Please note, that joins (like `account`, `in_message`, `out_messages`, etc. in `Transaction`entity) are separated entities and not supported, so function will throw an exception in a caseif JSON being checked has such entities in it.
     /// For more information about proofs checking, see description of `proof_block_data` function.
+    @available(iOS 13, *)
+    @available(macOS 12, *)
     public func proof_transaction_data(_ payload: TSDKParamsOfProofTransactionData) async throws -> TSDKNoneResult {
         try await withCheckedThrowingContinuation { continuation in
             do {
@@ -141,6 +145,8 @@ public final class TSDKProofsModule {
     /// If message's BOC and/or non-null `src_transaction.id` or `dst_transaction.id` are not providedin the JSON, they will be queried from TONOS API.
     /// Please note, that joins (like `block`, `dst_account`, `dst_transaction`, `src_account`,`src_transaction`, etc. in `Message` entity) are separated entities and not supported,so function will throw an exception in a case if JSON being checked has such entities in it.
     /// For more information about proofs checking, see description of `proof_block_data` function.
+    @available(iOS 13, *)
+    @available(macOS 12, *)
     public func proof_message_data(_ payload: TSDKParamsOfProofMessageData) async throws -> TSDKNoneResult {
         try await withCheckedThrowingContinuation { continuation in
             do {

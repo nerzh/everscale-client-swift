@@ -19,6 +19,8 @@ public final class TSDKAbiModule {
     }
 
     /// Encodes message body according to ABI function call.
+    @available(iOS 13, *)
+    @available(macOS 12, *)
     public func encode_message_body(_ payload: TSDKParamsOfEncodeMessageBody) async throws -> TSDKResultOfEncodeMessageBody {
         try await withCheckedThrowingContinuation { continuation in
             do {
@@ -50,6 +52,8 @@ public final class TSDKAbiModule {
         }
     }
 
+    @available(iOS 13, *)
+    @available(macOS 12, *)
     public func attach_signature_to_message_body(_ payload: TSDKParamsOfAttachSignatureToMessageBody) async throws -> TSDKResultOfAttachSignatureToMessageBody {
         try await withCheckedThrowingContinuation { continuation in
             do {
@@ -115,6 +119,8 @@ public final class TSDKAbiModule {
     /// 1. Public key from deploy set.
     /// 2. Public key, specified in TVM file.
     /// 3. Public key, provided by signer.
+    @available(iOS 13, *)
+    @available(macOS 12, *)
     public func encode_message(_ payload: TSDKParamsOfEncodeMessage) async throws -> TSDKResultOfEncodeMessage {
         try await withCheckedThrowingContinuation { continuation in
             do {
@@ -164,6 +170,8 @@ public final class TSDKAbiModule {
     /// Public key resolving priority:
     /// 1. Public key from deploy set.
     /// 2. Public key, specified in TVM file.
+    @available(iOS 13, *)
+    @available(macOS 12, *)
     public func encode_internal_message(_ payload: TSDKParamsOfEncodeInternalMessage) async throws -> TSDKResultOfEncodeInternalMessage {
         try await withCheckedThrowingContinuation { continuation in
             do {
@@ -197,6 +205,8 @@ public final class TSDKAbiModule {
     }
 
     /// Combines `hex`-encoded `signature` with `base64`-encoded `unsigned_message`. Returns signed message encoded in `base64`.
+    @available(iOS 13, *)
+    @available(macOS 12, *)
     public func attach_signature(_ payload: TSDKParamsOfAttachSignature) async throws -> TSDKResultOfAttachSignature {
         try await withCheckedThrowingContinuation { continuation in
             do {
@@ -230,6 +240,8 @@ public final class TSDKAbiModule {
     }
 
     /// Decodes message body using provided message BOC and ABI.
+    @available(iOS 13, *)
+    @available(macOS 12, *)
     public func decode_message(_ payload: TSDKParamsOfDecodeMessage) async throws -> TSDKDecodedMessageBody {
         try await withCheckedThrowingContinuation { continuation in
             do {
@@ -263,6 +275,8 @@ public final class TSDKAbiModule {
     }
 
     /// Decodes message body using provided body BOC and ABI.
+    @available(iOS 13, *)
+    @available(macOS 12, *)
     public func decode_message_body(_ payload: TSDKParamsOfDecodeMessageBody) async throws -> TSDKDecodedMessageBody {
         try await withCheckedThrowingContinuation { continuation in
             do {
@@ -300,6 +314,8 @@ public final class TSDKAbiModule {
     /// Creates account state BOC
     /// Creates account state provided with one of these sets of data :
     /// 1. BOC of code, BOC of data, BOC of library2. TVC (string in `base64`), keys, init params
+    @available(iOS 13, *)
+    @available(macOS 12, *)
     public func encode_account(_ payload: TSDKParamsOfEncodeAccount) async throws -> TSDKResultOfEncodeAccount {
         try await withCheckedThrowingContinuation { continuation in
             do {
@@ -335,6 +351,8 @@ public final class TSDKAbiModule {
 
     /// Decodes account data using provided data BOC and ABI.
     /// Note: this feature requires ABI 2.1 or higher.
+    @available(iOS 13, *)
+    @available(macOS 12, *)
     public func decode_account_data(_ payload: TSDKParamsOfDecodeAccountData) async throws -> TSDKResultOfDecodeAccountData {
         try await withCheckedThrowingContinuation { continuation in
             do {
@@ -368,6 +386,8 @@ public final class TSDKAbiModule {
     }
 
     /// Updates initial account data with initial values for the contract's static variables and owner's public key. This operation is applicable only for initial account data (before deploy). If the contract is already deployed, its data doesn't contain this data section any more.
+    @available(iOS 13, *)
+    @available(macOS 12, *)
     public func update_initial_data(_ payload: TSDKParamsOfUpdateInitialData) async throws -> TSDKResultOfUpdateInitialData {
         try await withCheckedThrowingContinuation { continuation in
             do {
@@ -403,6 +423,8 @@ public final class TSDKAbiModule {
 
     /// Encodes initial account data with initial values for the contract's static variables and owner's public key into a data BOC that can be passed to `encode_tvc` function afterwards.
     /// This function is analogue of `tvm.buildDataInit` function in Solidity.
+    @available(iOS 13, *)
+    @available(macOS 12, *)
     public func encode_initial_data(_ payload: TSDKParamsOfEncodeInitialData) async throws -> TSDKResultOfEncodeInitialData {
         try await withCheckedThrowingContinuation { continuation in
             do {
@@ -436,6 +458,8 @@ public final class TSDKAbiModule {
     }
 
     /// Decodes initial values of a contract's static variables and owner's public key from account initial data This operation is applicable only for initial account data (before deploy). If the contract is already deployed, its data doesn't contain this data section any more.
+    @available(iOS 13, *)
+    @available(macOS 12, *)
     public func decode_initial_data(_ payload: TSDKParamsOfDecodeInitialData) async throws -> TSDKResultOfDecodeInitialData {
         try await withCheckedThrowingContinuation { continuation in
             do {
@@ -479,6 +503,8 @@ public final class TSDKAbiModule {
     /// ABI has it own rules for fields layout in cells so manually encodedBOC can not be described in terms of ABI rules.
     /// To solve this problem we introduce a new ABI type `Ref(<ParamType>)`which allows to store `ParamType` ABI parameter in cell reference and, thus,decode manually encoded BOCs. This type is available only in `decode_boc` functionand will not be available in ABI messages encoding until it is included into some ABI revision.
     /// Such BOC descriptions covers most users needs. If someone wants to decode some BOC whichcan not be described by these rules (i.e. BOC with TLB containing constructors of flagsdefining some parsing conditions) then they can decode the fields up to fork condition,check the parsed data manually, expand the parsing schema and then decode the whole BOCwith the full schema.
+    @available(iOS 13, *)
+    @available(macOS 12, *)
     public func decode_boc(_ payload: TSDKParamsOfDecodeBoc) async throws -> TSDKResultOfDecodeBoc {
         try await withCheckedThrowingContinuation { continuation in
             do {
@@ -512,6 +538,8 @@ public final class TSDKAbiModule {
     }
 
     /// Encodes given parameters in JSON into a BOC using param types from ABI.
+    @available(iOS 13, *)
+    @available(macOS 12, *)
     public func encode_boc(_ payload: TSDKParamsOfAbiEncodeBoc) async throws -> TSDKResultOfAbiEncodeBoc {
         try await withCheckedThrowingContinuation { continuation in
             do {
@@ -545,6 +573,8 @@ public final class TSDKAbiModule {
     }
 
     /// Calculates contract function ID by contract ABI
+    @available(iOS 13, *)
+    @available(macOS 12, *)
     public func calc_function_id(_ payload: TSDKParamsOfCalcFunctionId) async throws -> TSDKResultOfCalcFunctionId {
         try await withCheckedThrowingContinuation { continuation in
             do {
@@ -578,6 +608,8 @@ public final class TSDKAbiModule {
     }
 
     /// Extracts signature from message body and calculates hash to verify the signature
+    @available(iOS 13, *)
+    @available(macOS 12, *)
     public func get_signature_data(_ payload: TSDKParamsOfGetSignatureData) async throws -> TSDKResultOfGetSignatureData {
         try await withCheckedThrowingContinuation { continuation in
             do {

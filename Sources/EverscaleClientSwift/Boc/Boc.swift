@@ -21,6 +21,8 @@ public final class TSDKBocModule {
 
     /// Parses message boc into a JSON
     /// JSON structure is compatible with GraphQL API message object
+    @available(iOS 13, *)
+    @available(macOS 12, *)
     public func parse_message(_ payload: TSDKParamsOfParse) async throws -> TSDKResultOfParse {
         try await withCheckedThrowingContinuation { continuation in
             do {
@@ -56,6 +58,8 @@ public final class TSDKBocModule {
 
     /// Parses transaction boc into a JSON
     /// JSON structure is compatible with GraphQL API transaction object
+    @available(iOS 13, *)
+    @available(macOS 12, *)
     public func parse_transaction(_ payload: TSDKParamsOfParse) async throws -> TSDKResultOfParse {
         try await withCheckedThrowingContinuation { continuation in
             do {
@@ -91,6 +95,8 @@ public final class TSDKBocModule {
 
     /// Parses account boc into a JSON
     /// JSON structure is compatible with GraphQL API account object
+    @available(iOS 13, *)
+    @available(macOS 12, *)
     public func parse_account(_ payload: TSDKParamsOfParse) async throws -> TSDKResultOfParse {
         try await withCheckedThrowingContinuation { continuation in
             do {
@@ -126,6 +132,8 @@ public final class TSDKBocModule {
 
     /// Parses block boc into a JSON
     /// JSON structure is compatible with GraphQL API block object
+    @available(iOS 13, *)
+    @available(macOS 12, *)
     public func parse_block(_ payload: TSDKParamsOfParse) async throws -> TSDKResultOfParse {
         try await withCheckedThrowingContinuation { continuation in
             do {
@@ -161,6 +169,8 @@ public final class TSDKBocModule {
 
     /// Parses shardstate boc into a JSON
     /// JSON structure is compatible with GraphQL API shardstate object
+    @available(iOS 13, *)
+    @available(macOS 12, *)
     public func parse_shardstate(_ payload: TSDKParamsOfParseShardstate) async throws -> TSDKResultOfParse {
         try await withCheckedThrowingContinuation { continuation in
             do {
@@ -194,6 +204,8 @@ public final class TSDKBocModule {
     }
 
     /// Extract blockchain configuration from key block and also from zerostate.
+    @available(iOS 13, *)
+    @available(macOS 12, *)
     public func get_blockchain_config(_ payload: TSDKParamsOfGetBlockchainConfig) async throws -> TSDKResultOfGetBlockchainConfig {
         try await withCheckedThrowingContinuation { continuation in
             do {
@@ -227,6 +239,8 @@ public final class TSDKBocModule {
     }
 
     /// Calculates BOC root hash
+    @available(iOS 13, *)
+    @available(macOS 12, *)
     public func get_boc_hash(_ payload: TSDKParamsOfGetBocHash) async throws -> TSDKResultOfGetBocHash {
         try await withCheckedThrowingContinuation { continuation in
             do {
@@ -260,6 +274,8 @@ public final class TSDKBocModule {
     }
 
     /// Calculates BOC depth
+    @available(iOS 13, *)
+    @available(macOS 12, *)
     public func get_boc_depth(_ payload: TSDKParamsOfGetBocDepth) async throws -> TSDKResultOfGetBocDepth {
         try await withCheckedThrowingContinuation { continuation in
             do {
@@ -293,6 +309,8 @@ public final class TSDKBocModule {
     }
 
     /// Extracts code from TVC contract image
+    @available(iOS 13, *)
+    @available(macOS 12, *)
     public func get_code_from_tvc(_ payload: TSDKParamsOfGetCodeFromTvc) async throws -> TSDKResultOfGetCodeFromTvc {
         try await withCheckedThrowingContinuation { continuation in
             do {
@@ -326,6 +344,8 @@ public final class TSDKBocModule {
     }
 
     /// Get BOC from cache
+    @available(iOS 13, *)
+    @available(macOS 12, *)
     public func cache_get(_ payload: TSDKParamsOfBocCacheGet) async throws -> TSDKResultOfBocCacheGet {
         try await withCheckedThrowingContinuation { continuation in
             do {
@@ -359,6 +379,8 @@ public final class TSDKBocModule {
     }
 
     /// Save BOC into cache or increase pin counter for existing pinned BOC
+    @available(iOS 13, *)
+    @available(macOS 12, *)
     public func cache_set(_ payload: TSDKParamsOfBocCacheSet) async throws -> TSDKResultOfBocCacheSet {
         try await withCheckedThrowingContinuation { continuation in
             do {
@@ -392,6 +414,8 @@ public final class TSDKBocModule {
     }
 
     /// Unpin BOCs with specified pin defined in the `cache_set`. Decrease pin reference counter for BOCs with specified pin defined in the `cache_set`. BOCs which have only 1 pin and its reference counter become 0 will be removed from cache
+    @available(iOS 13, *)
+    @available(macOS 12, *)
     public func cache_unpin(_ payload: TSDKParamsOfBocCacheUnpin) async throws -> TSDKNoneResult {
         try await withCheckedThrowingContinuation { continuation in
             do {
@@ -425,6 +449,8 @@ public final class TSDKBocModule {
     }
 
     /// Encodes bag of cells (BOC) with builder operations. This method provides the same functionality as Solidity TvmBuilder. Resulting BOC of this method can be passed into Solidity and C++ contracts as TvmCell type.
+    @available(iOS 13, *)
+    @available(macOS 12, *)
     public func encode_boc(_ payload: TSDKParamsOfEncodeBoc) async throws -> TSDKResultOfEncodeBoc {
         try await withCheckedThrowingContinuation { continuation in
             do {
@@ -458,6 +484,8 @@ public final class TSDKBocModule {
     }
 
     /// Returns the contract code's salt if it is present.
+    @available(iOS 13, *)
+    @available(macOS 12, *)
     public func get_code_salt(_ payload: TSDKParamsOfGetCodeSalt) async throws -> TSDKResultOfGetCodeSalt {
         try await withCheckedThrowingContinuation { continuation in
             do {
@@ -493,6 +521,8 @@ public final class TSDKBocModule {
 
     /// Sets new salt to contract code.
     /// Returns the new contract code with salt.
+    @available(iOS 13, *)
+    @available(macOS 12, *)
     public func set_code_salt(_ payload: TSDKParamsOfSetCodeSalt) async throws -> TSDKResultOfSetCodeSalt {
         try await withCheckedThrowingContinuation { continuation in
             do {
@@ -526,6 +556,8 @@ public final class TSDKBocModule {
     }
 
     /// Decodes tvc into code, data, libraries and special options.
+    @available(iOS 13, *)
+    @available(macOS 12, *)
     public func decode_tvc(_ payload: TSDKParamsOfDecodeTvc) async throws -> TSDKResultOfDecodeTvc {
         try await withCheckedThrowingContinuation { continuation in
             do {
@@ -559,6 +591,8 @@ public final class TSDKBocModule {
     }
 
     /// Encodes tvc from code, data, libraries ans special options (see input params)
+    @available(iOS 13, *)
+    @available(macOS 12, *)
     public func encode_tvc(_ payload: TSDKParamsOfEncodeTvc) async throws -> TSDKResultOfEncodeTvc {
         try await withCheckedThrowingContinuation { continuation in
             do {
@@ -594,6 +628,8 @@ public final class TSDKBocModule {
 
     /// Encodes a message
     /// Allows to encode any external inbound message.
+    @available(iOS 13, *)
+    @available(macOS 12, *)
     public func encode_external_in_message(_ payload: TSDKParamsOfEncodeExternalInMessage) async throws -> TSDKResultOfEncodeExternalInMessage {
         try await withCheckedThrowingContinuation { continuation in
             do {
@@ -627,6 +663,8 @@ public final class TSDKBocModule {
     }
 
     /// Returns the compiler version used to compile the code.
+    @available(iOS 13, *)
+    @available(macOS 12, *)
     public func get_compiler_version(_ payload: TSDKParamsOfGetCompilerVersion) async throws -> TSDKResultOfGetCompilerVersion {
         try await withCheckedThrowingContinuation { continuation in
             do {

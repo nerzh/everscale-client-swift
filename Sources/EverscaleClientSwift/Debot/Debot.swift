@@ -23,6 +23,8 @@ public final class TSDKDebotModule {
     /// [UNSTABLE](UNSTABLE.md) Creates and instance of DeBot.
     /// Downloads debot smart contract (code and data) from blockchain and createsan instance of Debot Engine for it.
     /// # RemarksIt does not switch debot to context 0. Browser Callbacks are not called.
+    @available(iOS 13, *)
+    @available(macOS 12, *)
     public func initialize(_ payload: TSDKParamsOfInit) async throws -> TSDKRegisteredDebot {
         try await withCheckedThrowingContinuation { continuation in
             do {
@@ -66,6 +68,8 @@ public final class TSDKDebotModule {
     /// While the function is executing, several Browser Callbacks can be called,since the debot tries to display all actions from the context 0 to the user.
     /// When the debot starts SDK registers `BrowserCallbacks` AppObject.
     /// Therefore when `debote.remove` is called the debot is being deleted and the callback is calledwith `finish`=`true` which indicates that it will never be used again.
+    @available(iOS 13, *)
+    @available(macOS 12, *)
     public func start(_ payload: TSDKParamsOfStart) async throws -> TSDKNoneResult {
         try await withCheckedThrowingContinuation { continuation in
             do {
@@ -101,6 +105,8 @@ public final class TSDKDebotModule {
 
     /// [UNSTABLE](UNSTABLE.md) Fetches DeBot metadata from blockchain.
     /// Downloads DeBot from blockchain and creates and fetches its metadata.
+    @available(iOS 13, *)
+    @available(macOS 12, *)
     public func fetch(_ payload: TSDKParamsOfFetch) async throws -> TSDKResultOfFetch {
         try await withCheckedThrowingContinuation { continuation in
             do {
@@ -140,6 +146,8 @@ public final class TSDKDebotModule {
     /// Calls debot engine referenced by debot handle to execute input action.
     /// Calls Debot Browser Callbacks if needed.
     /// # RemarksChain of actions can be executed if input action generates a list of subactions.
+    @available(iOS 13, *)
+    @available(macOS 12, *)
     public func execute(_ payload: TSDKParamsOfExecute) async throws -> TSDKNoneResult {
         try await withCheckedThrowingContinuation { continuation in
             do {
@@ -175,6 +183,8 @@ public final class TSDKDebotModule {
 
     /// [UNSTABLE](UNSTABLE.md) Sends message to Debot.
     /// Used by Debot Browser to send response on Dinterface call or from other Debots.
+    @available(iOS 13, *)
+    @available(macOS 12, *)
     public func send(_ payload: TSDKParamsOfSend) async throws -> TSDKNoneResult {
         try await withCheckedThrowingContinuation { continuation in
             do {
@@ -210,6 +220,8 @@ public final class TSDKDebotModule {
 
     /// [UNSTABLE](UNSTABLE.md) Destroys debot handle.
     /// Removes handle from Client Context and drops debot engine referenced by that handle.
+    @available(iOS 13, *)
+    @available(macOS 12, *)
     public func remove(_ payload: TSDKParamsOfRemove) async throws -> TSDKNoneResult {
         try await withCheckedThrowingContinuation { continuation in
             do {

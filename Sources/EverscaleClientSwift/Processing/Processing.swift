@@ -21,6 +21,8 @@ public final class TSDKProcessingModule {
 
     /// Sends message to the network
     /// Sends message to the network and returns the last generated shard block of the destination accountbefore the message was sent. It will be required later for message processing.
+    @available(iOS 13, *)
+    @available(macOS 12, *)
     public func send_message(_ payload: TSDKParamsOfSendMessage) async throws -> TSDKResultOfSendMessage {
         try await withCheckedThrowingContinuation { continuation in
             do {
@@ -70,6 +72,8 @@ public final class TSDKProcessingModule {
     /// When the ABI header `expire` isn't present or `abi` parameterisn't specified, the processing uses `transaction waiting`strategy:
     /// - The maximum block gen time is set to  `now() + transaction_wait_timeout`.
     /// - If maximum block gen time is reached and no result transaction is found,the processing will exit with an error.
+    @available(iOS 13, *)
+    @available(macOS 12, *)
     public func wait_for_transaction(_ payload: TSDKParamsOfWaitForTransaction) async throws -> TSDKResultOfProcessMessage {
         try await withCheckedThrowingContinuation { continuation in
             do {
@@ -115,6 +119,8 @@ public final class TSDKProcessingModule {
     /// The intermediate events, such as `WillFetchFirstBlock`, `WillSend`, `DidSend`,`WillFetchNextBlock`, etc - are switched on/off by `send_events` flagand logged into the supplied callback function.
     /// The retry configuration parameters are defined in the client's `NetworkConfig` and `AbiConfig`.
     /// If contract's ABI does not include "expire" headerthen, if no transaction is found within the network timeout (see config parameter ), exits with error.
+    @available(iOS 13, *)
+    @available(macOS 12, *)
     public func process_message(_ payload: TSDKParamsOfProcessMessage) async throws -> TSDKResultOfProcessMessage {
         try await withCheckedThrowingContinuation { continuation in
             do {

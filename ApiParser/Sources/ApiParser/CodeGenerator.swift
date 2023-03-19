@@ -180,6 +180,8 @@ class CodeGenerator {
         var result: String = .init()
         if let summary = swiftFunction.summary { result.append("\(tab)/// \(checkComment(summary))\n") }
         if let description = swiftFunction.description { result.append("\(tab)/// \(checkComment(description))\n") }
+        result.append("\(tab)@available(iOS 13, *)\n")
+        result.append("\(tab)@available(macOS 12, *)\n")
         result.append("\(tab)\(swiftFunction.accessType) func \(swiftFunction.name)(")
         for parameter in swiftFunction.params {
             result.append("_ \(parameter.name): \(parameter.type)")

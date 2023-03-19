@@ -19,6 +19,8 @@ public final class TSDKNetModule {
     }
 
     /// Performs DAppServer GraphQL query.
+    @available(iOS 13, *)
+    @available(macOS 12, *)
     public func query(_ payload: TSDKParamsOfQuery) async throws -> TSDKResultOfQuery {
         try await withCheckedThrowingContinuation { continuation in
             do {
@@ -52,6 +54,8 @@ public final class TSDKNetModule {
     }
 
     /// Performs multiple queries per single fetch.
+    @available(iOS 13, *)
+    @available(macOS 12, *)
     public func batch_query(_ payload: TSDKParamsOfBatchQuery) async throws -> TSDKResultOfBatchQuery {
         try await withCheckedThrowingContinuation { continuation in
             do {
@@ -89,6 +93,8 @@ public final class TSDKNetModule {
     /// Queries collection data
     /// Queries data that satisfies the `filter` conditions,limits the number of returned records and orders them.
     /// The projection fields are limited to `result` fields
+    @available(iOS 13, *)
+    @available(macOS 12, *)
     public func query_collection(_ payload: TSDKParamsOfQueryCollection) async throws -> TSDKResultOfQueryCollection {
         try await withCheckedThrowingContinuation { continuation in
             do {
@@ -124,6 +130,8 @@ public final class TSDKNetModule {
 
     /// Aggregates collection data.
     /// Aggregates values from the specified `fields` for recordsthat satisfies the `filter` conditions,
+    @available(iOS 13, *)
+    @available(macOS 12, *)
     public func aggregate_collection(_ payload: TSDKParamsOfAggregateCollection) async throws -> TSDKResultOfAggregateCollection {
         try await withCheckedThrowingContinuation { continuation in
             do {
@@ -165,6 +173,8 @@ public final class TSDKNetModule {
     /// If object that satisfies the `filter` conditionsalready exists - returns it immediately.
     /// If not - waits for insert/update of data within the specified `timeout`,and returns it.
     /// The projection fields are limited to `result` fields
+    @available(iOS 13, *)
+    @available(macOS 12, *)
     public func wait_for_collection(_ payload: TSDKParamsOfWaitForCollection) async throws -> TSDKResultOfWaitForCollection {
         try await withCheckedThrowingContinuation { continuation in
             do {
@@ -262,6 +272,8 @@ public final class TSDKNetModule {
     }
 
     /// Suspends network module to stop any network activity
+    @available(iOS 13, *)
+    @available(macOS 12, *)
     public func suspend() async throws -> TSDKNoneResult {
         try await withCheckedThrowingContinuation { continuation in
             do {
@@ -295,6 +307,8 @@ public final class TSDKNetModule {
     }
 
     /// Resumes network module to enable network activity
+    @available(iOS 13, *)
+    @available(macOS 12, *)
     public func resume() async throws -> TSDKNoneResult {
         try await withCheckedThrowingContinuation { continuation in
             do {
@@ -328,6 +342,8 @@ public final class TSDKNetModule {
     }
 
     /// Returns ID of the last block in a specified account shard
+    @available(iOS 13, *)
+    @available(macOS 12, *)
     public func find_last_shard_block(_ payload: TSDKParamsOfFindLastShardBlock) async throws -> TSDKResultOfFindLastShardBlock {
         try await withCheckedThrowingContinuation { continuation in
             do {
@@ -361,6 +377,8 @@ public final class TSDKNetModule {
     }
 
     /// Requests the list of alternative endpoints from server
+    @available(iOS 13, *)
+    @available(macOS 12, *)
     public func fetch_endpoints() async throws -> TSDKEndpointsSet {
         try await withCheckedThrowingContinuation { continuation in
             do {
@@ -394,6 +412,8 @@ public final class TSDKNetModule {
     }
 
     /// Sets the list of endpoints to use on reinit
+    @available(iOS 13, *)
+    @available(macOS 12, *)
     public func set_endpoints(_ payload: TSDKEndpointsSet) async throws -> TSDKNoneResult {
         try await withCheckedThrowingContinuation { continuation in
             do {
@@ -427,6 +447,8 @@ public final class TSDKNetModule {
     }
 
     /// Requests the list of alternative endpoints from server
+    @available(iOS 13, *)
+    @available(macOS 12, *)
     public func get_endpoints() async throws -> TSDKResultOfGetEndpoints {
         try await withCheckedThrowingContinuation { continuation in
             do {
@@ -462,6 +484,8 @@ public final class TSDKNetModule {
 
     /// Allows to query and paginate through the list of accounts that the specified account has interacted with, sorted by the time of the last internal message between accounts
     /// *Attention* this query retrieves data from 'Counterparties' service which is not supported inthe opensource version of DApp Server (and will not be supported) as well as in Evernode SE (will be supported in SE in future),but is always accessible via [EVER OS Clouds](../ton-os-api/networks.md)
+    @available(iOS 13, *)
+    @available(macOS 12, *)
     public func query_counterparties(_ payload: TSDKParamsOfQueryCounterparties) async throws -> TSDKResultOfQueryCollection {
         try await withCheckedThrowingContinuation { continuation in
             do {
@@ -531,6 +555,8 @@ public final class TSDKNetModule {
     /// To summarize, it is guaranteed that each message in `result.messages` has the corresponding transactionin the `result.transactions`.
     /// But there is no guarantee that all messages from transactions `out_msgs` arepresented in `result.messages`.
     /// So the application has to continue retrieval for missing messages if it requires.
+    @available(iOS 13, *)
+    @available(macOS 12, *)
     public func query_transaction_tree(_ payload: TSDKParamsOfQueryTransactionTree) async throws -> TSDKResultOfQueryTransactionTree {
         try await withCheckedThrowingContinuation { continuation in
             do {
@@ -582,6 +608,8 @@ public final class TSDKNetModule {
     /// Items iterated is a JSON objects with block data. The minimal set of returnedfields is:
     /// ```textidgen_utimeworkchain_idshardafter_splitafter_mergeprev_ref {    root_hash}prev_alt_ref {    root_hash}```Application can request additional fields in the `result` parameter.
     /// Application should call the `remove_iterator` when iterator is no longer required.
+    @available(iOS 13, *)
+    @available(macOS 12, *)
     public func create_block_iterator(_ payload: TSDKParamsOfCreateBlockIterator) async throws -> TSDKRegisteredIterator {
         try await withCheckedThrowingContinuation { continuation in
             do {
@@ -619,6 +647,8 @@ public final class TSDKNetModule {
     /// Resumes block iterator.
     /// The iterator stays exactly at the same position where the `resume_state` was caught.
     /// Application should call the `remove_iterator` when iterator is no longer required.
+    @available(iOS 13, *)
+    @available(macOS 12, *)
     public func resume_block_iterator(_ payload: TSDKParamsOfResumeBlockIterator) async throws -> TSDKRegisteredIterator {
         try await withCheckedThrowingContinuation { continuation in
             do {
@@ -688,6 +718,8 @@ public final class TSDKNetModule {
     /// - counterparty – account address of the transfer source or destination depending on `isDeposit`.
     /// - value – amount of nano tokens transferred. The value is represented as a decimal stringbecause the actual value can be more precise than the JSON number can represent. Applicationmust use this string carefully – conversion to number can follow to loose of precision.
     /// Application should call the `remove_iterator` when iterator is no longer required.
+    @available(iOS 13, *)
+    @available(macOS 12, *)
     public func create_transaction_iterator(_ payload: TSDKParamsOfCreateTransactionIterator) async throws -> TSDKRegisteredIterator {
         try await withCheckedThrowingContinuation { continuation in
             do {
@@ -727,6 +759,8 @@ public final class TSDKNetModule {
     /// The iterator stays exactly at the same position where the `resume_state` was caught.
     /// Note that `resume_state` doesn't store the account filter. If the application requiresto use the same account filter as it was when the iterator was created then the applicationmust pass the account filter again in `accounts_filter` parameter.
     /// Application should call the `remove_iterator` when iterator is no longer required.
+    @available(iOS 13, *)
+    @available(macOS 12, *)
     public func resume_transaction_iterator(_ payload: TSDKParamsOfResumeTransactionIterator) async throws -> TSDKRegisteredIterator {
         try await withCheckedThrowingContinuation { continuation in
             do {
@@ -772,6 +806,8 @@ public final class TSDKNetModule {
     /// If application requests resume state in `return_resume_state` parameterthen this function returns `resume_state` that can be used later toresume the iteration from the position after returned items.
     /// The structure of the items returned depends on the iterator used.
     /// See the description to the appropriated iterator creation function.
+    @available(iOS 13, *)
+    @available(macOS 12, *)
     public func iterator_next(_ payload: TSDKParamsOfIteratorNext) async throws -> TSDKResultOfIteratorNext {
         try await withCheckedThrowingContinuation { continuation in
             do {
@@ -809,6 +845,8 @@ public final class TSDKNetModule {
     /// Removes an iterator
     /// Frees all resources allocated in library to serve iterator.
     /// Application always should call the `remove_iterator` when iteratoris no longer required.
+    @available(iOS 13, *)
+    @available(macOS 12, *)
     public func remove_iterator(_ payload: TSDKRegisteredIterator) async throws -> TSDKNoneResult {
         try await withCheckedThrowingContinuation { continuation in
             do {
@@ -842,6 +880,8 @@ public final class TSDKNetModule {
     }
 
     /// Returns signature ID for configured network if it should be used in messages signature
+    @available(iOS 13, *)
+    @available(macOS 12, *)
     public func get_signature_id() async throws -> TSDKResultOfGetSignatureId {
         try await withCheckedThrowingContinuation { continuation in
             do {

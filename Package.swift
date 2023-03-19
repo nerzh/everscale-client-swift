@@ -7,7 +7,7 @@ let package = Package(
     name: "EverscaleClientSwift",
     platforms: [
         .macOS(SupportedPlatform.MacOSVersion.v12),
-        .iOS(SupportedPlatform.IOSVersion.v13)
+        .iOS(SupportedPlatform.IOSVersion.v12)
     ],
     products: [
         .library(name: "EverscaleClientSwift", targets: ["EverscaleClientSwift"]),

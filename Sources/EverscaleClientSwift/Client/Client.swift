@@ -39,6 +39,8 @@ public final class TSDKClientModule {
     }
 
     /// Returns Core Library API reference
+    @available(iOS 13, *)
+    @available(macOS 12, *)
     public func get_api_reference() async throws -> TSDKResultOfGetApiReference {
         try await withCheckedThrowingContinuation { continuation in
             do {
@@ -72,6 +74,8 @@ public final class TSDKClientModule {
     }
 
     /// Returns Core Library version
+    @available(iOS 13, *)
+    @available(macOS 12, *)
     public func version() async throws -> TSDKResultOfVersion {
         try await withCheckedThrowingContinuation { continuation in
             do {
@@ -105,6 +109,8 @@ public final class TSDKClientModule {
     }
 
     /// Returns Core Library API reference
+    @available(iOS 13, *)
+    @available(macOS 12, *)
     public func config() async throws -> TSDKClientConfig {
         try await withCheckedThrowingContinuation { continuation in
             do {
@@ -138,6 +144,8 @@ public final class TSDKClientModule {
     }
 
     /// Returns detailed information about this build.
+    @available(iOS 13, *)
+    @available(macOS 12, *)
     public func build_info() async throws -> TSDKResultOfBuildInfo {
         try await withCheckedThrowingContinuation { continuation in
             do {
@@ -171,6 +179,8 @@ public final class TSDKClientModule {
     }
 
     /// Resolves application request processing result
+    @available(iOS 13, *)
+    @available(macOS 12, *)
     public func resolve_app_request(_ payload: TSDKParamsOfResolveAppRequest) async throws -> TSDKNoneResult {
         try await withCheckedThrowingContinuation { continuation in
             do {
