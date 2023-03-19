@@ -182,10 +182,10 @@ class CodeGenerator {
         if let description = swiftFunction.description { result.append("\(tab)/// \(checkComment(description))\n") }
         result.append("\(tab)\(swiftFunction.accessType) func \(swiftFunction.name)(")
         for parameter in swiftFunction.params {
-            result.append("_ \(parameter.name): \(parameter.type)) ")
+            result.append("_ \(parameter.name): \(parameter.type)")
         }
         let resultType: String = swiftFunction.willReturn.type == "Void" ? "\(libPrefix)NoneResult" : swiftFunction.willReturn.type
-        result.append("async throws -> \(resultType) {\n")
+        result.append(") async throws -> \(resultType) {\n")
         let methodName: String = swiftFunction.name == "initialize" ? "init" : swiftFunction.name
         result.append("\(tab)\(tab)try await withCheckedThrowingContinuation { continuation in\n")
         result.append("\(tab)\(tab)\(tab)do {\n")
@@ -224,6 +224,7 @@ class CodeGenerator {
 
         for function in swiftModule.functions {
             result.append(generateFunction(function))
+            if function.name.contains("subscribe") { continue }
             result.append(generateAsyncAwaitFunction(function))
         }
         result.append("}\n")
