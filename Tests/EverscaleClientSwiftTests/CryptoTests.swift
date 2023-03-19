@@ -285,7 +285,7 @@ final class CryptoTests: XCTestCase {
     func testMnemonic_words() throws {
         try testAsyncMethods { (client, group) in
             group.enter()
-            let payload: TSDKParamsOfMnemonicWords = .init(dictionary: .ENGLISH)
+            let payload: TSDKParamsOfMnemonicWords = .init(dictionary: .English)
             try client.crypto.mnemonic_words(payload) { [group] (response) in
                 XCTAssertEqual(response.result?.words.split(separator: " ").count, 2048)
                 group.leave()
@@ -297,7 +297,7 @@ final class CryptoTests: XCTestCase {
     func testMnemonic_from_random() throws {
         try testAsyncMethods { (client, group) in
             group.enter()
-            let payload: TSDKParamsOfMnemonicFromRandom = .init(dictionary: .ENGLISH, word_count: 12)
+            let payload: TSDKParamsOfMnemonicFromRandom = .init(dictionary: .English, word_count: 12)
             try client.crypto.mnemonic_from_random(payload) { [group] (response) in
                 XCTAssertEqual(response.result?.phrase.split(separator: " ").count, 12)
                 group.leave()
@@ -310,7 +310,7 @@ final class CryptoTests: XCTestCase {
         try testAsyncMethods { (client, group) in
             group.enter()
             let payload: TSDKParamsOfMnemonicFromEntropy = .init(entropy: "00112233445566778899AABBCCDDEEFF",
-                                                                 dictionary: .ENGLISH,
+                                                                 dictionary: .English,
                                                                  word_count: 12)
             try client.crypto.mnemonic_from_entropy(payload) { [group] (response) in
                 XCTAssertEqual(response.result?.phrase.split(separator: " ").count, 12)
@@ -324,7 +324,7 @@ final class CryptoTests: XCTestCase {
         try testAsyncMethods { (client, group) in
             group.enter()
             let payload: TSDKParamsOfMnemonicVerify = .init(phrase: "abandon math mimic master filter design carbon crystal rookie group knife young",
-                                                            dictionary: .ENGLISH,
+                                                            dictionary: .English,
                                                             word_count: 12)
             try client.crypto.mnemonic_verify(payload) { [group] (response) in
                 XCTAssertEqual(response.result?.valid, true)
@@ -339,7 +339,7 @@ final class CryptoTests: XCTestCase {
             group.enter()
             let payload: TSDKParamsOfMnemonicDeriveSignKeys = .init(phrase: "abandon math mimic master filter design carbon crystal rookie group knife young",
                                                                     path: nil,
-                                                                    dictionary: .ENGLISH,
+                                                                    dictionary: .English,
                                                                     word_count: 12)
             try client.crypto.mnemonic_derive_sign_keys(payload) { [group] (response) in
                 XCTAssertEqual(response.result?.public, "61c3c5b97a33c9c0a03af112fbb27e3f44d99e1f804853f9842bb7a6e5de3ff9")

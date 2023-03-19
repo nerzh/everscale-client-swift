@@ -198,6 +198,27 @@ public final class TSDKNetModule {
             try handler(response)
         }
     }
+    
+    public func get_endpoints() async throws -> TSDKResultOfGetEndpoints {
+        try await withCheckedThrowingContinuation { continuation in
+            do {
+                let method: String = "get_endpoints"
+                try binding.requestLibraryAsync(methodName(module, method), "") { (requestId, params, responseType, finished) in
+                    var response: TSDKBindingResponse<TSDKResultOfGetEndpoints, TSDKClientError> = .init()
+                    response.update(requestId, params, responseType, finished)
+                    if let error = response.error {
+                        continuation.resume(throwing: error)
+                    } else if let result = response.result {
+                        continuation.resume(returning: result)
+                    } else {
+                        continuation.resume(throwing: TSDKClientError("Nothing for return"))
+                    }
+                }
+            } catch {
+                continuation.resume(throwing: error)
+            }
+        }
+    }
 
     /// Allows to query and paginate through the list of accounts that the specified account has interacted with, sorted by the time of the last internal message between accounts
     /// *Attention* this query retrieves data from 'Counterparties' service which is not supported inthe opensource version of DApp Server (and will not be supported) as well as in Evernode SE (will be supported in SE in future),but is always accessible via [EVER OS Clouds](../ton-os-api/networks.md)

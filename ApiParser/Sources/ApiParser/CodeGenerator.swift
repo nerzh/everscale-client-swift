@@ -154,6 +154,65 @@ class CodeGenerator {
 
         return result
     }
+    
+//    public func get_endpoints() async throws -> TSDKResultOfGetEndpoints {
+//        try await withCheckedThrowingContinuation { continuation in
+//            do {
+//                let method: String = "get_endpoints"
+//                try binding.requestLibraryAsync(methodName(module, method), "") { (requestId, params, responseType, finished) in
+//                    var response: TSDKBindingResponse<TSDKResultOfGetEndpoints, TSDKClientError> = .init()
+//                    response.update(requestId, params, responseType, finished)
+//                    if let error = response.error {
+//                        continuation.resume(throwing: error)
+//                    } else if let result = response.result {
+//                        continuation.resume(returning: result)
+//                    } else {
+//                        continuation.resume(throwing: TSDKClientError("Nothing for return"))
+//                    }
+//                }
+//            } catch {
+//                continuation.resume(throwing: error)
+//            }
+//        }
+//    }
+    
+    private func generateAsyncAwaitFunction(_ swiftFunction: SDKSwiftFunction) -> String {
+        var result: String = .init()
+        if let summary = swiftFunction.summary { result.append("\(tab)/// \(checkComment(summary))\n") }
+        if let description = swiftFunction.description { result.append("\(tab)/// \(checkComment(description))\n") }
+        result.append("\(tab)\(swiftFunction.accessType) func \(swiftFunction.name)(")
+        for parameter in swiftFunction.params {
+            result.append("_ \(parameter.name): \(parameter.type)) ")
+        }
+        let resultType: String = swiftFunction.willReturn.type == "Void" ? "\(libPrefix)NoneResult" : swiftFunction.willReturn.type
+        result.append("async throws -> \(resultType) {\n")
+        let methodName: String = swiftFunction.name == "initialize" ? "init" : swiftFunction.name
+        result.append("\(tab)\(tab)try await withCheckedThrowingContinuation { continuation in\n")
+        result.append("\(tab)\(tab)\(tab)do {\n")
+        result.append("\(tab)\(tab)\(tab)\(tab)let method: String = \"\(methodName)\"\n")
+        if swiftFunction.params.isEmpty {
+            result.append("\(tab)\(tab)\(tab)\(tab)try binding.requestLibraryAsyncAwait(methodName(module, method), \"\") { (requestId, params, responseType, finished) in\n")
+        } else {
+            result.append("\(tab)\(tab)\(tab)\(tab)try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in\n")
+        }
+        result.append("\(tab)\(tab)\(tab)\(tab)\(tab)var response: TSDKBindingResponse<\(resultType), \(libPrefix)ClientError> = .init()\n")
+        result.append("\(tab)\(tab)\(tab)\(tab)\(tab)response.update(requestId, params, responseType, finished)\n")
+        result.append("\(tab)\(tab)\(tab)\(tab)\(tab)if let error = response.error {\n")
+        result.append("\(tab)\(tab)\(tab)\(tab)\(tab)\(tab)continuation.resume(throwing: error)\n")
+        result.append("\(tab)\(tab)\(tab)\(tab)\(tab)} else if let result = response.result {\n")
+        result.append("\(tab)\(tab)\(tab)\(tab)\(tab)\(tab)continuation.resume(returning: result)\n")
+        result.append("\(tab)\(tab)\(tab)\(tab)\(tab)} else {\n")
+        result.append("\(tab)\(tab)\(tab)\(tab)\(tab)\(tab)continuation.resume(throwing: TSDKClientError(\"Nothing for return\"))\n")
+        result.append("\(tab)\(tab)\(tab)\(tab)\(tab)}\n")
+        result.append("\(tab)\(tab)\(tab)\(tab)}\n")
+        result.append("\(tab)\(tab)\(tab)} catch {\n")
+        result.append("\(tab)\(tab)\(tab)\(tab)continuation.resume(throwing: error)\n")
+        result.append("\(tab)\(tab)\(tab)}\n")
+        result.append("\(tab)\(tab)}\n")
+        result.append("\(tab)}\n\n")
+
+        return result
+    }
 
     private func generateModule(_ swiftModule: SDKSwiftApi.Module) -> String {
         var result: String = "public final class \(libPrefix)\(swiftModule.name.capitalized)Module {\n\n"
@@ -165,6 +224,7 @@ class CodeGenerator {
 
         for function in swiftModule.functions {
             result.append(generateFunction(function))
+            result.append(generateAsyncAwaitFunction(function))
         }
         result.append("}\n")
 
@@ -192,6 +252,7 @@ class CodeGenerator {
 
         for function in swiftModule.functions {
             result.append(generateFunction(function))
+            result.append(generateAsyncAwaitFunction(function))
         }
 
         /// PRINT DEBUG DEINIT CLIENT

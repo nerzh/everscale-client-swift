@@ -136,6 +136,61 @@ public final class TSDKBindingModule: TSDKBindingPrtcl {
         }
     }
     
+    public func requestLibraryAsyncAwait(_ methodName: String,
+                                         _ payload: Encodable = "",
+                                         _ requestHandler: @escaping (_ requestId: UInt32,
+                                                                      _ stringResponse: String,
+                                                                      _ responseType: TSDKBindingResponseType,
+                                                                      _ finished: Bool) throws -> Void
+    ) throws {
+        try convertToTSDKString(methodName) { tsdkMethodName in
+            let payload = payload.toJson() ?? ""
+            try convertToTSDKString(payload) { tsdkPayload in
+                let requestId: UInt32 = BindingStore.generate_request_id()
+                BindingStore.addResponseHandler(requestId, requestHandler)
+                TSDKRequestAsync(self.context,
+                                 tsdkMethodName,
+                                 tsdkPayload,
+                                 requestId
+                ) { (requestId: UInt32, params: TSDKString, responseType: UInt32, finished: Bool) in
+                    let responseHandler = BindingStore.getResponseHandler(requestId)
+                    do {
+                        let swiftString: String = try TSDKBindingModule.convertFromTSDKString(params)
+                        let responseType: TSDKBindingResponseType = (TSDKBindingResponseType.init(rawValue: responseType) ?? .unknown)!
+                        
+                        if !swiftString.isEmpty {
+                            BindingStore.setCompleteResponse(requestId,
+                                                             (requestId: requestId,
+                                                              stringResponse: swiftString,
+                                                              responseType: responseType,
+                                                              finished: true))
+                        }
+                        
+                        
+                        if finished || responseType == .responseError {
+                            BindingStore.deleteResponseHandler(requestId)
+                            let response: BindingStore.RawResponse = try BindingStore.getCompleteResponse(requestId)
+                            try responseHandler?(response.requestId, response.stringResponse, response.responseType, response.finished)
+                            BindingStore.deleteCompleteResponse(requestId)
+                        }                        
+                    } catch {
+                        BindingStore.deleteResponseHandler(requestId)
+                        BindingStore.deleteCompleteResponse(requestId)
+                        try? responseHandler?(
+                            requestId,
+                            [
+                                "code": 0,
+                                "message": error.localizedDescription,
+                                "data": ([:] as [String: Any]).toAnyValue()
+                            ].toAnyValue().toJSON(),
+                            .responseError,
+                            true)
+                    }
+                }
+            }
+        }
+    }
+    
     deinit {
         destroyContext()
     }
