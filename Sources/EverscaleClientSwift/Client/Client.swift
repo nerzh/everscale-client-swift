@@ -38,6 +38,28 @@ public final class TSDKClientModule {
         }
     }
 
+    /// Returns Core Library API reference
+    public func get_api_reference() async throws -> TSDKResultOfGetApiReference {
+        try await withCheckedThrowingContinuation { continuation in
+            do {
+                let method: String = "get_api_reference"
+                try binding.requestLibraryAsyncAwait(methodName(module, method), "") { (requestId, params, responseType, finished) in
+                    var response: TSDKBindingResponse<TSDKResultOfGetApiReference, TSDKClientError> = .init()
+                    response.update(requestId, params, responseType, finished)
+                    if let error = response.error {
+                        continuation.resume(throwing: error)
+                    } else if let result = response.result {
+                        continuation.resume(returning: result)
+                    } else {
+                        continuation.resume(throwing: TSDKClientError("Nothing for return"))
+                    }
+                }
+            } catch {
+                continuation.resume(throwing: error)
+            }
+        }
+    }
+
     /// Returns Core Library version
     public func version(_ handler: @escaping (TSDKBindingResponse<TSDKResultOfVersion, TSDKClientError>) throws -> Void
     ) throws {
@@ -46,6 +68,28 @@ public final class TSDKClientModule {
             var response: TSDKBindingResponse<TSDKResultOfVersion, TSDKClientError> = .init()
             response.update(requestId, params, responseType, finished)
             try handler(response)
+        }
+    }
+
+    /// Returns Core Library version
+    public func version() async throws -> TSDKResultOfVersion {
+        try await withCheckedThrowingContinuation { continuation in
+            do {
+                let method: String = "version"
+                try binding.requestLibraryAsyncAwait(methodName(module, method), "") { (requestId, params, responseType, finished) in
+                    var response: TSDKBindingResponse<TSDKResultOfVersion, TSDKClientError> = .init()
+                    response.update(requestId, params, responseType, finished)
+                    if let error = response.error {
+                        continuation.resume(throwing: error)
+                    } else if let result = response.result {
+                        continuation.resume(returning: result)
+                    } else {
+                        continuation.resume(throwing: TSDKClientError("Nothing for return"))
+                    }
+                }
+            } catch {
+                continuation.resume(throwing: error)
+            }
         }
     }
 
@@ -60,6 +104,28 @@ public final class TSDKClientModule {
         }
     }
 
+    /// Returns Core Library API reference
+    public func config() async throws -> TSDKClientConfig {
+        try await withCheckedThrowingContinuation { continuation in
+            do {
+                let method: String = "config"
+                try binding.requestLibraryAsyncAwait(methodName(module, method), "") { (requestId, params, responseType, finished) in
+                    var response: TSDKBindingResponse<TSDKClientConfig, TSDKClientError> = .init()
+                    response.update(requestId, params, responseType, finished)
+                    if let error = response.error {
+                        continuation.resume(throwing: error)
+                    } else if let result = response.result {
+                        continuation.resume(returning: result)
+                    } else {
+                        continuation.resume(throwing: TSDKClientError("Nothing for return"))
+                    }
+                }
+            } catch {
+                continuation.resume(throwing: error)
+            }
+        }
+    }
+
     /// Returns detailed information about this build.
     public func build_info(_ handler: @escaping (TSDKBindingResponse<TSDKResultOfBuildInfo, TSDKClientError>) throws -> Void
     ) throws {
@@ -71,6 +137,28 @@ public final class TSDKClientModule {
         }
     }
 
+    /// Returns detailed information about this build.
+    public func build_info() async throws -> TSDKResultOfBuildInfo {
+        try await withCheckedThrowingContinuation { continuation in
+            do {
+                let method: String = "build_info"
+                try binding.requestLibraryAsyncAwait(methodName(module, method), "") { (requestId, params, responseType, finished) in
+                    var response: TSDKBindingResponse<TSDKResultOfBuildInfo, TSDKClientError> = .init()
+                    response.update(requestId, params, responseType, finished)
+                    if let error = response.error {
+                        continuation.resume(throwing: error)
+                    } else if let result = response.result {
+                        continuation.resume(returning: result)
+                    } else {
+                        continuation.resume(throwing: TSDKClientError("Nothing for return"))
+                    }
+                }
+            } catch {
+                continuation.resume(throwing: error)
+            }
+        }
+    }
+
     /// Resolves application request processing result
     public func resolve_app_request(_ payload: TSDKParamsOfResolveAppRequest, _ handler: @escaping (TSDKBindingResponse<TSDKNoneResult, TSDKClientError>) throws -> Void
     ) throws {
@@ -79,6 +167,28 @@ public final class TSDKClientModule {
             var response: TSDKBindingResponse<TSDKNoneResult, TSDKClientError> = .init()
             response.update(requestId, params, responseType, finished)
             try handler(response)
+        }
+    }
+
+    /// Resolves application request processing result
+    public func resolve_app_request(_ payload: TSDKParamsOfResolveAppRequest) async throws -> TSDKNoneResult {
+        try await withCheckedThrowingContinuation { continuation in
+            do {
+                let method: String = "resolve_app_request"
+                try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                    var response: TSDKBindingResponse<TSDKNoneResult, TSDKClientError> = .init()
+                    response.update(requestId, params, responseType, finished)
+                    if let error = response.error {
+                        continuation.resume(throwing: error)
+                    } else if let result = response.result {
+                        continuation.resume(returning: result)
+                    } else {
+                        continuation.resume(throwing: TSDKClientError("Nothing for return"))
+                    }
+                }
+            } catch {
+                continuation.resume(throwing: error)
+            }
         }
     }
 

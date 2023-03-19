@@ -40,11 +40,15 @@ extension XCTestCase {
         }
         return workingDirectory
     }
-
-    func testAsyncMethods<V>(_ handler: @escaping (_ client: TSDKClientModule, _ group: DispatchGroup) throws -> V) throws -> V {
+    
+    func getClient() -> TSDKClientModule {
         var config: TSDKClientConfig = .init()
         config.network = TSDKNetworkConfig(endpoints: SimpleEnv["server_address"]?.toModel([String].self) ?? [])
-        let client: TSDKClientModule = try! .init(config: config)
+        return try! .init(config: config)
+    }
+
+    func testAsyncMethods<V>(_ handler: @escaping (_ client: TSDKClientModule, _ group: DispatchGroup) throws -> V) throws -> V {
+        let client: TSDKClientModule = getClient()
         let group: DispatchGroup = .init()
         return try handler(client, group)
     }
