@@ -1,4 +1,4 @@
-// swift-tools-version:5.4
+// swift-tools-version:5.5
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -6,8 +6,8 @@ import PackageDescription
 let package = Package(
     name: "EverscaleClientSwift",
     platforms: [
-        .macOS(SupportedPlatform.MacOSVersion.v11),
-        .iOS(SupportedPlatform.IOSVersion.v10)
+        .macOS(SupportedPlatform.MacOSVersion.v12),
+        .iOS(SupportedPlatform.IOSVersion.v13)
     ],
     products: [
         .library(name: "EverscaleClientSwift", targets: ["EverscaleClientSwift"]),
