@@ -95,10 +95,10 @@ public final class TSDKBindingModule: TSDKBindingPrtcl {
     
     public func requestLibraryAsync(_ methodName: String,
                                     _ payload: Encodable = "",
-                                    _ requestHandler: @escaping (_ requestId: UInt32,
-                                                                 _ stringResponse: String,
-                                                                 _ responseType: TSDKBindingResponseType,
-                                                                 _ finished: Bool) throws -> Void
+                                    _ requestHandler: @escaping @Sendable (_ requestId: UInt32,
+                                                                           _ stringResponse: String,
+                                                                           _ responseType: TSDKBindingResponseType,
+                                                                           _ finished: Bool) throws -> Void
     ) throws {
         try convertToTSDKString(methodName) { tsdkMethodName in
             let payload = payload.toJson() ?? ""
@@ -138,10 +138,10 @@ public final class TSDKBindingModule: TSDKBindingPrtcl {
     
     public func requestLibraryAsyncAwait(_ methodName: String,
                                          _ payload: Encodable = "",
-                                         _ requestHandler: @escaping (_ requestId: UInt32,
-                                                                      _ stringResponse: String,
-                                                                      _ responseType: TSDKBindingResponseType,
-                                                                      _ finished: Bool) throws -> Void
+                                         _ requestHandler: @escaping @Sendable (_ requestId: UInt32,
+                                                                                _ stringResponse: String,
+                                                                                _ responseType: TSDKBindingResponseType,
+                                                                                _ finished: Bool) throws -> Void
     ) throws {
         try convertToTSDKString(methodName) { tsdkMethodName in
             let payload = payload.toJson() ?? ""
@@ -172,7 +172,7 @@ public final class TSDKBindingModule: TSDKBindingPrtcl {
                             let response: BindingStore.RawResponse = try BindingStore.getCompleteResponse(requestId)
                             try responseHandler?(response.requestId, response.stringResponse, response.responseType, response.finished)
                             BindingStore.deleteCompleteResponse(requestId)
-                        }                        
+                        }
                     } catch {
                         BindingStore.deleteResponseHandler(requestId)
                         BindingStore.deleteCompleteResponse(requestId)
