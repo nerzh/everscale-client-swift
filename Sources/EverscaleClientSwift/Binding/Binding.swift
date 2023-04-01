@@ -34,11 +34,11 @@ public protocol TSDKBindingPrtcl {
 public final class TSDKBindingModule: TSDKBindingPrtcl {
     
     public var context: TSDKContext = .init()
-    var convertToTSDKString = TSDKBindingModule.convertToTSDKString
-    var convertFromTSDKString = TSDKBindingModule.convertFromTSDKString
-    var convertTSDKStringPointerToString = TSDKBindingModule.convertTSDKStringPointerToString
-    var convertTSDKStringToDictionary = TSDKBindingModule.convertTSDKStringToDictionary
-    var convertTSDKStringPointerToDictionary = TSDKBindingModule.convertTSDKStringPointerToDictionary
+    let convertToTSDKString = TSDKBindingModule.convertToTSDKString
+    let convertFromTSDKString = TSDKBindingModule.convertFromTSDKString
+    let convertTSDKStringPointerToString = TSDKBindingModule.convertTSDKStringPointerToString
+    let convertTSDKStringToDictionary = TSDKBindingModule.convertTSDKStringToDictionary
+    let convertTSDKStringPointerToDictionary = TSDKBindingModule.convertTSDKStringPointerToDictionary
     
     
     public init(config: TSDKClientConfig = TSDKClientConfig()) throws {
@@ -165,7 +165,6 @@ public final class TSDKBindingModule: TSDKBindingPrtcl {
                                                               responseType: responseType,
                                                               finished: true))
                         }
-                        
                         
                         if finished || responseType == .responseError {
                             BindingStore.deleteResponseHandler(requestId)
