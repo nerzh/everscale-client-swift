@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "EverscaleClientSwift",
     platforms: [
-        .macOS(SupportedPlatform.MacOSVersion.v11),
+        .macOS(SupportedPlatform.MacOSVersion.v12),
         .iOS(SupportedPlatform.IOSVersion.v11)
     ],
     products: [
