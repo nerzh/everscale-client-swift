@@ -60,7 +60,7 @@ public struct TSDKClientError: Codable, LocalizedError {
     public var failureReason: String? { self.message }
     public var recoverySuggestion: String? { self.message }
     public var helpAnchor: String? { self.message }
-    public var data: AnyValue = [String: Any]().toAnyValue()
+    public var data: AnyValue = ([:] as! [String: Any]).toAnyValue()
 
     public init(_ error: Error) {
         self.code = 0
@@ -151,7 +151,7 @@ public struct TSDKNetworkConfig: Codable {
     public var queries_protocol: TSDKNetworkQueriesProtocol?
     /// UNSTABLE.
     /// First REMP status awaiting timeout. If no status received during the timeout than fallback transaction scenario is activated.
-    /// Must be specified in milliseconds. Default is 1000 (1 sec).
+    /// Must be specified in milliseconds. Default is 1 (1 ms) in order to start fallback scenariotogether with REMP statuses processing while REMP is not properly tuned yet.
     public var first_remp_status_timeout: UInt32?
     /// UNSTABLE.
     /// Subsequent REMP status awaiting timeout. If no status received during the timeout than fallback transaction scenario is activated.

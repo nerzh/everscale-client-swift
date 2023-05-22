@@ -20,6 +20,7 @@ public enum TSDKNetErrorCode: Int, Codable {
     case Unauthorized = 615
     case QueryTransactionTreeTimeout = 616
     case GraphqlConnectionError = 617
+    case WrongWebscoketProtocolSequence = 618
 }
 
 public enum TSDKSortDirection: String, Codable {

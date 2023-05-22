@@ -7,6 +7,211 @@ public final class TSDKProcessingModule {
         self.binding = binding
     }
 
+    /// Starts monitoring for the processing results of the specified messages.
+    /// Message monitor performs background monitoring for a message processing resultsfor the specified set of messages.
+    /// Message monitor can serve several isolated monitoring queues.
+    /// Each monitor queue has a unique application defined identifier (or name) usedto separate several queue's.
+    /// There are two important lists inside of the monitoring queue:
+    /// - unresolved messages: contains messages requested by the application for monitoring  and not yet resolved;
+    /// - resolved results: contains resolved processing results for monitored messages.
+    /// Each monitoring queue tracks own unresolved and resolved lists.
+    /// Application can add more messages to the monitoring queue at any time.
+    /// Message monitor accumulates resolved results.
+    /// Application should fetch this results with `fetchNextMonitorResults` function.
+    /// When both unresolved and resolved lists becomes empty, monitor stops any background activityand frees all allocated internal memory.
+    /// If monitoring queue with specified name already exists then messages will be addedto the unresolved list.
+    /// If monitoring queue with specified name does not exist then monitoring queue will be createdwith specified unresolved messages.
+    public func monitor_messages(_ payload: TSDKParamsOfMonitorMessages, _ handler: @escaping (TSDKBindingResponse<TSDKNoneResult, TSDKClientError>) throws -> Void
+    ) throws {
+        let method: String = "monitor_messages"
+        try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKNoneResult, TSDKClientError> = .init()
+            response.update(requestId, params, responseType, finished)
+            try handler(response)
+        }
+    }
+
+    /// Starts monitoring for the processing results of the specified messages.
+    /// Message monitor performs background monitoring for a message processing resultsfor the specified set of messages.
+    /// Message monitor can serve several isolated monitoring queues.
+    /// Each monitor queue has a unique application defined identifier (or name) usedto separate several queue's.
+    /// There are two important lists inside of the monitoring queue:
+    /// - unresolved messages: contains messages requested by the application for monitoring  and not yet resolved;
+    /// - resolved results: contains resolved processing results for monitored messages.
+    /// Each monitoring queue tracks own unresolved and resolved lists.
+    /// Application can add more messages to the monitoring queue at any time.
+    /// Message monitor accumulates resolved results.
+    /// Application should fetch this results with `fetchNextMonitorResults` function.
+    /// When both unresolved and resolved lists becomes empty, monitor stops any background activityand frees all allocated internal memory.
+    /// If monitoring queue with specified name already exists then messages will be addedto the unresolved list.
+    /// If monitoring queue with specified name does not exist then monitoring queue will be createdwith specified unresolved messages.
+    @available(iOS 13, *)
+    @available(macOS 12, *)
+    public func monitor_messages(_ payload: TSDKParamsOfMonitorMessages) async throws -> TSDKNoneResult {
+        try await withCheckedThrowingContinuation { continuation in
+            do {
+                let method: String = "monitor_messages"
+                try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                    var response: TSDKBindingResponse<TSDKNoneResult, TSDKClientError> = .init()
+                    response.update(requestId, params, responseType, finished)
+                    if let error = response.error {
+                        continuation.resume(throwing: error)
+                    } else if let result = response.result {
+                        continuation.resume(returning: result)
+                    } else {
+                        continuation.resume(throwing: TSDKClientError("Nothing for return"))
+                    }
+                }
+            } catch {
+                continuation.resume(throwing: error)
+            }
+        }
+    }
+
+    /// Returns summary information about current state of the specified monitoring queue.
+    public func get_monitor_info(_ payload: TSDKParamsOfGetMonitorInfo, _ handler: @escaping (TSDKBindingResponse<TSDKMonitoringQueueInfo, TSDKClientError>) throws -> Void
+    ) throws {
+        let method: String = "get_monitor_info"
+        try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKMonitoringQueueInfo, TSDKClientError> = .init()
+            response.update(requestId, params, responseType, finished)
+            try handler(response)
+        }
+    }
+
+    /// Returns summary information about current state of the specified monitoring queue.
+    @available(iOS 13, *)
+    @available(macOS 12, *)
+    public func get_monitor_info(_ payload: TSDKParamsOfGetMonitorInfo) async throws -> TSDKMonitoringQueueInfo {
+        try await withCheckedThrowingContinuation { continuation in
+            do {
+                let method: String = "get_monitor_info"
+                try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                    var response: TSDKBindingResponse<TSDKMonitoringQueueInfo, TSDKClientError> = .init()
+                    response.update(requestId, params, responseType, finished)
+                    if let error = response.error {
+                        continuation.resume(throwing: error)
+                    } else if let result = response.result {
+                        continuation.resume(returning: result)
+                    } else {
+                        continuation.resume(throwing: TSDKClientError("Nothing for return"))
+                    }
+                }
+            } catch {
+                continuation.resume(throwing: error)
+            }
+        }
+    }
+
+    /// Fetches next resolved results from the specified monitoring queue.
+    /// Results and waiting options are depends on the `wait` parameter.
+    /// All returned results will be removed from the queue's resolved list.
+    public func fetch_next_monitor_results(_ payload: TSDKParamsOfFetchNextMonitorResults, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfFetchNextMonitorResults, TSDKClientError>) throws -> Void
+    ) throws {
+        let method: String = "fetch_next_monitor_results"
+        try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKResultOfFetchNextMonitorResults, TSDKClientError> = .init()
+            response.update(requestId, params, responseType, finished)
+            try handler(response)
+        }
+    }
+
+    /// Fetches next resolved results from the specified monitoring queue.
+    /// Results and waiting options are depends on the `wait` parameter.
+    /// All returned results will be removed from the queue's resolved list.
+    @available(iOS 13, *)
+    @available(macOS 12, *)
+    public func fetch_next_monitor_results(_ payload: TSDKParamsOfFetchNextMonitorResults) async throws -> TSDKResultOfFetchNextMonitorResults {
+        try await withCheckedThrowingContinuation { continuation in
+            do {
+                let method: String = "fetch_next_monitor_results"
+                try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                    var response: TSDKBindingResponse<TSDKResultOfFetchNextMonitorResults, TSDKClientError> = .init()
+                    response.update(requestId, params, responseType, finished)
+                    if let error = response.error {
+                        continuation.resume(throwing: error)
+                    } else if let result = response.result {
+                        continuation.resume(returning: result)
+                    } else {
+                        continuation.resume(throwing: TSDKClientError("Nothing for return"))
+                    }
+                }
+            } catch {
+                continuation.resume(throwing: error)
+            }
+        }
+    }
+
+    /// Cancels all background activity and releases all allocated system resources for the specified monitoring queue.
+    public func cancel_monitor(_ payload: TSDKParamsOfCancelMonitor, _ handler: @escaping (TSDKBindingResponse<TSDKNoneResult, TSDKClientError>) throws -> Void
+    ) throws {
+        let method: String = "cancel_monitor"
+        try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKNoneResult, TSDKClientError> = .init()
+            response.update(requestId, params, responseType, finished)
+            try handler(response)
+        }
+    }
+
+    /// Cancels all background activity and releases all allocated system resources for the specified monitoring queue.
+    @available(iOS 13, *)
+    @available(macOS 12, *)
+    public func cancel_monitor(_ payload: TSDKParamsOfCancelMonitor) async throws -> TSDKNoneResult {
+        try await withCheckedThrowingContinuation { continuation in
+            do {
+                let method: String = "cancel_monitor"
+                try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                    var response: TSDKBindingResponse<TSDKNoneResult, TSDKClientError> = .init()
+                    response.update(requestId, params, responseType, finished)
+                    if let error = response.error {
+                        continuation.resume(throwing: error)
+                    } else if let result = response.result {
+                        continuation.resume(returning: result)
+                    } else {
+                        continuation.resume(throwing: TSDKClientError("Nothing for return"))
+                    }
+                }
+            } catch {
+                continuation.resume(throwing: error)
+            }
+        }
+    }
+
+    /// Sends specified messages to the blockchain.
+    public func send_messages(_ payload: TSDKParamsOfSendMessages, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfSendMessages, TSDKClientError>) throws -> Void
+    ) throws {
+        let method: String = "send_messages"
+        try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKResultOfSendMessages, TSDKClientError> = .init()
+            response.update(requestId, params, responseType, finished)
+            try handler(response)
+        }
+    }
+
+    /// Sends specified messages to the blockchain.
+    @available(iOS 13, *)
+    @available(macOS 12, *)
+    public func send_messages(_ payload: TSDKParamsOfSendMessages) async throws -> TSDKResultOfSendMessages {
+        try await withCheckedThrowingContinuation { continuation in
+            do {
+                let method: String = "send_messages"
+                try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                    var response: TSDKBindingResponse<TSDKResultOfSendMessages, TSDKClientError> = .init()
+                    response.update(requestId, params, responseType, finished)
+                    if let error = response.error {
+                        continuation.resume(throwing: error)
+                    } else if let result = response.result {
+                        continuation.resume(returning: result)
+                    } else {
+                        continuation.resume(throwing: TSDKClientError("Nothing for return"))
+                    }
+                }
+            } catch {
+                continuation.resume(throwing: error)
+            }
+        }
+    }
+
     /// Sends message to the network
     /// Sends message to the network and returns the last generated shard block of the destination accountbefore the message was sent. It will be required later for message processing.
     public func send_message(_ payload: TSDKParamsOfSendMessage, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfSendMessage, TSDKClientError>) throws -> Void

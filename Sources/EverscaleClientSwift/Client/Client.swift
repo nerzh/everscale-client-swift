@@ -201,4 +201,8 @@ public final class TSDKClientModule {
             }
         }
     }
+
+    deinit {
+        print("Client DEINIT !")
+    }
 }

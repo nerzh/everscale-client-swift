@@ -317,13 +317,13 @@ extension CodeGenerator {
 \n    public init(_ error: Error) {
         self.code = 0
         self.message = error.localizedDescription
-        self.data = ([:] as! [String: Any]).toAnyValue()
+        self.data = [String: Any]().toAnyValue()
     }
 
     public init(_ message: String) {
         self.code = 0
         self.message = message
-        self.data = ([:] as! [String: Any]).toAnyValue()
+        self.data = [String: Any]().toAnyValue()
     }\n
 """
         result.append(customInit)
@@ -334,7 +334,7 @@ extension CodeGenerator {
                 result.append("\(property.name): \(property.type) = nil")
             } else {
                 if property.name == "data" {
-                    result.append("\(property.name): \(property.type) = ([:] as! [String: Any]).toAnyValue()")
+                    result.append("\(property.name): \(property.type) = [String: Any]().toAnyValue()")
                 } else {
                     result.append("\(property.name): \(property.type)")
                 }
