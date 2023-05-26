@@ -11,7 +11,7 @@ import class Foundation.Bundle
 final class BindingTests: XCTestCase {
 
     func testConvertToTSDKString() throws {
-        var string: TSDKString = .init()
+        var string: tc_string_data_t!
         try TSDKBindingModule.convertToTSDKString("Hello😀") { tsdkString in
             string = tsdkString
         }
