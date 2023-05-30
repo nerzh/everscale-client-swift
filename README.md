@@ -18,6 +18,11 @@ Swift is a strongly typed language that has long been used not only for iOS deve
 | iOS | ✅ |
 | Windows | Soon |
 
+## Get api keys and TVM endpoints:
+
+You need to get an API-KEY here [https://dashboard.evercloud.dev](https://dashboard.evercloud.dev)
+
+
 ## Usage
 
 All requests are async
