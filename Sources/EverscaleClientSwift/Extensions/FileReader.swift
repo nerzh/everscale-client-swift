@@ -61,7 +61,7 @@ public final class DOFileReader {
             }
         } catch let error {
             let message: String = "Please, check working directory in schema for this project. Current workingDirectory is \(ProcessInfo.processInfo.environment["PWD"])"
-            fatalError("\(error.localizedDescription)   \(message)   ErrorFilePath: \(fileURL.path)")
+            fatalError("\(String(describing: error))   \(message)   ErrorFilePath: \(fileURL.path)")
         }
     }
 

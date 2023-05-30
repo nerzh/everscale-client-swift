@@ -316,7 +316,7 @@ extension CodeGenerator {
         let customInit: String = """
 \n    public init(_ error: Error) {
         self.code = 0
-        self.message = error.localizedDescription
+        self.message = String(describing: error)
         self.data = [String: Any]().toAnyValue()
     }
 

@@ -25,18 +25,15 @@ final class ErrorsTests: XCTestCase {
             do {
                 try client.net.query_collection(paramsOfQueryCollection) { [group] response in
                     if response.error != nil {
-                        print("asdf YES", response.error!.localizedDescription)
                         group.leave()
                     } else {
                         throw TSDKClientError("FATAL ERROR")
                     }
                 }
             } catch {
-                print("asdf YES", error.localizedDescription)
                 group.leave()
             }
             group.wait()
-            print("asdf", "AAA 5")
         }
     }
 }

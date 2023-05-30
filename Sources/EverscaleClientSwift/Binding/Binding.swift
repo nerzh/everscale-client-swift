@@ -110,7 +110,7 @@ public final class TSDKBindingModule: TSDKBindingPrtcl {
                             requestId,
                             [
                                 "code": 0,
-                                "message": error.localizedDescription,
+                                "message": String(describing: error),
                                 "data": ([:] as [String: Any]).toAnyValue()
                             ].toAnyValue().toJSON(),
                             .responseError,
@@ -165,7 +165,7 @@ public final class TSDKBindingModule: TSDKBindingPrtcl {
                             requestId,
                             [
                                 "code": 0,
-                                "message": error.localizedDescription,
+                                "message": String(describing: error),
                                 "data": ([:] as [String: Any]).toAnyValue()
                             ].toAnyValue().toJSON(),
                             .responseError,
