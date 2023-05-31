@@ -60,11 +60,11 @@ public struct TSDKClientError: Codable, LocalizedError {
     public var failureReason: String? { self.message }
     public var recoverySuggestion: String? { self.message }
     public var helpAnchor: String? { self.message }
-    public var data: AnyValue = [String: Any]().toAnyValue()
+    public var data: AnyValue = ([:] as! [String: Any]).toAnyValue()
 
     public init(_ error: Error) {
         self.code = 0
-        self.message = error.localizedDescription
+        self.message = String(describing: error)
         self.data = [String: Any]().toAnyValue()
     }
 
@@ -107,7 +107,7 @@ public struct TSDKNetworkConfig: Codable {
     public var server_address: String?
     /// List of Evernode endpoints.
     /// Any correct URL format can be specified, including IP addresses. This parameter is prevailing over `server_address`.
-    /// Check the full list of [supported network endpoints](https://docs.everos.dev/ever-sdk/reference/ever-os-api/networks).
+    /// Check the full list of [supported network endpoints](https://docs.evercloud.dev/products/evercloud/networks-endpoints).
     public var endpoints: [String]?
     /// Deprecated.
     /// You must use `network.max_reconnect_timeout` that allows to specify maximum network resolving timeout.
@@ -126,9 +126,7 @@ public struct TSDKNetworkConfig: Codable {
     /// Maximum timeout that is used for query response.
     /// Must be specified in milliseconds. Default is 40000 (40 sec).
     public var wait_for_timeout: UInt32?
-    /// Maximum time difference between server and client.
-    /// If client's device time is out of sync and difference is more than the threshold then error will occur. Also an error will occur if the specified threshold is more than`message_processing_timeout/2`.
-    /// Must be specified in milliseconds. Default is 15000 (15 sec).
+    /// **DEPRECATED**: This parameter was deprecated.
     public var out_of_sync_threshold: UInt32?
     /// Maximum number of randomly chosen endpoints the library uses to broadcast a message.
     /// Default is 1.
@@ -213,9 +211,11 @@ public struct TSDKCryptoConfig: Codable {
 public struct TSDKAbiConfig: Codable {
     /// Workchain id that is used by default in DeploySet
     public var workchain: Int32?
-    /// Message lifetime for contracts which ABI includes "expire" header. The default value is 40 sec.
+    /// Message lifetime for contracts which ABI includes "expire" header.
+    /// Must be specified in milliseconds. Default is 40000 (40 sec).
     public var message_expiration_timeout: UInt32?
-    /// Factor that increases the expiration timeout for each retry The default value is 1.5
+    /// Factor that increases the expiration timeout for each retry
+    /// Default is 1.5
     public var message_expiration_timeout_grow_factor: Float32?
 
     public init(workchain: Int32? = nil, message_expiration_timeout: UInt32? = nil, message_expiration_timeout_grow_factor: Float32? = nil) {

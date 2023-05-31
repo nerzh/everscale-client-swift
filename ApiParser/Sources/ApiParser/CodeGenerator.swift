@@ -301,7 +301,7 @@ extension CodeGenerator {
             if let summary: String = property.summary { result.append("\(tab)/// \(checkComment(summary))\n") }
             if let descr: String = property.description { result.append("\(tab)/// \(checkComment(descr))\n") }
             if property.name == "data" {
-                result.append("\(tab)\(property.accessType) var \(property.name): \(property.type) = ([:] as! [String: Any]).toAnyValue()\n")
+                result.append("\(tab)\(property.accessType) var \(property.name): \(property.type) = [String: Any]().toAnyValue()\n")
             } else {
                 result.append("\(tab)\(property.accessType) var \(property.name): \(property.type)\n")
             }
