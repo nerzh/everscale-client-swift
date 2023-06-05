@@ -1,4 +1,4 @@
-// swift-tools-version:5.5
+// swift-tools-version:5.8
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -13,10 +13,10 @@ let package = Package(
         .library(name: "EverscaleClientSwift", targets: ["EverscaleClientSwift"]),
     ],
     dependencies: [
-        .package(name: "SwiftRegularExpression", url: "https://github.com/nerzh/swift-regular-expression.git", .upToNextMajor(from: "0.2.4")),
-        .package(name: "FileUtils", url: "https://github.com/nerzh/SwiftFileUtils", .upToNextMinor(from: "1.3.0")),
-        .package(name: "BigInt", url: "https://github.com/bytehubio/BigInt", .exact("5.3.0")),
-        .package(name: "SwiftExtensionsPack", url: "https://github.com/nerzh/swift-extensions-pack", .upToNextMinor(from: "1.3.1")),
+        .package(url: "https://github.com/nerzh/swift-regular-expression.git", .upToNextMajor(from: "0.2.4")),
+        .package(url: "https://github.com/nerzh/SwiftFileUtils", .upToNextMinor(from: "1.3.0")),
+        .package(url: "https://github.com/bytehubio/BigInt", exact: "5.3.0"),
+        .package(url: "https://github.com/nerzh/swift-extensions-pack", .upToNextMinor(from: "1.3.5")),
     ],
     targets: [
         .systemLibrary(name: "CTonSDK", pkgConfig: "libton_client"),
@@ -24,18 +24,18 @@ let package = Package(
             name: "EverscaleClientSwift",
             dependencies: [
                 .byName(name: "CTonSDK"),
-                .product(name: "SwiftRegularExpression", package: "SwiftRegularExpression"),
+                .product(name: "SwiftRegularExpression", package: "swift-regular-expression"),
                 .product(name: "BigInt", package: "BigInt"),
-                .product(name: "SwiftExtensionsPack", package: "SwiftExtensionsPack"),
+                .product(name: "SwiftExtensionsPack", package: "swift-extensions-pack"),
             ]),
         .testTarget(
             name: "EverscaleClientSwiftTests",
             dependencies: [
-                .product(name: "SwiftRegularExpression", package: "SwiftRegularExpression"),
+                .product(name: "SwiftRegularExpression", package: "swift-regular-expression"),
                 .byName(name: "EverscaleClientSwift"),
-                .product(name: "FileUtils", package: "FileUtils"),
+                .product(name: "FileUtils", package: "SwiftFileUtils"),
                 .product(name: "BigInt", package: "BigInt"),
-                .product(name: "SwiftExtensionsPack", package: "SwiftExtensionsPack"),
+                .product(name: "SwiftExtensionsPack", package: "swift-extensions-pack"),
             ]),
     ]
 )

@@ -62,12 +62,12 @@ public final class TSDKBindingModule: TSDKBindingPrtcl {
         let json: String = config.toJson() ?? "{}"
         try Self.convertToTSDKString(json) { config in
             let ctx: OpaquePointer = tc_create_context(config)
-            let contextResponse = try Self.convertFromTSDKString(tc_read_string(ctx)).toModel(TSDKContextResponse.self)
+            let contextResponse: TSDKContextResponse = try Self.convertFromTSDKString(tc_read_string(ctx)).toModel(TSDKContextResponse.self)
             defer { tc_destroy_string(ctx) }
-            if let context = contextResponse?.result {
+            if let context = contextResponse.result {
                 contextId = context
             } else {
-                fatalError(contextResponse?.error.debugDescription ?? "Context not created")
+                fatalError(contextResponse.error.debugDescription)
             }
         }
         return contextId
