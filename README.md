@@ -1,12 +1,12 @@
 # Swift Client for TVM SDK (toncoin, everscale, venom, gosh)
 
-<! -- 
-<p align="center">
-  <a href="https://github.com/venom-blockchain/developer-program">
-    <img src="https://raw.githubusercontent.com/venom-blockchain/developer-program/main/vf-dev-program.png" alt="Logo" width="366.8" height="146.4">
-  </a>
-</p>
---> 
+<!--- 
+  <p align="center">
+    <a href="https://github.com/venom-blockchain/developer-program">
+      <img src="https://raw.githubusercontent.com/venom-blockchain/developer-program/main/vf-dev-program.png" alt="Logo" width="366.8" height="146.4">
+    </a>
+  </p>
+---> 
 
 [![SPM](https://img.shields.io/badge/swift-package%20manager-green)](https://swift.org/package-manager/)
 [![SPM](https://img.shields.io/badge/SDK%20VERSION-1.43.3-orange)](https://github.com/tonlabs/ever-sdk)
