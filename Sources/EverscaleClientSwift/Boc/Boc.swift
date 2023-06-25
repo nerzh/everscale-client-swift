@@ -7,6 +7,41 @@ public final class TSDKBocModule {
         self.binding = binding
     }
 
+    /// Decodes tvc according to the tvc spec. Read more about tvc structure here https://github.com/tonlabs/ever-struct/blob/main/src/scheme/mod.rs#L30
+    public func decode_tvc(_ payload: TSDKParamsOfDecodeTvc, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfDecodeTvc, TSDKClientError>) throws -> Void
+    ) throws {
+        let method: String = "decode_tvc"
+        try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+            var response: TSDKBindingResponse<TSDKResultOfDecodeTvc, TSDKClientError> = .init()
+            response.update(requestId, params, responseType, finished)
+            try handler(response)
+        }
+    }
+
+    /// Decodes tvc according to the tvc spec. Read more about tvc structure here https://github.com/tonlabs/ever-struct/blob/main/src/scheme/mod.rs#L30
+    @available(iOS 13, *)
+    @available(macOS 12, *)
+    public func decode_tvc(_ payload: TSDKParamsOfDecodeTvc) async throws -> TSDKResultOfDecodeTvc {
+        try await withCheckedThrowingContinuation { continuation in
+            do {
+                let method: String = "decode_tvc"
+                try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                    var response: TSDKBindingResponse<TSDKResultOfDecodeTvc, TSDKClientError> = .init()
+                    response.update(requestId, params, responseType, finished)
+                    if let error = response.error {
+                        continuation.resume(throwing: error)
+                    } else if let result = response.result {
+                        continuation.resume(returning: result)
+                    } else {
+                        continuation.resume(throwing: TSDKClientError("Nothing for return"))
+                    }
+                }
+            } catch {
+                continuation.resume(throwing: error)
+            }
+        }
+    }
+
     /// Parses message boc into a JSON
     /// JSON structure is compatible with GraphQL API message object
     public func parse_message(_ payload: TSDKParamsOfParse, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfParse, TSDKClientError>) throws -> Void
@@ -544,26 +579,26 @@ public final class TSDKBocModule {
         }
     }
 
-    /// Decodes tvc into code, data, libraries and special options.
-    public func decode_tvc(_ payload: TSDKParamsOfDecodeTvc, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfDecodeTvc, TSDKClientError>) throws -> Void
+    /// Decodes contract's initial state into code, data, libraries and special options.
+    public func decode_state_init(_ payload: TSDKParamsOfDecodeStateInit, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfDecodeStateInit, TSDKClientError>) throws -> Void
     ) throws {
-        let method: String = "decode_tvc"
+        let method: String = "decode_state_init"
         try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-            var response: TSDKBindingResponse<TSDKResultOfDecodeTvc, TSDKClientError> = .init()
+            var response: TSDKBindingResponse<TSDKResultOfDecodeStateInit, TSDKClientError> = .init()
             response.update(requestId, params, responseType, finished)
             try handler(response)
         }
     }
 
-    /// Decodes tvc into code, data, libraries and special options.
+    /// Decodes contract's initial state into code, data, libraries and special options.
     @available(iOS 13, *)
     @available(macOS 12, *)
-    public func decode_tvc(_ payload: TSDKParamsOfDecodeTvc) async throws -> TSDKResultOfDecodeTvc {
+    public func decode_state_init(_ payload: TSDKParamsOfDecodeStateInit) async throws -> TSDKResultOfDecodeStateInit {
         try await withCheckedThrowingContinuation { continuation in
             do {
-                let method: String = "decode_tvc"
+                let method: String = "decode_state_init"
                 try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                    var response: TSDKBindingResponse<TSDKResultOfDecodeTvc, TSDKClientError> = .init()
+                    var response: TSDKBindingResponse<TSDKResultOfDecodeStateInit, TSDKClientError> = .init()
                     response.update(requestId, params, responseType, finished)
                     if let error = response.error {
                         continuation.resume(throwing: error)
@@ -579,26 +614,26 @@ public final class TSDKBocModule {
         }
     }
 
-    /// Encodes tvc from code, data, libraries ans special options (see input params)
-    public func encode_tvc(_ payload: TSDKParamsOfEncodeTvc, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfEncodeTvc, TSDKClientError>) throws -> Void
+    /// Encodes initial contract state from code, data, libraries ans special options (see input params)
+    public func encode_state_init(_ payload: TSDKParamsOfEncodeStateInit, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfEncodeStateInit, TSDKClientError>) throws -> Void
     ) throws {
-        let method: String = "encode_tvc"
+        let method: String = "encode_state_init"
         try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-            var response: TSDKBindingResponse<TSDKResultOfEncodeTvc, TSDKClientError> = .init()
+            var response: TSDKBindingResponse<TSDKResultOfEncodeStateInit, TSDKClientError> = .init()
             response.update(requestId, params, responseType, finished)
             try handler(response)
         }
     }
 
-    /// Encodes tvc from code, data, libraries ans special options (see input params)
+    /// Encodes initial contract state from code, data, libraries ans special options (see input params)
     @available(iOS 13, *)
     @available(macOS 12, *)
-    public func encode_tvc(_ payload: TSDKParamsOfEncodeTvc) async throws -> TSDKResultOfEncodeTvc {
+    public func encode_state_init(_ payload: TSDKParamsOfEncodeStateInit) async throws -> TSDKResultOfEncodeStateInit {
         try await withCheckedThrowingContinuation { continuation in
             do {
-                let method: String = "encode_tvc"
+                let method: String = "encode_state_init"
                 try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                    var response: TSDKBindingResponse<TSDKResultOfEncodeTvc, TSDKClientError> = .init()
+                    var response: TSDKBindingResponse<TSDKResultOfEncodeStateInit, TSDKClientError> = .init()
                     response.update(requestId, params, responseType, finished)
                     if let error = response.error {
                         continuation.resume(throwing: error)

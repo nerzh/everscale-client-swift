@@ -7,6 +7,18 @@ public enum TSDKBocCacheTypeEnumTypes: String, Codable {
     case Unpinned = "Unpinned"
 }
 
+public enum TSDKBuilderOpEnumTypes: String, Codable {
+    case Integer = "Integer"
+    case BitString = "BitString"
+    case Cell = "Cell"
+    case CellBoc = "CellBoc"
+    case Address = "Address"
+}
+
+public enum TSDKTvcEnumTypes: String, Codable {
+    case V1 = "V1"
+}
+
 public enum TSDKBocErrorCode: Int, Codable {
     case InvalidBoc = 201
     case SerializationError = 202
@@ -17,14 +29,6 @@ public enum TSDKBocErrorCode: Int, Codable {
     case InvalidBocRef = 207
 }
 
-public enum TSDKBuilderOpEnumTypes: String, Codable {
-    case Integer = "Integer"
-    case BitString = "BitString"
-    case Cell = "Cell"
-    case CellBoc = "CellBoc"
-    case Address = "Address"
-}
-
 public struct TSDKBocCacheType: Codable {
     public var type: TSDKBocCacheTypeEnumTypes
     public var pin: String?
@@ -32,6 +36,71 @@ public struct TSDKBocCacheType: Codable {
     public init(type: TSDKBocCacheTypeEnumTypes, pin: String? = nil) {
         self.type = type
         self.pin = pin
+    }
+}
+
+public struct TSDKBuilderOp: Codable {
+    public var type: TSDKBuilderOpEnumTypes
+    /// Bit size of the value.
+    public var size: UInt32?
+    /// Value: - `Number` containing integer number.
+    /// e.g. `123`, `-123`. - Decimal string. e.g. `"123"`, `"-123"`.
+    /// - `0x` prefixed hexadecimal string.
+    ///   e.g `0x123`, `0X123`, `-0x123`.
+    public var value: AnyValue?
+    /// Nested cell builder.
+    public var builder: [TSDKBuilderOp]?
+    /// Nested cell BOC encoded with `base64` or BOC cache key.
+    public var boc: String?
+    /// Address in a common `workchain:account` or base64 format.
+    public var address: String?
+
+    public init(type: TSDKBuilderOpEnumTypes, size: UInt32? = nil, value: AnyValue? = nil, builder: [TSDKBuilderOp]? = nil, boc: String? = nil, address: String? = nil) {
+        self.type = type
+        self.size = size
+        self.value = value
+        self.builder = builder
+        self.boc = boc
+        self.address = address
+    }
+}
+
+/// Cell builder operation.
+public struct TSDKTvc: Codable {
+    public var type: TSDKTvcEnumTypes
+    public var value: TSDKTvcV1?
+
+    public init(type: TSDKTvcEnumTypes, value: TSDKTvcV1? = nil) {
+        self.type = type
+        self.value = value
+    }
+}
+
+public struct TSDKTvcV1: Codable {
+    public var code: String?
+    public var description: String?
+
+    public init(code: String? = nil, description: String? = nil) {
+        self.code = code
+        self.description = description
+    }
+}
+
+public struct TSDKParamsOfDecodeTvc: Codable {
+    /// Contract TVC BOC encoded as base64 or BOC handle
+    public var tvc: String
+
+    public init(tvc: String) {
+        self.tvc = tvc
+    }
+}
+
+public struct TSDKResultOfDecodeTvc: Codable {
+    /// Decoded TVC
+    public var tvc: TSDKTvc
+
+    public init(tvc: TSDKTvc) {
+        self.tvc = tvc
     }
 }
 
@@ -192,33 +261,6 @@ public struct TSDKParamsOfBocCacheUnpin: Codable {
     }
 }
 
-public struct TSDKBuilderOp: Codable {
-    public var type: TSDKBuilderOpEnumTypes
-    /// Bit size of the value.
-    public var size: UInt32?
-    /// Value: - `Number` containing integer number.
-    /// e.g. `123`, `-123`. - Decimal string. e.g. `"123"`, `"-123"`.
-    /// - `0x` prefixed hexadecimal string.
-    ///   e.g `0x123`, `0X123`, `-0x123`.
-    public var value: AnyValue?
-    /// Nested cell builder.
-    public var builder: [TSDKBuilderOp]?
-    /// Nested cell BOC encoded with `base64` or BOC cache key.
-    public var boc: String?
-    /// Address in a common `workchain:account` or base64 format.
-    public var address: String?
-
-    public init(type: TSDKBuilderOpEnumTypes, size: UInt32? = nil, value: AnyValue? = nil, builder: [TSDKBuilderOp]? = nil, boc: String? = nil, address: String? = nil) {
-        self.type = type
-        self.size = size
-        self.value = value
-        self.builder = builder
-        self.boc = boc
-        self.address = address
-    }
-}
-
-/// Cell builder operation.
 public struct TSDKParamsOfEncodeBoc: Codable {
     /// Cell builder operations.
     public var builder: [TSDKBuilderOp]
@@ -288,19 +330,19 @@ public struct TSDKResultOfSetCodeSalt: Codable {
     }
 }
 
-public struct TSDKParamsOfDecodeTvc: Codable {
-    /// Contract TVC image BOC encoded as base64 or BOC handle
-    public var tvc: String
+public struct TSDKParamsOfDecodeStateInit: Codable {
+    /// Contract StateInit image BOC encoded as base64 or BOC handle
+    public var state_init: String
     /// Cache type to put the result. The BOC itself returned if no cache type provided.
     public var boc_cache: TSDKBocCacheType?
 
-    public init(tvc: String, boc_cache: TSDKBocCacheType? = nil) {
-        self.tvc = tvc
+    public init(state_init: String, boc_cache: TSDKBocCacheType? = nil) {
+        self.state_init = state_init
         self.boc_cache = boc_cache
     }
 }
 
-public struct TSDKResultOfDecodeTvc: Codable {
+public struct TSDKResultOfDecodeStateInit: Codable {
     /// Contract code BOC encoded as base64 or BOC handle
     public var code: String?
     /// Contract code hash
@@ -341,7 +383,7 @@ public struct TSDKResultOfDecodeTvc: Codable {
     }
 }
 
-public struct TSDKParamsOfEncodeTvc: Codable {
+public struct TSDKParamsOfEncodeStateInit: Codable {
     /// Contract code BOC encoded as base64 or BOC handle
     public var code: String?
     /// Contract data BOC encoded as base64 or BOC handle
@@ -370,12 +412,12 @@ public struct TSDKParamsOfEncodeTvc: Codable {
     }
 }
 
-public struct TSDKResultOfEncodeTvc: Codable {
-    /// Contract TVC image BOC encoded as base64 or BOC handle of boc_cache parameter was specified
-    public var tvc: String
+public struct TSDKResultOfEncodeStateInit: Codable {
+    /// Contract StateInit image BOC encoded as base64 or BOC handle of boc_cache parameter was specified
+    public var state_init: String
 
-    public init(tvc: String) {
-        self.tvc = tvc
+    public init(state_init: String) {
+        self.state_init = state_init
     }
 }
 

@@ -60,7 +60,7 @@ public struct TSDKClientError: Codable, LocalizedError {
     public var failureReason: String? { self.message }
     public var recoverySuggestion: String? { self.message }
     public var helpAnchor: String? { self.message }
-    public var data: AnyValue = ([:] as! [String: Any]).toAnyValue()
+    public var data: AnyValue = [String: Any]().toAnyValue()
 
     public init(_ error: Error) {
         self.code = 0

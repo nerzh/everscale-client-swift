@@ -17,6 +17,7 @@ public enum TSDKTvmErrorCode: Int, Codable {
     case InvalidAccountBoc = 412
     case InvalidMessageType = 413
     case ContractExecutionError = 414
+    case AccountIsSuspended = 415
 }
 
 public enum TSDKAccountForExecutorEnumTypes: String, Codable {

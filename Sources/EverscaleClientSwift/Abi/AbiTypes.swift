@@ -70,7 +70,8 @@ public struct TSDKAbi: Codable {
 }
 
 public struct TSDKFunctionHeader: Codable {
-    /// Message expiration time in seconds. If not specified - calculated automatically from message_expiration_timeout(), try_index and message_expiration_timeout_grow_factor() (if ABI includes `expire` header).
+    /// Message expiration timestamp (UNIX time) in seconds.
+    /// If not specified - calculated automatically from message_expiration_timeout(),try_index and message_expiration_timeout_grow_factor() (if ABI includes `expire` header).
     public var expire: UInt32?
     /// Message creation time in milliseconds.
     /// If not specified, `now` is used (if ABI includes `time` header).
@@ -103,8 +104,12 @@ public struct TSDKCallSet: Codable {
 }
 
 public struct TSDKDeploySet: Codable {
-    /// Content of TVC file encoded in `base64`.
-    public var tvc: String
+    /// Content of TVC file encoded in `base64`. For compatibility reason this field can contain an encoded  `StateInit`.
+    public var tvc: String?
+    /// Contract code BOC encoded with base64.
+    public var code: String?
+    /// State init BOC encoded with base64.
+    public var state_init: String?
     /// Target workchain for destination address.
     /// Default is `0`.
     public var workchain_id: Int32?
@@ -117,8 +122,10 @@ public struct TSDKDeploySet: Codable {
     /// 3. Public key, provided by Signer.
     public var initial_pubkey: String?
 
-    public init(tvc: String, workchain_id: Int32? = nil, initial_data: AnyValue? = nil, initial_pubkey: String? = nil) {
+    public init(tvc: String? = nil, code: String? = nil, state_init: String? = nil, workchain_id: Int32? = nil, initial_data: AnyValue? = nil, initial_pubkey: String? = nil) {
         self.tvc = tvc
+        self.code = code
+        self.state_init = state_init
         self.workchain_id = workchain_id
         self.initial_data = initial_data
         self.initial_pubkey = initial_pubkey

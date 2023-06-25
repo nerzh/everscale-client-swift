@@ -1,13 +1,15 @@
 # Swift Client for TVM SDK (toncoin, everscale, venom, gosh)
 
+<! -- 
 <p align="center">
   <a href="https://github.com/venom-blockchain/developer-program">
     <img src="https://raw.githubusercontent.com/venom-blockchain/developer-program/main/vf-dev-program.png" alt="Logo" width="366.8" height="146.4">
   </a>
 </p>
+--> 
 
 [![SPM](https://img.shields.io/badge/swift-package%20manager-green)](https://swift.org/package-manager/)
-[![SPM](https://img.shields.io/badge/SDK%20VERSION-1.42.1-orange)](https://github.com/tonlabs/ever-sdk)
+[![SPM](https://img.shields.io/badge/SDK%20VERSION-1.43.3-orange)](https://github.com/tonlabs/ever-sdk)
 
 Swift is a strongly typed language that has long been used not only for iOS development. Apple is actively promoting it to new platforms and today it can be used for almost any task. Thanks to this, this implementation provides the work of TVM (toncoin, everscale, venom, gosh) SDK on many platforms at once, including the native one for mobile phones. Let me remind you that swift can also be built for android.
 
