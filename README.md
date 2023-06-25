@@ -1,4 +1,4 @@
-# Swift Client for TVM SDK (toncoin, everscale, venom, gosh)
+# Swift Client for TVM SDK (everscale, venom, gosh)
 
 <!--- 
   <p align="center">
