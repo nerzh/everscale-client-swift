@@ -59,7 +59,7 @@ public final class TSDKBindingModule: TSDKBindingPrtcl {
     
     private func createContext(config: TSDKClientConfig) throws -> UInt32 {
         var contextId: UInt32 = .init()
-        let json: String = config.toJson() ?? "{}"
+        let json: String = config.toJson ?? "{}"
         try Self.convertToTSDKString(json) { config in
             let ctx: OpaquePointer = tc_create_context(config)
             let contextResponse: TSDKContextResponse = try Self.convertFromTSDKString(tc_read_string(ctx)).toModel(TSDKContextResponse.self)
@@ -86,7 +86,7 @@ public final class TSDKBindingModule: TSDKBindingPrtcl {
     ) throws {
         try Self.convertToTSDKString(methodName) { [weak self] tsdkMethodName in
             guard let self = self else { return }
-            let payload = payload.toJson() ?? ""
+            let payload = payload.toJson ?? ""
             try Self.convertToTSDKString(payload) { tsdkPayload in
                 let requestId: UInt32 = BindingStore.generate_request_id()
                 BindingStore.addResponseHandler(requestId, requestHandler)
@@ -130,7 +130,7 @@ public final class TSDKBindingModule: TSDKBindingPrtcl {
     ) throws {
         try Self.convertToTSDKString(methodName) { [weak self] tsdkMethodName in
             guard let self = self else { return }
-            let payload = payload.toJson() ?? ""
+            let payload = payload.toJson ?? ""
             try Self.convertToTSDKString(payload) { tsdkPayload in
                 let requestId: UInt32 = BindingStore.generate_request_id()
                 BindingStore.addResponseHandler(requestId, requestHandler)
