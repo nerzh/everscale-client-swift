@@ -293,10 +293,10 @@ public struct TSDKParamsOfSendMessage: Codable {
     /// The `message already expired` error will be returned in thiscase.
     /// Note, that specifying `abi` for ABI compliant contracts isstrongly recommended, so that proper processing strategy can bechosen.
     public var abi: TSDKAbi?
-    /// Flag for requesting events sending
-    public var send_events: Bool
+    /// Flag for requesting events sending. Default is `false`.
+    public var send_events: Bool?
 
-    public init(message: String, abi: TSDKAbi? = nil, send_events: Bool) {
+    public init(message: String, abi: TSDKAbi? = nil, send_events: Bool? = nil) {
         self.message = message
         self.abi = abi
         self.send_events = send_events
@@ -328,15 +328,15 @@ public struct TSDKParamsOfWaitForTransaction: Codable {
     /// The last generated block id of the destination account shard before the message was sent.
     /// You must provide the same value as the `send_message` has returned.
     public var shard_block_id: String
-    /// Flag that enables/disables intermediate events
-    public var send_events: Bool
+    /// Flag that enables/disables intermediate events. Default is `false`.
+    public var send_events: Bool?
     /// The list of endpoints to which the message was sent.
     /// Use this field to get more informative errors.
     /// Provide the same value as the `send_message` has returned.
     /// If the message was not delivered (expired), SDK will log the endpoint URLs, used for its sending.
     public var sending_endpoints: [String]?
 
-    public init(abi: TSDKAbi? = nil, message: String, shard_block_id: String, send_events: Bool, sending_endpoints: [String]? = nil) {
+    public init(abi: TSDKAbi? = nil, message: String, shard_block_id: String, send_events: Bool? = nil, sending_endpoints: [String]? = nil) {
         self.abi = abi
         self.message = message
         self.shard_block_id = shard_block_id
@@ -348,10 +348,10 @@ public struct TSDKParamsOfWaitForTransaction: Codable {
 public struct TSDKParamsOfProcessMessage: Codable {
     /// Message encode parameters.
     public var message_encode_params: TSDKParamsOfEncodeMessage
-    /// Flag for requesting events sending
-    public var send_events: Bool
+    /// Flag for requesting events sending. Default is `false`.
+    public var send_events: Bool?
 
-    public init(message_encode_params: TSDKParamsOfEncodeMessage, send_events: Bool) {
+    public init(message_encode_params: TSDKParamsOfEncodeMessage, send_events: Bool? = nil) {
         self.message_encode_params = message_encode_params
         self.send_events = send_events
     }

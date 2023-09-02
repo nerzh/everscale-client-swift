@@ -142,7 +142,7 @@ public struct TSDKDebotActivity: Codable {
     }
 }
 
-/// [UNSTABLE](UNSTABLE.md) Describes the operation that the DeBot wants to perform.
+/// [UNSTABLE](UNSTABLE.md) [DEPRECATED](DEPRECATED.md) Describes the operation that the DeBot wants to perform.
 public struct TSDKSpending: Codable {
     /// Amount of nanotokens that will be sent to `dst` address.
     public var amount: Int
@@ -209,7 +209,7 @@ public struct TSDKParamsOfAppDebotBrowser: Codable {
     }
 }
 
-/// [UNSTABLE](UNSTABLE.md) Debot Browser callbacks
+/// [UNSTABLE](UNSTABLE.md) [DEPRECATED](DEPRECATED.md) Debot Browser callbacks
 /// Called by debot engine to communicate with debot browser.
 public struct TSDKResultOfAppDebotBrowser: Codable {
     public var type: TSDKResultOfAppDebotBrowserEnumTypes
@@ -229,7 +229,7 @@ public struct TSDKResultOfAppDebotBrowser: Codable {
     }
 }
 
-/// [UNSTABLE](UNSTABLE.md) Returning values from Debot Browser callbacks.
+/// [UNSTABLE](UNSTABLE.md) [DEPRECATED](DEPRECATED.md) Returning values from Debot Browser callbacks.
 public struct TSDKParamsOfStart: Codable {
     /// Debot handle which references an instance of debot engine.
     public var debot_handle: TSDKDebotHandle
