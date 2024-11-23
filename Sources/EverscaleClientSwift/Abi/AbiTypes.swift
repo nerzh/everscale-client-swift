@@ -20,6 +20,7 @@ public enum TSDKAbiErrorCode: Int, Codable {
     case InvalidData = 313
     case EncodeInitialDataFailed = 314
     case InvalidFunctionName = 315
+    case PubKeyNotSupported = 316
 }
 
 public enum TSDKAbiEnumTypes: String, Codable {
@@ -41,17 +42,6 @@ public enum TSDKMessageBodyType: String, Codable {
     case Output = "Output"
     case InternalOutput = "InternalOutput"
     case Event = "Event"
-}
-
-public enum TSDKStateInitSourceEnumTypes: String, Codable {
-    case Message = "Message"
-    case StateInit = "StateInit"
-    case Tvc = "Tvc"
-}
-
-public enum TSDKMessageSourceEnumTypes: String, Codable {
-    case Encoded = "Encoded"
-    case EncodingParams = "EncodingParams"
 }
 
 public enum TSDKDataLayout: String, Codable {
@@ -77,7 +67,7 @@ public struct TSDKFunctionHeader: Codable {
     /// If not specified, `now` is used (if ABI includes `time` header).
     public var time: Int?
     /// Public key is used by the contract to check the signature.
-    /// Encoded in `hex`. If not specified, method fails with exception (if ABI includes `pubkey` header)..
+    /// Encoded in `hex`. If not specified, method fails with exception (if ABI includes `pubkey` header).
     public var pubkey: String?
 
     public init(expire: UInt32? = nil, time: Int? = nil, pubkey: String? = nil) {
@@ -120,6 +110,7 @@ public struct TSDKDeploySet: Codable {
     /// 1. Public key from deploy set.
     /// 2. Public key, specified in TVM file.
     /// 3. Public key, provided by Signer.
+    /// Applicable only for contracts with ABI version < 2.4. Contract initial public key should beexplicitly provided inside `initial_data` since ABI 2.4
     public var initial_pubkey: String?
 
     public init(tvc: String? = nil, code: String? = nil, state_init: String? = nil, workchain_id: Int32? = nil, initial_data: AnyValue? = nil, initial_pubkey: String? = nil) {
@@ -146,65 +137,17 @@ public struct TSDKSigner: Codable {
     }
 }
 
-public struct TSDKStateInitSource: Codable {
-    public var type: TSDKStateInitSourceEnumTypes
-    public var source: TSDKMessageSource?
-    /// Code BOC.
-    /// Encoded in `base64`.
-    public var code: String?
-    /// Data BOC.
-    /// Encoded in `base64`.
-    public var data: String?
-    /// Library BOC.
-    /// Encoded in `base64`.
-    public var library: String?
-    public var tvc: String?
-    public var public_key: String?
-    public var init_params: TSDKStateInitParams?
-
-    public init(type: TSDKStateInitSourceEnumTypes, source: TSDKMessageSource? = nil, code: String? = nil, data: String? = nil, library: String? = nil, tvc: String? = nil, public_key: String? = nil, init_params: TSDKStateInitParams? = nil) {
-        self.type = type
-        self.source = source
-        self.code = code
-        self.data = data
-        self.library = library
-        self.tvc = tvc
-        self.public_key = public_key
-        self.init_params = init_params
-    }
-}
-
-public struct TSDKStateInitParams: Codable {
-    public var abi: TSDKAbi
-    public var value: AnyValue
-
-    public init(abi: TSDKAbi, value: AnyValue) {
-        self.abi = abi
-        self.value = value
-    }
-}
-
-public struct TSDKMessageSource: Codable {
-    public var type: TSDKMessageSourceEnumTypes
-    public var message: String?
-    public var abi: TSDKAbi?
-
-    public init(type: TSDKMessageSourceEnumTypes, message: String? = nil, abi: TSDKAbi? = nil) {
-        self.type = type
-        self.message = message
-        self.abi = abi
-    }
-}
-
 public struct TSDKAbiParam: Codable {
     public var name: String
     public var type: String
     public var components: [TSDKAbiParam]?
+    public var `init`: Bool?
 
-    public init(name: String, type: String, components: [TSDKAbiParam]? = nil) {
+    public init(name: String, type: String, components: [TSDKAbiParam]? = nil, `init`: Bool? = nil) {
         self.name = name
         self.type = type
         self.components = components
+        self.`init` = `init`
     }
 }
 
@@ -544,8 +487,8 @@ public struct TSDKParamsOfDecodeMessageBody: Codable {
 }
 
 public struct TSDKParamsOfEncodeAccount: Codable {
-    /// Source of the account state init.
-    public var state_init: TSDKStateInitSource
+    /// Account state init.
+    public var state_init: String
     /// Initial balance.
     public var balance: Int?
     /// Initial value for the `last_trans_lt`.
@@ -556,7 +499,7 @@ public struct TSDKParamsOfEncodeAccount: Codable {
     /// The BOC itself returned if no cache type provided
     public var boc_cache: TSDKBocCacheType?
 
-    public init(state_init: TSDKStateInitSource, balance: Int? = nil, last_trans_lt: Int? = nil, last_paid: UInt32? = nil, boc_cache: TSDKBocCacheType? = nil) {
+    public init(state_init: String, balance: Int? = nil, last_trans_lt: Int? = nil, last_paid: UInt32? = nil, boc_cache: TSDKBocCacheType? = nil) {
         self.state_init = state_init
         self.balance = balance
         self.last_trans_lt = last_trans_lt
@@ -603,7 +546,7 @@ public struct TSDKResultOfDecodeAccountData: Codable {
 
 public struct TSDKParamsOfUpdateInitialData: Codable {
     /// Contract ABI
-    public var abi: TSDKAbi?
+    public var abi: TSDKAbi
     /// Data BOC or BOC handle
     public var data: String
     /// List of initial values for contract's static variables.
@@ -614,7 +557,7 @@ public struct TSDKParamsOfUpdateInitialData: Codable {
     /// Cache type to put the result. The BOC itself returned if no cache type provided.
     public var boc_cache: TSDKBocCacheType?
 
-    public init(abi: TSDKAbi? = nil, data: String, initial_data: AnyValue? = nil, initial_pubkey: String? = nil, boc_cache: TSDKBocCacheType? = nil) {
+    public init(abi: TSDKAbi, data: String, initial_data: AnyValue? = nil, initial_pubkey: String? = nil, boc_cache: TSDKBocCacheType? = nil) {
         self.abi = abi
         self.data = data
         self.initial_data = initial_data
@@ -634,7 +577,7 @@ public struct TSDKResultOfUpdateInitialData: Codable {
 
 public struct TSDKParamsOfEncodeInitialData: Codable {
     /// Contract ABI
-    public var abi: TSDKAbi?
+    public var abi: TSDKAbi
     /// List of initial values for contract's static variables.
     /// `abi` parameter should be provided to set initial data
     public var initial_data: AnyValue?
@@ -643,7 +586,7 @@ public struct TSDKParamsOfEncodeInitialData: Codable {
     /// Cache type to put the result. The BOC itself returned if no cache type provided.
     public var boc_cache: TSDKBocCacheType?
 
-    public init(abi: TSDKAbi? = nil, initial_data: AnyValue? = nil, initial_pubkey: String? = nil, boc_cache: TSDKBocCacheType? = nil) {
+    public init(abi: TSDKAbi, initial_data: AnyValue? = nil, initial_pubkey: String? = nil, boc_cache: TSDKBocCacheType? = nil) {
         self.abi = abi
         self.initial_data = initial_data
         self.initial_pubkey = initial_pubkey
@@ -663,13 +606,13 @@ public struct TSDKResultOfEncodeInitialData: Codable {
 public struct TSDKParamsOfDecodeInitialData: Codable {
     /// Contract ABI.
     /// Initial data is decoded if this parameter is provided
-    public var abi: TSDKAbi?
+    public var abi: TSDKAbi
     /// Data BOC or BOC handle
     public var data: String
     /// Flag allowing partial BOC decoding when ABI doesn't describe the full body BOC. Controls decoder behaviour when after decoding all described in ABI params there are some data left in BOC: `true` - return decoded values `false` - return error of incomplete BOC deserialization (default)
     public var allow_partial: Bool?
 
-    public init(abi: TSDKAbi? = nil, data: String, allow_partial: Bool? = nil) {
+    public init(abi: TSDKAbi, data: String, allow_partial: Bool? = nil) {
         self.abi = abi
         self.data = data
         self.allow_partial = allow_partial
@@ -679,11 +622,11 @@ public struct TSDKParamsOfDecodeInitialData: Codable {
 public struct TSDKResultOfDecodeInitialData: Codable {
     /// List of initial values of contract's public variables.
     /// Initial data is decoded if `abi` input parameter is provided
-    public var initial_data: AnyValue?
+    public var initial_data: AnyValue
     /// Initial account owner's public key
     public var initial_pubkey: String
 
-    public init(initial_data: AnyValue? = nil, initial_pubkey: String) {
+    public init(initial_data: AnyValue, initial_pubkey: String) {
         self.initial_data = initial_data
         self.initial_pubkey = initial_pubkey
     }

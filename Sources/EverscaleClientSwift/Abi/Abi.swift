@@ -299,8 +299,6 @@ public final class TSDKAbiModule {
     }
 
     /// Creates account state BOC
-    /// Creates account state provided with one of these sets of data :
-    /// 1. BOC of code, BOC of data, BOC of library2. TVC (string in `base64`), keys, init params
     public func encode_account(_ payload: TSDKParamsOfEncodeAccount, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfEncodeAccount, TSDKClientError>) throws -> Void
     ) throws {
         let method: String = "encode_account"
@@ -312,8 +310,6 @@ public final class TSDKAbiModule {
     }
 
     /// Creates account state BOC
-    /// Creates account state provided with one of these sets of data :
-    /// 1. BOC of code, BOC of data, BOC of library2. TVC (string in `base64`), keys, init params
     @available(iOS 13, *)
     @available(macOS 12, *)
     public func encode_account(_ payload: TSDKParamsOfEncodeAccount) async throws -> TSDKResultOfEncodeAccount {
@@ -375,6 +371,7 @@ public final class TSDKAbiModule {
     }
 
     /// Updates initial account data with initial values for the contract's static variables and owner's public key. This operation is applicable only for initial account data (before deploy). If the contract is already deployed, its data doesn't contain this data section any more.
+    /// Doesn't support ABI version >= 2.4. Use `encode_initial_data` instead
     public func update_initial_data(_ payload: TSDKParamsOfUpdateInitialData, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfUpdateInitialData, TSDKClientError>) throws -> Void
     ) throws {
         let method: String = "update_initial_data"
@@ -386,6 +383,7 @@ public final class TSDKAbiModule {
     }
 
     /// Updates initial account data with initial values for the contract's static variables and owner's public key. This operation is applicable only for initial account data (before deploy). If the contract is already deployed, its data doesn't contain this data section any more.
+    /// Doesn't support ABI version >= 2.4. Use `encode_initial_data` instead
     @available(iOS 13, *)
     @available(macOS 12, *)
     public func update_initial_data(_ payload: TSDKParamsOfUpdateInitialData) async throws -> TSDKResultOfUpdateInitialData {
@@ -447,6 +445,7 @@ public final class TSDKAbiModule {
     }
 
     /// Decodes initial values of a contract's static variables and owner's public key from account initial data This operation is applicable only for initial account data (before deploy). If the contract is already deployed, its data doesn't contain this data section any more.
+    /// Doesn't support ABI version >= 2.4. Use `decode_account_data` instead
     public func decode_initial_data(_ payload: TSDKParamsOfDecodeInitialData, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfDecodeInitialData, TSDKClientError>) throws -> Void
     ) throws {
         let method: String = "decode_initial_data"
@@ -458,6 +457,7 @@ public final class TSDKAbiModule {
     }
 
     /// Decodes initial values of a contract's static variables and owner's public key from account initial data This operation is applicable only for initial account data (before deploy). If the contract is already deployed, its data doesn't contain this data section any more.
+    /// Doesn't support ABI version >= 2.4. Use `decode_account_data` instead
     @available(iOS 13, *)
     @available(macOS 12, *)
     public func decode_initial_data(_ payload: TSDKParamsOfDecodeInitialData) async throws -> TSDKResultOfDecodeInitialData {
@@ -482,7 +482,7 @@ public final class TSDKAbiModule {
     }
 
     /// Decodes BOC into JSON as a set of provided parameters.
-    /// Solidity functions use ABI types for [builder encoding](https://github.com/tonlabs/TON-Solidity-Compiler/blob/master/API.md#tvmbuilderstore).
+    /// Solidity functions use ABI types for [builder encoding](https://github.com/everx-labs/TVM-Solidity-Compiler/blob/master/API.md#tvmbuilderstore).
     /// The simplest way to decode such a BOC is to use ABI decoding.
     /// ABI has it own rules for fields layout in cells so manually encodedBOC can not be described in terms of ABI rules.
     /// To solve this problem we introduce a new ABI type `Ref(<ParamType>)`which allows to store `ParamType` ABI parameter in cell reference and, thus,decode manually encoded BOCs. This type is available only in `decode_boc` functionand will not be available in ABI messages encoding until it is included into some ABI revision.
@@ -498,7 +498,7 @@ public final class TSDKAbiModule {
     }
 
     /// Decodes BOC into JSON as a set of provided parameters.
-    /// Solidity functions use ABI types for [builder encoding](https://github.com/tonlabs/TON-Solidity-Compiler/blob/master/API.md#tvmbuilderstore).
+    /// Solidity functions use ABI types for [builder encoding](https://github.com/everx-labs/TVM-Solidity-Compiler/blob/master/API.md#tvmbuilderstore).
     /// The simplest way to decode such a BOC is to use ABI decoding.
     /// ABI has it own rules for fields layout in cells so manually encodedBOC can not be described in terms of ABI rules.
     /// To solve this problem we introduce a new ABI type `Ref(<ParamType>)`which allows to store `ParamType` ABI parameter in cell reference and, thus,decode manually encoded BOCs. This type is available only in `decode_boc` functionand will not be available in ABI messages encoding until it is included into some ABI revision.

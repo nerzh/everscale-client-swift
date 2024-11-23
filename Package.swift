@@ -10,6 +10,7 @@ let package = Package(
         .iOS(SupportedPlatform.IOSVersion.v13)
     ],
     products: [
+        .library(name: "CTonSDK", targets: ["CTonSDK"]),
         .library(name: "EverscaleClientSwift", targets: ["EverscaleClientSwift"]),
     ],
     dependencies: [
@@ -19,7 +20,20 @@ let package = Package(
         .package(url: "https://github.com/nerzh/swift-extensions-pack", .upToNextMajor(from: "1.25.2")),
     ],
     targets: [
-        .systemLibrary(name: "CTonSDK", pkgConfig: "libton_client"),
+//        .systemLibrary(name: "CTonSDK", pkgConfig: "libever_client"),
+        .target(
+            name: "CTonSDK",
+            dependencies: [],
+            path: "Sources/CTonSDK",
+            publicHeadersPath: "include",
+            cSettings: [
+                .headerSearchPath("include"),
+            ],
+            linkerSettings: [
+                .unsafeFlags(["-L", "lib"]),
+                .unsafeFlags(["-l", "ever_client"])
+            ]
+        ),
         .target(
             name: "EverscaleClientSwift",
             dependencies: [
@@ -27,7 +41,9 @@ let package = Package(
                 .product(name: "SwiftRegularExpression", package: "swift-regular-expression"),
                 .product(name: "BigInt", package: "BigInt"),
                 .product(name: "SwiftExtensionsPack", package: "swift-extensions-pack"),
-            ]),
+            ],
+            path: "Sources/EverscaleClientSwift"
+        ),
         .testTarget(
             name: "EverscaleClientSwiftTests",
             dependencies: [
@@ -36,6 +52,7 @@ let package = Package(
                 .product(name: "FileUtils", package: "SwiftFileUtils"),
                 .product(name: "BigInt", package: "BigInt"),
                 .product(name: "SwiftExtensionsPack", package: "swift-extensions-pack"),
-            ]),
+            ]
+        ),
     ]
 )
