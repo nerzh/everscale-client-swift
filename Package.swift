@@ -16,7 +16,7 @@ let package = Package(
         .package(url: "https://github.com/nerzh/swift-regular-expression.git", .upToNextMajor(from: "0.2.4")),
         .package(url: "https://github.com/nerzh/SwiftFileUtils", .upToNextMajor(from: "1.3.0")),
         .package(url: "https://github.com/bytehubio/BigInt", exact: "5.3.0"),
-        .package(url: "https://github.com/nerzh/swift-extensions-pack", .upToNextMajor(from: "1.25.2")),
+        .package(url: "https://github.com/nerzh/swift-extensions-pack", .upToNextMajor(from: "2.0.0")),
     ],
     targets: [
         .systemLibrary(name: "CTonSDK", pkgConfig: "libton_client"),
