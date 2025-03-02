@@ -29,7 +29,7 @@ public enum TSDKBocErrorCode: Int, Codable {
     case InvalidBocRef = 207
 }
 
-public struct TSDKBocCacheType: Codable {
+public struct TSDKBocCacheType: Codable, @unchecked Sendable {
     public var type: TSDKBocCacheTypeEnumTypes
     public var pin: String?
 
@@ -39,7 +39,7 @@ public struct TSDKBocCacheType: Codable {
     }
 }
 
-public struct TSDKBuilderOp: Codable {
+public struct TSDKBuilderOp: Codable, @unchecked Sendable {
     public var type: TSDKBuilderOpEnumTypes
     /// Bit size of the value.
     public var size: UInt32?
@@ -66,7 +66,7 @@ public struct TSDKBuilderOp: Codable {
 }
 
 /// Cell builder operation.
-public struct TSDKTvc: Codable {
+public struct TSDKTvc: Codable, @unchecked Sendable {
     public var type: TSDKTvcEnumTypes
     public var value: TSDKTvcV1?
 
@@ -76,7 +76,7 @@ public struct TSDKTvc: Codable {
     }
 }
 
-public struct TSDKTvcV1: Codable {
+public struct TSDKTvcV1: Codable, @unchecked Sendable {
     public var code: String?
     public var description: String?
 
@@ -86,7 +86,7 @@ public struct TSDKTvcV1: Codable {
     }
 }
 
-public struct TSDKParamsOfDecodeTvc: Codable {
+public struct TSDKParamsOfDecodeTvc: Codable, @unchecked Sendable {
     /// Contract TVC BOC encoded as base64 or BOC handle
     public var tvc: String
 
@@ -95,7 +95,7 @@ public struct TSDKParamsOfDecodeTvc: Codable {
     }
 }
 
-public struct TSDKResultOfDecodeTvc: Codable {
+public struct TSDKResultOfDecodeTvc: Codable, @unchecked Sendable {
     /// Decoded TVC
     public var tvc: TSDKTvc
 
@@ -104,7 +104,7 @@ public struct TSDKResultOfDecodeTvc: Codable {
     }
 }
 
-public struct TSDKParamsOfParse: Codable {
+public struct TSDKParamsOfParse: Codable, @unchecked Sendable {
     /// BOC encoded as base64
     public var boc: String
 
@@ -113,7 +113,7 @@ public struct TSDKParamsOfParse: Codable {
     }
 }
 
-public struct TSDKResultOfParse: Codable {
+public struct TSDKResultOfParse: Codable, @unchecked Sendable {
     /// JSON containing parsed BOC
     public var parsed: AnyValue
 
@@ -122,7 +122,7 @@ public struct TSDKResultOfParse: Codable {
     }
 }
 
-public struct TSDKParamsOfParseShardstate: Codable {
+public struct TSDKParamsOfParseShardstate: Codable, @unchecked Sendable {
     /// BOC encoded as base64
     public var boc: String
     /// Shardstate identifier
@@ -137,7 +137,7 @@ public struct TSDKParamsOfParseShardstate: Codable {
     }
 }
 
-public struct TSDKParamsOfGetBlockchainConfig: Codable {
+public struct TSDKParamsOfGetBlockchainConfig: Codable, @unchecked Sendable {
     /// Key block BOC or zerostate BOC encoded as base64
     public var block_boc: String
 
@@ -146,7 +146,7 @@ public struct TSDKParamsOfGetBlockchainConfig: Codable {
     }
 }
 
-public struct TSDKResultOfGetBlockchainConfig: Codable {
+public struct TSDKResultOfGetBlockchainConfig: Codable, @unchecked Sendable {
     /// Blockchain config BOC encoded as base64
     public var config_boc: String
 
@@ -155,7 +155,7 @@ public struct TSDKResultOfGetBlockchainConfig: Codable {
     }
 }
 
-public struct TSDKParamsOfGetBocHash: Codable {
+public struct TSDKParamsOfGetBocHash: Codable, @unchecked Sendable {
     /// BOC encoded as base64 or BOC handle
     public var boc: String
 
@@ -164,7 +164,7 @@ public struct TSDKParamsOfGetBocHash: Codable {
     }
 }
 
-public struct TSDKResultOfGetBocHash: Codable {
+public struct TSDKResultOfGetBocHash: Codable, @unchecked Sendable {
     /// BOC root hash encoded with hex
     public var hash: String
 
@@ -173,7 +173,7 @@ public struct TSDKResultOfGetBocHash: Codable {
     }
 }
 
-public struct TSDKParamsOfGetBocDepth: Codable {
+public struct TSDKParamsOfGetBocDepth: Codable, @unchecked Sendable {
     /// BOC encoded as base64 or BOC handle
     public var boc: String
 
@@ -182,7 +182,7 @@ public struct TSDKParamsOfGetBocDepth: Codable {
     }
 }
 
-public struct TSDKResultOfGetBocDepth: Codable {
+public struct TSDKResultOfGetBocDepth: Codable, @unchecked Sendable {
     /// BOC root cell depth
     public var depth: UInt32
 
@@ -191,7 +191,7 @@ public struct TSDKResultOfGetBocDepth: Codable {
     }
 }
 
-public struct TSDKParamsOfGetCodeFromTvc: Codable {
+public struct TSDKParamsOfGetCodeFromTvc: Codable, @unchecked Sendable {
     /// Contract TVC image or image BOC handle
     public var tvc: String
 
@@ -200,7 +200,7 @@ public struct TSDKParamsOfGetCodeFromTvc: Codable {
     }
 }
 
-public struct TSDKResultOfGetCodeFromTvc: Codable {
+public struct TSDKResultOfGetCodeFromTvc: Codable, @unchecked Sendable {
     /// Contract code encoded as base64
     public var code: String
 
@@ -209,7 +209,7 @@ public struct TSDKResultOfGetCodeFromTvc: Codable {
     }
 }
 
-public struct TSDKParamsOfBocCacheGet: Codable {
+public struct TSDKParamsOfBocCacheGet: Codable, @unchecked Sendable {
     /// Reference to the cached BOC
     public var boc_ref: String
 
@@ -218,7 +218,7 @@ public struct TSDKParamsOfBocCacheGet: Codable {
     }
 }
 
-public struct TSDKResultOfBocCacheGet: Codable {
+public struct TSDKResultOfBocCacheGet: Codable, @unchecked Sendable {
     /// BOC encoded as base64.
     public var boc: String?
 
@@ -227,7 +227,7 @@ public struct TSDKResultOfBocCacheGet: Codable {
     }
 }
 
-public struct TSDKParamsOfBocCacheSet: Codable {
+public struct TSDKParamsOfBocCacheSet: Codable, @unchecked Sendable {
     /// BOC encoded as base64 or BOC reference
     public var boc: String
     /// Cache type
@@ -239,7 +239,7 @@ public struct TSDKParamsOfBocCacheSet: Codable {
     }
 }
 
-public struct TSDKResultOfBocCacheSet: Codable {
+public struct TSDKResultOfBocCacheSet: Codable, @unchecked Sendable {
     /// Reference to the cached BOC
     public var boc_ref: String
 
@@ -248,7 +248,7 @@ public struct TSDKResultOfBocCacheSet: Codable {
     }
 }
 
-public struct TSDKParamsOfBocCacheUnpin: Codable {
+public struct TSDKParamsOfBocCacheUnpin: Codable, @unchecked Sendable {
     /// Pinned name
     public var pin: String
     /// Reference to the cached BOC.
@@ -261,7 +261,7 @@ public struct TSDKParamsOfBocCacheUnpin: Codable {
     }
 }
 
-public struct TSDKParamsOfEncodeBoc: Codable {
+public struct TSDKParamsOfEncodeBoc: Codable, @unchecked Sendable {
     /// Cell builder operations.
     public var builder: [TSDKBuilderOp]
     /// Cache type to put the result. The BOC itself returned if no cache type provided.
@@ -273,7 +273,7 @@ public struct TSDKParamsOfEncodeBoc: Codable {
     }
 }
 
-public struct TSDKResultOfEncodeBoc: Codable {
+public struct TSDKResultOfEncodeBoc: Codable, @unchecked Sendable {
     /// Encoded cell BOC or BOC cache key.
     public var boc: String
 
@@ -282,7 +282,7 @@ public struct TSDKResultOfEncodeBoc: Codable {
     }
 }
 
-public struct TSDKParamsOfGetCodeSalt: Codable {
+public struct TSDKParamsOfGetCodeSalt: Codable, @unchecked Sendable {
     /// Contract code BOC encoded as base64 or code BOC handle
     public var code: String
     /// Cache type to put the result. The BOC itself returned if no cache type provided.
@@ -294,7 +294,7 @@ public struct TSDKParamsOfGetCodeSalt: Codable {
     }
 }
 
-public struct TSDKResultOfGetCodeSalt: Codable {
+public struct TSDKResultOfGetCodeSalt: Codable, @unchecked Sendable {
     /// Contract code salt if present.
     /// BOC encoded as base64 or BOC handle
     public var salt: String?
@@ -304,7 +304,7 @@ public struct TSDKResultOfGetCodeSalt: Codable {
     }
 }
 
-public struct TSDKParamsOfSetCodeSalt: Codable {
+public struct TSDKParamsOfSetCodeSalt: Codable, @unchecked Sendable {
     /// Contract code BOC encoded as base64 or code BOC handle
     public var code: String
     /// Code salt to set.
@@ -320,7 +320,7 @@ public struct TSDKParamsOfSetCodeSalt: Codable {
     }
 }
 
-public struct TSDKResultOfSetCodeSalt: Codable {
+public struct TSDKResultOfSetCodeSalt: Codable, @unchecked Sendable {
     /// Contract code with salt set.
     /// BOC encoded as base64 or BOC handle
     public var code: String
@@ -330,7 +330,7 @@ public struct TSDKResultOfSetCodeSalt: Codable {
     }
 }
 
-public struct TSDKParamsOfDecodeStateInit: Codable {
+public struct TSDKParamsOfDecodeStateInit: Codable, @unchecked Sendable {
     /// Contract StateInit image BOC encoded as base64 or BOC handle
     public var state_init: String
     /// Cache type to put the result. The BOC itself returned if no cache type provided.
@@ -342,7 +342,7 @@ public struct TSDKParamsOfDecodeStateInit: Codable {
     }
 }
 
-public struct TSDKResultOfDecodeStateInit: Codable {
+public struct TSDKResultOfDecodeStateInit: Codable, @unchecked Sendable {
     /// Contract code BOC encoded as base64 or BOC handle
     public var code: String?
     /// Contract code hash
@@ -383,7 +383,7 @@ public struct TSDKResultOfDecodeStateInit: Codable {
     }
 }
 
-public struct TSDKParamsOfEncodeStateInit: Codable {
+public struct TSDKParamsOfEncodeStateInit: Codable, @unchecked Sendable {
     /// Contract code BOC encoded as base64 or BOC handle
     public var code: String?
     /// Contract data BOC encoded as base64 or BOC handle
@@ -412,7 +412,7 @@ public struct TSDKParamsOfEncodeStateInit: Codable {
     }
 }
 
-public struct TSDKResultOfEncodeStateInit: Codable {
+public struct TSDKResultOfEncodeStateInit: Codable, @unchecked Sendable {
     /// Contract StateInit image BOC encoded as base64 or BOC handle of boc_cache parameter was specified
     public var state_init: String
 
@@ -421,7 +421,7 @@ public struct TSDKResultOfEncodeStateInit: Codable {
     }
 }
 
-public struct TSDKParamsOfEncodeExternalInMessage: Codable {
+public struct TSDKParamsOfEncodeExternalInMessage: Codable, @unchecked Sendable {
     /// Source address.
     public var src: String?
     /// Destination address.
@@ -443,7 +443,7 @@ public struct TSDKParamsOfEncodeExternalInMessage: Codable {
     }
 }
 
-public struct TSDKResultOfEncodeExternalInMessage: Codable {
+public struct TSDKResultOfEncodeExternalInMessage: Codable, @unchecked Sendable {
     /// Message BOC encoded with `base64`.
     public var message: String
     /// Message id.
@@ -455,7 +455,7 @@ public struct TSDKResultOfEncodeExternalInMessage: Codable {
     }
 }
 
-public struct TSDKParamsOfGetCompilerVersion: Codable {
+public struct TSDKParamsOfGetCompilerVersion: Codable, @unchecked Sendable {
     /// Contract code BOC encoded as base64 or code BOC handle
     public var code: String
 
@@ -464,7 +464,7 @@ public struct TSDKParamsOfGetCompilerVersion: Codable {
     }
 }
 
-public struct TSDKResultOfGetCompilerVersion: Codable {
+public struct TSDKResultOfGetCompilerVersion: Codable, @unchecked Sendable {
     /// Compiler version, for example 'sol 0.49.0'
     public var version: String?
 

@@ -9,7 +9,7 @@ public enum TSDKProofsErrorCode: Int, Codable {
     case DataDiffersFromProven = 904
 }
 
-public struct TSDKParamsOfProofBlockData: Codable {
+public struct TSDKParamsOfProofBlockData: Codable, @unchecked Sendable {
     /// Single block's data, retrieved from TONOS API, that needs proof. Required fields are `id` and/or top-level `boc` (for block identification), others are optional.
     public var block: AnyValue
 
@@ -18,7 +18,7 @@ public struct TSDKParamsOfProofBlockData: Codable {
     }
 }
 
-public struct TSDKParamsOfProofTransactionData: Codable {
+public struct TSDKParamsOfProofTransactionData: Codable, @unchecked Sendable {
     /// Single transaction's data as queried from DApp server, without modifications. The required fields are `id` and/or top-level `boc`, others are optional. In order to reduce network requests count, it is recommended to provide `block_id` and `boc` of transaction.
     public var transaction: AnyValue
 
@@ -27,7 +27,7 @@ public struct TSDKParamsOfProofTransactionData: Codable {
     }
 }
 
-public struct TSDKParamsOfProofMessageData: Codable {
+public struct TSDKParamsOfProofMessageData: Codable, @unchecked Sendable {
     /// Single message's data as queried from DApp server, without modifications. The required fields are `id` and/or top-level `boc`, others are optional. In order to reduce network requests count, it is recommended to provide at least `boc` of message and non-null `src_transaction.id` or `dst_transaction.id`.
     public var message: AnyValue
 

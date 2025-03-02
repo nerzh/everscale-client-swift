@@ -20,6 +20,7 @@ public enum TSDKAbiErrorCode: Int, Codable {
     case InvalidData = 313
     case EncodeInitialDataFailed = 314
     case InvalidFunctionName = 315
+    case PubKeyNotSupported = 316
 }
 
 public enum TSDKAbiEnumTypes: String, Codable {
@@ -43,23 +44,12 @@ public enum TSDKMessageBodyType: String, Codable {
     case Event = "Event"
 }
 
-public enum TSDKStateInitSourceEnumTypes: String, Codable {
-    case Message = "Message"
-    case StateInit = "StateInit"
-    case Tvc = "Tvc"
-}
-
-public enum TSDKMessageSourceEnumTypes: String, Codable {
-    case Encoded = "Encoded"
-    case EncodingParams = "EncodingParams"
-}
-
 public enum TSDKDataLayout: String, Codable {
     case Input = "Input"
     case Output = "Output"
 }
 
-public struct TSDKAbi: Codable {
+public struct TSDKAbi: Codable, @unchecked Sendable {
     public var type: TSDKAbiEnumTypes
     public var value: AnyValue?
 
@@ -69,7 +59,7 @@ public struct TSDKAbi: Codable {
     }
 }
 
-public struct TSDKFunctionHeader: Codable {
+public struct TSDKFunctionHeader: Codable, @unchecked Sendable {
     /// Message expiration timestamp (UNIX time) in seconds.
     /// If not specified - calculated automatically from message_expiration_timeout(),try_index and message_expiration_timeout_grow_factor() (if ABI includes `expire` header).
     public var expire: UInt32?
@@ -77,7 +67,7 @@ public struct TSDKFunctionHeader: Codable {
     /// If not specified, `now` is used (if ABI includes `time` header).
     public var time: Int?
     /// Public key is used by the contract to check the signature.
-    /// Encoded in `hex`. If not specified, method fails with exception (if ABI includes `pubkey` header)..
+    /// Encoded in `hex`. If not specified, method fails with exception (if ABI includes `pubkey` header).
     public var pubkey: String?
 
     public init(expire: UInt32? = nil, time: Int? = nil, pubkey: String? = nil) {
@@ -87,7 +77,7 @@ public struct TSDKFunctionHeader: Codable {
     }
 }
 
-public struct TSDKCallSet: Codable {
+public struct TSDKCallSet: Codable, @unchecked Sendable {
     /// Function name that is being called. Or function id encoded as string in hex (starting with 0x).
     public var function_name: String
     /// Function header.
@@ -103,7 +93,7 @@ public struct TSDKCallSet: Codable {
     }
 }
 
-public struct TSDKDeploySet: Codable {
+public struct TSDKDeploySet: Codable, @unchecked Sendable {
     /// Content of TVC file encoded in `base64`. For compatibility reason this field can contain an encoded  `StateInit`.
     public var tvc: String?
     /// Contract code BOC encoded with base64.
@@ -120,6 +110,7 @@ public struct TSDKDeploySet: Codable {
     /// 1. Public key from deploy set.
     /// 2. Public key, specified in TVM file.
     /// 3. Public key, provided by Signer.
+    /// Applicable only for contracts with ABI version < 2.4. Contract initial public key should beexplicitly provided inside `initial_data` since ABI 2.4
     public var initial_pubkey: String?
 
     public init(tvc: String? = nil, code: String? = nil, state_init: String? = nil, workchain_id: Int32? = nil, initial_data: AnyValue? = nil, initial_pubkey: String? = nil) {
@@ -132,7 +123,7 @@ public struct TSDKDeploySet: Codable {
     }
 }
 
-public struct TSDKSigner: Codable {
+public struct TSDKSigner: Codable, @unchecked Sendable {
     public var type: TSDKSignerEnumTypes
     public var public_key: String?
     public var keys: TSDKKeyPair?
@@ -146,69 +137,21 @@ public struct TSDKSigner: Codable {
     }
 }
 
-public struct TSDKStateInitSource: Codable {
-    public var type: TSDKStateInitSourceEnumTypes
-    public var source: TSDKMessageSource?
-    /// Code BOC.
-    /// Encoded in `base64`.
-    public var code: String?
-    /// Data BOC.
-    /// Encoded in `base64`.
-    public var data: String?
-    /// Library BOC.
-    /// Encoded in `base64`.
-    public var library: String?
-    public var tvc: String?
-    public var public_key: String?
-    public var init_params: TSDKStateInitParams?
-
-    public init(type: TSDKStateInitSourceEnumTypes, source: TSDKMessageSource? = nil, code: String? = nil, data: String? = nil, library: String? = nil, tvc: String? = nil, public_key: String? = nil, init_params: TSDKStateInitParams? = nil) {
-        self.type = type
-        self.source = source
-        self.code = code
-        self.data = data
-        self.library = library
-        self.tvc = tvc
-        self.public_key = public_key
-        self.init_params = init_params
-    }
-}
-
-public struct TSDKStateInitParams: Codable {
-    public var abi: TSDKAbi
-    public var value: AnyValue
-
-    public init(abi: TSDKAbi, value: AnyValue) {
-        self.abi = abi
-        self.value = value
-    }
-}
-
-public struct TSDKMessageSource: Codable {
-    public var type: TSDKMessageSourceEnumTypes
-    public var message: String?
-    public var abi: TSDKAbi?
-
-    public init(type: TSDKMessageSourceEnumTypes, message: String? = nil, abi: TSDKAbi? = nil) {
-        self.type = type
-        self.message = message
-        self.abi = abi
-    }
-}
-
-public struct TSDKAbiParam: Codable {
+public struct TSDKAbiParam: Codable, @unchecked Sendable {
     public var name: String
     public var type: String
     public var components: [TSDKAbiParam]?
+    public var `init`: Bool?
 
-    public init(name: String, type: String, components: [TSDKAbiParam]? = nil) {
+    public init(name: String, type: String, components: [TSDKAbiParam]? = nil, `init`: Bool? = nil) {
         self.name = name
         self.type = type
         self.components = components
+        self.`init` = `init`
     }
 }
 
-public struct TSDKAbiEvent: Codable {
+public struct TSDKAbiEvent: Codable, @unchecked Sendable {
     public var name: String
     public var inputs: [TSDKAbiParam]
     public var id: String?
@@ -220,7 +163,7 @@ public struct TSDKAbiEvent: Codable {
     }
 }
 
-public struct TSDKAbiData: Codable {
+public struct TSDKAbiData: Codable, @unchecked Sendable {
     public var key: UInt32
     public var name: String
     public var type: String
@@ -234,7 +177,7 @@ public struct TSDKAbiData: Codable {
     }
 }
 
-public struct TSDKAbiFunction: Codable {
+public struct TSDKAbiFunction: Codable, @unchecked Sendable {
     public var name: String
     public var inputs: [TSDKAbiParam]
     public var outputs: [TSDKAbiParam]
@@ -248,7 +191,7 @@ public struct TSDKAbiFunction: Codable {
     }
 }
 
-public struct TSDKAbiContract: Codable {
+public struct TSDKAbiContract: Codable, @unchecked Sendable {
     public var abi_version: UInt32?
     public var version: String?
     public var header: [String]?
@@ -268,7 +211,7 @@ public struct TSDKAbiContract: Codable {
     }
 }
 
-public struct TSDKParamsOfEncodeMessageBody: Codable {
+public struct TSDKParamsOfEncodeMessageBody: Codable, @unchecked Sendable {
     /// Contract ABI.
     public var abi: TSDKAbi
     /// Function call parameters.
@@ -302,7 +245,7 @@ public struct TSDKParamsOfEncodeMessageBody: Codable {
     }
 }
 
-public struct TSDKResultOfEncodeMessageBody: Codable {
+public struct TSDKResultOfEncodeMessageBody: Codable, @unchecked Sendable {
     /// Message body BOC encoded with `base64`.
     public var body: String
     /// Optional data to sign.
@@ -316,7 +259,7 @@ public struct TSDKResultOfEncodeMessageBody: Codable {
     }
 }
 
-public struct TSDKParamsOfAttachSignatureToMessageBody: Codable {
+public struct TSDKParamsOfAttachSignatureToMessageBody: Codable, @unchecked Sendable {
     /// Contract ABI
     public var abi: TSDKAbi
     /// Public key.
@@ -337,7 +280,7 @@ public struct TSDKParamsOfAttachSignatureToMessageBody: Codable {
     }
 }
 
-public struct TSDKResultOfAttachSignatureToMessageBody: Codable {
+public struct TSDKResultOfAttachSignatureToMessageBody: Codable, @unchecked Sendable {
     public var body: String
 
     public init(body: String) {
@@ -345,7 +288,7 @@ public struct TSDKResultOfAttachSignatureToMessageBody: Codable {
     }
 }
 
-public struct TSDKParamsOfEncodeMessage: Codable {
+public struct TSDKParamsOfEncodeMessage: Codable, @unchecked Sendable {
     /// Contract ABI.
     public var abi: TSDKAbi
     /// Target address the message will be sent to.
@@ -381,7 +324,7 @@ public struct TSDKParamsOfEncodeMessage: Codable {
     }
 }
 
-public struct TSDKResultOfEncodeMessage: Codable {
+public struct TSDKResultOfEncodeMessage: Codable, @unchecked Sendable {
     /// Message BOC encoded with `base64`.
     public var message: String
     /// Optional data to be signed encoded in `base64`.
@@ -400,7 +343,7 @@ public struct TSDKResultOfEncodeMessage: Codable {
     }
 }
 
-public struct TSDKParamsOfEncodeInternalMessage: Codable {
+public struct TSDKParamsOfEncodeInternalMessage: Codable, @unchecked Sendable {
     /// Contract ABI.
     /// Can be None if both deploy_set and call_set are None.
     public var abi: TSDKAbi?
@@ -437,7 +380,7 @@ public struct TSDKParamsOfEncodeInternalMessage: Codable {
     }
 }
 
-public struct TSDKResultOfEncodeInternalMessage: Codable {
+public struct TSDKResultOfEncodeInternalMessage: Codable, @unchecked Sendable {
     /// Message BOC encoded with `base64`.
     public var message: String
     /// Destination address.
@@ -452,7 +395,7 @@ public struct TSDKResultOfEncodeInternalMessage: Codable {
     }
 }
 
-public struct TSDKParamsOfAttachSignature: Codable {
+public struct TSDKParamsOfAttachSignature: Codable, @unchecked Sendable {
     /// Contract ABI
     public var abi: TSDKAbi
     /// Public key encoded in `hex`.
@@ -470,7 +413,7 @@ public struct TSDKParamsOfAttachSignature: Codable {
     }
 }
 
-public struct TSDKResultOfAttachSignature: Codable {
+public struct TSDKResultOfAttachSignature: Codable, @unchecked Sendable {
     /// Signed message BOC
     public var message: String
     /// Message ID
@@ -482,7 +425,7 @@ public struct TSDKResultOfAttachSignature: Codable {
     }
 }
 
-public struct TSDKParamsOfDecodeMessage: Codable {
+public struct TSDKParamsOfDecodeMessage: Codable, @unchecked Sendable {
     /// contract ABI
     public var abi: TSDKAbi
     /// Message BOC
@@ -502,7 +445,7 @@ public struct TSDKParamsOfDecodeMessage: Codable {
     }
 }
 
-public struct TSDKDecodedMessageBody: Codable {
+public struct TSDKDecodedMessageBody: Codable, @unchecked Sendable {
     /// Type of the message body content.
     public var body_type: TSDKMessageBodyType
     /// Function or event name.
@@ -520,7 +463,7 @@ public struct TSDKDecodedMessageBody: Codable {
     }
 }
 
-public struct TSDKParamsOfDecodeMessageBody: Codable {
+public struct TSDKParamsOfDecodeMessageBody: Codable, @unchecked Sendable {
     /// Contract ABI used to decode.
     public var abi: TSDKAbi
     /// Message body BOC encoded in `base64`.
@@ -543,9 +486,9 @@ public struct TSDKParamsOfDecodeMessageBody: Codable {
     }
 }
 
-public struct TSDKParamsOfEncodeAccount: Codable {
-    /// Source of the account state init.
-    public var state_init: TSDKStateInitSource
+public struct TSDKParamsOfEncodeAccount: Codable, @unchecked Sendable {
+    /// Account state init.
+    public var state_init: String
     /// Initial balance.
     public var balance: Int?
     /// Initial value for the `last_trans_lt`.
@@ -556,7 +499,7 @@ public struct TSDKParamsOfEncodeAccount: Codable {
     /// The BOC itself returned if no cache type provided
     public var boc_cache: TSDKBocCacheType?
 
-    public init(state_init: TSDKStateInitSource, balance: Int? = nil, last_trans_lt: Int? = nil, last_paid: UInt32? = nil, boc_cache: TSDKBocCacheType? = nil) {
+    public init(state_init: String, balance: Int? = nil, last_trans_lt: Int? = nil, last_paid: UInt32? = nil, boc_cache: TSDKBocCacheType? = nil) {
         self.state_init = state_init
         self.balance = balance
         self.last_trans_lt = last_trans_lt
@@ -565,7 +508,7 @@ public struct TSDKParamsOfEncodeAccount: Codable {
     }
 }
 
-public struct TSDKResultOfEncodeAccount: Codable {
+public struct TSDKResultOfEncodeAccount: Codable, @unchecked Sendable {
     /// Account BOC encoded in `base64`.
     public var account: String
     /// Account ID  encoded in `hex`.
@@ -577,7 +520,7 @@ public struct TSDKResultOfEncodeAccount: Codable {
     }
 }
 
-public struct TSDKParamsOfDecodeAccountData: Codable {
+public struct TSDKParamsOfDecodeAccountData: Codable, @unchecked Sendable {
     /// Contract ABI
     public var abi: TSDKAbi
     /// Data BOC or BOC handle
@@ -592,7 +535,7 @@ public struct TSDKParamsOfDecodeAccountData: Codable {
     }
 }
 
-public struct TSDKResultOfDecodeAccountData: Codable {
+public struct TSDKResultOfDecodeAccountData: Codable, @unchecked Sendable {
     /// Decoded data as a JSON structure.
     public var data: AnyValue
 
@@ -601,9 +544,9 @@ public struct TSDKResultOfDecodeAccountData: Codable {
     }
 }
 
-public struct TSDKParamsOfUpdateInitialData: Codable {
+public struct TSDKParamsOfUpdateInitialData: Codable, @unchecked Sendable {
     /// Contract ABI
-    public var abi: TSDKAbi?
+    public var abi: TSDKAbi
     /// Data BOC or BOC handle
     public var data: String
     /// List of initial values for contract's static variables.
@@ -614,7 +557,7 @@ public struct TSDKParamsOfUpdateInitialData: Codable {
     /// Cache type to put the result. The BOC itself returned if no cache type provided.
     public var boc_cache: TSDKBocCacheType?
 
-    public init(abi: TSDKAbi? = nil, data: String, initial_data: AnyValue? = nil, initial_pubkey: String? = nil, boc_cache: TSDKBocCacheType? = nil) {
+    public init(abi: TSDKAbi, data: String, initial_data: AnyValue? = nil, initial_pubkey: String? = nil, boc_cache: TSDKBocCacheType? = nil) {
         self.abi = abi
         self.data = data
         self.initial_data = initial_data
@@ -623,7 +566,7 @@ public struct TSDKParamsOfUpdateInitialData: Codable {
     }
 }
 
-public struct TSDKResultOfUpdateInitialData: Codable {
+public struct TSDKResultOfUpdateInitialData: Codable, @unchecked Sendable {
     /// Updated data BOC or BOC handle
     public var data: String
 
@@ -632,9 +575,9 @@ public struct TSDKResultOfUpdateInitialData: Codable {
     }
 }
 
-public struct TSDKParamsOfEncodeInitialData: Codable {
+public struct TSDKParamsOfEncodeInitialData: Codable, @unchecked Sendable {
     /// Contract ABI
-    public var abi: TSDKAbi?
+    public var abi: TSDKAbi
     /// List of initial values for contract's static variables.
     /// `abi` parameter should be provided to set initial data
     public var initial_data: AnyValue?
@@ -643,7 +586,7 @@ public struct TSDKParamsOfEncodeInitialData: Codable {
     /// Cache type to put the result. The BOC itself returned if no cache type provided.
     public var boc_cache: TSDKBocCacheType?
 
-    public init(abi: TSDKAbi? = nil, initial_data: AnyValue? = nil, initial_pubkey: String? = nil, boc_cache: TSDKBocCacheType? = nil) {
+    public init(abi: TSDKAbi, initial_data: AnyValue? = nil, initial_pubkey: String? = nil, boc_cache: TSDKBocCacheType? = nil) {
         self.abi = abi
         self.initial_data = initial_data
         self.initial_pubkey = initial_pubkey
@@ -651,7 +594,7 @@ public struct TSDKParamsOfEncodeInitialData: Codable {
     }
 }
 
-public struct TSDKResultOfEncodeInitialData: Codable {
+public struct TSDKResultOfEncodeInitialData: Codable, @unchecked Sendable {
     /// Updated data BOC or BOC handle
     public var data: String
 
@@ -660,36 +603,36 @@ public struct TSDKResultOfEncodeInitialData: Codable {
     }
 }
 
-public struct TSDKParamsOfDecodeInitialData: Codable {
+public struct TSDKParamsOfDecodeInitialData: Codable, @unchecked Sendable {
     /// Contract ABI.
     /// Initial data is decoded if this parameter is provided
-    public var abi: TSDKAbi?
+    public var abi: TSDKAbi
     /// Data BOC or BOC handle
     public var data: String
     /// Flag allowing partial BOC decoding when ABI doesn't describe the full body BOC. Controls decoder behaviour when after decoding all described in ABI params there are some data left in BOC: `true` - return decoded values `false` - return error of incomplete BOC deserialization (default)
     public var allow_partial: Bool?
 
-    public init(abi: TSDKAbi? = nil, data: String, allow_partial: Bool? = nil) {
+    public init(abi: TSDKAbi, data: String, allow_partial: Bool? = nil) {
         self.abi = abi
         self.data = data
         self.allow_partial = allow_partial
     }
 }
 
-public struct TSDKResultOfDecodeInitialData: Codable {
+public struct TSDKResultOfDecodeInitialData: Codable, @unchecked Sendable {
     /// List of initial values of contract's public variables.
     /// Initial data is decoded if `abi` input parameter is provided
-    public var initial_data: AnyValue?
+    public var initial_data: AnyValue
     /// Initial account owner's public key
     public var initial_pubkey: String
 
-    public init(initial_data: AnyValue? = nil, initial_pubkey: String) {
+    public init(initial_data: AnyValue, initial_pubkey: String) {
         self.initial_data = initial_data
         self.initial_pubkey = initial_pubkey
     }
 }
 
-public struct TSDKParamsOfDecodeBoc: Codable {
+public struct TSDKParamsOfDecodeBoc: Codable, @unchecked Sendable {
     /// Parameters to decode from BOC
     public var params: [TSDKAbiParam]
     /// Data BOC or BOC handle
@@ -703,7 +646,7 @@ public struct TSDKParamsOfDecodeBoc: Codable {
     }
 }
 
-public struct TSDKResultOfDecodeBoc: Codable {
+public struct TSDKResultOfDecodeBoc: Codable, @unchecked Sendable {
     /// Decoded data as a JSON structure.
     public var data: AnyValue
 
@@ -712,7 +655,7 @@ public struct TSDKResultOfDecodeBoc: Codable {
     }
 }
 
-public struct TSDKParamsOfAbiEncodeBoc: Codable {
+public struct TSDKParamsOfAbiEncodeBoc: Codable, @unchecked Sendable {
     /// Parameters to encode into BOC
     public var params: [TSDKAbiParam]
     /// Parameters and values as a JSON structure
@@ -728,7 +671,7 @@ public struct TSDKParamsOfAbiEncodeBoc: Codable {
     }
 }
 
-public struct TSDKResultOfAbiEncodeBoc: Codable {
+public struct TSDKResultOfAbiEncodeBoc: Codable, @unchecked Sendable {
     /// BOC encoded as base64
     public var boc: String
 
@@ -737,7 +680,7 @@ public struct TSDKResultOfAbiEncodeBoc: Codable {
     }
 }
 
-public struct TSDKParamsOfCalcFunctionId: Codable {
+public struct TSDKParamsOfCalcFunctionId: Codable, @unchecked Sendable {
     /// Contract ABI.
     public var abi: TSDKAbi
     /// Contract function name
@@ -752,7 +695,7 @@ public struct TSDKParamsOfCalcFunctionId: Codable {
     }
 }
 
-public struct TSDKResultOfCalcFunctionId: Codable {
+public struct TSDKResultOfCalcFunctionId: Codable, @unchecked Sendable {
     /// Contract function ID
     public var function_id: UInt32
 
@@ -761,7 +704,7 @@ public struct TSDKResultOfCalcFunctionId: Codable {
     }
 }
 
-public struct TSDKParamsOfGetSignatureData: Codable {
+public struct TSDKParamsOfGetSignatureData: Codable, @unchecked Sendable {
     /// Contract ABI used to decode.
     public var abi: TSDKAbi
     /// Message BOC encoded in `base64`.
@@ -776,7 +719,7 @@ public struct TSDKParamsOfGetSignatureData: Codable {
     }
 }
 
-public struct TSDKResultOfGetSignatureData: Codable {
+public struct TSDKResultOfGetSignatureData: Codable, @unchecked Sendable {
     /// Signature from the message in `hex`.
     public var signature: String
     /// Data to verify the signature in `base64`.

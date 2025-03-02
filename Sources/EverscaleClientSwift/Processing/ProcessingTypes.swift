@@ -54,7 +54,7 @@ public enum TSDKMessageMonitoringStatus: String, Codable {
     case Reserved = "Reserved"
 }
 
-public struct TSDKProcessingEvent: Codable {
+public struct TSDKProcessingEvent: Codable, @unchecked Sendable {
     public var type: TSDKProcessingEventEnumTypes
     public var message_id: String?
     public var message_dst: String?
@@ -76,7 +76,7 @@ public struct TSDKProcessingEvent: Codable {
     }
 }
 
-public struct TSDKResultOfProcessMessage: Codable {
+public struct TSDKResultOfProcessMessage: Codable, @unchecked Sendable {
     /// Parsed transaction.
     /// In addition to the regular transaction fields there is a`boc` field encoded with `base64` which contains sourcetransaction BOC.
     public var transaction: AnyValue
@@ -96,7 +96,7 @@ public struct TSDKResultOfProcessMessage: Codable {
     }
 }
 
-public struct TSDKDecodedOutput: Codable {
+public struct TSDKDecodedOutput: Codable, @unchecked Sendable {
     /// Decoded bodies of the out messages.
     /// If the message can't be decoded, then `None` will be stored inthe appropriate position.
     public var out_messages: [TSDKDecodedMessageBody?]
@@ -109,7 +109,7 @@ public struct TSDKDecodedOutput: Codable {
     }
 }
 
-public struct TSDKMessageMonitoringTransactionCompute: Codable {
+public struct TSDKMessageMonitoringTransactionCompute: Codable, @unchecked Sendable {
     /// Compute phase exit code.
     public var exit_code: Int32
 
@@ -118,7 +118,7 @@ public struct TSDKMessageMonitoringTransactionCompute: Codable {
     }
 }
 
-public struct TSDKMessageMonitoringTransaction: Codable {
+public struct TSDKMessageMonitoringTransaction: Codable, @unchecked Sendable {
     /// Hash of the transaction. Present if transaction was included into the blocks. When then transaction was emulated this field will be missing.
     public var hash: String?
     /// Aborted field of the transaction.
@@ -133,7 +133,7 @@ public struct TSDKMessageMonitoringTransaction: Codable {
     }
 }
 
-public struct TSDKMessageMonitoringParams: Codable {
+public struct TSDKMessageMonitoringParams: Codable, @unchecked Sendable {
     /// Monitored message identification. Can be provided as a message's BOC or (hash, address) pair. BOC is a preferable way because it helps to determine possible error reason (using TVM execution of the message).
     public var message: TSDKMonitoredMessage
     /// Block time Must be specified as a UNIX timestamp in seconds
@@ -148,7 +148,7 @@ public struct TSDKMessageMonitoringParams: Codable {
     }
 }
 
-public struct TSDKMessageMonitoringResult: Codable {
+public struct TSDKMessageMonitoringResult: Codable, @unchecked Sendable {
     /// Hash of the message.
     public var hash: String
     /// Processing status.
@@ -169,7 +169,7 @@ public struct TSDKMessageMonitoringResult: Codable {
     }
 }
 
-public struct TSDKMonitoredMessage: Codable {
+public struct TSDKMonitoredMessage: Codable, @unchecked Sendable {
     public var type: TSDKMonitoredMessageEnumTypes
     public var boc: String?
     /// Hash of the message.
@@ -185,7 +185,7 @@ public struct TSDKMonitoredMessage: Codable {
     }
 }
 
-public struct TSDKMessageSendingParams: Codable {
+public struct TSDKMessageSendingParams: Codable, @unchecked Sendable {
     /// BOC of the message, that must be sent to the blockchain.
     public var boc: String
     /// Expiration time of the message. Must be specified as a UNIX timestamp in seconds.
@@ -200,7 +200,7 @@ public struct TSDKMessageSendingParams: Codable {
     }
 }
 
-public struct TSDKParamsOfMonitorMessages: Codable {
+public struct TSDKParamsOfMonitorMessages: Codable, @unchecked Sendable {
     /// Name of the monitoring queue.
     public var queue: String
     /// Messages to start monitoring for.
@@ -212,7 +212,7 @@ public struct TSDKParamsOfMonitorMessages: Codable {
     }
 }
 
-public struct TSDKParamsOfGetMonitorInfo: Codable {
+public struct TSDKParamsOfGetMonitorInfo: Codable, @unchecked Sendable {
     /// Name of the monitoring queue.
     public var queue: String
 
@@ -221,7 +221,7 @@ public struct TSDKParamsOfGetMonitorInfo: Codable {
     }
 }
 
-public struct TSDKMonitoringQueueInfo: Codable {
+public struct TSDKMonitoringQueueInfo: Codable, @unchecked Sendable {
     /// Count of the unresolved messages.
     public var unresolved: UInt32
     /// Count of resolved results.
@@ -233,7 +233,7 @@ public struct TSDKMonitoringQueueInfo: Codable {
     }
 }
 
-public struct TSDKParamsOfFetchNextMonitorResults: Codable {
+public struct TSDKParamsOfFetchNextMonitorResults: Codable, @unchecked Sendable {
     /// Name of the monitoring queue.
     public var queue: String
     /// Wait mode.
@@ -246,7 +246,7 @@ public struct TSDKParamsOfFetchNextMonitorResults: Codable {
     }
 }
 
-public struct TSDKResultOfFetchNextMonitorResults: Codable {
+public struct TSDKResultOfFetchNextMonitorResults: Codable, @unchecked Sendable {
     /// List of the resolved results.
     public var results: [TSDKMessageMonitoringResult]
 
@@ -255,7 +255,7 @@ public struct TSDKResultOfFetchNextMonitorResults: Codable {
     }
 }
 
-public struct TSDKParamsOfCancelMonitor: Codable {
+public struct TSDKParamsOfCancelMonitor: Codable, @unchecked Sendable {
     /// Name of the monitoring queue.
     public var queue: String
 
@@ -264,7 +264,7 @@ public struct TSDKParamsOfCancelMonitor: Codable {
     }
 }
 
-public struct TSDKParamsOfSendMessages: Codable {
+public struct TSDKParamsOfSendMessages: Codable, @unchecked Sendable {
     /// Messages that must be sent to the blockchain.
     public var messages: [TSDKMessageSendingParams]
     /// Optional message monitor queue that starts monitoring for the processing results for sent messages.
@@ -276,7 +276,7 @@ public struct TSDKParamsOfSendMessages: Codable {
     }
 }
 
-public struct TSDKResultOfSendMessages: Codable {
+public struct TSDKResultOfSendMessages: Codable, @unchecked Sendable {
     /// Messages that was sent to the blockchain for execution.
     public var messages: [TSDKMessageMonitoringParams]
 
@@ -285,7 +285,7 @@ public struct TSDKResultOfSendMessages: Codable {
     }
 }
 
-public struct TSDKParamsOfSendMessage: Codable {
+public struct TSDKParamsOfSendMessage: Codable, @unchecked Sendable {
     /// Message BOC.
     public var message: String
     /// Optional message ABI.
@@ -303,7 +303,7 @@ public struct TSDKParamsOfSendMessage: Codable {
     }
 }
 
-public struct TSDKResultOfSendMessage: Codable {
+public struct TSDKResultOfSendMessage: Codable, @unchecked Sendable {
     /// The last generated shard block of the message destination account before the message was sent.
     /// This block id must be used as a parameter of the`wait_for_transaction`.
     public var shard_block_id: String
@@ -317,7 +317,7 @@ public struct TSDKResultOfSendMessage: Codable {
     }
 }
 
-public struct TSDKParamsOfWaitForTransaction: Codable {
+public struct TSDKParamsOfWaitForTransaction: Codable, @unchecked Sendable {
     /// Optional ABI for decoding the transaction result.
     /// If it is specified, then the output messages' bodies will bedecoded according to this ABI.
     /// The `abi_decoded` result field will be filled out.
@@ -345,7 +345,7 @@ public struct TSDKParamsOfWaitForTransaction: Codable {
     }
 }
 
-public struct TSDKParamsOfProcessMessage: Codable {
+public struct TSDKParamsOfProcessMessage: Codable, @unchecked Sendable {
     /// Message encode parameters.
     public var message_encode_params: TSDKParamsOfEncodeMessage
     /// Flag for requesting events sending. Default is `false`.

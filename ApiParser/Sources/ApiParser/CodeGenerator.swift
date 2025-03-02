@@ -92,7 +92,7 @@ class CodeGenerator {
         }
 
 
-        var result: String = "\(swiftStruct.accessType) struct \(swiftStruct.name): \(swiftStruct.parents.joined(separator: ", ")) {\n"
+        var result: String = "\(swiftStruct.accessType) struct \(swiftStruct.name): \(swiftStruct.parents.joined(separator: ", ")), @unchecked Sendable {\n"
         for property in swiftStruct.properties {
             if let summary: String = property.summary { result.append("\(tab)/// \(checkComment(summary))\n") }
             if let descr: String = property.description { result.append("\(tab)/// \(checkComment(descr))\n") }
@@ -119,16 +119,6 @@ class CodeGenerator {
         return result
     }
 
-//    public func decode_message_body(_ payload: TSDKParamsOfDecodeMessageBody,
-//                                    _ handler: @escaping (TSDKBindingResponse<TSDKDecodedMessageBody, TSDKClientError>) throws -> Void
-//    ) throws {
-//        let method: String = "decode_message_body"
-//        try binding.requestLibraryAsync(methodName(module, method), payload, { (requestId, params, responseType, finished) in
-//            var response: TSDKBindingResponse<TSDKDecodedMessageBody, TSDKClientError> = .init()
-//            response.update(requestId, params, responseType, finished)
-//            try handler(response)
-//        })
-//    }
     private func generateFunction(_ swiftFunction: SDKSwiftFunction) -> String {
         var result: String = .init()
         if let summary = swiftFunction.summary { result.append("\(tab)/// \(checkComment(summary))\n") }
@@ -138,7 +128,7 @@ class CodeGenerator {
             result.append("_ \(parameter.name): \(parameter.type), ")
         }
         let resultType: String = swiftFunction.willReturn.type == "Void" ? "\(libPrefix)NoneResult" : swiftFunction.willReturn.type
-        result.append("_ handler: @escaping (TSDKBindingResponse<\(resultType), \(libPrefix)ClientError>) throws -> Void\n\(tab)) throws {\n")
+        result.append("_ handler: @escaping @Sendable (TSDKBindingResponse<\(resultType), \(libPrefix)ClientError>) throws -> Void\n\(tab)) throws {\n")
         let methodName: String = swiftFunction.name == "initialize" ? "init" : swiftFunction.name
         result.append("\(tab)\(tab)let method: String = \"\(methodName)\"\n")
         if swiftFunction.params.isEmpty {
@@ -154,27 +144,6 @@ class CodeGenerator {
 
         return result
     }
-    
-//    public func get_endpoints() async throws -> TSDKResultOfGetEndpoints {
-//        try await withCheckedThrowingContinuation { continuation in
-//            do {
-//                let method: String = "get_endpoints"
-//                try binding.requestLibraryAsync(methodName(module, method), "") { (requestId, params, responseType, finished) in
-//                    var response: TSDKBindingResponse<TSDKResultOfGetEndpoints, TSDKClientError> = .init()
-//                    response.update(requestId, params, responseType, finished)
-//                    if let error = response.error {
-//                        continuation.resume(throwing: error)
-//                    } else if let result = response.result {
-//                        continuation.resume(returning: result)
-//                    } else {
-//                        continuation.resume(throwing: TSDKClientError("Nothing for return"))
-//                    }
-//                }
-//            } catch {
-//                continuation.resume(throwing: error)
-//            }
-//        }
-//    }
     
     private func generateAsyncAwaitFunction(_ swiftFunction: SDKSwiftFunction) -> String {
         var result: String = .init()
@@ -296,7 +265,7 @@ extension CodeGenerator {
         var swiftStruct = swiftStruct
         swiftStruct.parents.append("LocalizedError")
 
-        var result: String = "\(swiftStruct.accessType) struct \(swiftStruct.name): \(swiftStruct.parents.joined(separator: ", ")) {\n"
+        var result: String = "\(swiftStruct.accessType) struct \(swiftStruct.name): \(swiftStruct.parents.joined(separator: ", ")), @unchecked Sendable {\n"
         for property in swiftStruct.properties {
             if let summary: String = property.summary { result.append("\(tab)/// \(checkComment(summary))\n") }
             if let descr: String = property.description { result.append("\(tab)/// \(checkComment(descr))\n") }

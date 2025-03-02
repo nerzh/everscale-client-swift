@@ -7,12 +7,12 @@
 
 import Foundation
 
-public final class BindingStore {
+public final class BindingStore: @unchecked Sendable {
     
-    private static var requsetId: UInt32 = .init()
+    nonisolated(unsafe) private static var requsetId: UInt32 = .init()
     private static let requestLock: NSLock = .init()
     private static let asyncResponseLock: NSLock = .init()
-    public static var responses: [UInt32: (_ requestId: UInt32,
+    nonisolated(unsafe) public static var responses: [UInt32: (_ requestId: UInt32,
                                            _ stringResponse: String,
                                            _ responseType: TSDKBindingResponseType,
                                            _ finished: Bool) throws -> Void] = .init()
@@ -23,8 +23,8 @@ public final class BindingStore {
                                     stringResponse: String,
                                     responseType: TSDKBindingResponseType,
                                     finished: Bool)
-    public static var completeResponses: [UInt32: RawResponse] = [:]
-    public static var completeResponsesLock: NSLock = .init()
+    nonisolated(unsafe) public static var completeResponses: [UInt32: RawResponse] = [:]
+    nonisolated(unsafe) public static var completeResponsesLock: NSLock = .init()
     
     public class func setCompleteResponse(_ id: UInt32, _ response: RawResponse) {
         completeResponsesLock.lock()

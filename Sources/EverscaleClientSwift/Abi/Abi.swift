@@ -8,7 +8,7 @@ public final class TSDKAbiModule {
     }
 
     /// Encodes message body according to ABI function call.
-    public func encode_message_body(_ payload: TSDKParamsOfEncodeMessageBody, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfEncodeMessageBody, TSDKClientError>) throws -> Void
+    public func encode_message_body(_ payload: TSDKParamsOfEncodeMessageBody, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKResultOfEncodeMessageBody, TSDKClientError>) throws -> Void
     ) throws {
         let method: String = "encode_message_body"
         try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
@@ -42,7 +42,7 @@ public final class TSDKAbiModule {
         }
     }
 
-    public func attach_signature_to_message_body(_ payload: TSDKParamsOfAttachSignatureToMessageBody, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfAttachSignatureToMessageBody, TSDKClientError>) throws -> Void
+    public func attach_signature_to_message_body(_ payload: TSDKParamsOfAttachSignatureToMessageBody, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKResultOfAttachSignatureToMessageBody, TSDKClientError>) throws -> Void
     ) throws {
         let method: String = "attach_signature_to_message_body"
         try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
@@ -92,7 +92,7 @@ public final class TSDKAbiModule {
     /// 1. Public key from deploy set.
     /// 2. Public key, specified in TVM file.
     /// 3. Public key, provided by signer.
-    public func encode_message(_ payload: TSDKParamsOfEncodeMessage, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfEncodeMessage, TSDKClientError>) throws -> Void
+    public func encode_message(_ payload: TSDKParamsOfEncodeMessage, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKResultOfEncodeMessage, TSDKClientError>) throws -> Void
     ) throws {
         let method: String = "encode_message"
         try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
@@ -151,7 +151,7 @@ public final class TSDKAbiModule {
     /// Public key resolving priority:
     /// 1. Public key from deploy set.
     /// 2. Public key, specified in TVM file.
-    public func encode_internal_message(_ payload: TSDKParamsOfEncodeInternalMessage, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfEncodeInternalMessage, TSDKClientError>) throws -> Void
+    public func encode_internal_message(_ payload: TSDKParamsOfEncodeInternalMessage, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKResultOfEncodeInternalMessage, TSDKClientError>) throws -> Void
     ) throws {
         let method: String = "encode_internal_message"
         try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
@@ -194,7 +194,7 @@ public final class TSDKAbiModule {
     }
 
     /// Combines `hex`-encoded `signature` with `base64`-encoded `unsigned_message`. Returns signed message encoded in `base64`.
-    public func attach_signature(_ payload: TSDKParamsOfAttachSignature, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfAttachSignature, TSDKClientError>) throws -> Void
+    public func attach_signature(_ payload: TSDKParamsOfAttachSignature, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKResultOfAttachSignature, TSDKClientError>) throws -> Void
     ) throws {
         let method: String = "attach_signature"
         try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
@@ -229,7 +229,7 @@ public final class TSDKAbiModule {
     }
 
     /// Decodes message body using provided message BOC and ABI.
-    public func decode_message(_ payload: TSDKParamsOfDecodeMessage, _ handler: @escaping (TSDKBindingResponse<TSDKDecodedMessageBody, TSDKClientError>) throws -> Void
+    public func decode_message(_ payload: TSDKParamsOfDecodeMessage, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKDecodedMessageBody, TSDKClientError>) throws -> Void
     ) throws {
         let method: String = "decode_message"
         try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
@@ -264,7 +264,7 @@ public final class TSDKAbiModule {
     }
 
     /// Decodes message body using provided body BOC and ABI.
-    public func decode_message_body(_ payload: TSDKParamsOfDecodeMessageBody, _ handler: @escaping (TSDKBindingResponse<TSDKDecodedMessageBody, TSDKClientError>) throws -> Void
+    public func decode_message_body(_ payload: TSDKParamsOfDecodeMessageBody, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKDecodedMessageBody, TSDKClientError>) throws -> Void
     ) throws {
         let method: String = "decode_message_body"
         try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
@@ -299,9 +299,7 @@ public final class TSDKAbiModule {
     }
 
     /// Creates account state BOC
-    /// Creates account state provided with one of these sets of data :
-    /// 1. BOC of code, BOC of data, BOC of library2. TVC (string in `base64`), keys, init params
-    public func encode_account(_ payload: TSDKParamsOfEncodeAccount, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfEncodeAccount, TSDKClientError>) throws -> Void
+    public func encode_account(_ payload: TSDKParamsOfEncodeAccount, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKResultOfEncodeAccount, TSDKClientError>) throws -> Void
     ) throws {
         let method: String = "encode_account"
         try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
@@ -312,8 +310,6 @@ public final class TSDKAbiModule {
     }
 
     /// Creates account state BOC
-    /// Creates account state provided with one of these sets of data :
-    /// 1. BOC of code, BOC of data, BOC of library2. TVC (string in `base64`), keys, init params
     @available(iOS 13, *)
     @available(macOS 12, *)
     public func encode_account(_ payload: TSDKParamsOfEncodeAccount) async throws -> TSDKResultOfEncodeAccount {
@@ -339,7 +335,7 @@ public final class TSDKAbiModule {
 
     /// Decodes account data using provided data BOC and ABI.
     /// Note: this feature requires ABI 2.1 or higher.
-    public func decode_account_data(_ payload: TSDKParamsOfDecodeAccountData, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfDecodeAccountData, TSDKClientError>) throws -> Void
+    public func decode_account_data(_ payload: TSDKParamsOfDecodeAccountData, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKResultOfDecodeAccountData, TSDKClientError>) throws -> Void
     ) throws {
         let method: String = "decode_account_data"
         try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
@@ -375,7 +371,8 @@ public final class TSDKAbiModule {
     }
 
     /// Updates initial account data with initial values for the contract's static variables and owner's public key. This operation is applicable only for initial account data (before deploy). If the contract is already deployed, its data doesn't contain this data section any more.
-    public func update_initial_data(_ payload: TSDKParamsOfUpdateInitialData, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfUpdateInitialData, TSDKClientError>) throws -> Void
+    /// Doesn't support ABI version >= 2.4. Use `encode_initial_data` instead
+    public func update_initial_data(_ payload: TSDKParamsOfUpdateInitialData, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKResultOfUpdateInitialData, TSDKClientError>) throws -> Void
     ) throws {
         let method: String = "update_initial_data"
         try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
@@ -386,6 +383,7 @@ public final class TSDKAbiModule {
     }
 
     /// Updates initial account data with initial values for the contract's static variables and owner's public key. This operation is applicable only for initial account data (before deploy). If the contract is already deployed, its data doesn't contain this data section any more.
+    /// Doesn't support ABI version >= 2.4. Use `encode_initial_data` instead
     @available(iOS 13, *)
     @available(macOS 12, *)
     public func update_initial_data(_ payload: TSDKParamsOfUpdateInitialData) async throws -> TSDKResultOfUpdateInitialData {
@@ -411,7 +409,7 @@ public final class TSDKAbiModule {
 
     /// Encodes initial account data with initial values for the contract's static variables and owner's public key into a data BOC that can be passed to `encode_tvc` function afterwards.
     /// This function is analogue of `tvm.buildDataInit` function in Solidity.
-    public func encode_initial_data(_ payload: TSDKParamsOfEncodeInitialData, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfEncodeInitialData, TSDKClientError>) throws -> Void
+    public func encode_initial_data(_ payload: TSDKParamsOfEncodeInitialData, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKResultOfEncodeInitialData, TSDKClientError>) throws -> Void
     ) throws {
         let method: String = "encode_initial_data"
         try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
@@ -447,7 +445,8 @@ public final class TSDKAbiModule {
     }
 
     /// Decodes initial values of a contract's static variables and owner's public key from account initial data This operation is applicable only for initial account data (before deploy). If the contract is already deployed, its data doesn't contain this data section any more.
-    public func decode_initial_data(_ payload: TSDKParamsOfDecodeInitialData, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfDecodeInitialData, TSDKClientError>) throws -> Void
+    /// Doesn't support ABI version >= 2.4. Use `decode_account_data` instead
+    public func decode_initial_data(_ payload: TSDKParamsOfDecodeInitialData, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKResultOfDecodeInitialData, TSDKClientError>) throws -> Void
     ) throws {
         let method: String = "decode_initial_data"
         try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
@@ -458,6 +457,7 @@ public final class TSDKAbiModule {
     }
 
     /// Decodes initial values of a contract's static variables and owner's public key from account initial data This operation is applicable only for initial account data (before deploy). If the contract is already deployed, its data doesn't contain this data section any more.
+    /// Doesn't support ABI version >= 2.4. Use `decode_account_data` instead
     @available(iOS 13, *)
     @available(macOS 12, *)
     public func decode_initial_data(_ payload: TSDKParamsOfDecodeInitialData) async throws -> TSDKResultOfDecodeInitialData {
@@ -482,12 +482,12 @@ public final class TSDKAbiModule {
     }
 
     /// Decodes BOC into JSON as a set of provided parameters.
-    /// Solidity functions use ABI types for [builder encoding](https://github.com/tonlabs/TON-Solidity-Compiler/blob/master/API.md#tvmbuilderstore).
+    /// Solidity functions use ABI types for [builder encoding](https://github.com/everx-labs/TVM-Solidity-Compiler/blob/master/API.md#tvmbuilderstore).
     /// The simplest way to decode such a BOC is to use ABI decoding.
     /// ABI has it own rules for fields layout in cells so manually encodedBOC can not be described in terms of ABI rules.
     /// To solve this problem we introduce a new ABI type `Ref(<ParamType>)`which allows to store `ParamType` ABI parameter in cell reference and, thus,decode manually encoded BOCs. This type is available only in `decode_boc` functionand will not be available in ABI messages encoding until it is included into some ABI revision.
     /// Such BOC descriptions covers most users needs. If someone wants to decode some BOC whichcan not be described by these rules (i.e. BOC with TLB containing constructors of flagsdefining some parsing conditions) then they can decode the fields up to fork condition,check the parsed data manually, expand the parsing schema and then decode the whole BOCwith the full schema.
-    public func decode_boc(_ payload: TSDKParamsOfDecodeBoc, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfDecodeBoc, TSDKClientError>) throws -> Void
+    public func decode_boc(_ payload: TSDKParamsOfDecodeBoc, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKResultOfDecodeBoc, TSDKClientError>) throws -> Void
     ) throws {
         let method: String = "decode_boc"
         try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
@@ -498,7 +498,7 @@ public final class TSDKAbiModule {
     }
 
     /// Decodes BOC into JSON as a set of provided parameters.
-    /// Solidity functions use ABI types for [builder encoding](https://github.com/tonlabs/TON-Solidity-Compiler/blob/master/API.md#tvmbuilderstore).
+    /// Solidity functions use ABI types for [builder encoding](https://github.com/everx-labs/TVM-Solidity-Compiler/blob/master/API.md#tvmbuilderstore).
     /// The simplest way to decode such a BOC is to use ABI decoding.
     /// ABI has it own rules for fields layout in cells so manually encodedBOC can not be described in terms of ABI rules.
     /// To solve this problem we introduce a new ABI type `Ref(<ParamType>)`which allows to store `ParamType` ABI parameter in cell reference and, thus,decode manually encoded BOCs. This type is available only in `decode_boc` functionand will not be available in ABI messages encoding until it is included into some ABI revision.
@@ -527,7 +527,7 @@ public final class TSDKAbiModule {
     }
 
     /// Encodes given parameters in JSON into a BOC using param types from ABI.
-    public func encode_boc(_ payload: TSDKParamsOfAbiEncodeBoc, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfAbiEncodeBoc, TSDKClientError>) throws -> Void
+    public func encode_boc(_ payload: TSDKParamsOfAbiEncodeBoc, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKResultOfAbiEncodeBoc, TSDKClientError>) throws -> Void
     ) throws {
         let method: String = "encode_boc"
         try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
@@ -562,7 +562,7 @@ public final class TSDKAbiModule {
     }
 
     /// Calculates contract function ID by contract ABI
-    public func calc_function_id(_ payload: TSDKParamsOfCalcFunctionId, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfCalcFunctionId, TSDKClientError>) throws -> Void
+    public func calc_function_id(_ payload: TSDKParamsOfCalcFunctionId, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKResultOfCalcFunctionId, TSDKClientError>) throws -> Void
     ) throws {
         let method: String = "calc_function_id"
         try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
@@ -597,7 +597,7 @@ public final class TSDKAbiModule {
     }
 
     /// Extracts signature from message body and calculates hash to verify the signature
-    public func get_signature_data(_ payload: TSDKParamsOfGetSignatureData, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfGetSignatureData, TSDKClientError>) throws -> Void
+    public func get_signature_data(_ payload: TSDKParamsOfGetSignatureData, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKResultOfGetSignatureData, TSDKClientError>) throws -> Void
     ) throws {
         let method: String = "get_signature_data"
         try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in

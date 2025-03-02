@@ -24,7 +24,7 @@ public enum TSDKBindingResponseType: UInt32 {
     case unknown
 }
 
-public struct TSDKNoneResult: Codable {}
+public struct TSDKNoneResult: Codable, Sendable {}
 
 public struct TSDKDefault: Codable {
     public var result: AnyValue?
@@ -42,7 +42,7 @@ public struct TSDKDefault: Codable {
     }
 }
 
-public struct TSDKBindingResponse<TSDKResult: Codable, TSDKError: Codable> {
+public struct TSDKBindingResponse<TSDKResult: Codable & Sendable, TSDKError: Codable & Sendable> {
     public var result: TSDKResult?
     public var error: TSDKError?
     public var dappError: TSDKError?

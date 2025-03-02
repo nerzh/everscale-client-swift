@@ -28,7 +28,7 @@ public final class TSDKClientModule {
     }
 
     /// Returns Core Library API reference
-    public func get_api_reference(_ handler: @escaping (TSDKBindingResponse<TSDKResultOfGetApiReference, TSDKClientError>) throws -> Void
+    public func get_api_reference(_ handler: @escaping @Sendable (TSDKBindingResponse<TSDKResultOfGetApiReference, TSDKClientError>) throws -> Void
     ) throws {
         let method: String = "get_api_reference"
         try binding.requestLibraryAsync(methodName(module, method), "") { (requestId, params, responseType, finished) in
@@ -63,7 +63,7 @@ public final class TSDKClientModule {
     }
 
     /// Returns Core Library version
-    public func version(_ handler: @escaping (TSDKBindingResponse<TSDKResultOfVersion, TSDKClientError>) throws -> Void
+    public func version(_ handler: @escaping @Sendable (TSDKBindingResponse<TSDKResultOfVersion, TSDKClientError>) throws -> Void
     ) throws {
         let method: String = "version"
         try binding.requestLibraryAsync(methodName(module, method), "") { (requestId, params, responseType, finished) in
@@ -98,7 +98,7 @@ public final class TSDKClientModule {
     }
 
     /// Returns Core Library API reference
-    public func config(_ handler: @escaping (TSDKBindingResponse<TSDKClientConfig, TSDKClientError>) throws -> Void
+    public func config(_ handler: @escaping @Sendable (TSDKBindingResponse<TSDKClientConfig, TSDKClientError>) throws -> Void
     ) throws {
         let method: String = "config"
         try binding.requestLibraryAsync(methodName(module, method), "") { (requestId, params, responseType, finished) in
@@ -133,7 +133,7 @@ public final class TSDKClientModule {
     }
 
     /// Returns detailed information about this build.
-    public func build_info(_ handler: @escaping (TSDKBindingResponse<TSDKResultOfBuildInfo, TSDKClientError>) throws -> Void
+    public func build_info(_ handler: @escaping @Sendable (TSDKBindingResponse<TSDKResultOfBuildInfo, TSDKClientError>) throws -> Void
     ) throws {
         let method: String = "build_info"
         try binding.requestLibraryAsync(methodName(module, method), "") { (requestId, params, responseType, finished) in
@@ -168,7 +168,7 @@ public final class TSDKClientModule {
     }
 
     /// Resolves application request processing result
-    public func resolve_app_request(_ payload: TSDKParamsOfResolveAppRequest, _ handler: @escaping (TSDKBindingResponse<TSDKNoneResult, TSDKClientError>) throws -> Void
+    public func resolve_app_request(_ payload: TSDKParamsOfResolveAppRequest, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKNoneResult, TSDKClientError>) throws -> Void
     ) throws {
         let method: String = "resolve_app_request"
         try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in

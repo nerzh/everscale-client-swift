@@ -14,7 +14,7 @@ public enum TSDKAccountAddressType: String, Codable {
     case Base64 = "Base64"
 }
 
-public struct TSDKAddressStringFormat: Codable {
+public struct TSDKAddressStringFormat: Codable, @unchecked Sendable {
     public var type: TSDKAddressStringFormatEnumTypes
     public var url: Bool?
     public var test: Bool?
@@ -28,7 +28,7 @@ public struct TSDKAddressStringFormat: Codable {
     }
 }
 
-public struct TSDKParamsOfConvertAddress: Codable {
+public struct TSDKParamsOfConvertAddress: Codable, @unchecked Sendable {
     /// Account address in any TON format.
     public var address: String
     /// Specify the format to convert to.
@@ -40,7 +40,7 @@ public struct TSDKParamsOfConvertAddress: Codable {
     }
 }
 
-public struct TSDKResultOfConvertAddress: Codable {
+public struct TSDKResultOfConvertAddress: Codable, @unchecked Sendable {
     /// Address in the specified format
     public var address: String
 
@@ -49,7 +49,7 @@ public struct TSDKResultOfConvertAddress: Codable {
     }
 }
 
-public struct TSDKParamsOfGetAddressType: Codable {
+public struct TSDKParamsOfGetAddressType: Codable, @unchecked Sendable {
     /// Account address in any TON format.
     public var address: String
 
@@ -58,7 +58,7 @@ public struct TSDKParamsOfGetAddressType: Codable {
     }
 }
 
-public struct TSDKResultOfGetAddressType: Codable {
+public struct TSDKResultOfGetAddressType: Codable, @unchecked Sendable {
     /// Account address type.
     public var address_type: TSDKAccountAddressType
 
@@ -67,7 +67,7 @@ public struct TSDKResultOfGetAddressType: Codable {
     }
 }
 
-public struct TSDKParamsOfCalcStorageFee: Codable {
+public struct TSDKParamsOfCalcStorageFee: Codable, @unchecked Sendable {
     public var account: String
     public var period: UInt32
 
@@ -77,7 +77,7 @@ public struct TSDKParamsOfCalcStorageFee: Codable {
     }
 }
 
-public struct TSDKResultOfCalcStorageFee: Codable {
+public struct TSDKResultOfCalcStorageFee: Codable, @unchecked Sendable {
     public var fee: String
 
     public init(fee: String) {
@@ -85,7 +85,7 @@ public struct TSDKResultOfCalcStorageFee: Codable {
     }
 }
 
-public struct TSDKParamsOfCompressZstd: Codable {
+public struct TSDKParamsOfCompressZstd: Codable, @unchecked Sendable {
     /// Uncompressed data.
     /// Must be encoded as base64.
     public var uncompressed: String
@@ -98,7 +98,7 @@ public struct TSDKParamsOfCompressZstd: Codable {
     }
 }
 
-public struct TSDKResultOfCompressZstd: Codable {
+public struct TSDKResultOfCompressZstd: Codable, @unchecked Sendable {
     /// Compressed data.
     /// Must be encoded as base64.
     public var compressed: String
@@ -108,7 +108,7 @@ public struct TSDKResultOfCompressZstd: Codable {
     }
 }
 
-public struct TSDKParamsOfDecompressZstd: Codable {
+public struct TSDKParamsOfDecompressZstd: Codable, @unchecked Sendable {
     /// Compressed data.
     /// Must be encoded as base64.
     public var compressed: String
@@ -118,7 +118,7 @@ public struct TSDKParamsOfDecompressZstd: Codable {
     }
 }
 
-public struct TSDKResultOfDecompressZstd: Codable {
+public struct TSDKResultOfDecompressZstd: Codable, @unchecked Sendable {
     /// Decompressed data.
     /// Must be encoded as base64.
     public var decompressed: String

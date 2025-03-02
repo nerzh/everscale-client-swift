@@ -53,7 +53,7 @@ public enum TSDKAppRequestResultEnumTypes: String, Codable {
     case Ok = "Ok"
 }
 
-public struct TSDKClientError: Codable, LocalizedError {
+public struct TSDKClientError: Codable, LocalizedError, @unchecked Sendable {
     public var code: UInt32
     public var message: String
     public var errorDescription: String? { self.message }
@@ -81,7 +81,7 @@ public struct TSDKClientError: Codable, LocalizedError {
     }
 }
 
-public struct TSDKClientConfig: Codable {
+public struct TSDKClientConfig: Codable, @unchecked Sendable {
     public var binding: TSDKBindingConfig?
     public var network: TSDKNetworkConfig?
     public var crypto: TSDKCryptoConfig?
@@ -102,7 +102,7 @@ public struct TSDKClientConfig: Codable {
     }
 }
 
-public struct TSDKNetworkConfig: Codable {
+public struct TSDKNetworkConfig: Codable, @unchecked Sendable {
     /// **This field is deprecated, but left for backward-compatibility.** Evernode endpoint.
     public var server_address: String?
     /// List of Evernode endpoints.
@@ -183,7 +183,7 @@ public struct TSDKNetworkConfig: Codable {
     }
 }
 
-public struct TSDKBindingConfig: Codable {
+public struct TSDKBindingConfig: Codable, @unchecked Sendable {
     public var library: String?
     public var version: String?
 
@@ -193,7 +193,7 @@ public struct TSDKBindingConfig: Codable {
     }
 }
 
-public struct TSDKCryptoConfig: Codable {
+public struct TSDKCryptoConfig: Codable, @unchecked Sendable {
     /// Mnemonic dictionary that will be used by default in crypto functions. If not specified, `English` dictionary will be used.
     public var mnemonic_dictionary: TSDKMnemonicDictionary?
     /// Mnemonic word count that will be used by default in crypto functions. If not specified the default value will be 12.
@@ -208,7 +208,7 @@ public struct TSDKCryptoConfig: Codable {
     }
 }
 
-public struct TSDKAbiConfig: Codable {
+public struct TSDKAbiConfig: Codable, @unchecked Sendable {
     /// Workchain id that is used by default in DeploySet
     public var workchain: Int32?
     /// Message lifetime for contracts which ABI includes "expire" header.
@@ -225,7 +225,7 @@ public struct TSDKAbiConfig: Codable {
     }
 }
 
-public struct TSDKBocConfig: Codable {
+public struct TSDKBocConfig: Codable, @unchecked Sendable {
     /// Maximum BOC cache size in kilobytes.
     /// Default is 10 MB
     public var cache_max_size: UInt32?
@@ -235,7 +235,7 @@ public struct TSDKBocConfig: Codable {
     }
 }
 
-public struct TSDKProofsConfig: Codable {
+public struct TSDKProofsConfig: Codable, @unchecked Sendable {
     /// Cache proofs in the local storage.
     /// Default is `true`. If this value is set to `true`, downloaded proofs and master-chain BOCs are saved into thepersistent local storage (e.g. file system for native environments or browser's IndexedDBfor the web); otherwise all the data is cached only in memory in current client's contextand will be lost after destruction of the client.
     public var cache_in_local_storage: Bool?
@@ -245,7 +245,7 @@ public struct TSDKProofsConfig: Codable {
     }
 }
 
-public struct TSDKBuildInfoDependency: Codable {
+public struct TSDKBuildInfoDependency: Codable, @unchecked Sendable {
     /// Dependency name.
     /// Usually it is a crate name.
     public var name: String
@@ -258,7 +258,7 @@ public struct TSDKBuildInfoDependency: Codable {
     }
 }
 
-public struct TSDKParamsOfAppRequest: Codable {
+public struct TSDKParamsOfAppRequest: Codable, @unchecked Sendable {
     /// Request ID.
     /// Should be used in `resolve_app_request` call
     public var app_request_id: UInt32
@@ -271,7 +271,7 @@ public struct TSDKParamsOfAppRequest: Codable {
     }
 }
 
-public struct TSDKAppRequestResult: Codable {
+public struct TSDKAppRequestResult: Codable, @unchecked Sendable {
     public var type: TSDKAppRequestResultEnumTypes
     /// Error description
     public var text: String?
@@ -285,7 +285,7 @@ public struct TSDKAppRequestResult: Codable {
     }
 }
 
-public struct TSDKResultOfGetApiReference: Codable {
+public struct TSDKResultOfGetApiReference: Codable, @unchecked Sendable {
     public var api: AnyValue
 
     public init(api: AnyValue) {
@@ -293,7 +293,7 @@ public struct TSDKResultOfGetApiReference: Codable {
     }
 }
 
-public struct TSDKResultOfVersion: Codable {
+public struct TSDKResultOfVersion: Codable, @unchecked Sendable {
     /// Core Library version
     public var version: String
 
@@ -302,7 +302,7 @@ public struct TSDKResultOfVersion: Codable {
     }
 }
 
-public struct TSDKResultOfBuildInfo: Codable {
+public struct TSDKResultOfBuildInfo: Codable, @unchecked Sendable {
     /// Build number assigned to this build by the CI.
     public var build_number: UInt32
     /// Fingerprint of the most important dependencies.
@@ -314,7 +314,7 @@ public struct TSDKResultOfBuildInfo: Codable {
     }
 }
 
-public struct TSDKParamsOfResolveAppRequest: Codable {
+public struct TSDKParamsOfResolveAppRequest: Codable, @unchecked Sendable {
     /// Request ID received from SDK
     public var app_request_id: UInt32
     /// Result of request processing

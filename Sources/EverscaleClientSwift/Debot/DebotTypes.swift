@@ -43,7 +43,7 @@ public enum TSDKResultOfAppDebotBrowserEnumTypes: String, Codable {
     case Approve = "Approve"
 }
 
-public struct TSDKDebotAction: Codable {
+public struct TSDKDebotAction: Codable, @unchecked Sendable {
     /// A short action description.
     /// Should be used by Debot Browser as name of menu item.
     public var description: String
@@ -71,7 +71,7 @@ public struct TSDKDebotAction: Codable {
     }
 }
 
-public struct TSDKDebotInfo: Codable {
+public struct TSDKDebotInfo: Codable, @unchecked Sendable {
     /// DeBot short name.
     public var name: String?
     /// DeBot semantic version.
@@ -113,7 +113,7 @@ public struct TSDKDebotInfo: Codable {
     }
 }
 
-public struct TSDKDebotActivity: Codable {
+public struct TSDKDebotActivity: Codable, @unchecked Sendable {
     public var type: TSDKDebotActivityEnumTypes
     /// External inbound message BOC.
     public var msg: String?
@@ -143,7 +143,7 @@ public struct TSDKDebotActivity: Codable {
 }
 
 /// [UNSTABLE](UNSTABLE.md) [DEPRECATED](DEPRECATED.md) Describes the operation that the DeBot wants to perform.
-public struct TSDKSpending: Codable {
+public struct TSDKSpending: Codable, @unchecked Sendable {
     /// Amount of nanotokens that will be sent to `dst` address.
     public var amount: Int
     /// Destination address of recipient of funds.
@@ -155,7 +155,7 @@ public struct TSDKSpending: Codable {
     }
 }
 
-public struct TSDKParamsOfInit: Codable {
+public struct TSDKParamsOfInit: Codable, @unchecked Sendable {
     /// Debot smart contract address
     public var address: String
 
@@ -164,7 +164,7 @@ public struct TSDKParamsOfInit: Codable {
     }
 }
 
-public struct TSDKRegisteredDebot: Codable {
+public struct TSDKRegisteredDebot: Codable, @unchecked Sendable {
     /// Debot handle which references an instance of debot engine.
     public var debot_handle: TSDKDebotHandle
     /// Debot abi as json string.
@@ -179,7 +179,7 @@ public struct TSDKRegisteredDebot: Codable {
     }
 }
 
-public struct TSDKParamsOfAppDebotBrowser: Codable {
+public struct TSDKParamsOfAppDebotBrowser: Codable, @unchecked Sendable {
     public var type: TSDKParamsOfAppDebotBrowserEnumTypes
     /// A string that must be printed to user.
     public var msg: String?
@@ -211,7 +211,7 @@ public struct TSDKParamsOfAppDebotBrowser: Codable {
 
 /// [UNSTABLE](UNSTABLE.md) [DEPRECATED](DEPRECATED.md) Debot Browser callbacks
 /// Called by debot engine to communicate with debot browser.
-public struct TSDKResultOfAppDebotBrowser: Codable {
+public struct TSDKResultOfAppDebotBrowser: Codable, @unchecked Sendable {
     public var type: TSDKResultOfAppDebotBrowserEnumTypes
     /// String entered by user.
     public var value: String?
@@ -230,7 +230,7 @@ public struct TSDKResultOfAppDebotBrowser: Codable {
 }
 
 /// [UNSTABLE](UNSTABLE.md) [DEPRECATED](DEPRECATED.md) Returning values from Debot Browser callbacks.
-public struct TSDKParamsOfStart: Codable {
+public struct TSDKParamsOfStart: Codable, @unchecked Sendable {
     /// Debot handle which references an instance of debot engine.
     public var debot_handle: TSDKDebotHandle
 
@@ -239,7 +239,7 @@ public struct TSDKParamsOfStart: Codable {
     }
 }
 
-public struct TSDKParamsOfFetch: Codable {
+public struct TSDKParamsOfFetch: Codable, @unchecked Sendable {
     /// Debot smart contract address.
     public var address: String
 
@@ -248,7 +248,7 @@ public struct TSDKParamsOfFetch: Codable {
     }
 }
 
-public struct TSDKResultOfFetch: Codable {
+public struct TSDKResultOfFetch: Codable, @unchecked Sendable {
     /// Debot metadata.
     public var info: TSDKDebotInfo
 
@@ -257,7 +257,7 @@ public struct TSDKResultOfFetch: Codable {
     }
 }
 
-public struct TSDKParamsOfExecute: Codable {
+public struct TSDKParamsOfExecute: Codable, @unchecked Sendable {
     /// Debot handle which references an instance of debot engine.
     public var debot_handle: TSDKDebotHandle
     /// Debot Action that must be executed.
@@ -269,7 +269,7 @@ public struct TSDKParamsOfExecute: Codable {
     }
 }
 
-public struct TSDKParamsOfSend: Codable {
+public struct TSDKParamsOfSend: Codable, @unchecked Sendable {
     /// Debot handle which references an instance of debot engine.
     public var debot_handle: TSDKDebotHandle
     /// BOC of internal message to debot encoded in base64 format.
@@ -281,7 +281,7 @@ public struct TSDKParamsOfSend: Codable {
     }
 }
 
-public struct TSDKParamsOfRemove: Codable {
+public struct TSDKParamsOfRemove: Codable, @unchecked Sendable {
     /// Debot handle which references an instance of debot engine.
     public var debot_handle: TSDKDebotHandle
 

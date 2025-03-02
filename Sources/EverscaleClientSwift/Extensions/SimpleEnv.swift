@@ -5,14 +5,15 @@
 import Foundation
 import SwiftRegularExpression
 
+
 public final class SimpleEnv {
 
-    private static var env: [String: String] = .init()
+    nonisolated(unsafe) private static var env: [String: String] = .init()
     private static let debugEnvName: String = "debug"
     private static let adhocEnvName: String = "production"
     private static let productionEnvName: String = "production"
     
-    public static var path: String = "./"
+    nonisolated(unsafe) public static var path: String = "./"
 
     public class subscript(_ key: String) -> String? {
         if env.count == 0 {

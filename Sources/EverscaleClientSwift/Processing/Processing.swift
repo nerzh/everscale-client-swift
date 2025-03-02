@@ -21,7 +21,7 @@ public final class TSDKProcessingModule {
     /// When both unresolved and resolved lists becomes empty, monitor stops any background activityand frees all allocated internal memory.
     /// If monitoring queue with specified name already exists then messages will be addedto the unresolved list.
     /// If monitoring queue with specified name does not exist then monitoring queue will be createdwith specified unresolved messages.
-    public func monitor_messages(_ payload: TSDKParamsOfMonitorMessages, _ handler: @escaping (TSDKBindingResponse<TSDKNoneResult, TSDKClientError>) throws -> Void
+    public func monitor_messages(_ payload: TSDKParamsOfMonitorMessages, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKNoneResult, TSDKClientError>) throws -> Void
     ) throws {
         let method: String = "monitor_messages"
         try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
@@ -69,7 +69,7 @@ public final class TSDKProcessingModule {
     }
 
     /// Returns summary information about current state of the specified monitoring queue.
-    public func get_monitor_info(_ payload: TSDKParamsOfGetMonitorInfo, _ handler: @escaping (TSDKBindingResponse<TSDKMonitoringQueueInfo, TSDKClientError>) throws -> Void
+    public func get_monitor_info(_ payload: TSDKParamsOfGetMonitorInfo, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKMonitoringQueueInfo, TSDKClientError>) throws -> Void
     ) throws {
         let method: String = "get_monitor_info"
         try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
@@ -106,7 +106,7 @@ public final class TSDKProcessingModule {
     /// Fetches next resolved results from the specified monitoring queue.
     /// Results and waiting options are depends on the `wait` parameter.
     /// All returned results will be removed from the queue's resolved list.
-    public func fetch_next_monitor_results(_ payload: TSDKParamsOfFetchNextMonitorResults, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfFetchNextMonitorResults, TSDKClientError>) throws -> Void
+    public func fetch_next_monitor_results(_ payload: TSDKParamsOfFetchNextMonitorResults, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKResultOfFetchNextMonitorResults, TSDKClientError>) throws -> Void
     ) throws {
         let method: String = "fetch_next_monitor_results"
         try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
@@ -143,7 +143,7 @@ public final class TSDKProcessingModule {
     }
 
     /// Cancels all background activity and releases all allocated system resources for the specified monitoring queue.
-    public func cancel_monitor(_ payload: TSDKParamsOfCancelMonitor, _ handler: @escaping (TSDKBindingResponse<TSDKNoneResult, TSDKClientError>) throws -> Void
+    public func cancel_monitor(_ payload: TSDKParamsOfCancelMonitor, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKNoneResult, TSDKClientError>) throws -> Void
     ) throws {
         let method: String = "cancel_monitor"
         try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
@@ -178,7 +178,7 @@ public final class TSDKProcessingModule {
     }
 
     /// Sends specified messages to the blockchain.
-    public func send_messages(_ payload: TSDKParamsOfSendMessages, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfSendMessages, TSDKClientError>) throws -> Void
+    public func send_messages(_ payload: TSDKParamsOfSendMessages, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKResultOfSendMessages, TSDKClientError>) throws -> Void
     ) throws {
         let method: String = "send_messages"
         try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
@@ -214,7 +214,7 @@ public final class TSDKProcessingModule {
 
     /// Sends message to the network
     /// Sends message to the network and returns the last generated shard block of the destination accountbefore the message was sent. It will be required later for message processing.
-    public func send_message(_ payload: TSDKParamsOfSendMessage, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfSendMessage, TSDKClientError>) throws -> Void
+    public func send_message(_ payload: TSDKParamsOfSendMessage, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKResultOfSendMessage, TSDKClientError>) throws -> Void
     ) throws {
         let method: String = "send_message"
         try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
@@ -258,7 +258,7 @@ public final class TSDKProcessingModule {
     /// When the ABI header `expire` isn't present or `abi` parameterisn't specified, the processing uses `transaction waiting`strategy:
     /// - The maximum block gen time is set to  `now() + transaction_wait_timeout`.
     /// - If maximum block gen time is reached and no result transaction is found,the processing will exit with an error.
-    public func wait_for_transaction(_ payload: TSDKParamsOfWaitForTransaction, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfProcessMessage, TSDKClientError>) throws -> Void
+    public func wait_for_transaction(_ payload: TSDKParamsOfWaitForTransaction, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKResultOfProcessMessage, TSDKClientError>) throws -> Void
     ) throws {
         let method: String = "wait_for_transaction"
         try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
@@ -307,7 +307,7 @@ public final class TSDKProcessingModule {
     /// The intermediate events, such as `WillFetchFirstBlock`, `WillSend`, `DidSend`,`WillFetchNextBlock`, etc - are switched on/off by `send_events` flagand logged into the supplied callback function.
     /// The retry configuration parameters are defined in the client's `NetworkConfig` and `AbiConfig`.
     /// If contract's ABI does not include "expire" headerthen, if no transaction is found within the network timeout (see config parameter ), exits with error.
-    public func process_message(_ payload: TSDKParamsOfProcessMessage, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfProcessMessage, TSDKClientError>) throws -> Void
+    public func process_message(_ payload: TSDKParamsOfProcessMessage, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKResultOfProcessMessage, TSDKClientError>) throws -> Void
     ) throws {
         let method: String = "process_message"
         try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in

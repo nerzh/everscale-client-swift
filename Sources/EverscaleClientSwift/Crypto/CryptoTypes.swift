@@ -112,7 +112,7 @@ public enum TSDKResultOfAppEncryptionBoxEnumTypes: String, Codable {
     case Decrypt = "Decrypt"
 }
 
-public struct TSDKEncryptionBoxInfo: Codable {
+public struct TSDKEncryptionBoxInfo: Codable, @unchecked Sendable {
     /// Derivation path, for instance "m/44'/396'/0'/0/0"
     public var hdpath: String?
     /// Cryptographic algorithm, used by this encryption box
@@ -130,7 +130,7 @@ public struct TSDKEncryptionBoxInfo: Codable {
     }
 }
 
-public struct TSDKEncryptionAlgorithm: Codable {
+public struct TSDKEncryptionAlgorithm: Codable, @unchecked Sendable {
     public var type: TSDKEncryptionAlgorithmEnumTypes
     public var value: TSDKAesParamsEB?
 
@@ -140,7 +140,7 @@ public struct TSDKEncryptionAlgorithm: Codable {
     }
 }
 
-public struct TSDKAesParamsEB: Codable {
+public struct TSDKAesParamsEB: Codable, @unchecked Sendable {
     public var mode: TSDKCipherMode
     public var key: String
     public var iv: String?
@@ -152,7 +152,7 @@ public struct TSDKAesParamsEB: Codable {
     }
 }
 
-public struct TSDKAesInfo: Codable {
+public struct TSDKAesInfo: Codable, @unchecked Sendable {
     public var mode: TSDKCipherMode
     public var iv: String?
 
@@ -162,7 +162,7 @@ public struct TSDKAesInfo: Codable {
     }
 }
 
-public struct TSDKChaCha20ParamsEB: Codable {
+public struct TSDKChaCha20ParamsEB: Codable, @unchecked Sendable {
     /// 256-bit key.
     /// Must be encoded with `hex`.
     public var key: String
@@ -176,7 +176,7 @@ public struct TSDKChaCha20ParamsEB: Codable {
     }
 }
 
-public struct TSDKNaclBoxParamsEB: Codable {
+public struct TSDKNaclBoxParamsEB: Codable, @unchecked Sendable {
     /// 256-bit key.
     /// Must be encoded with `hex`.
     public var their_public: String
@@ -194,7 +194,7 @@ public struct TSDKNaclBoxParamsEB: Codable {
     }
 }
 
-public struct TSDKNaclSecretBoxParamsEB: Codable {
+public struct TSDKNaclSecretBoxParamsEB: Codable, @unchecked Sendable {
     /// Secret key - unprefixed 0-padded to 64 symbols hex string
     public var key: String
     /// Nonce in `hex`
@@ -206,7 +206,7 @@ public struct TSDKNaclSecretBoxParamsEB: Codable {
     }
 }
 
-public struct TSDKCryptoBoxSecret: Codable {
+public struct TSDKCryptoBoxSecret: Codable, @unchecked Sendable {
     public var type: TSDKCryptoBoxSecretEnumTypes
     public var dictionary: TSDKMnemonicDictionary?
     public var wordcount: UInt8?
@@ -224,7 +224,7 @@ public struct TSDKCryptoBoxSecret: Codable {
 }
 
 /// Crypto Box Secret.
-public struct TSDKBoxEncryptionAlgorithm: Codable {
+public struct TSDKBoxEncryptionAlgorithm: Codable, @unchecked Sendable {
     public var type: TSDKBoxEncryptionAlgorithmEnumTypes
     public var value: TSDKChaCha20ParamsCB?
 
@@ -234,7 +234,7 @@ public struct TSDKBoxEncryptionAlgorithm: Codable {
     }
 }
 
-public struct TSDKChaCha20ParamsCB: Codable {
+public struct TSDKChaCha20ParamsCB: Codable, @unchecked Sendable {
     /// 96-bit nonce.
     /// Must be encoded with `hex`.
     public var nonce: String
@@ -244,7 +244,7 @@ public struct TSDKChaCha20ParamsCB: Codable {
     }
 }
 
-public struct TSDKNaclBoxParamsCB: Codable {
+public struct TSDKNaclBoxParamsCB: Codable, @unchecked Sendable {
     /// 256-bit key.
     /// Must be encoded with `hex`.
     public var their_public: String
@@ -258,7 +258,7 @@ public struct TSDKNaclBoxParamsCB: Codable {
     }
 }
 
-public struct TSDKNaclSecretBoxParamsCB: Codable {
+public struct TSDKNaclSecretBoxParamsCB: Codable, @unchecked Sendable {
     /// Nonce in `hex`
     public var nonce: String
 
@@ -267,7 +267,7 @@ public struct TSDKNaclSecretBoxParamsCB: Codable {
     }
 }
 
-public struct TSDKParamsOfFactorize: Codable {
+public struct TSDKParamsOfFactorize: Codable, @unchecked Sendable {
     /// Hexadecimal representation of u64 composite number.
     public var composite: String
 
@@ -276,7 +276,7 @@ public struct TSDKParamsOfFactorize: Codable {
     }
 }
 
-public struct TSDKResultOfFactorize: Codable {
+public struct TSDKResultOfFactorize: Codable, @unchecked Sendable {
     /// Two factors of composite or empty if composite can't be factorized.
     public var factors: [String]
 
@@ -285,7 +285,7 @@ public struct TSDKResultOfFactorize: Codable {
     }
 }
 
-public struct TSDKParamsOfModularPower: Codable {
+public struct TSDKParamsOfModularPower: Codable, @unchecked Sendable {
     /// `base` argument of calculation.
     public var base: String
     /// `exponent` argument of calculation.
@@ -300,7 +300,7 @@ public struct TSDKParamsOfModularPower: Codable {
     }
 }
 
-public struct TSDKResultOfModularPower: Codable {
+public struct TSDKResultOfModularPower: Codable, @unchecked Sendable {
     /// Result of modular exponentiation
     public var modular_power: String
 
@@ -309,7 +309,7 @@ public struct TSDKResultOfModularPower: Codable {
     }
 }
 
-public struct TSDKParamsOfTonCrc16: Codable {
+public struct TSDKParamsOfTonCrc16: Codable, @unchecked Sendable {
     /// Input data for CRC calculation.
     /// Encoded with `base64`.
     public var data: String
@@ -319,7 +319,7 @@ public struct TSDKParamsOfTonCrc16: Codable {
     }
 }
 
-public struct TSDKResultOfTonCrc16: Codable {
+public struct TSDKResultOfTonCrc16: Codable, @unchecked Sendable {
     /// Calculated CRC for input data.
     public var crc: UInt16
 
@@ -328,7 +328,7 @@ public struct TSDKResultOfTonCrc16: Codable {
     }
 }
 
-public struct TSDKParamsOfGenerateRandomBytes: Codable {
+public struct TSDKParamsOfGenerateRandomBytes: Codable, @unchecked Sendable {
     /// Size of random byte array.
     public var length: UInt32
 
@@ -337,7 +337,7 @@ public struct TSDKParamsOfGenerateRandomBytes: Codable {
     }
 }
 
-public struct TSDKResultOfGenerateRandomBytes: Codable {
+public struct TSDKResultOfGenerateRandomBytes: Codable, @unchecked Sendable {
     /// Generated bytes encoded in `base64`.
     public var bytes: String
 
@@ -346,7 +346,7 @@ public struct TSDKResultOfGenerateRandomBytes: Codable {
     }
 }
 
-public struct TSDKParamsOfConvertPublicKeyToTonSafeFormat: Codable {
+public struct TSDKParamsOfConvertPublicKeyToTonSafeFormat: Codable, @unchecked Sendable {
     /// Public key - 64 symbols hex string
     public var public_key: String
 
@@ -355,7 +355,7 @@ public struct TSDKParamsOfConvertPublicKeyToTonSafeFormat: Codable {
     }
 }
 
-public struct TSDKResultOfConvertPublicKeyToTonSafeFormat: Codable {
+public struct TSDKResultOfConvertPublicKeyToTonSafeFormat: Codable, @unchecked Sendable {
     /// Public key represented in TON safe format.
     public var ton_public_key: String
 
@@ -364,7 +364,7 @@ public struct TSDKResultOfConvertPublicKeyToTonSafeFormat: Codable {
     }
 }
 
-public struct TSDKKeyPair: Codable {
+public struct TSDKKeyPair: Codable, @unchecked Sendable {
     /// Public key - 64 symbols hex string
     public var `public`: String
     /// Private key - u64 symbols hex string
@@ -376,7 +376,7 @@ public struct TSDKKeyPair: Codable {
     }
 }
 
-public struct TSDKParamsOfSign: Codable {
+public struct TSDKParamsOfSign: Codable, @unchecked Sendable {
     /// Data that must be signed encoded in `base64`.
     public var unsigned: String
     /// Sign keys.
@@ -388,7 +388,7 @@ public struct TSDKParamsOfSign: Codable {
     }
 }
 
-public struct TSDKResultOfSign: Codable {
+public struct TSDKResultOfSign: Codable, @unchecked Sendable {
     /// Signed data combined with signature encoded in `base64`.
     public var signed: String
     /// Signature encoded in `hex`.
@@ -400,7 +400,7 @@ public struct TSDKResultOfSign: Codable {
     }
 }
 
-public struct TSDKParamsOfVerifySignature: Codable {
+public struct TSDKParamsOfVerifySignature: Codable, @unchecked Sendable {
     /// Signed data that must be verified encoded in `base64`.
     public var signed: String
     /// Signer's public key - 64 symbols hex string
@@ -412,7 +412,7 @@ public struct TSDKParamsOfVerifySignature: Codable {
     }
 }
 
-public struct TSDKResultOfVerifySignature: Codable {
+public struct TSDKResultOfVerifySignature: Codable, @unchecked Sendable {
     /// Unsigned data encoded in `base64`.
     public var unsigned: String
 
@@ -421,7 +421,7 @@ public struct TSDKResultOfVerifySignature: Codable {
     }
 }
 
-public struct TSDKParamsOfHash: Codable {
+public struct TSDKParamsOfHash: Codable, @unchecked Sendable {
     /// Input data for hash calculation.
     /// Encoded with `base64`.
     public var data: String
@@ -431,7 +431,7 @@ public struct TSDKParamsOfHash: Codable {
     }
 }
 
-public struct TSDKResultOfHash: Codable {
+public struct TSDKResultOfHash: Codable, @unchecked Sendable {
     /// Hash of input `data`.
     /// Encoded with 'hex'.
     public var hash: String
@@ -441,7 +441,7 @@ public struct TSDKResultOfHash: Codable {
     }
 }
 
-public struct TSDKParamsOfScrypt: Codable {
+public struct TSDKParamsOfScrypt: Codable, @unchecked Sendable {
     /// The password bytes to be hashed. Must be encoded with `base64`.
     public var password: String
     /// Salt bytes that modify the hash to protect against Rainbow table attacks. Must be encoded with `base64`.
@@ -465,7 +465,7 @@ public struct TSDKParamsOfScrypt: Codable {
     }
 }
 
-public struct TSDKResultOfScrypt: Codable {
+public struct TSDKResultOfScrypt: Codable, @unchecked Sendable {
     /// Derived key.
     /// Encoded with `hex`.
     public var key: String
@@ -475,7 +475,7 @@ public struct TSDKResultOfScrypt: Codable {
     }
 }
 
-public struct TSDKParamsOfNaclSignKeyPairFromSecret: Codable {
+public struct TSDKParamsOfNaclSignKeyPairFromSecret: Codable, @unchecked Sendable {
     /// Secret key - unprefixed 0-padded to 64 symbols hex string
     public var secret: String
 
@@ -484,7 +484,7 @@ public struct TSDKParamsOfNaclSignKeyPairFromSecret: Codable {
     }
 }
 
-public struct TSDKParamsOfNaclSign: Codable {
+public struct TSDKParamsOfNaclSign: Codable, @unchecked Sendable {
     /// Data that must be signed encoded in `base64`.
     public var unsigned: String
     /// Signer's secret key - unprefixed 0-padded to 128 symbols hex string (concatenation of 64 symbols secret and 64 symbols public keys). See `nacl_sign_keypair_from_secret_key`.
@@ -496,7 +496,7 @@ public struct TSDKParamsOfNaclSign: Codable {
     }
 }
 
-public struct TSDKResultOfNaclSign: Codable {
+public struct TSDKResultOfNaclSign: Codable, @unchecked Sendable {
     /// Signed data, encoded in `base64`.
     public var signed: String
 
@@ -505,7 +505,7 @@ public struct TSDKResultOfNaclSign: Codable {
     }
 }
 
-public struct TSDKParamsOfNaclSignOpen: Codable {
+public struct TSDKParamsOfNaclSignOpen: Codable, @unchecked Sendable {
     /// Signed data that must be unsigned.
     /// Encoded with `base64`.
     public var signed: String
@@ -518,7 +518,7 @@ public struct TSDKParamsOfNaclSignOpen: Codable {
     }
 }
 
-public struct TSDKResultOfNaclSignOpen: Codable {
+public struct TSDKResultOfNaclSignOpen: Codable, @unchecked Sendable {
     /// Unsigned data, encoded in `base64`.
     public var unsigned: String
 
@@ -527,7 +527,7 @@ public struct TSDKResultOfNaclSignOpen: Codable {
     }
 }
 
-public struct TSDKResultOfNaclSignDetached: Codable {
+public struct TSDKResultOfNaclSignDetached: Codable, @unchecked Sendable {
     /// Signature encoded in `hex`.
     public var signature: String
 
@@ -536,7 +536,7 @@ public struct TSDKResultOfNaclSignDetached: Codable {
     }
 }
 
-public struct TSDKParamsOfNaclSignDetachedVerify: Codable {
+public struct TSDKParamsOfNaclSignDetachedVerify: Codable, @unchecked Sendable {
     /// Unsigned data that must be verified.
     /// Encoded with `base64`.
     public var unsigned: String
@@ -553,7 +553,7 @@ public struct TSDKParamsOfNaclSignDetachedVerify: Codable {
     }
 }
 
-public struct TSDKResultOfNaclSignDetachedVerify: Codable {
+public struct TSDKResultOfNaclSignDetachedVerify: Codable, @unchecked Sendable {
     /// `true` if verification succeeded or `false` if it failed
     public var succeeded: Bool
 
@@ -562,7 +562,7 @@ public struct TSDKResultOfNaclSignDetachedVerify: Codable {
     }
 }
 
-public struct TSDKParamsOfNaclBoxKeyPairFromSecret: Codable {
+public struct TSDKParamsOfNaclBoxKeyPairFromSecret: Codable, @unchecked Sendable {
     /// Secret key - unprefixed 0-padded to 64 symbols hex string
     public var secret: String
 
@@ -571,7 +571,7 @@ public struct TSDKParamsOfNaclBoxKeyPairFromSecret: Codable {
     }
 }
 
-public struct TSDKParamsOfNaclBox: Codable {
+public struct TSDKParamsOfNaclBox: Codable, @unchecked Sendable {
     /// Data that must be encrypted encoded in `base64`.
     public var decrypted: String
     /// Nonce, encoded in `hex`
@@ -589,7 +589,7 @@ public struct TSDKParamsOfNaclBox: Codable {
     }
 }
 
-public struct TSDKResultOfNaclBox: Codable {
+public struct TSDKResultOfNaclBox: Codable, @unchecked Sendable {
     /// Encrypted data encoded in `base64`.
     public var encrypted: String
 
@@ -598,7 +598,7 @@ public struct TSDKResultOfNaclBox: Codable {
     }
 }
 
-public struct TSDKParamsOfNaclBoxOpen: Codable {
+public struct TSDKParamsOfNaclBoxOpen: Codable, @unchecked Sendable {
     /// Data that must be decrypted.
     /// Encoded with `base64`.
     public var encrypted: String
@@ -617,7 +617,7 @@ public struct TSDKParamsOfNaclBoxOpen: Codable {
     }
 }
 
-public struct TSDKResultOfNaclBoxOpen: Codable {
+public struct TSDKResultOfNaclBoxOpen: Codable, @unchecked Sendable {
     /// Decrypted data encoded in `base64`.
     public var decrypted: String
 
@@ -626,7 +626,7 @@ public struct TSDKResultOfNaclBoxOpen: Codable {
     }
 }
 
-public struct TSDKParamsOfNaclSecretBox: Codable {
+public struct TSDKParamsOfNaclSecretBox: Codable, @unchecked Sendable {
     /// Data that must be encrypted.
     /// Encoded with `base64`.
     public var decrypted: String
@@ -642,7 +642,7 @@ public struct TSDKParamsOfNaclSecretBox: Codable {
     }
 }
 
-public struct TSDKParamsOfNaclSecretBoxOpen: Codable {
+public struct TSDKParamsOfNaclSecretBoxOpen: Codable, @unchecked Sendable {
     /// Data that must be decrypted.
     /// Encoded with `base64`.
     public var encrypted: String
@@ -658,7 +658,7 @@ public struct TSDKParamsOfNaclSecretBoxOpen: Codable {
     }
 }
 
-public struct TSDKParamsOfMnemonicWords: Codable {
+public struct TSDKParamsOfMnemonicWords: Codable, @unchecked Sendable {
     /// Dictionary identifier
     public var dictionary: TSDKMnemonicDictionary?
 
@@ -667,7 +667,7 @@ public struct TSDKParamsOfMnemonicWords: Codable {
     }
 }
 
-public struct TSDKResultOfMnemonicWords: Codable {
+public struct TSDKResultOfMnemonicWords: Codable, @unchecked Sendable {
     /// The list of mnemonic words
     public var words: String
 
@@ -676,7 +676,7 @@ public struct TSDKResultOfMnemonicWords: Codable {
     }
 }
 
-public struct TSDKParamsOfMnemonicFromRandom: Codable {
+public struct TSDKParamsOfMnemonicFromRandom: Codable, @unchecked Sendable {
     /// Dictionary identifier
     public var dictionary: TSDKMnemonicDictionary?
     /// Mnemonic word count
@@ -688,7 +688,7 @@ public struct TSDKParamsOfMnemonicFromRandom: Codable {
     }
 }
 
-public struct TSDKResultOfMnemonicFromRandom: Codable {
+public struct TSDKResultOfMnemonicFromRandom: Codable, @unchecked Sendable {
     /// String of mnemonic words
     public var phrase: String
 
@@ -697,7 +697,7 @@ public struct TSDKResultOfMnemonicFromRandom: Codable {
     }
 }
 
-public struct TSDKParamsOfMnemonicFromEntropy: Codable {
+public struct TSDKParamsOfMnemonicFromEntropy: Codable, @unchecked Sendable {
     /// Entropy bytes.
     /// Hex encoded.
     public var entropy: String
@@ -713,7 +713,7 @@ public struct TSDKParamsOfMnemonicFromEntropy: Codable {
     }
 }
 
-public struct TSDKResultOfMnemonicFromEntropy: Codable {
+public struct TSDKResultOfMnemonicFromEntropy: Codable, @unchecked Sendable {
     /// Phrase
     public var phrase: String
 
@@ -722,7 +722,7 @@ public struct TSDKResultOfMnemonicFromEntropy: Codable {
     }
 }
 
-public struct TSDKParamsOfMnemonicVerify: Codable {
+public struct TSDKParamsOfMnemonicVerify: Codable, @unchecked Sendable {
     /// Phrase
     public var phrase: String
     /// Dictionary identifier
@@ -737,7 +737,7 @@ public struct TSDKParamsOfMnemonicVerify: Codable {
     }
 }
 
-public struct TSDKResultOfMnemonicVerify: Codable {
+public struct TSDKResultOfMnemonicVerify: Codable, @unchecked Sendable {
     /// Flag indicating if the mnemonic is valid or not
     public var valid: Bool
 
@@ -746,7 +746,7 @@ public struct TSDKResultOfMnemonicVerify: Codable {
     }
 }
 
-public struct TSDKParamsOfMnemonicDeriveSignKeys: Codable {
+public struct TSDKParamsOfMnemonicDeriveSignKeys: Codable, @unchecked Sendable {
     /// Phrase
     public var phrase: String
     /// Derivation path, for instance "m/44'/396'/0'/0/0"
@@ -764,7 +764,7 @@ public struct TSDKParamsOfMnemonicDeriveSignKeys: Codable {
     }
 }
 
-public struct TSDKParamsOfHDKeyXPrvFromMnemonic: Codable {
+public struct TSDKParamsOfHDKeyXPrvFromMnemonic: Codable, @unchecked Sendable {
     /// String with seed phrase
     public var phrase: String
     /// Dictionary identifier
@@ -779,7 +779,7 @@ public struct TSDKParamsOfHDKeyXPrvFromMnemonic: Codable {
     }
 }
 
-public struct TSDKResultOfHDKeyXPrvFromMnemonic: Codable {
+public struct TSDKResultOfHDKeyXPrvFromMnemonic: Codable, @unchecked Sendable {
     /// Serialized extended master private key
     public var xprv: String
 
@@ -788,7 +788,7 @@ public struct TSDKResultOfHDKeyXPrvFromMnemonic: Codable {
     }
 }
 
-public struct TSDKParamsOfHDKeyDeriveFromXPrv: Codable {
+public struct TSDKParamsOfHDKeyDeriveFromXPrv: Codable, @unchecked Sendable {
     /// Serialized extended private key
     public var xprv: String
     /// Child index (see BIP-0032)
@@ -803,7 +803,7 @@ public struct TSDKParamsOfHDKeyDeriveFromXPrv: Codable {
     }
 }
 
-public struct TSDKResultOfHDKeyDeriveFromXPrv: Codable {
+public struct TSDKResultOfHDKeyDeriveFromXPrv: Codable, @unchecked Sendable {
     /// Serialized extended private key
     public var xprv: String
 
@@ -812,7 +812,7 @@ public struct TSDKResultOfHDKeyDeriveFromXPrv: Codable {
     }
 }
 
-public struct TSDKParamsOfHDKeyDeriveFromXPrvPath: Codable {
+public struct TSDKParamsOfHDKeyDeriveFromXPrvPath: Codable, @unchecked Sendable {
     /// Serialized extended private key
     public var xprv: String
     /// Derivation path, for instance "m/44'/396'/0'/0/0"
@@ -824,7 +824,7 @@ public struct TSDKParamsOfHDKeyDeriveFromXPrvPath: Codable {
     }
 }
 
-public struct TSDKResultOfHDKeyDeriveFromXPrvPath: Codable {
+public struct TSDKResultOfHDKeyDeriveFromXPrvPath: Codable, @unchecked Sendable {
     /// Derived serialized extended private key
     public var xprv: String
 
@@ -833,7 +833,7 @@ public struct TSDKResultOfHDKeyDeriveFromXPrvPath: Codable {
     }
 }
 
-public struct TSDKParamsOfHDKeySecretFromXPrv: Codable {
+public struct TSDKParamsOfHDKeySecretFromXPrv: Codable, @unchecked Sendable {
     /// Serialized extended private key
     public var xprv: String
 
@@ -842,7 +842,7 @@ public struct TSDKParamsOfHDKeySecretFromXPrv: Codable {
     }
 }
 
-public struct TSDKResultOfHDKeySecretFromXPrv: Codable {
+public struct TSDKResultOfHDKeySecretFromXPrv: Codable, @unchecked Sendable {
     /// Private key - 64 symbols hex string
     public var secret: String
 
@@ -851,7 +851,7 @@ public struct TSDKResultOfHDKeySecretFromXPrv: Codable {
     }
 }
 
-public struct TSDKParamsOfHDKeyPublicFromXPrv: Codable {
+public struct TSDKParamsOfHDKeyPublicFromXPrv: Codable, @unchecked Sendable {
     /// Serialized extended private key
     public var xprv: String
 
@@ -860,7 +860,7 @@ public struct TSDKParamsOfHDKeyPublicFromXPrv: Codable {
     }
 }
 
-public struct TSDKResultOfHDKeyPublicFromXPrv: Codable {
+public struct TSDKResultOfHDKeyPublicFromXPrv: Codable, @unchecked Sendable {
     /// Public key - 64 symbols hex string
     public var `public`: String
 
@@ -869,7 +869,7 @@ public struct TSDKResultOfHDKeyPublicFromXPrv: Codable {
     }
 }
 
-public struct TSDKParamsOfChaCha20: Codable {
+public struct TSDKParamsOfChaCha20: Codable, @unchecked Sendable {
     /// Source data to be encrypted or decrypted.
     /// Must be encoded with `base64`.
     public var data: String
@@ -887,7 +887,7 @@ public struct TSDKParamsOfChaCha20: Codable {
     }
 }
 
-public struct TSDKResultOfChaCha20: Codable {
+public struct TSDKResultOfChaCha20: Codable, @unchecked Sendable {
     /// Encrypted/decrypted data.
     /// Encoded with `base64`.
     public var data: String
@@ -897,7 +897,7 @@ public struct TSDKResultOfChaCha20: Codable {
     }
 }
 
-public struct TSDKParamsOfCreateCryptoBox: Codable {
+public struct TSDKParamsOfCreateCryptoBox: Codable, @unchecked Sendable {
     /// Salt used for secret encryption. For example, a mobile device can use device ID as salt.
     public var secret_encryption_salt: String
     /// Cryptobox secret
@@ -909,7 +909,7 @@ public struct TSDKParamsOfCreateCryptoBox: Codable {
     }
 }
 
-public struct TSDKRegisteredCryptoBox: Codable {
+public struct TSDKRegisteredCryptoBox: Codable, @unchecked Sendable {
     public var handle: TSDKCryptoBoxHandle
 
     public init(handle: TSDKCryptoBoxHandle) {
@@ -917,7 +917,7 @@ public struct TSDKRegisteredCryptoBox: Codable {
     }
 }
 
-public struct TSDKParamsOfAppPasswordProvider: Codable {
+public struct TSDKParamsOfAppPasswordProvider: Codable, @unchecked Sendable {
     public var type: TSDKParamsOfAppPasswordProviderEnumTypes
     /// Temporary library pubkey, that is used on application side for password encryption, along with application temporary private key and nonce. Used for password decryption on library side.
     public var encryption_public_key: String?
@@ -931,7 +931,7 @@ public struct TSDKParamsOfAppPasswordProvider: Codable {
 /// Interface that provides a callback that returns an encrypted password, used for cryptobox secret encryption
 /// To secure the password while passing it from application to the library,the library generates a temporary key pair, passes the pubkeyto the passwordProvider, decrypts the received password with private key,and deletes the key pair right away.
     /// Application should generate a temporary nacl_box_keypairand encrypt the password with naclbox function using nacl_box_keypair.secretand encryption_public_key keys + nonce = 24-byte prefix of encryption_public_key.
-public struct TSDKResultOfAppPasswordProvider: Codable {
+public struct TSDKResultOfAppPasswordProvider: Codable, @unchecked Sendable {
     public var type: TSDKResultOfAppPasswordProviderEnumTypes
     /// Password, encrypted and encoded to base64. Crypto box uses this password to decrypt its secret (seed phrase).
     public var encrypted_password: String?
@@ -946,7 +946,7 @@ public struct TSDKResultOfAppPasswordProvider: Codable {
     }
 }
 
-public struct TSDKResultOfGetCryptoBoxInfo: Codable {
+public struct TSDKResultOfGetCryptoBoxInfo: Codable, @unchecked Sendable {
     /// Secret (seed phrase) encrypted with salt and password.
     public var encrypted_secret: String
 
@@ -955,7 +955,7 @@ public struct TSDKResultOfGetCryptoBoxInfo: Codable {
     }
 }
 
-public struct TSDKResultOfGetCryptoBoxSeedPhrase: Codable {
+public struct TSDKResultOfGetCryptoBoxSeedPhrase: Codable, @unchecked Sendable {
     public var phrase: String
     public var dictionary: TSDKMnemonicDictionary
     public var wordcount: UInt8
@@ -967,7 +967,7 @@ public struct TSDKResultOfGetCryptoBoxSeedPhrase: Codable {
     }
 }
 
-public struct TSDKParamsOfGetSigningBoxFromCryptoBox: Codable {
+public struct TSDKParamsOfGetSigningBoxFromCryptoBox: Codable, @unchecked Sendable {
     /// Crypto Box Handle.
     public var handle: UInt32
     /// HD key derivation path.
@@ -983,7 +983,7 @@ public struct TSDKParamsOfGetSigningBoxFromCryptoBox: Codable {
     }
 }
 
-public struct TSDKRegisteredSigningBox: Codable {
+public struct TSDKRegisteredSigningBox: Codable, @unchecked Sendable {
     /// Handle of the signing box.
     public var handle: TSDKSigningBoxHandle
 
@@ -992,7 +992,7 @@ public struct TSDKRegisteredSigningBox: Codable {
     }
 }
 
-public struct TSDKParamsOfGetEncryptionBoxFromCryptoBox: Codable {
+public struct TSDKParamsOfGetEncryptionBoxFromCryptoBox: Codable, @unchecked Sendable {
     /// Crypto Box Handle.
     public var handle: UInt32
     /// HD key derivation path.
@@ -1011,7 +1011,7 @@ public struct TSDKParamsOfGetEncryptionBoxFromCryptoBox: Codable {
     }
 }
 
-public struct TSDKRegisteredEncryptionBox: Codable {
+public struct TSDKRegisteredEncryptionBox: Codable, @unchecked Sendable {
     /// Handle of the encryption box.
     public var handle: TSDKEncryptionBoxHandle
 
@@ -1020,7 +1020,7 @@ public struct TSDKRegisteredEncryptionBox: Codable {
     }
 }
 
-public struct TSDKParamsOfAppSigningBox: Codable {
+public struct TSDKParamsOfAppSigningBox: Codable, @unchecked Sendable {
     public var type: TSDKParamsOfAppSigningBoxEnumTypes
     /// Data to sign encoded as base64
     public var unsigned: String?
@@ -1032,7 +1032,7 @@ public struct TSDKParamsOfAppSigningBox: Codable {
 }
 
 /// Signing box callbacks.
-public struct TSDKResultOfAppSigningBox: Codable {
+public struct TSDKResultOfAppSigningBox: Codable, @unchecked Sendable {
     public var type: TSDKResultOfAppSigningBoxEnumTypes
     /// Signing box public key
     public var public_key: String?
@@ -1047,7 +1047,7 @@ public struct TSDKResultOfAppSigningBox: Codable {
 }
 
 /// Returning values from signing box callbacks.
-public struct TSDKResultOfSigningBoxGetPublicKey: Codable {
+public struct TSDKResultOfSigningBoxGetPublicKey: Codable, @unchecked Sendable {
     /// Public key of signing box.
     /// Encoded with hex
     public var pubkey: String
@@ -1057,7 +1057,7 @@ public struct TSDKResultOfSigningBoxGetPublicKey: Codable {
     }
 }
 
-public struct TSDKParamsOfSigningBoxSign: Codable {
+public struct TSDKParamsOfSigningBoxSign: Codable, @unchecked Sendable {
     /// Signing Box handle.
     public var signing_box: TSDKSigningBoxHandle
     /// Unsigned user data.
@@ -1070,7 +1070,7 @@ public struct TSDKParamsOfSigningBoxSign: Codable {
     }
 }
 
-public struct TSDKResultOfSigningBoxSign: Codable {
+public struct TSDKResultOfSigningBoxSign: Codable, @unchecked Sendable {
     /// Data signature.
     /// Encoded with `hex`.
     public var signature: String
@@ -1080,7 +1080,7 @@ public struct TSDKResultOfSigningBoxSign: Codable {
     }
 }
 
-public struct TSDKParamsOfAppEncryptionBox: Codable {
+public struct TSDKParamsOfAppEncryptionBox: Codable, @unchecked Sendable {
     public var type: TSDKParamsOfAppEncryptionBoxEnumTypes
     /// Data, encoded in Base64
     public var data: String?
@@ -1092,7 +1092,7 @@ public struct TSDKParamsOfAppEncryptionBox: Codable {
 }
 
 /// Interface for data encryption/decryption
-public struct TSDKResultOfAppEncryptionBox: Codable {
+public struct TSDKResultOfAppEncryptionBox: Codable, @unchecked Sendable {
     public var type: TSDKResultOfAppEncryptionBoxEnumTypes
     public var info: TSDKEncryptionBoxInfo?
     /// Encrypted data, encoded in Base64
@@ -1106,7 +1106,7 @@ public struct TSDKResultOfAppEncryptionBox: Codable {
 }
 
 /// Returning values from signing box callbacks.
-public struct TSDKParamsOfEncryptionBoxGetInfo: Codable {
+public struct TSDKParamsOfEncryptionBoxGetInfo: Codable, @unchecked Sendable {
     /// Encryption box handle
     public var encryption_box: TSDKEncryptionBoxHandle
 
@@ -1115,7 +1115,7 @@ public struct TSDKParamsOfEncryptionBoxGetInfo: Codable {
     }
 }
 
-public struct TSDKResultOfEncryptionBoxGetInfo: Codable {
+public struct TSDKResultOfEncryptionBoxGetInfo: Codable, @unchecked Sendable {
     /// Encryption box information
     public var info: TSDKEncryptionBoxInfo
 
@@ -1124,7 +1124,7 @@ public struct TSDKResultOfEncryptionBoxGetInfo: Codable {
     }
 }
 
-public struct TSDKParamsOfEncryptionBoxEncrypt: Codable {
+public struct TSDKParamsOfEncryptionBoxEncrypt: Codable, @unchecked Sendable {
     /// Encryption box handle
     public var encryption_box: TSDKEncryptionBoxHandle
     /// Data to be encrypted, encoded in Base64
@@ -1136,7 +1136,7 @@ public struct TSDKParamsOfEncryptionBoxEncrypt: Codable {
     }
 }
 
-public struct TSDKResultOfEncryptionBoxEncrypt: Codable {
+public struct TSDKResultOfEncryptionBoxEncrypt: Codable, @unchecked Sendable {
     /// Encrypted data, encoded in Base64.
     /// Padded to cipher block size
     public var data: String
@@ -1146,7 +1146,7 @@ public struct TSDKResultOfEncryptionBoxEncrypt: Codable {
     }
 }
 
-public struct TSDKParamsOfEncryptionBoxDecrypt: Codable {
+public struct TSDKParamsOfEncryptionBoxDecrypt: Codable, @unchecked Sendable {
     /// Encryption box handle
     public var encryption_box: TSDKEncryptionBoxHandle
     /// Data to be decrypted, encoded in Base64
@@ -1158,7 +1158,7 @@ public struct TSDKParamsOfEncryptionBoxDecrypt: Codable {
     }
 }
 
-public struct TSDKResultOfEncryptionBoxDecrypt: Codable {
+public struct TSDKResultOfEncryptionBoxDecrypt: Codable, @unchecked Sendable {
     /// Decrypted data, encoded in Base64.
     public var data: String
 
@@ -1167,7 +1167,7 @@ public struct TSDKResultOfEncryptionBoxDecrypt: Codable {
     }
 }
 
-public struct TSDKParamsOfCreateEncryptionBox: Codable {
+public struct TSDKParamsOfCreateEncryptionBox: Codable, @unchecked Sendable {
     /// Encryption algorithm specifier including cipher parameters (key, IV, etc)
     public var algorithm: TSDKEncryptionAlgorithm
 

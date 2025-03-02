@@ -7,7 +7,7 @@
 
 import Foundation
 
-var libPrefix: String = "TSDK"
-var libEnumPostfix: String = "EnumTypes"
-var defaultEnumParents: [String] = ["String", "Codable"]
-var defaultStructTypeParents: [String] = ["Codable"]
+let libPrefix: String = "TSDK"
+let libEnumPostfix: String = "EnumTypes"
+let defaultEnumParents: [String] = ["String", "Codable"]
+let defaultStructTypeParents: [String] = ["Codable"]

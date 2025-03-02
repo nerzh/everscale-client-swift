@@ -3,7 +3,7 @@
 git pull --ff-only
 cd ApiParser
 swift build -c release
-curl https://raw.githubusercontent.com/tonlabs/TON-SDK/master/tools/api.json > api.json
+curl https://raw.githubusercontent.com/everx-labs/ever-sdk/refs/heads/master/tools/api.json > api.json
 if [ `uname -m` = arm64 ]; then
 	./.build/arm64-apple-macosx/release/ApiParser ./api.json
 else

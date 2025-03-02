@@ -10,7 +10,7 @@ public final class TSDKDebotModule {
     /// [UNSTABLE](UNSTABLE.md) [DEPRECATED](DEPRECATED.md) Creates and instance of DeBot.
     /// Downloads debot smart contract (code and data) from blockchain and createsan instance of Debot Engine for it.
     /// # RemarksIt does not switch debot to context 0. Browser Callbacks are not called.
-    public func initialize(_ payload: TSDKParamsOfInit, _ handler: @escaping (TSDKBindingResponse<TSDKRegisteredDebot, TSDKClientError>) throws -> Void
+    public func initialize(_ payload: TSDKParamsOfInit, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKRegisteredDebot, TSDKClientError>) throws -> Void
     ) throws {
         let method: String = "init"
         try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
@@ -52,7 +52,7 @@ public final class TSDKDebotModule {
     /// While the function is executing, several Browser Callbacks can be called,since the debot tries to display all actions from the context 0 to the user.
     /// When the debot starts SDK registers `BrowserCallbacks` AppObject.
     /// Therefore when `debote.remove` is called the debot is being deleted and the callback is calledwith `finish`=`true` which indicates that it will never be used again.
-    public func start(_ payload: TSDKParamsOfStart, _ handler: @escaping (TSDKBindingResponse<TSDKNoneResult, TSDKClientError>) throws -> Void
+    public func start(_ payload: TSDKParamsOfStart, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKNoneResult, TSDKClientError>) throws -> Void
     ) throws {
         let method: String = "start"
         try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
@@ -93,7 +93,7 @@ public final class TSDKDebotModule {
 
     /// [UNSTABLE](UNSTABLE.md) [DEPRECATED](DEPRECATED.md) Fetches DeBot metadata from blockchain.
     /// Downloads DeBot from blockchain and creates and fetches its metadata.
-    public func fetch(_ payload: TSDKParamsOfFetch, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfFetch, TSDKClientError>) throws -> Void
+    public func fetch(_ payload: TSDKParamsOfFetch, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKResultOfFetch, TSDKClientError>) throws -> Void
     ) throws {
         let method: String = "fetch"
         try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
@@ -132,7 +132,7 @@ public final class TSDKDebotModule {
     /// Calls debot engine referenced by debot handle to execute input action.
     /// Calls Debot Browser Callbacks if needed.
     /// # RemarksChain of actions can be executed if input action generates a list of subactions.
-    public func execute(_ payload: TSDKParamsOfExecute, _ handler: @escaping (TSDKBindingResponse<TSDKNoneResult, TSDKClientError>) throws -> Void
+    public func execute(_ payload: TSDKParamsOfExecute, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKNoneResult, TSDKClientError>) throws -> Void
     ) throws {
         let method: String = "execute"
         try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
@@ -171,7 +171,7 @@ public final class TSDKDebotModule {
 
     /// [UNSTABLE](UNSTABLE.md) [DEPRECATED](DEPRECATED.md) Sends message to Debot.
     /// Used by Debot Browser to send response on Dinterface call or from other Debots.
-    public func send(_ payload: TSDKParamsOfSend, _ handler: @escaping (TSDKBindingResponse<TSDKNoneResult, TSDKClientError>) throws -> Void
+    public func send(_ payload: TSDKParamsOfSend, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKNoneResult, TSDKClientError>) throws -> Void
     ) throws {
         let method: String = "send"
         try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
@@ -208,7 +208,7 @@ public final class TSDKDebotModule {
 
     /// [UNSTABLE](UNSTABLE.md) [DEPRECATED](DEPRECATED.md) Destroys debot handle.
     /// Removes handle from Client Context and drops debot engine referenced by that handle.
-    public func remove(_ payload: TSDKParamsOfRemove, _ handler: @escaping (TSDKBindingResponse<TSDKNoneResult, TSDKClientError>) throws -> Void
+    public func remove(_ payload: TSDKParamsOfRemove, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKNoneResult, TSDKClientError>) throws -> Void
     ) throws {
         let method: String = "remove"
         try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in

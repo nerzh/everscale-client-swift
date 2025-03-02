@@ -26,7 +26,7 @@ public enum TSDKAccountForExecutorEnumTypes: String, Codable {
     case Account = "Account"
 }
 
-public struct TSDKExecutionOptions: Codable {
+public struct TSDKExecutionOptions: Codable, @unchecked Sendable {
     /// boc with config
     public var blockchain_config: String?
     /// time that is used as transaction time
@@ -50,7 +50,7 @@ public struct TSDKExecutionOptions: Codable {
     }
 }
 
-public struct TSDKAccountForExecutor: Codable {
+public struct TSDKAccountForExecutor: Codable, @unchecked Sendable {
     public var type: TSDKAccountForExecutorEnumTypes
     /// Account BOC.
     /// Encoded as base64.
@@ -66,7 +66,7 @@ public struct TSDKAccountForExecutor: Codable {
     }
 }
 
-public struct TSDKTransactionFees: Codable {
+public struct TSDKTransactionFees: Codable, @unchecked Sendable {
     /// Deprecated.
     /// Contains the same data as ext_in_msg_fee field
     public var in_msg_fwd_fee: Int
@@ -102,7 +102,7 @@ public struct TSDKTransactionFees: Codable {
     }
 }
 
-public struct TSDKParamsOfRunExecutor: Codable {
+public struct TSDKParamsOfRunExecutor: Codable, @unchecked Sendable {
     /// Input message BOC.
     /// Must be encoded as base64.
     public var message: String
@@ -132,7 +132,7 @@ public struct TSDKParamsOfRunExecutor: Codable {
     }
 }
 
-public struct TSDKResultOfRunExecutor: Codable {
+public struct TSDKResultOfRunExecutor: Codable, @unchecked Sendable {
     /// Parsed transaction.
     /// In addition to the regular transaction fields there is a`boc` field encoded with `base64` which contains sourcetransaction BOC.
     public var transaction: AnyValue
@@ -156,7 +156,7 @@ public struct TSDKResultOfRunExecutor: Codable {
     }
 }
 
-public struct TSDKParamsOfRunTvm: Codable {
+public struct TSDKParamsOfRunTvm: Codable, @unchecked Sendable {
     /// Input message BOC.
     /// Must be encoded as base64.
     public var message: String
@@ -184,7 +184,7 @@ public struct TSDKParamsOfRunTvm: Codable {
     }
 }
 
-public struct TSDKResultOfRunTvm: Codable {
+public struct TSDKResultOfRunTvm: Codable, @unchecked Sendable {
     /// List of output messages' BOCs.
     /// Encoded as `base64`
     public var out_messages: [String]
@@ -201,7 +201,7 @@ public struct TSDKResultOfRunTvm: Codable {
     }
 }
 
-public struct TSDKParamsOfRunGet: Codable {
+public struct TSDKParamsOfRunGet: Codable, @unchecked Sendable {
     /// Account BOC in `base64`
     public var account: String
     /// Function name
@@ -224,7 +224,7 @@ public struct TSDKParamsOfRunGet: Codable {
     }
 }
 
-public struct TSDKResultOfRunGet: Codable {
+public struct TSDKResultOfRunGet: Codable, @unchecked Sendable {
     /// Values returned by get-method on stack
     public var output: AnyValue
 

@@ -7,8 +7,8 @@ public final class TSDKBocModule {
         self.binding = binding
     }
 
-    /// Decodes tvc according to the tvc spec. Read more about tvc structure here https://github.com/tonlabs/ever-struct/blob/main/src/scheme/mod.rs#L30
-    public func decode_tvc(_ payload: TSDKParamsOfDecodeTvc, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfDecodeTvc, TSDKClientError>) throws -> Void
+    /// Decodes tvc according to the tvc spec. Read more about tvc structure here https://github.com/everx-labs/ever-struct/blob/main/src/scheme/mod.rs#L30
+    public func decode_tvc(_ payload: TSDKParamsOfDecodeTvc, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKResultOfDecodeTvc, TSDKClientError>) throws -> Void
     ) throws {
         let method: String = "decode_tvc"
         try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
@@ -18,7 +18,7 @@ public final class TSDKBocModule {
         }
     }
 
-    /// Decodes tvc according to the tvc spec. Read more about tvc structure here https://github.com/tonlabs/ever-struct/blob/main/src/scheme/mod.rs#L30
+    /// Decodes tvc according to the tvc spec. Read more about tvc structure here https://github.com/everx-labs/ever-struct/blob/main/src/scheme/mod.rs#L30
     @available(iOS 13, *)
     @available(macOS 12, *)
     public func decode_tvc(_ payload: TSDKParamsOfDecodeTvc) async throws -> TSDKResultOfDecodeTvc {
@@ -44,7 +44,7 @@ public final class TSDKBocModule {
 
     /// Parses message boc into a JSON
     /// JSON structure is compatible with GraphQL API message object
-    public func parse_message(_ payload: TSDKParamsOfParse, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfParse, TSDKClientError>) throws -> Void
+    public func parse_message(_ payload: TSDKParamsOfParse, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKResultOfParse, TSDKClientError>) throws -> Void
     ) throws {
         let method: String = "parse_message"
         try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
@@ -81,7 +81,7 @@ public final class TSDKBocModule {
 
     /// Parses transaction boc into a JSON
     /// JSON structure is compatible with GraphQL API transaction object
-    public func parse_transaction(_ payload: TSDKParamsOfParse, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfParse, TSDKClientError>) throws -> Void
+    public func parse_transaction(_ payload: TSDKParamsOfParse, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKResultOfParse, TSDKClientError>) throws -> Void
     ) throws {
         let method: String = "parse_transaction"
         try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
@@ -118,7 +118,7 @@ public final class TSDKBocModule {
 
     /// Parses account boc into a JSON
     /// JSON structure is compatible with GraphQL API account object
-    public func parse_account(_ payload: TSDKParamsOfParse, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfParse, TSDKClientError>) throws -> Void
+    public func parse_account(_ payload: TSDKParamsOfParse, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKResultOfParse, TSDKClientError>) throws -> Void
     ) throws {
         let method: String = "parse_account"
         try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
@@ -155,7 +155,7 @@ public final class TSDKBocModule {
 
     /// Parses block boc into a JSON
     /// JSON structure is compatible with GraphQL API block object
-    public func parse_block(_ payload: TSDKParamsOfParse, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfParse, TSDKClientError>) throws -> Void
+    public func parse_block(_ payload: TSDKParamsOfParse, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKResultOfParse, TSDKClientError>) throws -> Void
     ) throws {
         let method: String = "parse_block"
         try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
@@ -192,7 +192,7 @@ public final class TSDKBocModule {
 
     /// Parses shardstate boc into a JSON
     /// JSON structure is compatible with GraphQL API shardstate object
-    public func parse_shardstate(_ payload: TSDKParamsOfParseShardstate, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfParse, TSDKClientError>) throws -> Void
+    public func parse_shardstate(_ payload: TSDKParamsOfParseShardstate, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKResultOfParse, TSDKClientError>) throws -> Void
     ) throws {
         let method: String = "parse_shardstate"
         try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
@@ -228,7 +228,7 @@ public final class TSDKBocModule {
     }
 
     /// Extract blockchain configuration from key block and also from zerostate.
-    public func get_blockchain_config(_ payload: TSDKParamsOfGetBlockchainConfig, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfGetBlockchainConfig, TSDKClientError>) throws -> Void
+    public func get_blockchain_config(_ payload: TSDKParamsOfGetBlockchainConfig, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKResultOfGetBlockchainConfig, TSDKClientError>) throws -> Void
     ) throws {
         let method: String = "get_blockchain_config"
         try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
@@ -263,7 +263,7 @@ public final class TSDKBocModule {
     }
 
     /// Calculates BOC root hash
-    public func get_boc_hash(_ payload: TSDKParamsOfGetBocHash, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfGetBocHash, TSDKClientError>) throws -> Void
+    public func get_boc_hash(_ payload: TSDKParamsOfGetBocHash, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKResultOfGetBocHash, TSDKClientError>) throws -> Void
     ) throws {
         let method: String = "get_boc_hash"
         try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
@@ -298,7 +298,7 @@ public final class TSDKBocModule {
     }
 
     /// Calculates BOC depth
-    public func get_boc_depth(_ payload: TSDKParamsOfGetBocDepth, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfGetBocDepth, TSDKClientError>) throws -> Void
+    public func get_boc_depth(_ payload: TSDKParamsOfGetBocDepth, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKResultOfGetBocDepth, TSDKClientError>) throws -> Void
     ) throws {
         let method: String = "get_boc_depth"
         try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
@@ -333,7 +333,7 @@ public final class TSDKBocModule {
     }
 
     /// Extracts code from TVC contract image
-    public func get_code_from_tvc(_ payload: TSDKParamsOfGetCodeFromTvc, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfGetCodeFromTvc, TSDKClientError>) throws -> Void
+    public func get_code_from_tvc(_ payload: TSDKParamsOfGetCodeFromTvc, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKResultOfGetCodeFromTvc, TSDKClientError>) throws -> Void
     ) throws {
         let method: String = "get_code_from_tvc"
         try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
@@ -368,7 +368,7 @@ public final class TSDKBocModule {
     }
 
     /// Get BOC from cache
-    public func cache_get(_ payload: TSDKParamsOfBocCacheGet, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfBocCacheGet, TSDKClientError>) throws -> Void
+    public func cache_get(_ payload: TSDKParamsOfBocCacheGet, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKResultOfBocCacheGet, TSDKClientError>) throws -> Void
     ) throws {
         let method: String = "cache_get"
         try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
@@ -403,7 +403,7 @@ public final class TSDKBocModule {
     }
 
     /// Save BOC into cache or increase pin counter for existing pinned BOC
-    public func cache_set(_ payload: TSDKParamsOfBocCacheSet, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfBocCacheSet, TSDKClientError>) throws -> Void
+    public func cache_set(_ payload: TSDKParamsOfBocCacheSet, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKResultOfBocCacheSet, TSDKClientError>) throws -> Void
     ) throws {
         let method: String = "cache_set"
         try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
@@ -438,7 +438,7 @@ public final class TSDKBocModule {
     }
 
     /// Unpin BOCs with specified pin defined in the `cache_set`. Decrease pin reference counter for BOCs with specified pin defined in the `cache_set`. BOCs which have only 1 pin and its reference counter become 0 will be removed from cache
-    public func cache_unpin(_ payload: TSDKParamsOfBocCacheUnpin, _ handler: @escaping (TSDKBindingResponse<TSDKNoneResult, TSDKClientError>) throws -> Void
+    public func cache_unpin(_ payload: TSDKParamsOfBocCacheUnpin, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKNoneResult, TSDKClientError>) throws -> Void
     ) throws {
         let method: String = "cache_unpin"
         try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
@@ -473,7 +473,7 @@ public final class TSDKBocModule {
     }
 
     /// Encodes bag of cells (BOC) with builder operations. This method provides the same functionality as Solidity TvmBuilder. Resulting BOC of this method can be passed into Solidity and C++ contracts as TvmCell type.
-    public func encode_boc(_ payload: TSDKParamsOfEncodeBoc, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfEncodeBoc, TSDKClientError>) throws -> Void
+    public func encode_boc(_ payload: TSDKParamsOfEncodeBoc, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKResultOfEncodeBoc, TSDKClientError>) throws -> Void
     ) throws {
         let method: String = "encode_boc"
         try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
@@ -508,7 +508,7 @@ public final class TSDKBocModule {
     }
 
     /// Returns the contract code's salt if it is present.
-    public func get_code_salt(_ payload: TSDKParamsOfGetCodeSalt, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfGetCodeSalt, TSDKClientError>) throws -> Void
+    public func get_code_salt(_ payload: TSDKParamsOfGetCodeSalt, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKResultOfGetCodeSalt, TSDKClientError>) throws -> Void
     ) throws {
         let method: String = "get_code_salt"
         try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
@@ -544,7 +544,7 @@ public final class TSDKBocModule {
 
     /// Sets new salt to contract code.
     /// Returns the new contract code with salt.
-    public func set_code_salt(_ payload: TSDKParamsOfSetCodeSalt, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfSetCodeSalt, TSDKClientError>) throws -> Void
+    public func set_code_salt(_ payload: TSDKParamsOfSetCodeSalt, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKResultOfSetCodeSalt, TSDKClientError>) throws -> Void
     ) throws {
         let method: String = "set_code_salt"
         try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
@@ -580,7 +580,7 @@ public final class TSDKBocModule {
     }
 
     /// Decodes contract's initial state into code, data, libraries and special options.
-    public func decode_state_init(_ payload: TSDKParamsOfDecodeStateInit, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfDecodeStateInit, TSDKClientError>) throws -> Void
+    public func decode_state_init(_ payload: TSDKParamsOfDecodeStateInit, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKResultOfDecodeStateInit, TSDKClientError>) throws -> Void
     ) throws {
         let method: String = "decode_state_init"
         try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
@@ -615,7 +615,7 @@ public final class TSDKBocModule {
     }
 
     /// Encodes initial contract state from code, data, libraries ans special options (see input params)
-    public func encode_state_init(_ payload: TSDKParamsOfEncodeStateInit, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfEncodeStateInit, TSDKClientError>) throws -> Void
+    public func encode_state_init(_ payload: TSDKParamsOfEncodeStateInit, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKResultOfEncodeStateInit, TSDKClientError>) throws -> Void
     ) throws {
         let method: String = "encode_state_init"
         try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
@@ -651,7 +651,7 @@ public final class TSDKBocModule {
 
     /// Encodes a message
     /// Allows to encode any external inbound message.
-    public func encode_external_in_message(_ payload: TSDKParamsOfEncodeExternalInMessage, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfEncodeExternalInMessage, TSDKClientError>) throws -> Void
+    public func encode_external_in_message(_ payload: TSDKParamsOfEncodeExternalInMessage, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKResultOfEncodeExternalInMessage, TSDKClientError>) throws -> Void
     ) throws {
         let method: String = "encode_external_in_message"
         try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
@@ -687,7 +687,7 @@ public final class TSDKBocModule {
     }
 
     /// Returns the compiler version used to compile the code.
-    public func get_compiler_version(_ payload: TSDKParamsOfGetCompilerVersion, _ handler: @escaping (TSDKBindingResponse<TSDKResultOfGetCompilerVersion, TSDKClientError>) throws -> Void
+    public func get_compiler_version(_ payload: TSDKParamsOfGetCompilerVersion, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKResultOfGetCompilerVersion, TSDKClientError>) throws -> Void
     ) throws {
         let method: String = "get_compiler_version"
         try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in

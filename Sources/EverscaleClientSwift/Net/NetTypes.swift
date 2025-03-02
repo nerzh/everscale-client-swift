@@ -43,7 +43,7 @@ public enum TSDKAggregationFn: String, Codable {
     case AVERAGE = "AVERAGE"
 }
 
-public struct TSDKOrderBy: Codable {
+public struct TSDKOrderBy: Codable, @unchecked Sendable {
     public var path: String
     public var direction: TSDKSortDirection
 
@@ -53,7 +53,7 @@ public struct TSDKOrderBy: Codable {
     }
 }
 
-public struct TSDKParamsOfQueryOperation: Codable {
+public struct TSDKParamsOfQueryOperation: Codable, @unchecked Sendable {
     public var type: TSDKParamsOfQueryOperationEnumTypes
 
     public init(type: TSDKParamsOfQueryOperationEnumTypes) {
@@ -61,7 +61,7 @@ public struct TSDKParamsOfQueryOperation: Codable {
     }
 }
 
-public struct TSDKFieldAggregation: Codable {
+public struct TSDKFieldAggregation: Codable, @unchecked Sendable {
     /// Dot separated path to the field
     public var field: String
     /// Aggregation function that must be applied to field values
@@ -73,7 +73,7 @@ public struct TSDKFieldAggregation: Codable {
     }
 }
 
-public struct TSDKTransactionNode: Codable {
+public struct TSDKTransactionNode: Codable, @unchecked Sendable {
     /// Transaction id.
     public var id: String
     /// In message id.
@@ -100,7 +100,7 @@ public struct TSDKTransactionNode: Codable {
     }
 }
 
-public struct TSDKMessageNode: Codable {
+public struct TSDKMessageNode: Codable, @unchecked Sendable {
     /// Message id.
     public var id: String
     /// Source transaction id.
@@ -134,7 +134,7 @@ public struct TSDKMessageNode: Codable {
     }
 }
 
-public struct TSDKParamsOfQuery: Codable {
+public struct TSDKParamsOfQuery: Codable, @unchecked Sendable {
     /// GraphQL query text.
     public var query: String
     /// Variables used in query.
@@ -147,7 +147,7 @@ public struct TSDKParamsOfQuery: Codable {
     }
 }
 
-public struct TSDKResultOfQuery: Codable {
+public struct TSDKResultOfQuery: Codable, @unchecked Sendable {
     /// Result provided by DAppServer.
     public var result: AnyValue
 
@@ -156,7 +156,7 @@ public struct TSDKResultOfQuery: Codable {
     }
 }
 
-public struct TSDKParamsOfBatchQuery: Codable {
+public struct TSDKParamsOfBatchQuery: Codable, @unchecked Sendable {
     /// List of query operations that must be performed per single fetch.
     public var operations: [TSDKParamsOfQueryOperation]
 
@@ -165,7 +165,7 @@ public struct TSDKParamsOfBatchQuery: Codable {
     }
 }
 
-public struct TSDKResultOfBatchQuery: Codable {
+public struct TSDKResultOfBatchQuery: Codable, @unchecked Sendable {
     /// Result values for batched queries.
     /// Returns an array of values. Each value corresponds to `queries` item.
     public var results: [AnyValue]
@@ -175,7 +175,7 @@ public struct TSDKResultOfBatchQuery: Codable {
     }
 }
 
-public struct TSDKParamsOfQueryCollection: Codable {
+public struct TSDKParamsOfQueryCollection: Codable, @unchecked Sendable {
     /// Collection name (accounts, blocks, transactions, messages, block_signatures)
     public var collection: String
     /// Collection filter
@@ -196,7 +196,7 @@ public struct TSDKParamsOfQueryCollection: Codable {
     }
 }
 
-public struct TSDKResultOfQueryCollection: Codable {
+public struct TSDKResultOfQueryCollection: Codable, @unchecked Sendable {
     /// Objects that match the provided criteria
     public var result: [AnyValue]
 
@@ -205,7 +205,7 @@ public struct TSDKResultOfQueryCollection: Codable {
     }
 }
 
-public struct TSDKParamsOfAggregateCollection: Codable {
+public struct TSDKParamsOfAggregateCollection: Codable, @unchecked Sendable {
     /// Collection name (accounts, blocks, transactions, messages, block_signatures)
     public var collection: String
     /// Collection filter
@@ -220,7 +220,7 @@ public struct TSDKParamsOfAggregateCollection: Codable {
     }
 }
 
-public struct TSDKResultOfAggregateCollection: Codable {
+public struct TSDKResultOfAggregateCollection: Codable, @unchecked Sendable {
     /// Values for requested fields.
     /// Returns an array of strings. Each string refers to the corresponding `fields` item.
     /// Numeric value is returned as a decimal string representations.
@@ -231,7 +231,7 @@ public struct TSDKResultOfAggregateCollection: Codable {
     }
 }
 
-public struct TSDKParamsOfWaitForCollection: Codable {
+public struct TSDKParamsOfWaitForCollection: Codable, @unchecked Sendable {
     /// Collection name (accounts, blocks, transactions, messages, block_signatures)
     public var collection: String
     /// Collection filter
@@ -249,7 +249,7 @@ public struct TSDKParamsOfWaitForCollection: Codable {
     }
 }
 
-public struct TSDKResultOfWaitForCollection: Codable {
+public struct TSDKResultOfWaitForCollection: Codable, @unchecked Sendable {
     /// First found object that matches the provided criteria
     public var result: AnyValue
 
@@ -258,7 +258,7 @@ public struct TSDKResultOfWaitForCollection: Codable {
     }
 }
 
-public struct TSDKResultOfSubscribeCollection: Codable {
+public struct TSDKResultOfSubscribeCollection: Codable, @unchecked Sendable {
     /// Subscription handle.
     /// Must be closed with `unsubscribe`
     public var handle: UInt32
@@ -268,7 +268,7 @@ public struct TSDKResultOfSubscribeCollection: Codable {
     }
 }
 
-public struct TSDKParamsOfSubscribeCollection: Codable {
+public struct TSDKParamsOfSubscribeCollection: Codable, @unchecked Sendable {
     /// Collection name (accounts, blocks, transactions, messages, block_signatures)
     public var collection: String
     /// Collection filter
@@ -283,7 +283,7 @@ public struct TSDKParamsOfSubscribeCollection: Codable {
     }
 }
 
-public struct TSDKParamsOfSubscribe: Codable {
+public struct TSDKParamsOfSubscribe: Codable, @unchecked Sendable {
     /// GraphQL subscription text.
     public var subscription: String
     /// Variables used in subscription.
@@ -296,7 +296,7 @@ public struct TSDKParamsOfSubscribe: Codable {
     }
 }
 
-public struct TSDKParamsOfFindLastShardBlock: Codable {
+public struct TSDKParamsOfFindLastShardBlock: Codable, @unchecked Sendable {
     /// Account address
     public var address: String
 
@@ -305,7 +305,7 @@ public struct TSDKParamsOfFindLastShardBlock: Codable {
     }
 }
 
-public struct TSDKResultOfFindLastShardBlock: Codable {
+public struct TSDKResultOfFindLastShardBlock: Codable, @unchecked Sendable {
     /// Account shard last block ID
     public var block_id: String
 
@@ -314,7 +314,7 @@ public struct TSDKResultOfFindLastShardBlock: Codable {
     }
 }
 
-public struct TSDKEndpointsSet: Codable {
+public struct TSDKEndpointsSet: Codable, @unchecked Sendable {
     /// List of endpoints provided by server
     public var endpoints: [String]
 
@@ -323,7 +323,7 @@ public struct TSDKEndpointsSet: Codable {
     }
 }
 
-public struct TSDKResultOfGetEndpoints: Codable {
+public struct TSDKResultOfGetEndpoints: Codable, @unchecked Sendable {
     /// Current query endpoint
     public var query: String
     /// List of all endpoints used by client
@@ -335,7 +335,7 @@ public struct TSDKResultOfGetEndpoints: Codable {
     }
 }
 
-public struct TSDKParamsOfQueryCounterparties: Codable {
+public struct TSDKParamsOfQueryCounterparties: Codable, @unchecked Sendable {
     /// Account address
     public var account: String
     /// Projection (result) string
@@ -353,7 +353,7 @@ public struct TSDKParamsOfQueryCounterparties: Codable {
     }
 }
 
-public struct TSDKParamsOfQueryTransactionTree: Codable {
+public struct TSDKParamsOfQueryTransactionTree: Codable, @unchecked Sendable {
     /// Input message id.
     public var in_msg: String
     /// List of contract ABIs that will be used to decode message bodies. Library will try to decode each returned message body using any ABI from the registry.
@@ -375,7 +375,7 @@ public struct TSDKParamsOfQueryTransactionTree: Codable {
     }
 }
 
-public struct TSDKResultOfQueryTransactionTree: Codable {
+public struct TSDKResultOfQueryTransactionTree: Codable, @unchecked Sendable {
     /// Messages.
     public var messages: [TSDKMessageNode]
     /// Transactions.
@@ -387,7 +387,7 @@ public struct TSDKResultOfQueryTransactionTree: Codable {
     }
 }
 
-public struct TSDKParamsOfCreateBlockIterator: Codable {
+public struct TSDKParamsOfCreateBlockIterator: Codable, @unchecked Sendable {
     /// Starting time to iterate from.
     /// If the application specifies this parameter then the iterationincludes blocks with `gen_utime` >= `start_time`.
     /// Otherwise the iteration starts from zero state.
@@ -418,7 +418,7 @@ public struct TSDKParamsOfCreateBlockIterator: Codable {
     }
 }
 
-public struct TSDKRegisteredIterator: Codable {
+public struct TSDKRegisteredIterator: Codable, @unchecked Sendable {
     /// Iterator handle.
     /// Must be removed using `remove_iterator`when it is no more needed for the application.
     public var handle: UInt32
@@ -428,7 +428,7 @@ public struct TSDKRegisteredIterator: Codable {
     }
 }
 
-public struct TSDKParamsOfResumeBlockIterator: Codable {
+public struct TSDKParamsOfResumeBlockIterator: Codable, @unchecked Sendable {
     /// Iterator state from which to resume.
     /// Same as value returned from `iterator_next`.
     public var resume_state: AnyValue
@@ -438,7 +438,7 @@ public struct TSDKParamsOfResumeBlockIterator: Codable {
     }
 }
 
-public struct TSDKParamsOfCreateTransactionIterator: Codable {
+public struct TSDKParamsOfCreateTransactionIterator: Codable, @unchecked Sendable {
     /// Starting time to iterate from.
     /// If the application specifies this parameter then the iterationincludes blocks with `gen_utime` >= `start_time`.
     /// Otherwise the iteration starts from zero state.
@@ -481,7 +481,7 @@ public struct TSDKParamsOfCreateTransactionIterator: Codable {
     }
 }
 
-public struct TSDKParamsOfResumeTransactionIterator: Codable {
+public struct TSDKParamsOfResumeTransactionIterator: Codable, @unchecked Sendable {
     /// Iterator state from which to resume.
     /// Same as value returned from `iterator_next`.
     public var resume_state: AnyValue
@@ -498,7 +498,7 @@ public struct TSDKParamsOfResumeTransactionIterator: Codable {
     }
 }
 
-public struct TSDKParamsOfIteratorNext: Codable {
+public struct TSDKParamsOfIteratorNext: Codable, @unchecked Sendable {
     /// Iterator handle
     public var iterator: UInt32
     /// Maximum count of the returned items.
@@ -514,7 +514,7 @@ public struct TSDKParamsOfIteratorNext: Codable {
     }
 }
 
-public struct TSDKResultOfIteratorNext: Codable {
+public struct TSDKResultOfIteratorNext: Codable, @unchecked Sendable {
     /// Next available items.
     /// Note that `iterator_next` can return an empty items and `has_more` equals to `true`.
     /// In this case the application have to continue iteration.
@@ -534,7 +534,7 @@ public struct TSDKResultOfIteratorNext: Codable {
     }
 }
 
-public struct TSDKResultOfGetSignatureId: Codable {
+public struct TSDKResultOfGetSignatureId: Codable, @unchecked Sendable {
     /// Signature ID for configured network if it should be used in messages signature
     public var signature_id: Int32?
 
