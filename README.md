@@ -65,8 +65,6 @@ client.crypto.factorize(TSDKParamsOfFactorize(composite: "17ED48941A08F981")) { 
 
 ## Native ever-sdk dependency
 
-This package does not use system `pkg-config`.
-
 On Apple platforms the installer creates a local binary target:
 
 ```text
@@ -75,11 +73,13 @@ Sources/CTonSDKBinary/CTonSDK.xcframework
 
 The repository includes a small placeholder XCFramework at that path so SwiftPM can resolve the package without unsafe build flags. Run the installer to replace it with the real native library.
 
-On Linux the package links `libever_client.a` from the package-local directory:
+On Linux the installer builds `libever_client.a` into the package-local directory:
 
 ```text
 Dependencies/ever-sdk/prebuilt/<platform>/libever_client.a
 ```
+
+It also installs `ctonsdk.pc` into a system `pkg-config` directory, pointing to that package-local library and to `Sources/CTonSDK/include`. By default it uses a directory from `pkg-config --variable pc_path pkg-config`, preferring `/usr/local/lib/pkgconfig`; set `CTONSDK_PKG_CONFIG_DIR` to override it. If the directory is not writable, the installer uses `sudo`.
 
 Install or update the native dependency manually from the package checkout:
 
@@ -101,15 +101,9 @@ ruby install_EverSdk.rb --ref master
 ruby install_EverSdk.rb --skip-build --no-update
 ```
 
-The script clones `https://github.com/everx-labs/ever-sdk` into `Dependencies/ever-sdk`, installs missing Rust targets with `rustup`, builds with Cargo, copies the ready static libraries into `Dependencies/ever-sdk/prebuilt`, and writes the SwiftPM XCFramework to `Sources/CTonSDKBinary/CTonSDK.xcframework`.
+The script clones `https://github.com/everx-labs/ever-sdk` into `Dependencies/ever-sdk`, installs missing Rust targets with `rustup`, builds with Cargo, copies the ready static libraries into `Dependencies/ever-sdk/prebuilt`, writes the SwiftPM XCFramework to `Sources/CTonSDKBinary/CTonSDK.xcframework` on Apple platforms, and installs `ctonsdk.pc` on Linux.
 
 It also copies the matching `ever_client/tonclient.h` from the checked out `ever-sdk` into `Sources/CTonSDK/include/CTonSDK/tonclient.h`, so Swift sees the C API from the same SDK revision that was built.
-
-You can override the linked library path without changing the checkout:
-
-```sh
-EVERSCALE_CLIENT_SWIFT_EVER_CLIENT_STATIC_LIB=/absolute/path/libever_client.a swift build
-```
 
 ## Tests
 ### If you use Xcode for Test

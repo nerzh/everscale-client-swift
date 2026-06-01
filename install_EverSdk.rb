@@ -5,6 +5,7 @@ require "open3"
 require "optparse"
 require "rbconfig"
 require "shellwords"
+require "tempfile"
 
 ROOT = File.expand_path(__dir__)
 
@@ -316,6 +317,91 @@ def package_xcframework_path
   File.join(ROOT, "Sources", "CTonSDKBinary", "CTonSDK.xcframework")
 end
 
+def pkg_config_search_paths
+  return [] unless command_exists?("pkg-config")
+
+  capture("pkg-config", "--variable", "pc_path", "pkg-config")
+    .split(File::PATH_SEPARATOR)
+    .map(&:strip)
+    .reject(&:empty?)
+rescue
+  []
+end
+
+def multiarch_triplet
+  if command_exists?("gcc")
+    value = capture("gcc", "-print-multiarch")
+    return value unless value.empty?
+  end
+
+  if command_exists?("cc")
+    value = capture("cc", "-print-multiarch")
+    return value unless value.empty?
+  end
+
+  nil
+rescue
+  nil
+end
+
+def default_pkg_config_dir
+  override = ENV["CTONSDK_PKG_CONFIG_DIR"]&.strip
+  return File.expand_path(override) unless override.nil? || override.empty?
+
+  paths = pkg_config_search_paths
+  triplet = multiarch_triplet
+  preferred = []
+  preferred << "/usr/local/lib/#{triplet}/pkgconfig" if triplet
+  preferred << "/usr/local/lib/pkgconfig"
+  preferred << "/usr/local/share/pkgconfig"
+  preferred += paths
+
+  preferred.uniq.find { |path| paths.empty? || paths.include?(path) } || "/usr/local/lib/pkgconfig"
+end
+
+def write_file_or_sudo(path, content)
+  dir = File.dirname(path)
+  begin
+    FileUtils.mkdir_p(dir)
+    File.write(path, content)
+  rescue Errno::EACCES, Errno::EROFS
+    raise("Cannot write #{path}; sudo is not available.") unless command_exists?("sudo")
+
+    Tempfile.create("ctonsdk-pkgconfig") do |file|
+      file.write(content)
+      file.flush
+      run("sudo", "mkdir", "-p", dir)
+      run("sudo", "cp", file.path, path)
+      run("sudo", "chmod", "0644", path)
+    end
+  end
+end
+
+def install_linux_pkg_config(sdk_dir, platforms)
+  platform = platforms.find { |item| item[:id].start_with?("linux-") }
+  return unless platform
+
+  library = prebuilt_library_path(sdk_dir, platform[:id])
+  raise("Missing Linux library for pkg-config: #{library}") unless File.file?(library)
+
+  section("CTonSDK pkg-config")
+  pkg_config_dir = default_pkg_config_dir
+  pkg_config_file = File.join(pkg_config_dir, "ctonsdk.pc")
+  content = <<~PC
+    libdir=#{File.dirname(library)}
+    includedir=#{File.join(ROOT, "Sources", "CTonSDK", "include")}
+
+    Name: CTonSDK
+    Description: Everscale Client Swift native library
+    Version: 1
+    Libs: -L${libdir} -lever_client -ldl -lpthread -lm
+    Cflags: -I${includedir}
+  PC
+
+  write_file_or_sudo(pkg_config_file, content)
+  say("Installed #{pkg_config_file}")
+end
+
 def build_platform(options, platform)
   section("Build #{platform[:id]}")
   run(*cargo_build_command(options, platform), chdir: options[:sdk_dir], env: cargo_env(platform))
@@ -427,6 +513,7 @@ begin
   required = %w[git]
   required += %w[rustup cargo] unless options[:skip_build]
   required += %w[xcrun lipo xcodebuild] if macos?
+  required += %w[pkg-config] if linux?
   ensure_commands(required)
 
   ensure_rust(options[:toolchain], platforms.map { |platform| platform[:rust_target] }) unless options[:skip_build]
@@ -450,10 +537,11 @@ begin
   create_universal_library(options[:sdk_dir], "macos-universal", %w[macos-arm64 macos-x86_64])
   create_universal_library(options[:sdk_dir], "ios-simulator-universal", %w[ios-simulator-arm64 ios-simulator-x86_64])
   create_apple_xcframework(options[:sdk_dir])
+  install_linux_pkg_config(options[:sdk_dir], platforms)
   verify_outputs(options[:sdk_dir], platforms)
 
   section("Done")
-  say("Run Swift build again. Package.swift uses #{package_xcframework_path} on Apple and the local static library on Linux.")
+  say("Run Swift build again. Package.swift uses #{package_xcframework_path} on Apple and ctonsdk.pc on Linux.")
 rescue => error
   warn
   warn("ERROR: #{error.message}")
