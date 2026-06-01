@@ -15,6 +15,19 @@ DEFAULT_TOOLCHAIN = "stable"
 DEFAULT_CARGO_PACKAGE = "ever_client"
 DEFAULT_FEATURES = "std,rustls-tls-webpki-roots"
 
+def default_sdk_dir
+  override = ENV["EVER_SDK_DIR"]&.strip
+  return File.expand_path(override) unless override.nil? || override.empty?
+
+  if RUBY_PLATFORM.include?("linux")
+    cache_home = ENV["XDG_CACHE_HOME"]&.strip
+    cache_home = File.join(Dir.home, ".cache") if cache_home.nil? || cache_home.empty?
+    return File.expand_path(File.join(cache_home, "everscale-client-swift", "ever-sdk"))
+  end
+
+  File.join(ROOT, "Dependencies", "ever-sdk")
+end
+
 APPLE_TARGETS = {
   "macos-arm64" => {
     rust_target: "aarch64-apple-darwin",
@@ -50,7 +63,7 @@ options = {
   toolchain: ENV.fetch("EVER_SDK_RUST_TOOLCHAIN", DEFAULT_TOOLCHAIN),
   cargo_package: ENV.fetch("EVER_SDK_CARGO_PACKAGE", DEFAULT_CARGO_PACKAGE),
   features: ENV.fetch("EVER_SDK_FEATURES", DEFAULT_FEATURES),
-  sdk_dir: File.expand_path(ENV.fetch("EVER_SDK_DIR", File.join(ROOT, "Dependencies", "ever-sdk"))),
+  sdk_dir: default_sdk_dir,
   update: true,
   clean: false,
   skip_build: false
@@ -399,7 +412,6 @@ def install_linux_pkg_config(sdk_dir, platforms)
   pkg_config_file = File.join(pkg_config_dir, "ctonsdk.pc")
   content = <<~PC
     libdir=#{File.dirname(library)}
-    modulemapdir=#{File.join(ROOT, "Sources", "CTonSDK", "include")}
     includedir=#{generated_include_dir(sdk_dir)}
     ctonsdkincludedir=${includedir}/CTonSDK
 
@@ -407,7 +419,7 @@ def install_linux_pkg_config(sdk_dir, platforms)
     Description: Everscale Client Swift native library
     Version: 1
     Libs: -L${libdir} -lever_client -ldl -lpthread -lm
-    Cflags: -I${modulemapdir} -I${includedir} -I${ctonsdkincludedir}
+    Cflags: -I${includedir} -I${ctonsdkincludedir}
   PC
 
   write_file_or_sudo(pkg_config_file, content)
