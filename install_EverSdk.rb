@@ -239,6 +239,14 @@ def ensure_ever_sdk_checkout(options)
   end
 end
 
+def generated_include_dir(sdk_dir)
+  File.join(sdk_dir, "prebuilt", "include")
+end
+
+def generated_tonclient_header_path(sdk_dir)
+  File.join(generated_include_dir(sdk_dir), "CTonSDK", "tonclient.h")
+end
+
 def copy_tonclient_header(sdk_dir)
   section("CTonSDK header")
   candidates = [
@@ -252,7 +260,7 @@ def copy_tonclient_header(sdk_dir)
     raise("tonclient.h was not found in ever-sdk checkout. Checked:\n#{candidates.join("\n")}")
   end
 
-  output = File.join(ROOT, "Sources", "CTonSDK", "include", "CTonSDK", "tonclient.h")
+  output = generated_tonclient_header_path(sdk_dir)
   FileUtils.mkdir_p(File.dirname(output))
   FileUtils.cp(source, output)
   say("Copied #{source}")
@@ -383,19 +391,23 @@ def install_linux_pkg_config(sdk_dir, platforms)
 
   library = prebuilt_library_path(sdk_dir, platform[:id])
   raise("Missing Linux library for pkg-config: #{library}") unless File.file?(library)
+  header = generated_tonclient_header_path(sdk_dir)
+  raise("Missing Linux header for pkg-config: #{header}") unless File.file?(header)
 
   section("CTonSDK pkg-config")
   pkg_config_dir = default_pkg_config_dir
   pkg_config_file = File.join(pkg_config_dir, "ctonsdk.pc")
   content = <<~PC
     libdir=#{File.dirname(library)}
-    includedir=#{File.join(ROOT, "Sources", "CTonSDK", "include")}
+    modulemapdir=#{File.join(ROOT, "Sources", "CTonSDK", "include")}
+    includedir=#{generated_include_dir(sdk_dir)}
+    ctonsdkincludedir=${includedir}/CTonSDK
 
     Name: CTonSDK
     Description: Everscale Client Swift native library
     Version: 1
     Libs: -L${libdir} -lever_client -ldl -lpthread -lm
-    Cflags: -I${includedir}
+    Cflags: -I${modulemapdir} -I${includedir} -I${ctonsdkincludedir}
   PC
 
   write_file_or_sudo(pkg_config_file, content)
@@ -435,7 +447,7 @@ def prepare_xcframework_headers(sdk_dir)
 
   module_map = File.join(ROOT, "Sources", "CTonSDK", "include", "module.modulemap")
   shim_header = File.join(ROOT, "Sources", "CTonSDK", "include", "CTonSDK", "shim.h")
-  tonclient_header = File.join(ROOT, "Sources", "CTonSDK", "include", "CTonSDK", "tonclient.h")
+  tonclient_header = generated_tonclient_header_path(sdk_dir)
 
   [module_map, shim_header, tonclient_header].each do |path|
     raise("Missing XCFramework header input: #{path}") unless File.file?(path)
@@ -518,7 +530,6 @@ begin
 
   ensure_rust(options[:toolchain], platforms.map { |platform| platform[:rust_target] }) unless options[:skip_build]
   ensure_ever_sdk_checkout(options)
-  copy_tonclient_header(options[:sdk_dir])
 
   if options[:clean] && options[:skip_build]
     raise("--clean cannot be used together with --skip-build")
@@ -526,6 +537,8 @@ begin
     FileUtils.rm_rf(File.join(options[:sdk_dir], "target"))
     FileUtils.rm_rf(File.join(options[:sdk_dir], "prebuilt"))
   end
+
+  copy_tonclient_header(options[:sdk_dir])
 
   if options[:skip_build]
     section("Build")
