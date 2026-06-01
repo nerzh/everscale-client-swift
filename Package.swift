@@ -6,7 +6,7 @@ import PackageDescription
 
 let packageRootURL = URL(fileURLWithPath: #filePath).deletingLastPathComponent()
 let environment = ProcessInfo.processInfo.environment
-let ctonSDKXCFrameworkPath = "Dependencies/ever-sdk/prebuilt/CTonSDK.xcframework"
+let ctonSDKXCFrameworkPath = "Sources/CTonSDKBinary/CTonSDK.xcframework"
 
 func nonEmptyEnv(_ key: String) -> String? {
     guard let value = environment[key]?.trimmingCharacters(in: .whitespacesAndNewlines), !value.isEmpty else {
@@ -117,21 +117,10 @@ func appleEverSdkLinkerFlags() -> [String] {
 
 #if os(macOS)
 func makeAppleCTonSDKTarget() -> Target {
-    if localFileExists(ctonSDKXCFrameworkPath) {
-        return .binaryTarget(
-            name: "CTonSDK",
-            path: ctonSDKXCFrameworkPath
-        )
-    }
-
-    return .target(
+    .binaryTarget(
         name: "CTonSDK",
-        path: "Sources/CTonSDK",
-        sources: ["src/CTonSDK.c"],
-        publicHeadersPath: "include",
-        linkerSettings: [
-            .unsafeFlags(appleEverSdkLinkerFlags()),
-        ])
+        path: ctonSDKXCFrameworkPath
+    )
 }
 
 let ctonSDKTarget: Target = makeAppleCTonSDKTarget()

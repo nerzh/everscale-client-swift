@@ -70,8 +70,10 @@ This package does not use system `pkg-config`.
 On Apple platforms the installer creates a local binary target:
 
 ```text
-Dependencies/ever-sdk/prebuilt/CTonSDK.xcframework
+Sources/CTonSDKBinary/CTonSDK.xcframework
 ```
+
+The repository includes a small placeholder XCFramework at that path so SwiftPM can resolve the package without unsafe build flags. Run the installer to replace it with the real native library.
 
 On Linux the package links `libever_client.a` from the package-local directory:
 
@@ -99,7 +101,7 @@ ruby install_EverSdk.rb --ref master
 ruby install_EverSdk.rb --skip-build --no-update
 ```
 
-The script clones `https://github.com/everx-labs/ever-sdk` into `Dependencies/ever-sdk`, installs missing Rust targets with `rustup`, builds with Cargo, and copies the ready static libraries into `Dependencies/ever-sdk/prebuilt`.
+The script clones `https://github.com/everx-labs/ever-sdk` into `Dependencies/ever-sdk`, installs missing Rust targets with `rustup`, builds with Cargo, copies the ready static libraries into `Dependencies/ever-sdk/prebuilt`, and writes the SwiftPM XCFramework to `Sources/CTonSDKBinary/CTonSDK.xcframework`.
 
 It also copies the matching `ever_client/tonclient.h` from the checked out `ever-sdk` into `Sources/CTonSDK/include/CTonSDK/tonclient.h`, so Swift sees the C API from the same SDK revision that was built.
 

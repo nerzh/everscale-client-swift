@@ -312,8 +312,8 @@ def prebuilt_library_path(sdk_dir, platform_id)
   File.join(sdk_dir, "prebuilt", platform_id, "libever_client.a")
 end
 
-def prebuilt_xcframework_path(sdk_dir)
-  File.join(sdk_dir, "prebuilt", "CTonSDK.xcframework")
+def package_xcframework_path
+  File.join(ROOT, "Sources", "CTonSDKBinary", "CTonSDK.xcframework")
 end
 
 def build_platform(options, platform)
@@ -383,10 +383,13 @@ def create_apple_xcframework(sdk_dir)
     return
   end
 
-  output = prebuilt_xcframework_path(sdk_dir)
+  output = package_xcframework_path
+  legacy_output = File.join(sdk_dir, "prebuilt", "CTonSDK.xcframework")
   staging_root = File.join(sdk_dir, "prebuilt", "CTonSDKXcframeworkLibraries")
   FileUtils.rm_rf(output)
+  FileUtils.rm_rf(legacy_output) unless legacy_output == output
   FileUtils.rm_rf(staging_root)
+  FileUtils.mkdir_p(File.dirname(output))
 
   command = ["xcodebuild", "-create-xcframework"]
   libraries.each do |library|
@@ -407,7 +410,7 @@ def verify_outputs(sdk_dir, platforms)
   missing = platforms.map { |platform| prebuilt_library_path(sdk_dir, platform[:id]) }.reject { |path| File.file?(path) }
   raise("Missing native libraries:\n#{missing.join("\n")}") unless missing.empty?
   if macos?
-    xcframework = prebuilt_xcframework_path(sdk_dir)
+    xcframework = package_xcframework_path
     raise("Missing native XCFramework: #{xcframework}") unless File.directory?(xcframework)
   end
   say("Native libraries are ready under #{File.join(sdk_dir, "prebuilt")}")
@@ -450,7 +453,7 @@ begin
   verify_outputs(options[:sdk_dir], platforms)
 
   section("Done")
-  say("Run Swift build again. Package.swift uses the local XCFramework on Apple and the local static library on Linux.")
+  say("Run Swift build again. Package.swift uses #{package_xcframework_path} on Apple and the local static library on Linux.")
 rescue => error
   warn
   warn("ERROR: #{error.message}")
