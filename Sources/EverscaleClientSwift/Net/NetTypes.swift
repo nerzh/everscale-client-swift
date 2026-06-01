@@ -1,7 +1,6 @@
 import Foundation
 import SwiftExtensionsPack
 
-
 public enum TSDKNetErrorCode: Int, Codable {
     case QueryFailed = 601
     case SubscribeFailed = 602

@@ -12,4 +12,6 @@ Keys/*
 Package.resolved
 TON-SDK/*
 dependencies/*
+Dependencies/ever-sdk/
+Sources/CTonSDK/include/CTonSDK/tonclient.h
 api.json

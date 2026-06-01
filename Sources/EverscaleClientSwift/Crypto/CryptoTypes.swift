@@ -1,7 +1,6 @@
 import Foundation
 import SwiftExtensionsPack
 
-
 public typealias TSDKSigningBoxHandle = UInt32
 
 public typealias TSDKEncryptionBoxHandle = UInt32
@@ -120,13 +119,20 @@ public struct TSDKEncryptionBoxInfo: Codable, @unchecked Sendable {
     /// Options, depends on algorithm and specific encryption box implementation
     public var options: AnyValue?
     /// Public information, depends on algorithm
-    public var `public`: AnyValue?
+    public var public_key: AnyValue?
 
-    public init(hdpath: String? = nil, algorithm: String? = nil, options: AnyValue? = nil, `public`: AnyValue? = nil) {
+    enum CodingKeys: String, CodingKey {
+        case hdpath
+        case algorithm
+        case options
+        case public_key = "public"
+    }
+
+    public init(hdpath: String? = nil, algorithm: String? = nil, options: AnyValue? = nil, public_key: AnyValue? = nil) {
         self.hdpath = hdpath
         self.algorithm = algorithm
         self.options = options
-        self.`public` = `public`
+        self.public_key = public_key
     }
 }
 
@@ -366,12 +372,17 @@ public struct TSDKResultOfConvertPublicKeyToTonSafeFormat: Codable, @unchecked S
 
 public struct TSDKKeyPair: Codable, @unchecked Sendable {
     /// Public key - 64 symbols hex string
-    public var `public`: String
+    public var public_key: String
     /// Private key - u64 symbols hex string
     public var secret: String
 
-    public init(`public`: String, secret: String) {
-        self.`public` = `public`
+    enum CodingKeys: String, CodingKey {
+        case public_key = "public"
+        case secret
+    }
+
+    public init(public_key: String, secret: String) {
+        self.public_key = public_key
         self.secret = secret
     }
 }
@@ -404,11 +415,16 @@ public struct TSDKParamsOfVerifySignature: Codable, @unchecked Sendable {
     /// Signed data that must be verified encoded in `base64`.
     public var signed: String
     /// Signer's public key - 64 symbols hex string
-    public var `public`: String
+    public var public_key: String
 
-    public init(signed: String, `public`: String) {
+    enum CodingKeys: String, CodingKey {
+        case signed
+        case public_key = "public"
+    }
+
+    public init(signed: String, public_key: String) {
         self.signed = signed
-        self.`public` = `public`
+        self.public_key = public_key
     }
 }
 
@@ -510,11 +526,16 @@ public struct TSDKParamsOfNaclSignOpen: Codable, @unchecked Sendable {
     /// Encoded with `base64`.
     public var signed: String
     /// Signer's public key - unprefixed 0-padded to 64 symbols hex string
-    public var `public`: String
+    public var public_key: String
 
-    public init(signed: String, `public`: String) {
+    enum CodingKeys: String, CodingKey {
+        case signed
+        case public_key = "public"
+    }
+
+    public init(signed: String, public_key: String) {
         self.signed = signed
-        self.`public` = `public`
+        self.public_key = public_key
     }
 }
 
@@ -544,12 +565,18 @@ public struct TSDKParamsOfNaclSignDetachedVerify: Codable, @unchecked Sendable {
     /// Encoded with `hex`.
     public var signature: String
     /// Signer's public key - unprefixed 0-padded to 64 symbols hex string.
-    public var `public`: String
+    public var public_key: String
 
-    public init(unsigned: String, signature: String, `public`: String) {
+    enum CodingKeys: String, CodingKey {
+        case unsigned
+        case signature
+        case public_key = "public"
+    }
+
+    public init(unsigned: String, signature: String, public_key: String) {
         self.unsigned = unsigned
         self.signature = signature
-        self.`public` = `public`
+        self.public_key = public_key
     }
 }
 
@@ -862,10 +889,14 @@ public struct TSDKParamsOfHDKeyPublicFromXPrv: Codable, @unchecked Sendable {
 
 public struct TSDKResultOfHDKeyPublicFromXPrv: Codable, @unchecked Sendable {
     /// Public key - 64 symbols hex string
-    public var `public`: String
+    public var public_key: String
 
-    public init(`public`: String) {
-        self.`public` = `public`
+    enum CodingKeys: String, CodingKey {
+        case public_key = "public"
+    }
+
+    public init(public_key: String) {
+        self.public_key = public_key
     }
 }
 
@@ -1175,4 +1206,3 @@ public struct TSDKParamsOfCreateEncryptionBox: Codable, @unchecked Sendable {
         self.algorithm = algorithm
     }
 }
-

@@ -1,7 +1,6 @@
 import Foundation
 import SwiftExtensionsPack
 
-
 public enum TSDKBocCacheTypeEnumTypes: String, Codable {
     case Pinned = "Pinned"
     case Unpinned = "Unpinned"
@@ -427,17 +426,25 @@ public struct TSDKParamsOfEncodeExternalInMessage: Codable, @unchecked Sendable 
     /// Destination address.
     public var dst: String
     /// Bag of cells with state init (used in deploy messages).
-    public var `init`: String?
+    public var state_init: String?
     /// Bag of cells with the message body encoded as base64.
     public var body: String?
     /// Cache type to put the result.
     /// The BOC itself returned if no cache type provided
     public var boc_cache: TSDKBocCacheType?
 
-    public init(src: String? = nil, dst: String, `init`: String? = nil, body: String? = nil, boc_cache: TSDKBocCacheType? = nil) {
+    enum CodingKeys: String, CodingKey {
+        case src
+        case dst
+        case state_init = "init"
+        case body
+        case boc_cache
+    }
+
+    public init(src: String? = nil, dst: String, state_init: String? = nil, body: String? = nil, boc_cache: TSDKBocCacheType? = nil) {
         self.src = src
         self.dst = dst
-        self.`init` = `init`
+        self.state_init = state_init
         self.body = body
         self.boc_cache = boc_cache
     }
@@ -472,4 +479,3 @@ public struct TSDKResultOfGetCompilerVersion: Codable, @unchecked Sendable {
         self.version = version
     }
 }
-

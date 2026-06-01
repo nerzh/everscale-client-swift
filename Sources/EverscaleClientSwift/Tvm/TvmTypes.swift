@@ -1,7 +1,6 @@
 import Foundation
 import SwiftExtensionsPack
 
-
 public enum TSDKTvmErrorCode: Int, Codable {
     case CanNotReadTransaction = 401
     case CanNotReadBlockchainConfig = 402

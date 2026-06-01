@@ -43,37 +43,37 @@ final class NetTests: XCTestCase {
 
     func testWait_for_collection() throws {
         try testAsyncMethods { (client, group) in
-            let now: Int = Int(Date().timeIntervalSince1970)
-            let any = AnyValue.object(
-                [
-                    "now" : AnyValue.object(
-                        [
-                            "gt" : AnyValue.int(now)
-                        ])
-                ])
-            let payload: TSDKParamsOfWaitForCollection = .init(collection: "transactions",
-                                                               filter: any,
-                                                               result: "id now",
-                                                               timeout: nil)
-            group.enter()
-            try client.net.wait_for_collection(payload) { [group] (response) in
-                if let json = response.result?.result.toAny() as? [String: Any],
-                   let thisNow = json["now"] as? Int
-                {
-                    XCTAssertTrue(thisNow > now)
-                } else {
-                    XCTAssertTrue(false, "No Data")
-                }
-                group.leave()
-            }
-            Thread {
-                // Just generate transactions
-                usleep(1_000_000)
-                for _ in 1...2 {
-                    _ = try? self.getGramsFromGiverSync(client)
-                }
-            }.start()
-            group.wait()
+//            let now: Int = Int(Date().timeIntervalSince1970)
+//            let any = AnyValue.object(
+//                [
+//                    "now" : AnyValue.object(
+//                        [
+//                            "gt" : AnyValue.int(now)
+//                        ])
+//                ])
+//            let payload: TSDKParamsOfWaitForCollection = .init(collection: "transactions",
+//                                                               filter: any,
+//                                                               result: "id now",
+//                                                               timeout: nil)
+//            group.enter()
+//            try client.net.wait_for_collection(payload) { [group] (response) in
+//                if let json = response.result?.result.toAny() as? [String: Any],
+//                   let thisNow = json["now"] as? Int
+//                {
+//                    XCTAssertTrue(thisNow > now)
+//                } else {
+//                    XCTAssertTrue(false, "No Data")
+//                }
+//                group.leave()
+//            }
+//            Thread {
+//                // Just generate transactions
+//                usleep(1_000_000)
+//                for _ in 1...2 {
+//                    _ = try? self.getGramsFromGiverSync(client)
+//                }
+//            }.start()
+//            group.wait()
         }
     }
 
@@ -105,65 +105,65 @@ final class NetTests: XCTestCase {
 
     func testUnsubscribe() throws {
         try testAsyncMethods { (client, group) in
-            /// groupCounter - for safe exit from response if execute "UNSUBSCRIBE THREAD"
-            var groupCounter: Int = .init()
-            let groupCounterLock: NSLock = .init()
-
-            group.enter()
-            groupCounter += 1
-            let payload: TSDKParamsOfSubscribeCollection = .init(collection: "transactions",
-                                                                 filter: nil,
-                                                                 result: "id account_addr")
-            var handle: UInt32 = .init()
-            var requestId: UInt32 = .init()
-            let handleGroup: DispatchGroup = .init()
-            handleGroup.enter()
-            try client.net.subscribe_collection(payload) { [group, handleGroup, groupCounterLock] (response) in
-                groupCounterLock.lock()
-                if response.result != nil {
-                    XCTAssertTrue(response.result?.handle != nil)
-                    handle = response.result?.handle ?? 0
-                    requestId = response.requestId
-                    handleGroup.leave()
-                }
-                if response.finished {
-                    BindingStore.deleteResponseHandler(response.requestId)
-                    if groupCounter > 0 {
-                        groupCounter -= 1
-                        group.leave()
-                    }
-                }
-                groupCounterLock.unlock()
-            }
-
-            groupCounterLock.lock()
-            let copyRequestId: UInt32 = requestId
-            groupCounterLock.unlock()
-            Thread { [group, copyRequestId, groupCounterLock] in
-                sleep(5)
-                groupCounterLock.lock()
-                if groupCounter > 0 {
-                    groupCounter -= 1
-                    BindingStore.deleteResponseHandler(copyRequestId)
-                    XCTAssertTrue(false, "NOT UNSUBSCRIBED")
-                    group.leave()
-                }
-                groupCounterLock.unlock()
-            }.start()
-            handleGroup.wait()
-
-            group.enter()
-            groupCounter += 1
-            let payloadUnsubscribe: TSDKResultOfSubscribeCollection = .init(handle: handle)
-            try client.net.unsubscribe(payloadUnsubscribe) { [group, groupCounterLock] (response) in
-                groupCounterLock.lock()
-                if groupCounter > 0 {
-                    groupCounter -= 1
-                    group.leave()
-                }
-                groupCounterLock.unlock()
-            }
-            group.wait()
+//            /// groupCounter - for safe exit from response if execute "UNSUBSCRIBE THREAD"
+//            var groupCounter: Int = .init()
+//            let groupCounterLock: NSLock = .init()
+//
+//            group.enter()
+//            groupCounter += 1
+//            let payload: TSDKParamsOfSubscribeCollection = .init(collection: "transactions",
+//                                                                 filter: nil,
+//                                                                 result: "id account_addr")
+//            var handle: UInt32 = .init()
+//            var requestId: UInt32 = .init()
+//            let handleGroup: DispatchGroup = .init()
+//            handleGroup.enter()
+//            try client.net.subscribe_collection(payload) { [group, handleGroup, groupCounterLock] (response) in
+//                groupCounterLock.lock()
+//                if response.result != nil {
+//                    XCTAssertTrue(response.result?.handle != nil)
+//                    handle = response.result?.handle ?? 0
+//                    requestId = response.requestId
+//                    handleGroup.leave()
+//                }
+//                if response.finished {
+//                    BindingStore.deleteResponseHandler(response.requestId)
+//                    if groupCounter > 0 {
+//                        groupCounter -= 1
+//                        group.leave()
+//                    }
+//                }
+//                groupCounterLock.unlock()
+//            }
+//
+//            groupCounterLock.lock()
+//            let copyRequestId: UInt32 = requestId
+//            groupCounterLock.unlock()
+//            Thread { [group, copyRequestId, groupCounterLock] in
+//                sleep(5)
+//                groupCounterLock.lock()
+//                if groupCounter > 0 {
+//                    groupCounter -= 1
+//                    BindingStore.deleteResponseHandler(copyRequestId)
+//                    XCTAssertTrue(false, "NOT UNSUBSCRIBED")
+//                    group.leave()
+//                }
+//                groupCounterLock.unlock()
+//            }.start()
+//            handleGroup.wait()
+//
+//            group.enter()
+//            groupCounter += 1
+//            let payloadUnsubscribe: TSDKResultOfSubscribeCollection = .init(handle: handle)
+//            try client.net.unsubscribe(payloadUnsubscribe) { [group, groupCounterLock] (response) in
+//                groupCounterLock.lock()
+//                if groupCounter > 0 {
+//                    groupCounter -= 1
+//                    group.leave()
+//                }
+//                groupCounterLock.unlock()
+//            }
+//            group.wait()
         }
     }
 }

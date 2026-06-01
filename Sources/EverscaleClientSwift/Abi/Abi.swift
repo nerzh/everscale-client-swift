@@ -1,6 +1,5 @@
-public final class TSDKAbiModule {
-
-    private var binding: TSDKBindingModule
+public final class TSDKAbiModule: Sendable {
+    private let binding: TSDKBindingModule
     public let module: String = "abi"
 
     public init(binding: TSDKBindingModule) {
@@ -10,11 +9,15 @@ public final class TSDKAbiModule {
     /// Encodes message body according to ABI function call.
     public func encode_message_body(_ payload: TSDKParamsOfEncodeMessageBody, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKResultOfEncodeMessageBody, TSDKClientError>) throws -> Void
     ) throws {
-        let method: String = "encode_message_body"
-        try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-            var response: TSDKBindingResponse<TSDKResultOfEncodeMessageBody, TSDKClientError> = .init()
-            response.update(requestId, params, responseType, finished)
-            try handler(response)
+        do {
+            let method: String = "encode_message_body"
+            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                var response: TSDKBindingResponse<TSDKResultOfEncodeMessageBody, TSDKClientError> = .init()
+                response.update(requestId, params, responseType, finished)
+                try handler(response)
+            }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
@@ -22,56 +25,68 @@ public final class TSDKAbiModule {
     @available(iOS 13, *)
     @available(macOS 12, *)
     public func encode_message_body(_ payload: TSDKParamsOfEncodeMessageBody) async throws -> TSDKResultOfEncodeMessageBody {
-        try await withCheckedThrowingContinuation { continuation in
-            do {
-                let method: String = "encode_message_body"
-                try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                    var response: TSDKBindingResponse<TSDKResultOfEncodeMessageBody, TSDKClientError> = .init()
-                    response.update(requestId, params, responseType, finished)
-                    if let error = response.error {
-                        continuation.resume(throwing: error)
-                    } else if let result = response.result {
-                        continuation.resume(returning: result)
-                    } else {
-                        continuation.resume(throwing: TSDKClientError("Nothing for return"))
+        do {
+            return try await withCheckedThrowingContinuation { continuation in
+                do {
+                    let method: String = "encode_message_body"
+                    try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                        var response: TSDKBindingResponse<TSDKResultOfEncodeMessageBody, TSDKClientError> = .init()
+                        response.update(requestId, params, responseType, finished)
+                        if let error = response.error {
+                            continuation.resume(throwing: error)
+                        } else if let result = response.result {
+                            continuation.resume(returning: result)
+                        } else {
+                            continuation.resume(throwing: TSDKClientError("Nothing for return"))
+                        }
                     }
+                } catch {
+                    continuation.resume(throwing: error)
                 }
-            } catch {
-                continuation.resume(throwing: error)
             }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
     public func attach_signature_to_message_body(_ payload: TSDKParamsOfAttachSignatureToMessageBody, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKResultOfAttachSignatureToMessageBody, TSDKClientError>) throws -> Void
     ) throws {
-        let method: String = "attach_signature_to_message_body"
-        try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-            var response: TSDKBindingResponse<TSDKResultOfAttachSignatureToMessageBody, TSDKClientError> = .init()
-            response.update(requestId, params, responseType, finished)
-            try handler(response)
+        do {
+            let method: String = "attach_signature_to_message_body"
+            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                var response: TSDKBindingResponse<TSDKResultOfAttachSignatureToMessageBody, TSDKClientError> = .init()
+                response.update(requestId, params, responseType, finished)
+                try handler(response)
+            }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
     @available(iOS 13, *)
     @available(macOS 12, *)
     public func attach_signature_to_message_body(_ payload: TSDKParamsOfAttachSignatureToMessageBody) async throws -> TSDKResultOfAttachSignatureToMessageBody {
-        try await withCheckedThrowingContinuation { continuation in
-            do {
-                let method: String = "attach_signature_to_message_body"
-                try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                    var response: TSDKBindingResponse<TSDKResultOfAttachSignatureToMessageBody, TSDKClientError> = .init()
-                    response.update(requestId, params, responseType, finished)
-                    if let error = response.error {
-                        continuation.resume(throwing: error)
-                    } else if let result = response.result {
-                        continuation.resume(returning: result)
-                    } else {
-                        continuation.resume(throwing: TSDKClientError("Nothing for return"))
+        do {
+            return try await withCheckedThrowingContinuation { continuation in
+                do {
+                    let method: String = "attach_signature_to_message_body"
+                    try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                        var response: TSDKBindingResponse<TSDKResultOfAttachSignatureToMessageBody, TSDKClientError> = .init()
+                        response.update(requestId, params, responseType, finished)
+                        if let error = response.error {
+                            continuation.resume(throwing: error)
+                        } else if let result = response.result {
+                            continuation.resume(returning: result)
+                        } else {
+                            continuation.resume(throwing: TSDKClientError("Nothing for return"))
+                        }
                     }
+                } catch {
+                    continuation.resume(throwing: error)
                 }
-            } catch {
-                continuation.resume(throwing: error)
             }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
@@ -94,11 +109,15 @@ public final class TSDKAbiModule {
     /// 3. Public key, provided by signer.
     public func encode_message(_ payload: TSDKParamsOfEncodeMessage, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKResultOfEncodeMessage, TSDKClientError>) throws -> Void
     ) throws {
-        let method: String = "encode_message"
-        try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-            var response: TSDKBindingResponse<TSDKResultOfEncodeMessage, TSDKClientError> = .init()
-            response.update(requestId, params, responseType, finished)
-            try handler(response)
+        do {
+            let method: String = "encode_message"
+            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                var response: TSDKBindingResponse<TSDKResultOfEncodeMessage, TSDKClientError> = .init()
+                response.update(requestId, params, responseType, finished)
+                try handler(response)
+            }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
@@ -122,23 +141,27 @@ public final class TSDKAbiModule {
     @available(iOS 13, *)
     @available(macOS 12, *)
     public func encode_message(_ payload: TSDKParamsOfEncodeMessage) async throws -> TSDKResultOfEncodeMessage {
-        try await withCheckedThrowingContinuation { continuation in
-            do {
-                let method: String = "encode_message"
-                try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                    var response: TSDKBindingResponse<TSDKResultOfEncodeMessage, TSDKClientError> = .init()
-                    response.update(requestId, params, responseType, finished)
-                    if let error = response.error {
-                        continuation.resume(throwing: error)
-                    } else if let result = response.result {
-                        continuation.resume(returning: result)
-                    } else {
-                        continuation.resume(throwing: TSDKClientError("Nothing for return"))
+        do {
+            return try await withCheckedThrowingContinuation { continuation in
+                do {
+                    let method: String = "encode_message"
+                    try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                        var response: TSDKBindingResponse<TSDKResultOfEncodeMessage, TSDKClientError> = .init()
+                        response.update(requestId, params, responseType, finished)
+                        if let error = response.error {
+                            continuation.resume(throwing: error)
+                        } else if let result = response.result {
+                            continuation.resume(returning: result)
+                        } else {
+                            continuation.resume(throwing: TSDKClientError("Nothing for return"))
+                        }
                     }
+                } catch {
+                    continuation.resume(throwing: error)
                 }
-            } catch {
-                continuation.resume(throwing: error)
             }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
@@ -153,11 +176,15 @@ public final class TSDKAbiModule {
     /// 2. Public key, specified in TVM file.
     public func encode_internal_message(_ payload: TSDKParamsOfEncodeInternalMessage, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKResultOfEncodeInternalMessage, TSDKClientError>) throws -> Void
     ) throws {
-        let method: String = "encode_internal_message"
-        try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-            var response: TSDKBindingResponse<TSDKResultOfEncodeInternalMessage, TSDKClientError> = .init()
-            response.update(requestId, params, responseType, finished)
-            try handler(response)
+        do {
+            let method: String = "encode_internal_message"
+            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                var response: TSDKBindingResponse<TSDKResultOfEncodeInternalMessage, TSDKClientError> = .init()
+                response.update(requestId, params, responseType, finished)
+                try handler(response)
+            }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
@@ -173,34 +200,42 @@ public final class TSDKAbiModule {
     @available(iOS 13, *)
     @available(macOS 12, *)
     public func encode_internal_message(_ payload: TSDKParamsOfEncodeInternalMessage) async throws -> TSDKResultOfEncodeInternalMessage {
-        try await withCheckedThrowingContinuation { continuation in
-            do {
-                let method: String = "encode_internal_message"
-                try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                    var response: TSDKBindingResponse<TSDKResultOfEncodeInternalMessage, TSDKClientError> = .init()
-                    response.update(requestId, params, responseType, finished)
-                    if let error = response.error {
-                        continuation.resume(throwing: error)
-                    } else if let result = response.result {
-                        continuation.resume(returning: result)
-                    } else {
-                        continuation.resume(throwing: TSDKClientError("Nothing for return"))
+        do {
+            return try await withCheckedThrowingContinuation { continuation in
+                do {
+                    let method: String = "encode_internal_message"
+                    try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                        var response: TSDKBindingResponse<TSDKResultOfEncodeInternalMessage, TSDKClientError> = .init()
+                        response.update(requestId, params, responseType, finished)
+                        if let error = response.error {
+                            continuation.resume(throwing: error)
+                        } else if let result = response.result {
+                            continuation.resume(returning: result)
+                        } else {
+                            continuation.resume(throwing: TSDKClientError("Nothing for return"))
+                        }
                     }
+                } catch {
+                    continuation.resume(throwing: error)
                 }
-            } catch {
-                continuation.resume(throwing: error)
             }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
     /// Combines `hex`-encoded `signature` with `base64`-encoded `unsigned_message`. Returns signed message encoded in `base64`.
     public func attach_signature(_ payload: TSDKParamsOfAttachSignature, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKResultOfAttachSignature, TSDKClientError>) throws -> Void
     ) throws {
-        let method: String = "attach_signature"
-        try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-            var response: TSDKBindingResponse<TSDKResultOfAttachSignature, TSDKClientError> = .init()
-            response.update(requestId, params, responseType, finished)
-            try handler(response)
+        do {
+            let method: String = "attach_signature"
+            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                var response: TSDKBindingResponse<TSDKResultOfAttachSignature, TSDKClientError> = .init()
+                response.update(requestId, params, responseType, finished)
+                try handler(response)
+            }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
@@ -208,34 +243,42 @@ public final class TSDKAbiModule {
     @available(iOS 13, *)
     @available(macOS 12, *)
     public func attach_signature(_ payload: TSDKParamsOfAttachSignature) async throws -> TSDKResultOfAttachSignature {
-        try await withCheckedThrowingContinuation { continuation in
-            do {
-                let method: String = "attach_signature"
-                try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                    var response: TSDKBindingResponse<TSDKResultOfAttachSignature, TSDKClientError> = .init()
-                    response.update(requestId, params, responseType, finished)
-                    if let error = response.error {
-                        continuation.resume(throwing: error)
-                    } else if let result = response.result {
-                        continuation.resume(returning: result)
-                    } else {
-                        continuation.resume(throwing: TSDKClientError("Nothing for return"))
+        do {
+            return try await withCheckedThrowingContinuation { continuation in
+                do {
+                    let method: String = "attach_signature"
+                    try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                        var response: TSDKBindingResponse<TSDKResultOfAttachSignature, TSDKClientError> = .init()
+                        response.update(requestId, params, responseType, finished)
+                        if let error = response.error {
+                            continuation.resume(throwing: error)
+                        } else if let result = response.result {
+                            continuation.resume(returning: result)
+                        } else {
+                            continuation.resume(throwing: TSDKClientError("Nothing for return"))
+                        }
                     }
+                } catch {
+                    continuation.resume(throwing: error)
                 }
-            } catch {
-                continuation.resume(throwing: error)
             }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
     /// Decodes message body using provided message BOC and ABI.
     public func decode_message(_ payload: TSDKParamsOfDecodeMessage, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKDecodedMessageBody, TSDKClientError>) throws -> Void
     ) throws {
-        let method: String = "decode_message"
-        try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-            var response: TSDKBindingResponse<TSDKDecodedMessageBody, TSDKClientError> = .init()
-            response.update(requestId, params, responseType, finished)
-            try handler(response)
+        do {
+            let method: String = "decode_message"
+            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                var response: TSDKBindingResponse<TSDKDecodedMessageBody, TSDKClientError> = .init()
+                response.update(requestId, params, responseType, finished)
+                try handler(response)
+            }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
@@ -243,34 +286,42 @@ public final class TSDKAbiModule {
     @available(iOS 13, *)
     @available(macOS 12, *)
     public func decode_message(_ payload: TSDKParamsOfDecodeMessage) async throws -> TSDKDecodedMessageBody {
-        try await withCheckedThrowingContinuation { continuation in
-            do {
-                let method: String = "decode_message"
-                try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                    var response: TSDKBindingResponse<TSDKDecodedMessageBody, TSDKClientError> = .init()
-                    response.update(requestId, params, responseType, finished)
-                    if let error = response.error {
-                        continuation.resume(throwing: error)
-                    } else if let result = response.result {
-                        continuation.resume(returning: result)
-                    } else {
-                        continuation.resume(throwing: TSDKClientError("Nothing for return"))
+        do {
+            return try await withCheckedThrowingContinuation { continuation in
+                do {
+                    let method: String = "decode_message"
+                    try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                        var response: TSDKBindingResponse<TSDKDecodedMessageBody, TSDKClientError> = .init()
+                        response.update(requestId, params, responseType, finished)
+                        if let error = response.error {
+                            continuation.resume(throwing: error)
+                        } else if let result = response.result {
+                            continuation.resume(returning: result)
+                        } else {
+                            continuation.resume(throwing: TSDKClientError("Nothing for return"))
+                        }
                     }
+                } catch {
+                    continuation.resume(throwing: error)
                 }
-            } catch {
-                continuation.resume(throwing: error)
             }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
     /// Decodes message body using provided body BOC and ABI.
     public func decode_message_body(_ payload: TSDKParamsOfDecodeMessageBody, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKDecodedMessageBody, TSDKClientError>) throws -> Void
     ) throws {
-        let method: String = "decode_message_body"
-        try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-            var response: TSDKBindingResponse<TSDKDecodedMessageBody, TSDKClientError> = .init()
-            response.update(requestId, params, responseType, finished)
-            try handler(response)
+        do {
+            let method: String = "decode_message_body"
+            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                var response: TSDKBindingResponse<TSDKDecodedMessageBody, TSDKClientError> = .init()
+                response.update(requestId, params, responseType, finished)
+                try handler(response)
+            }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
@@ -278,34 +329,42 @@ public final class TSDKAbiModule {
     @available(iOS 13, *)
     @available(macOS 12, *)
     public func decode_message_body(_ payload: TSDKParamsOfDecodeMessageBody) async throws -> TSDKDecodedMessageBody {
-        try await withCheckedThrowingContinuation { continuation in
-            do {
-                let method: String = "decode_message_body"
-                try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                    var response: TSDKBindingResponse<TSDKDecodedMessageBody, TSDKClientError> = .init()
-                    response.update(requestId, params, responseType, finished)
-                    if let error = response.error {
-                        continuation.resume(throwing: error)
-                    } else if let result = response.result {
-                        continuation.resume(returning: result)
-                    } else {
-                        continuation.resume(throwing: TSDKClientError("Nothing for return"))
+        do {
+            return try await withCheckedThrowingContinuation { continuation in
+                do {
+                    let method: String = "decode_message_body"
+                    try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                        var response: TSDKBindingResponse<TSDKDecodedMessageBody, TSDKClientError> = .init()
+                        response.update(requestId, params, responseType, finished)
+                        if let error = response.error {
+                            continuation.resume(throwing: error)
+                        } else if let result = response.result {
+                            continuation.resume(returning: result)
+                        } else {
+                            continuation.resume(throwing: TSDKClientError("Nothing for return"))
+                        }
                     }
+                } catch {
+                    continuation.resume(throwing: error)
                 }
-            } catch {
-                continuation.resume(throwing: error)
             }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
     /// Creates account state BOC
     public func encode_account(_ payload: TSDKParamsOfEncodeAccount, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKResultOfEncodeAccount, TSDKClientError>) throws -> Void
     ) throws {
-        let method: String = "encode_account"
-        try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-            var response: TSDKBindingResponse<TSDKResultOfEncodeAccount, TSDKClientError> = .init()
-            response.update(requestId, params, responseType, finished)
-            try handler(response)
+        do {
+            let method: String = "encode_account"
+            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                var response: TSDKBindingResponse<TSDKResultOfEncodeAccount, TSDKClientError> = .init()
+                response.update(requestId, params, responseType, finished)
+                try handler(response)
+            }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
@@ -313,23 +372,27 @@ public final class TSDKAbiModule {
     @available(iOS 13, *)
     @available(macOS 12, *)
     public func encode_account(_ payload: TSDKParamsOfEncodeAccount) async throws -> TSDKResultOfEncodeAccount {
-        try await withCheckedThrowingContinuation { continuation in
-            do {
-                let method: String = "encode_account"
-                try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                    var response: TSDKBindingResponse<TSDKResultOfEncodeAccount, TSDKClientError> = .init()
-                    response.update(requestId, params, responseType, finished)
-                    if let error = response.error {
-                        continuation.resume(throwing: error)
-                    } else if let result = response.result {
-                        continuation.resume(returning: result)
-                    } else {
-                        continuation.resume(throwing: TSDKClientError("Nothing for return"))
+        do {
+            return try await withCheckedThrowingContinuation { continuation in
+                do {
+                    let method: String = "encode_account"
+                    try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                        var response: TSDKBindingResponse<TSDKResultOfEncodeAccount, TSDKClientError> = .init()
+                        response.update(requestId, params, responseType, finished)
+                        if let error = response.error {
+                            continuation.resume(throwing: error)
+                        } else if let result = response.result {
+                            continuation.resume(returning: result)
+                        } else {
+                            continuation.resume(throwing: TSDKClientError("Nothing for return"))
+                        }
                     }
+                } catch {
+                    continuation.resume(throwing: error)
                 }
-            } catch {
-                continuation.resume(throwing: error)
             }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
@@ -337,11 +400,15 @@ public final class TSDKAbiModule {
     /// Note: this feature requires ABI 2.1 or higher.
     public func decode_account_data(_ payload: TSDKParamsOfDecodeAccountData, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKResultOfDecodeAccountData, TSDKClientError>) throws -> Void
     ) throws {
-        let method: String = "decode_account_data"
-        try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-            var response: TSDKBindingResponse<TSDKResultOfDecodeAccountData, TSDKClientError> = .init()
-            response.update(requestId, params, responseType, finished)
-            try handler(response)
+        do {
+            let method: String = "decode_account_data"
+            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                var response: TSDKBindingResponse<TSDKResultOfDecodeAccountData, TSDKClientError> = .init()
+                response.update(requestId, params, responseType, finished)
+                try handler(response)
+            }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
@@ -350,23 +417,27 @@ public final class TSDKAbiModule {
     @available(iOS 13, *)
     @available(macOS 12, *)
     public func decode_account_data(_ payload: TSDKParamsOfDecodeAccountData) async throws -> TSDKResultOfDecodeAccountData {
-        try await withCheckedThrowingContinuation { continuation in
-            do {
-                let method: String = "decode_account_data"
-                try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                    var response: TSDKBindingResponse<TSDKResultOfDecodeAccountData, TSDKClientError> = .init()
-                    response.update(requestId, params, responseType, finished)
-                    if let error = response.error {
-                        continuation.resume(throwing: error)
-                    } else if let result = response.result {
-                        continuation.resume(returning: result)
-                    } else {
-                        continuation.resume(throwing: TSDKClientError("Nothing for return"))
+        do {
+            return try await withCheckedThrowingContinuation { continuation in
+                do {
+                    let method: String = "decode_account_data"
+                    try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                        var response: TSDKBindingResponse<TSDKResultOfDecodeAccountData, TSDKClientError> = .init()
+                        response.update(requestId, params, responseType, finished)
+                        if let error = response.error {
+                            continuation.resume(throwing: error)
+                        } else if let result = response.result {
+                            continuation.resume(returning: result)
+                        } else {
+                            continuation.resume(throwing: TSDKClientError("Nothing for return"))
+                        }
                     }
+                } catch {
+                    continuation.resume(throwing: error)
                 }
-            } catch {
-                continuation.resume(throwing: error)
             }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
@@ -374,11 +445,15 @@ public final class TSDKAbiModule {
     /// Doesn't support ABI version >= 2.4. Use `encode_initial_data` instead
     public func update_initial_data(_ payload: TSDKParamsOfUpdateInitialData, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKResultOfUpdateInitialData, TSDKClientError>) throws -> Void
     ) throws {
-        let method: String = "update_initial_data"
-        try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-            var response: TSDKBindingResponse<TSDKResultOfUpdateInitialData, TSDKClientError> = .init()
-            response.update(requestId, params, responseType, finished)
-            try handler(response)
+        do {
+            let method: String = "update_initial_data"
+            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                var response: TSDKBindingResponse<TSDKResultOfUpdateInitialData, TSDKClientError> = .init()
+                response.update(requestId, params, responseType, finished)
+                try handler(response)
+            }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
@@ -387,23 +462,27 @@ public final class TSDKAbiModule {
     @available(iOS 13, *)
     @available(macOS 12, *)
     public func update_initial_data(_ payload: TSDKParamsOfUpdateInitialData) async throws -> TSDKResultOfUpdateInitialData {
-        try await withCheckedThrowingContinuation { continuation in
-            do {
-                let method: String = "update_initial_data"
-                try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                    var response: TSDKBindingResponse<TSDKResultOfUpdateInitialData, TSDKClientError> = .init()
-                    response.update(requestId, params, responseType, finished)
-                    if let error = response.error {
-                        continuation.resume(throwing: error)
-                    } else if let result = response.result {
-                        continuation.resume(returning: result)
-                    } else {
-                        continuation.resume(throwing: TSDKClientError("Nothing for return"))
+        do {
+            return try await withCheckedThrowingContinuation { continuation in
+                do {
+                    let method: String = "update_initial_data"
+                    try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                        var response: TSDKBindingResponse<TSDKResultOfUpdateInitialData, TSDKClientError> = .init()
+                        response.update(requestId, params, responseType, finished)
+                        if let error = response.error {
+                            continuation.resume(throwing: error)
+                        } else if let result = response.result {
+                            continuation.resume(returning: result)
+                        } else {
+                            continuation.resume(throwing: TSDKClientError("Nothing for return"))
+                        }
                     }
+                } catch {
+                    continuation.resume(throwing: error)
                 }
-            } catch {
-                continuation.resume(throwing: error)
             }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
@@ -411,11 +490,15 @@ public final class TSDKAbiModule {
     /// This function is analogue of `tvm.buildDataInit` function in Solidity.
     public func encode_initial_data(_ payload: TSDKParamsOfEncodeInitialData, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKResultOfEncodeInitialData, TSDKClientError>) throws -> Void
     ) throws {
-        let method: String = "encode_initial_data"
-        try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-            var response: TSDKBindingResponse<TSDKResultOfEncodeInitialData, TSDKClientError> = .init()
-            response.update(requestId, params, responseType, finished)
-            try handler(response)
+        do {
+            let method: String = "encode_initial_data"
+            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                var response: TSDKBindingResponse<TSDKResultOfEncodeInitialData, TSDKClientError> = .init()
+                response.update(requestId, params, responseType, finished)
+                try handler(response)
+            }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
@@ -424,23 +507,27 @@ public final class TSDKAbiModule {
     @available(iOS 13, *)
     @available(macOS 12, *)
     public func encode_initial_data(_ payload: TSDKParamsOfEncodeInitialData) async throws -> TSDKResultOfEncodeInitialData {
-        try await withCheckedThrowingContinuation { continuation in
-            do {
-                let method: String = "encode_initial_data"
-                try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                    var response: TSDKBindingResponse<TSDKResultOfEncodeInitialData, TSDKClientError> = .init()
-                    response.update(requestId, params, responseType, finished)
-                    if let error = response.error {
-                        continuation.resume(throwing: error)
-                    } else if let result = response.result {
-                        continuation.resume(returning: result)
-                    } else {
-                        continuation.resume(throwing: TSDKClientError("Nothing for return"))
+        do {
+            return try await withCheckedThrowingContinuation { continuation in
+                do {
+                    let method: String = "encode_initial_data"
+                    try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                        var response: TSDKBindingResponse<TSDKResultOfEncodeInitialData, TSDKClientError> = .init()
+                        response.update(requestId, params, responseType, finished)
+                        if let error = response.error {
+                            continuation.resume(throwing: error)
+                        } else if let result = response.result {
+                            continuation.resume(returning: result)
+                        } else {
+                            continuation.resume(throwing: TSDKClientError("Nothing for return"))
+                        }
                     }
+                } catch {
+                    continuation.resume(throwing: error)
                 }
-            } catch {
-                continuation.resume(throwing: error)
             }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
@@ -448,11 +535,15 @@ public final class TSDKAbiModule {
     /// Doesn't support ABI version >= 2.4. Use `decode_account_data` instead
     public func decode_initial_data(_ payload: TSDKParamsOfDecodeInitialData, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKResultOfDecodeInitialData, TSDKClientError>) throws -> Void
     ) throws {
-        let method: String = "decode_initial_data"
-        try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-            var response: TSDKBindingResponse<TSDKResultOfDecodeInitialData, TSDKClientError> = .init()
-            response.update(requestId, params, responseType, finished)
-            try handler(response)
+        do {
+            let method: String = "decode_initial_data"
+            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                var response: TSDKBindingResponse<TSDKResultOfDecodeInitialData, TSDKClientError> = .init()
+                response.update(requestId, params, responseType, finished)
+                try handler(response)
+            }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
@@ -461,23 +552,27 @@ public final class TSDKAbiModule {
     @available(iOS 13, *)
     @available(macOS 12, *)
     public func decode_initial_data(_ payload: TSDKParamsOfDecodeInitialData) async throws -> TSDKResultOfDecodeInitialData {
-        try await withCheckedThrowingContinuation { continuation in
-            do {
-                let method: String = "decode_initial_data"
-                try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                    var response: TSDKBindingResponse<TSDKResultOfDecodeInitialData, TSDKClientError> = .init()
-                    response.update(requestId, params, responseType, finished)
-                    if let error = response.error {
-                        continuation.resume(throwing: error)
-                    } else if let result = response.result {
-                        continuation.resume(returning: result)
-                    } else {
-                        continuation.resume(throwing: TSDKClientError("Nothing for return"))
+        do {
+            return try await withCheckedThrowingContinuation { continuation in
+                do {
+                    let method: String = "decode_initial_data"
+                    try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                        var response: TSDKBindingResponse<TSDKResultOfDecodeInitialData, TSDKClientError> = .init()
+                        response.update(requestId, params, responseType, finished)
+                        if let error = response.error {
+                            continuation.resume(throwing: error)
+                        } else if let result = response.result {
+                            continuation.resume(returning: result)
+                        } else {
+                            continuation.resume(throwing: TSDKClientError("Nothing for return"))
+                        }
                     }
+                } catch {
+                    continuation.resume(throwing: error)
                 }
-            } catch {
-                continuation.resume(throwing: error)
             }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
@@ -489,11 +584,15 @@ public final class TSDKAbiModule {
     /// Such BOC descriptions covers most users needs. If someone wants to decode some BOC whichcan not be described by these rules (i.e. BOC with TLB containing constructors of flagsdefining some parsing conditions) then they can decode the fields up to fork condition,check the parsed data manually, expand the parsing schema and then decode the whole BOCwith the full schema.
     public func decode_boc(_ payload: TSDKParamsOfDecodeBoc, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKResultOfDecodeBoc, TSDKClientError>) throws -> Void
     ) throws {
-        let method: String = "decode_boc"
-        try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-            var response: TSDKBindingResponse<TSDKResultOfDecodeBoc, TSDKClientError> = .init()
-            response.update(requestId, params, responseType, finished)
-            try handler(response)
+        do {
+            let method: String = "decode_boc"
+            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                var response: TSDKBindingResponse<TSDKResultOfDecodeBoc, TSDKClientError> = .init()
+                response.update(requestId, params, responseType, finished)
+                try handler(response)
+            }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
@@ -506,34 +605,42 @@ public final class TSDKAbiModule {
     @available(iOS 13, *)
     @available(macOS 12, *)
     public func decode_boc(_ payload: TSDKParamsOfDecodeBoc) async throws -> TSDKResultOfDecodeBoc {
-        try await withCheckedThrowingContinuation { continuation in
-            do {
-                let method: String = "decode_boc"
-                try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                    var response: TSDKBindingResponse<TSDKResultOfDecodeBoc, TSDKClientError> = .init()
-                    response.update(requestId, params, responseType, finished)
-                    if let error = response.error {
-                        continuation.resume(throwing: error)
-                    } else if let result = response.result {
-                        continuation.resume(returning: result)
-                    } else {
-                        continuation.resume(throwing: TSDKClientError("Nothing for return"))
+        do {
+            return try await withCheckedThrowingContinuation { continuation in
+                do {
+                    let method: String = "decode_boc"
+                    try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                        var response: TSDKBindingResponse<TSDKResultOfDecodeBoc, TSDKClientError> = .init()
+                        response.update(requestId, params, responseType, finished)
+                        if let error = response.error {
+                            continuation.resume(throwing: error)
+                        } else if let result = response.result {
+                            continuation.resume(returning: result)
+                        } else {
+                            continuation.resume(throwing: TSDKClientError("Nothing for return"))
+                        }
                     }
+                } catch {
+                    continuation.resume(throwing: error)
                 }
-            } catch {
-                continuation.resume(throwing: error)
             }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
     /// Encodes given parameters in JSON into a BOC using param types from ABI.
     public func encode_boc(_ payload: TSDKParamsOfAbiEncodeBoc, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKResultOfAbiEncodeBoc, TSDKClientError>) throws -> Void
     ) throws {
-        let method: String = "encode_boc"
-        try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-            var response: TSDKBindingResponse<TSDKResultOfAbiEncodeBoc, TSDKClientError> = .init()
-            response.update(requestId, params, responseType, finished)
-            try handler(response)
+        do {
+            let method: String = "encode_boc"
+            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                var response: TSDKBindingResponse<TSDKResultOfAbiEncodeBoc, TSDKClientError> = .init()
+                response.update(requestId, params, responseType, finished)
+                try handler(response)
+            }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
@@ -541,34 +648,42 @@ public final class TSDKAbiModule {
     @available(iOS 13, *)
     @available(macOS 12, *)
     public func encode_boc(_ payload: TSDKParamsOfAbiEncodeBoc) async throws -> TSDKResultOfAbiEncodeBoc {
-        try await withCheckedThrowingContinuation { continuation in
-            do {
-                let method: String = "encode_boc"
-                try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                    var response: TSDKBindingResponse<TSDKResultOfAbiEncodeBoc, TSDKClientError> = .init()
-                    response.update(requestId, params, responseType, finished)
-                    if let error = response.error {
-                        continuation.resume(throwing: error)
-                    } else if let result = response.result {
-                        continuation.resume(returning: result)
-                    } else {
-                        continuation.resume(throwing: TSDKClientError("Nothing for return"))
+        do {
+            return try await withCheckedThrowingContinuation { continuation in
+                do {
+                    let method: String = "encode_boc"
+                    try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                        var response: TSDKBindingResponse<TSDKResultOfAbiEncodeBoc, TSDKClientError> = .init()
+                        response.update(requestId, params, responseType, finished)
+                        if let error = response.error {
+                            continuation.resume(throwing: error)
+                        } else if let result = response.result {
+                            continuation.resume(returning: result)
+                        } else {
+                            continuation.resume(throwing: TSDKClientError("Nothing for return"))
+                        }
                     }
+                } catch {
+                    continuation.resume(throwing: error)
                 }
-            } catch {
-                continuation.resume(throwing: error)
             }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
     /// Calculates contract function ID by contract ABI
     public func calc_function_id(_ payload: TSDKParamsOfCalcFunctionId, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKResultOfCalcFunctionId, TSDKClientError>) throws -> Void
     ) throws {
-        let method: String = "calc_function_id"
-        try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-            var response: TSDKBindingResponse<TSDKResultOfCalcFunctionId, TSDKClientError> = .init()
-            response.update(requestId, params, responseType, finished)
-            try handler(response)
+        do {
+            let method: String = "calc_function_id"
+            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                var response: TSDKBindingResponse<TSDKResultOfCalcFunctionId, TSDKClientError> = .init()
+                response.update(requestId, params, responseType, finished)
+                try handler(response)
+            }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
@@ -576,34 +691,42 @@ public final class TSDKAbiModule {
     @available(iOS 13, *)
     @available(macOS 12, *)
     public func calc_function_id(_ payload: TSDKParamsOfCalcFunctionId) async throws -> TSDKResultOfCalcFunctionId {
-        try await withCheckedThrowingContinuation { continuation in
-            do {
-                let method: String = "calc_function_id"
-                try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                    var response: TSDKBindingResponse<TSDKResultOfCalcFunctionId, TSDKClientError> = .init()
-                    response.update(requestId, params, responseType, finished)
-                    if let error = response.error {
-                        continuation.resume(throwing: error)
-                    } else if let result = response.result {
-                        continuation.resume(returning: result)
-                    } else {
-                        continuation.resume(throwing: TSDKClientError("Nothing for return"))
+        do {
+            return try await withCheckedThrowingContinuation { continuation in
+                do {
+                    let method: String = "calc_function_id"
+                    try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                        var response: TSDKBindingResponse<TSDKResultOfCalcFunctionId, TSDKClientError> = .init()
+                        response.update(requestId, params, responseType, finished)
+                        if let error = response.error {
+                            continuation.resume(throwing: error)
+                        } else if let result = response.result {
+                            continuation.resume(returning: result)
+                        } else {
+                            continuation.resume(throwing: TSDKClientError("Nothing for return"))
+                        }
                     }
+                } catch {
+                    continuation.resume(throwing: error)
                 }
-            } catch {
-                continuation.resume(throwing: error)
             }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
     /// Extracts signature from message body and calculates hash to verify the signature
     public func get_signature_data(_ payload: TSDKParamsOfGetSignatureData, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKResultOfGetSignatureData, TSDKClientError>) throws -> Void
     ) throws {
-        let method: String = "get_signature_data"
-        try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-            var response: TSDKBindingResponse<TSDKResultOfGetSignatureData, TSDKClientError> = .init()
-            response.update(requestId, params, responseType, finished)
-            try handler(response)
+        do {
+            let method: String = "get_signature_data"
+            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                var response: TSDKBindingResponse<TSDKResultOfGetSignatureData, TSDKClientError> = .init()
+                response.update(requestId, params, responseType, finished)
+                try handler(response)
+            }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
@@ -611,23 +734,27 @@ public final class TSDKAbiModule {
     @available(iOS 13, *)
     @available(macOS 12, *)
     public func get_signature_data(_ payload: TSDKParamsOfGetSignatureData) async throws -> TSDKResultOfGetSignatureData {
-        try await withCheckedThrowingContinuation { continuation in
-            do {
-                let method: String = "get_signature_data"
-                try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                    var response: TSDKBindingResponse<TSDKResultOfGetSignatureData, TSDKClientError> = .init()
-                    response.update(requestId, params, responseType, finished)
-                    if let error = response.error {
-                        continuation.resume(throwing: error)
-                    } else if let result = response.result {
-                        continuation.resume(returning: result)
-                    } else {
-                        continuation.resume(throwing: TSDKClientError("Nothing for return"))
+        do {
+            return try await withCheckedThrowingContinuation { continuation in
+                do {
+                    let method: String = "get_signature_data"
+                    try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                        var response: TSDKBindingResponse<TSDKResultOfGetSignatureData, TSDKClientError> = .init()
+                        response.update(requestId, params, responseType, finished)
+                        if let error = response.error {
+                            continuation.resume(throwing: error)
+                        } else if let result = response.result {
+                            continuation.resume(returning: result)
+                        } else {
+                            continuation.resume(throwing: TSDKClientError("Nothing for return"))
+                        }
                     }
+                } catch {
+                    continuation.resume(throwing: error)
                 }
-            } catch {
-                continuation.resume(throwing: error)
             }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 

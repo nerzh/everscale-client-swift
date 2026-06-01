@@ -1,6 +1,5 @@
-public final class TSDKTvmModule {
-
-    private var binding: TSDKBindingModule
+public final class TSDKTvmModule: Sendable {
+    private let binding: TSDKBindingModule
     public let module: String = "tvm"
 
     public init(binding: TSDKBindingModule) {
@@ -26,11 +25,15 @@ public final class TSDKTvmModule {
     /// If you need to see the aborted transaction as a result, not as an error, set `skip_transaction_check` to `true`.
     public func run_executor(_ payload: TSDKParamsOfRunExecutor, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKResultOfRunExecutor, TSDKClientError>) throws -> Void
     ) throws {
-        let method: String = "run_executor"
-        try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-            var response: TSDKBindingResponse<TSDKResultOfRunExecutor, TSDKClientError> = .init()
-            response.update(requestId, params, responseType, finished)
-            try handler(response)
+        do {
+            let method: String = "run_executor"
+            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                var response: TSDKBindingResponse<TSDKResultOfRunExecutor, TSDKClientError> = .init()
+                response.update(requestId, params, responseType, finished)
+                try handler(response)
+            }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
@@ -54,23 +57,27 @@ public final class TSDKTvmModule {
     @available(iOS 13, *)
     @available(macOS 12, *)
     public func run_executor(_ payload: TSDKParamsOfRunExecutor) async throws -> TSDKResultOfRunExecutor {
-        try await withCheckedThrowingContinuation { continuation in
-            do {
-                let method: String = "run_executor"
-                try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                    var response: TSDKBindingResponse<TSDKResultOfRunExecutor, TSDKClientError> = .init()
-                    response.update(requestId, params, responseType, finished)
-                    if let error = response.error {
-                        continuation.resume(throwing: error)
-                    } else if let result = response.result {
-                        continuation.resume(returning: result)
-                    } else {
-                        continuation.resume(throwing: TSDKClientError("Nothing for return"))
+        do {
+            return try await withCheckedThrowingContinuation { continuation in
+                do {
+                    let method: String = "run_executor"
+                    try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                        var response: TSDKBindingResponse<TSDKResultOfRunExecutor, TSDKClientError> = .init()
+                        response.update(requestId, params, responseType, finished)
+                        if let error = response.error {
+                            continuation.resume(throwing: error)
+                        } else if let result = response.result {
+                            continuation.resume(returning: result)
+                        } else {
+                            continuation.resume(throwing: TSDKClientError("Nothing for return"))
+                        }
                     }
+                } catch {
+                    continuation.resume(throwing: error)
                 }
-            } catch {
-                continuation.resume(throwing: error)
             }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
@@ -82,11 +89,15 @@ public final class TSDKTvmModule {
     /// Attention! Updated account state is produces as well, but only`account_state.storage.state.data`  part of the BOC is updated.
     public func run_tvm(_ payload: TSDKParamsOfRunTvm, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKResultOfRunTvm, TSDKClientError>) throws -> Void
     ) throws {
-        let method: String = "run_tvm"
-        try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-            var response: TSDKBindingResponse<TSDKResultOfRunTvm, TSDKClientError> = .init()
-            response.update(requestId, params, responseType, finished)
-            try handler(response)
+        do {
+            let method: String = "run_tvm"
+            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                var response: TSDKBindingResponse<TSDKResultOfRunTvm, TSDKClientError> = .init()
+                response.update(requestId, params, responseType, finished)
+                try handler(response)
+            }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
@@ -99,23 +110,27 @@ public final class TSDKTvmModule {
     @available(iOS 13, *)
     @available(macOS 12, *)
     public func run_tvm(_ payload: TSDKParamsOfRunTvm) async throws -> TSDKResultOfRunTvm {
-        try await withCheckedThrowingContinuation { continuation in
-            do {
-                let method: String = "run_tvm"
-                try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                    var response: TSDKBindingResponse<TSDKResultOfRunTvm, TSDKClientError> = .init()
-                    response.update(requestId, params, responseType, finished)
-                    if let error = response.error {
-                        continuation.resume(throwing: error)
-                    } else if let result = response.result {
-                        continuation.resume(returning: result)
-                    } else {
-                        continuation.resume(throwing: TSDKClientError("Nothing for return"))
+        do {
+            return try await withCheckedThrowingContinuation { continuation in
+                do {
+                    let method: String = "run_tvm"
+                    try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                        var response: TSDKBindingResponse<TSDKResultOfRunTvm, TSDKClientError> = .init()
+                        response.update(requestId, params, responseType, finished)
+                        if let error = response.error {
+                            continuation.resume(throwing: error)
+                        } else if let result = response.result {
+                            continuation.resume(returning: result)
+                        } else {
+                            continuation.resume(throwing: TSDKClientError("Nothing for return"))
+                        }
                     }
+                } catch {
+                    continuation.resume(throwing: error)
                 }
-            } catch {
-                continuation.resume(throwing: error)
             }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
@@ -123,11 +138,15 @@ public final class TSDKTvmModule {
     /// Executes a get-method of FIFT contract that fulfills the smc-guidelines https://test.ton.org/smc-guidelines.txtand returns the result data from TVM's stack
     public func run_get(_ payload: TSDKParamsOfRunGet, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKResultOfRunGet, TSDKClientError>) throws -> Void
     ) throws {
-        let method: String = "run_get"
-        try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-            var response: TSDKBindingResponse<TSDKResultOfRunGet, TSDKClientError> = .init()
-            response.update(requestId, params, responseType, finished)
-            try handler(response)
+        do {
+            let method: String = "run_get"
+            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                var response: TSDKBindingResponse<TSDKResultOfRunGet, TSDKClientError> = .init()
+                response.update(requestId, params, responseType, finished)
+                try handler(response)
+            }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
@@ -136,23 +155,27 @@ public final class TSDKTvmModule {
     @available(iOS 13, *)
     @available(macOS 12, *)
     public func run_get(_ payload: TSDKParamsOfRunGet) async throws -> TSDKResultOfRunGet {
-        try await withCheckedThrowingContinuation { continuation in
-            do {
-                let method: String = "run_get"
-                try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                    var response: TSDKBindingResponse<TSDKResultOfRunGet, TSDKClientError> = .init()
-                    response.update(requestId, params, responseType, finished)
-                    if let error = response.error {
-                        continuation.resume(throwing: error)
-                    } else if let result = response.result {
-                        continuation.resume(returning: result)
-                    } else {
-                        continuation.resume(throwing: TSDKClientError("Nothing for return"))
+        do {
+            return try await withCheckedThrowingContinuation { continuation in
+                do {
+                    let method: String = "run_get"
+                    try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                        var response: TSDKBindingResponse<TSDKResultOfRunGet, TSDKClientError> = .init()
+                        response.update(requestId, params, responseType, finished)
+                        if let error = response.error {
+                            continuation.resume(throwing: error)
+                        } else if let result = response.result {
+                            continuation.resume(returning: result)
+                        } else {
+                            continuation.resume(throwing: TSDKClientError("Nothing for return"))
+                        }
                     }
+                } catch {
+                    continuation.resume(throwing: error)
                 }
-            } catch {
-                continuation.resume(throwing: error)
             }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 

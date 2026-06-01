@@ -63,153 +63,51 @@ client.crypto.factorize(TSDKParamsOfFactorize(composite: "17ED48941A08F981")) { 
 }
 ```
 
-## Setup TONSDK For Linux and MacOS
+## Native ever-sdk dependency
 
-### Install sdk with bash script
- 
-0. This download SDK to current dirrectory, compile it and add library symlinks to your system   
+This package does not use system `pkg-config`.
+
+On Apple platforms the installer creates a local binary target:
+
+```text
+Dependencies/ever-sdk/prebuilt/CTonSDK.xcframework
+```
+
+On Linux the package links `libever_client.a` from the package-local directory:
+
+```text
+Dependencies/ever-sdk/prebuilt/<platform>/libever_client.a
+```
+
+Install or update the native dependency manually from the package checkout:
+
 ```sh
-cd everscale-client-swift
+ruby install_EverSdk.rb
 ```
 
-1. For install or update the SDK version simply by running these command 
+On macOS the default command builds macOS, iOS device, and iOS simulator libraries, then packages them into `CTonSDK.xcframework`. On Linux it builds the current Linux host architecture.
+
+Useful variants:
+
 ```sh
-bash scripts/install_tonsdk.sh
+ruby install_EverSdk.rb --platform current
+ruby install_EverSdk.rb --platform linux
+ruby install_EverSdk.rb --platform ios
+ruby install_EverSdk.rb --platform ios-simulator
+ruby install_EverSdk.rb --platform macos
+ruby install_EverSdk.rb --ref master
+ruby install_EverSdk.rb --skip-build --no-update
 ```
 
-### Manual install sdk ( if you have any problem with script install_tonsdk.sh )
+The script clones `https://github.com/everx-labs/ever-sdk` into `Dependencies/ever-sdk`, installs missing Rust targets with `rustup`, builds with Cargo, and copies the ready static libraries into `Dependencies/ever-sdk/prebuilt`.
 
-<details>
-  <summary>SPOILER: Manual installation</summary>
+It also copies the matching `ever_client/tonclient.h` from the checked out `ever-sdk` into `Sources/CTonSDK/include/CTonSDK/tonclient.h`, so Swift sees the C API from the same SDK revision that was built.
 
-0. Install Rust to your OS   
-1. git clone https://github.com/tonlabs/ever-sdk
-2. cd ./SDK
-3. cargo update
-4. cargo build --release
-5. copy or create symlink of dynamic library    
-__macOS :__  
-**./SDK/target/release/libton_client.dylib**  
-to   
-**/usr/local/lib/libton_client.dylib**  
-    
-    __Linux :__  
-**./SDK/target/release/libton_client.so**     
-to    
-**/usr/lib/libton_client.so**  
-6. Create pkgConfig file :  
-    
-__macOS :__  
-    **/usr/local/lib/pkgconfig/libton_client.pc**  
+You can override the linked library path without changing the checkout:
 
-```bash
-
-prefix=/usr/local
-exec_prefix=${prefix}
-includedir=${prefix}/include
-libdir=${exec_prefix}/lib
-
-Name: ton_client
-Description: ton_client
-Version: 1.0.0
-Cflags: -I${includedir}
-Libs: -L${libdir} -lton_client
-
+```sh
+EVERSCALE_CLIENT_SWIFT_EVER_CLIENT_STATIC_LIB=/absolute/path/libever_client.a swift build
 ```
-__Linux:__  
-    **/usr/lib/pkgconfig/libton_client.pc**  
-    
-```bash
-prefix=/usr
-exec_prefix=${prefix}
-includedir=${prefix}/include
-libdir=${exec_prefix}/lib
-
-Name: ton_client
-Description: ton_client
-Version: 1.0.0
-Cflags: -I${includedir}
-Libs: -L${libdir} -lton_client
-```
-7. Copy or create symlink of file   
-**/SDK/ton_client/client/tonclient.h**  
-to  
-__MacOS:__  
-**/usr/local/include/tonclient.h**  
-__Linux:__  
-**/usr/include/tonclient.h**  
-
-</details>
-
-## Setup TONSDK For iOS
-
-0.   Install Rust
-
-```bash
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh || true && \
-source ~/.profile
-```  
-
-1. Install "cargo lipo"
-
-```bash
-rustup target add aarch64-apple-ios x86_64-apple-ios || true && \
-cargo install cargo-lipo
-```
-
-2. Build SDK for iOS
-
-**Go to your project folder and:**
-
-```bash
-git clone https://github.com/tonlabs/SDK.git || true && \
-cd ./SDK
-```
-
-```bash
-git pull --ff-only || true && \
-cargo update || true && \
-cargo lipo --release
-```  
-⚠️ Wait installation
-
-3. In xcode __File > Add files to "Name Your Project"__ navigate to ./SDK/ton_client/tonclient.h
-
-4. Create bridge. In xcode __File > New > File__, select Header File, set name for example **Tonclient-Bridging-Header.h** 
-
-and add 
-
-__#include <stdbool.h>__
-
-__#import "tonclient.h"__
-
-like this:
-
-```C
-#ifndef Tonclient_Bridging_Header_h
-#define Tonclient_Bridging_Header_h
-
-#include <stdbool.h>
-#import "tonclient.h"
-
-#endif
-```   
-5. Add path to Tonclient-Bridging-Header.h **$(PROJECT_DIR)/Tonclient-Bridging-Header.h**
-
-
-![](https://user-images.githubusercontent.com/10519803/101789966-9591bc80-3b0a-11eb-8918-1adf36130617.png)
-
-6. Add path to search for libraries ( path to directory withlibton_client.a ) **$(PROJECT_DIR)/SDK/target/universal/release**
-
-
-![](https://user-images.githubusercontent.com/10519803/101791171-e524b800-3b0b-11eb-98fa-29b7a50c3b67.png)
-
-7. __File > Swift Packages > Add Package Dependency__  **https://github.com/nerzh/ton-client-swift**
-
-
-![](https://user-images.githubusercontent.com/10519803/101791238-fa99e200-3b0b-11eb-99f3-8e8120c57e96.png)
-
-8. Build project ...
 
 ## Tests
 ### If you use Xcode for Test

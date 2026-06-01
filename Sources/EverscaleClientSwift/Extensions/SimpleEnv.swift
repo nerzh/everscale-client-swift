@@ -5,9 +5,7 @@
 import Foundation
 import SwiftRegularExpression
 
-
 public final class SimpleEnv {
-
     nonisolated(unsafe) private static var env: [String: String] = .init()
     private static let debugEnvName: String = "debug"
     private static let adhocEnvName: String = "production"

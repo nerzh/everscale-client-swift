@@ -1,6 +1,5 @@
-public final class TSDKDebotModule {
-
-    private var binding: TSDKBindingModule
+public final class TSDKDebotModule: Sendable {
+    private let binding: TSDKBindingModule
     public let module: String = "debot"
 
     public init(binding: TSDKBindingModule) {
@@ -12,11 +11,15 @@ public final class TSDKDebotModule {
     /// # RemarksIt does not switch debot to context 0. Browser Callbacks are not called.
     public func initialize(_ payload: TSDKParamsOfInit, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKRegisteredDebot, TSDKClientError>) throws -> Void
     ) throws {
-        let method: String = "init"
-        try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-            var response: TSDKBindingResponse<TSDKRegisteredDebot, TSDKClientError> = .init()
-            response.update(requestId, params, responseType, finished)
-            try handler(response)
+        do {
+            let method: String = "init"
+            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                var response: TSDKBindingResponse<TSDKRegisteredDebot, TSDKClientError> = .init()
+                response.update(requestId, params, responseType, finished)
+                try handler(response)
+            }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
@@ -26,23 +29,27 @@ public final class TSDKDebotModule {
     @available(iOS 13, *)
     @available(macOS 12, *)
     public func initialize(_ payload: TSDKParamsOfInit) async throws -> TSDKRegisteredDebot {
-        try await withCheckedThrowingContinuation { continuation in
-            do {
-                let method: String = "init"
-                try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                    var response: TSDKBindingResponse<TSDKRegisteredDebot, TSDKClientError> = .init()
-                    response.update(requestId, params, responseType, finished)
-                    if let error = response.error {
-                        continuation.resume(throwing: error)
-                    } else if let result = response.result {
-                        continuation.resume(returning: result)
-                    } else {
-                        continuation.resume(throwing: TSDKClientError("Nothing for return"))
+        do {
+            return try await withCheckedThrowingContinuation { continuation in
+                do {
+                    let method: String = "init"
+                    try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                        var response: TSDKBindingResponse<TSDKRegisteredDebot, TSDKClientError> = .init()
+                        response.update(requestId, params, responseType, finished)
+                        if let error = response.error {
+                            continuation.resume(throwing: error)
+                        } else if let result = response.result {
+                            continuation.resume(returning: result)
+                        } else {
+                            continuation.resume(throwing: TSDKClientError("Nothing for return"))
+                        }
                     }
+                } catch {
+                    continuation.resume(throwing: error)
                 }
-            } catch {
-                continuation.resume(throwing: error)
             }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
@@ -54,11 +61,15 @@ public final class TSDKDebotModule {
     /// Therefore when `debote.remove` is called the debot is being deleted and the callback is calledwith `finish`=`true` which indicates that it will never be used again.
     public func start(_ payload: TSDKParamsOfStart, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKNoneResult, TSDKClientError>) throws -> Void
     ) throws {
-        let method: String = "start"
-        try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-            var response: TSDKBindingResponse<TSDKNoneResult, TSDKClientError> = .init()
-            response.update(requestId, params, responseType, finished)
-            try handler(response)
+        do {
+            let method: String = "start"
+            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                var response: TSDKBindingResponse<TSDKNoneResult, TSDKClientError> = .init()
+                response.update(requestId, params, responseType, finished)
+                try handler(response)
+            }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
@@ -71,23 +82,27 @@ public final class TSDKDebotModule {
     @available(iOS 13, *)
     @available(macOS 12, *)
     public func start(_ payload: TSDKParamsOfStart) async throws -> TSDKNoneResult {
-        try await withCheckedThrowingContinuation { continuation in
-            do {
-                let method: String = "start"
-                try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                    var response: TSDKBindingResponse<TSDKNoneResult, TSDKClientError> = .init()
-                    response.update(requestId, params, responseType, finished)
-                    if let error = response.error {
-                        continuation.resume(throwing: error)
-                    } else if let result = response.result {
-                        continuation.resume(returning: result)
-                    } else {
-                        continuation.resume(throwing: TSDKClientError("Nothing for return"))
+        do {
+            return try await withCheckedThrowingContinuation { continuation in
+                do {
+                    let method: String = "start"
+                    try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                        var response: TSDKBindingResponse<TSDKNoneResult, TSDKClientError> = .init()
+                        response.update(requestId, params, responseType, finished)
+                        if let error = response.error {
+                            continuation.resume(throwing: error)
+                        } else if let result = response.result {
+                            continuation.resume(returning: result)
+                        } else {
+                            continuation.resume(throwing: TSDKClientError("Nothing for return"))
+                        }
                     }
+                } catch {
+                    continuation.resume(throwing: error)
                 }
-            } catch {
-                continuation.resume(throwing: error)
             }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
@@ -95,11 +110,15 @@ public final class TSDKDebotModule {
     /// Downloads DeBot from blockchain and creates and fetches its metadata.
     public func fetch(_ payload: TSDKParamsOfFetch, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKResultOfFetch, TSDKClientError>) throws -> Void
     ) throws {
-        let method: String = "fetch"
-        try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-            var response: TSDKBindingResponse<TSDKResultOfFetch, TSDKClientError> = .init()
-            response.update(requestId, params, responseType, finished)
-            try handler(response)
+        do {
+            let method: String = "fetch"
+            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                var response: TSDKBindingResponse<TSDKResultOfFetch, TSDKClientError> = .init()
+                response.update(requestId, params, responseType, finished)
+                try handler(response)
+            }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
@@ -108,23 +127,27 @@ public final class TSDKDebotModule {
     @available(iOS 13, *)
     @available(macOS 12, *)
     public func fetch(_ payload: TSDKParamsOfFetch) async throws -> TSDKResultOfFetch {
-        try await withCheckedThrowingContinuation { continuation in
-            do {
-                let method: String = "fetch"
-                try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                    var response: TSDKBindingResponse<TSDKResultOfFetch, TSDKClientError> = .init()
-                    response.update(requestId, params, responseType, finished)
-                    if let error = response.error {
-                        continuation.resume(throwing: error)
-                    } else if let result = response.result {
-                        continuation.resume(returning: result)
-                    } else {
-                        continuation.resume(throwing: TSDKClientError("Nothing for return"))
+        do {
+            return try await withCheckedThrowingContinuation { continuation in
+                do {
+                    let method: String = "fetch"
+                    try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                        var response: TSDKBindingResponse<TSDKResultOfFetch, TSDKClientError> = .init()
+                        response.update(requestId, params, responseType, finished)
+                        if let error = response.error {
+                            continuation.resume(throwing: error)
+                        } else if let result = response.result {
+                            continuation.resume(returning: result)
+                        } else {
+                            continuation.resume(throwing: TSDKClientError("Nothing for return"))
+                        }
                     }
+                } catch {
+                    continuation.resume(throwing: error)
                 }
-            } catch {
-                continuation.resume(throwing: error)
             }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
@@ -134,11 +157,15 @@ public final class TSDKDebotModule {
     /// # RemarksChain of actions can be executed if input action generates a list of subactions.
     public func execute(_ payload: TSDKParamsOfExecute, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKNoneResult, TSDKClientError>) throws -> Void
     ) throws {
-        let method: String = "execute"
-        try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-            var response: TSDKBindingResponse<TSDKNoneResult, TSDKClientError> = .init()
-            response.update(requestId, params, responseType, finished)
-            try handler(response)
+        do {
+            let method: String = "execute"
+            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                var response: TSDKBindingResponse<TSDKNoneResult, TSDKClientError> = .init()
+                response.update(requestId, params, responseType, finished)
+                try handler(response)
+            }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
@@ -149,23 +176,27 @@ public final class TSDKDebotModule {
     @available(iOS 13, *)
     @available(macOS 12, *)
     public func execute(_ payload: TSDKParamsOfExecute) async throws -> TSDKNoneResult {
-        try await withCheckedThrowingContinuation { continuation in
-            do {
-                let method: String = "execute"
-                try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                    var response: TSDKBindingResponse<TSDKNoneResult, TSDKClientError> = .init()
-                    response.update(requestId, params, responseType, finished)
-                    if let error = response.error {
-                        continuation.resume(throwing: error)
-                    } else if let result = response.result {
-                        continuation.resume(returning: result)
-                    } else {
-                        continuation.resume(throwing: TSDKClientError("Nothing for return"))
+        do {
+            return try await withCheckedThrowingContinuation { continuation in
+                do {
+                    let method: String = "execute"
+                    try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                        var response: TSDKBindingResponse<TSDKNoneResult, TSDKClientError> = .init()
+                        response.update(requestId, params, responseType, finished)
+                        if let error = response.error {
+                            continuation.resume(throwing: error)
+                        } else if let result = response.result {
+                            continuation.resume(returning: result)
+                        } else {
+                            continuation.resume(throwing: TSDKClientError("Nothing for return"))
+                        }
                     }
+                } catch {
+                    continuation.resume(throwing: error)
                 }
-            } catch {
-                continuation.resume(throwing: error)
             }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
@@ -173,11 +204,15 @@ public final class TSDKDebotModule {
     /// Used by Debot Browser to send response on Dinterface call or from other Debots.
     public func send(_ payload: TSDKParamsOfSend, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKNoneResult, TSDKClientError>) throws -> Void
     ) throws {
-        let method: String = "send"
-        try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-            var response: TSDKBindingResponse<TSDKNoneResult, TSDKClientError> = .init()
-            response.update(requestId, params, responseType, finished)
-            try handler(response)
+        do {
+            let method: String = "send"
+            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                var response: TSDKBindingResponse<TSDKNoneResult, TSDKClientError> = .init()
+                response.update(requestId, params, responseType, finished)
+                try handler(response)
+            }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
@@ -186,23 +221,27 @@ public final class TSDKDebotModule {
     @available(iOS 13, *)
     @available(macOS 12, *)
     public func send(_ payload: TSDKParamsOfSend) async throws -> TSDKNoneResult {
-        try await withCheckedThrowingContinuation { continuation in
-            do {
-                let method: String = "send"
-                try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                    var response: TSDKBindingResponse<TSDKNoneResult, TSDKClientError> = .init()
-                    response.update(requestId, params, responseType, finished)
-                    if let error = response.error {
-                        continuation.resume(throwing: error)
-                    } else if let result = response.result {
-                        continuation.resume(returning: result)
-                    } else {
-                        continuation.resume(throwing: TSDKClientError("Nothing for return"))
+        do {
+            return try await withCheckedThrowingContinuation { continuation in
+                do {
+                    let method: String = "send"
+                    try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                        var response: TSDKBindingResponse<TSDKNoneResult, TSDKClientError> = .init()
+                        response.update(requestId, params, responseType, finished)
+                        if let error = response.error {
+                            continuation.resume(throwing: error)
+                        } else if let result = response.result {
+                            continuation.resume(returning: result)
+                        } else {
+                            continuation.resume(throwing: TSDKClientError("Nothing for return"))
+                        }
                     }
+                } catch {
+                    continuation.resume(throwing: error)
                 }
-            } catch {
-                continuation.resume(throwing: error)
             }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
@@ -210,11 +249,15 @@ public final class TSDKDebotModule {
     /// Removes handle from Client Context and drops debot engine referenced by that handle.
     public func remove(_ payload: TSDKParamsOfRemove, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKNoneResult, TSDKClientError>) throws -> Void
     ) throws {
-        let method: String = "remove"
-        try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-            var response: TSDKBindingResponse<TSDKNoneResult, TSDKClientError> = .init()
-            response.update(requestId, params, responseType, finished)
-            try handler(response)
+        do {
+            let method: String = "remove"
+            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                var response: TSDKBindingResponse<TSDKNoneResult, TSDKClientError> = .init()
+                response.update(requestId, params, responseType, finished)
+                try handler(response)
+            }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
@@ -223,23 +266,27 @@ public final class TSDKDebotModule {
     @available(iOS 13, *)
     @available(macOS 12, *)
     public func remove(_ payload: TSDKParamsOfRemove) async throws -> TSDKNoneResult {
-        try await withCheckedThrowingContinuation { continuation in
-            do {
-                let method: String = "remove"
-                try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                    var response: TSDKBindingResponse<TSDKNoneResult, TSDKClientError> = .init()
-                    response.update(requestId, params, responseType, finished)
-                    if let error = response.error {
-                        continuation.resume(throwing: error)
-                    } else if let result = response.result {
-                        continuation.resume(returning: result)
-                    } else {
-                        continuation.resume(throwing: TSDKClientError("Nothing for return"))
+        do {
+            return try await withCheckedThrowingContinuation { continuation in
+                do {
+                    let method: String = "remove"
+                    try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                        var response: TSDKBindingResponse<TSDKNoneResult, TSDKClientError> = .init()
+                        response.update(requestId, params, responseType, finished)
+                        if let error = response.error {
+                            continuation.resume(throwing: error)
+                        } else if let result = response.result {
+                            continuation.resume(returning: result)
+                        } else {
+                            continuation.resume(throwing: TSDKClientError("Nothing for return"))
+                        }
                     }
+                } catch {
+                    continuation.resume(throwing: error)
                 }
-            } catch {
-                continuation.resume(throwing: error)
             }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 

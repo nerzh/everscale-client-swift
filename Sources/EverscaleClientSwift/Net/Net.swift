@@ -1,6 +1,5 @@
-public final class TSDKNetModule {
-
-    private var binding: TSDKBindingModule
+public final class TSDKNetModule: Sendable {
+    private let binding: TSDKBindingModule
     public let module: String = "net"
 
     public init(binding: TSDKBindingModule) {
@@ -10,11 +9,15 @@ public final class TSDKNetModule {
     /// Performs DAppServer GraphQL query.
     public func query(_ payload: TSDKParamsOfQuery, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKResultOfQuery, TSDKClientError>) throws -> Void
     ) throws {
-        let method: String = "query"
-        try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-            var response: TSDKBindingResponse<TSDKResultOfQuery, TSDKClientError> = .init()
-            response.update(requestId, params, responseType, finished)
-            try handler(response)
+        do {
+            let method: String = "query"
+            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                var response: TSDKBindingResponse<TSDKResultOfQuery, TSDKClientError> = .init()
+                response.update(requestId, params, responseType, finished)
+                try handler(response)
+            }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
@@ -22,34 +25,42 @@ public final class TSDKNetModule {
     @available(iOS 13, *)
     @available(macOS 12, *)
     public func query(_ payload: TSDKParamsOfQuery) async throws -> TSDKResultOfQuery {
-        try await withCheckedThrowingContinuation { continuation in
-            do {
-                let method: String = "query"
-                try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                    var response: TSDKBindingResponse<TSDKResultOfQuery, TSDKClientError> = .init()
-                    response.update(requestId, params, responseType, finished)
-                    if let error = response.error {
-                        continuation.resume(throwing: error)
-                    } else if let result = response.result {
-                        continuation.resume(returning: result)
-                    } else {
-                        continuation.resume(throwing: TSDKClientError("Nothing for return"))
+        do {
+            return try await withCheckedThrowingContinuation { continuation in
+                do {
+                    let method: String = "query"
+                    try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                        var response: TSDKBindingResponse<TSDKResultOfQuery, TSDKClientError> = .init()
+                        response.update(requestId, params, responseType, finished)
+                        if let error = response.error {
+                            continuation.resume(throwing: error)
+                        } else if let result = response.result {
+                            continuation.resume(returning: result)
+                        } else {
+                            continuation.resume(throwing: TSDKClientError("Nothing for return"))
+                        }
                     }
+                } catch {
+                    continuation.resume(throwing: error)
                 }
-            } catch {
-                continuation.resume(throwing: error)
             }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
     /// Performs multiple queries per single fetch.
     public func batch_query(_ payload: TSDKParamsOfBatchQuery, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKResultOfBatchQuery, TSDKClientError>) throws -> Void
     ) throws {
-        let method: String = "batch_query"
-        try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-            var response: TSDKBindingResponse<TSDKResultOfBatchQuery, TSDKClientError> = .init()
-            response.update(requestId, params, responseType, finished)
-            try handler(response)
+        do {
+            let method: String = "batch_query"
+            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                var response: TSDKBindingResponse<TSDKResultOfBatchQuery, TSDKClientError> = .init()
+                response.update(requestId, params, responseType, finished)
+                try handler(response)
+            }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
@@ -57,23 +68,27 @@ public final class TSDKNetModule {
     @available(iOS 13, *)
     @available(macOS 12, *)
     public func batch_query(_ payload: TSDKParamsOfBatchQuery) async throws -> TSDKResultOfBatchQuery {
-        try await withCheckedThrowingContinuation { continuation in
-            do {
-                let method: String = "batch_query"
-                try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                    var response: TSDKBindingResponse<TSDKResultOfBatchQuery, TSDKClientError> = .init()
-                    response.update(requestId, params, responseType, finished)
-                    if let error = response.error {
-                        continuation.resume(throwing: error)
-                    } else if let result = response.result {
-                        continuation.resume(returning: result)
-                    } else {
-                        continuation.resume(throwing: TSDKClientError("Nothing for return"))
+        do {
+            return try await withCheckedThrowingContinuation { continuation in
+                do {
+                    let method: String = "batch_query"
+                    try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                        var response: TSDKBindingResponse<TSDKResultOfBatchQuery, TSDKClientError> = .init()
+                        response.update(requestId, params, responseType, finished)
+                        if let error = response.error {
+                            continuation.resume(throwing: error)
+                        } else if let result = response.result {
+                            continuation.resume(returning: result)
+                        } else {
+                            continuation.resume(throwing: TSDKClientError("Nothing for return"))
+                        }
                     }
+                } catch {
+                    continuation.resume(throwing: error)
                 }
-            } catch {
-                continuation.resume(throwing: error)
             }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
@@ -82,11 +97,15 @@ public final class TSDKNetModule {
     /// The projection fields are limited to `result` fields
     public func query_collection(_ payload: TSDKParamsOfQueryCollection, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKResultOfQueryCollection, TSDKClientError>) throws -> Void
     ) throws {
-        let method: String = "query_collection"
-        try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-            var response: TSDKBindingResponse<TSDKResultOfQueryCollection, TSDKClientError> = .init()
-            response.update(requestId, params, responseType, finished)
-            try handler(response)
+        do {
+            let method: String = "query_collection"
+            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                var response: TSDKBindingResponse<TSDKResultOfQueryCollection, TSDKClientError> = .init()
+                response.update(requestId, params, responseType, finished)
+                try handler(response)
+            }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
@@ -96,23 +115,27 @@ public final class TSDKNetModule {
     @available(iOS 13, *)
     @available(macOS 12, *)
     public func query_collection(_ payload: TSDKParamsOfQueryCollection) async throws -> TSDKResultOfQueryCollection {
-        try await withCheckedThrowingContinuation { continuation in
-            do {
-                let method: String = "query_collection"
-                try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                    var response: TSDKBindingResponse<TSDKResultOfQueryCollection, TSDKClientError> = .init()
-                    response.update(requestId, params, responseType, finished)
-                    if let error = response.error {
-                        continuation.resume(throwing: error)
-                    } else if let result = response.result {
-                        continuation.resume(returning: result)
-                    } else {
-                        continuation.resume(throwing: TSDKClientError("Nothing for return"))
+        do {
+            return try await withCheckedThrowingContinuation { continuation in
+                do {
+                    let method: String = "query_collection"
+                    try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                        var response: TSDKBindingResponse<TSDKResultOfQueryCollection, TSDKClientError> = .init()
+                        response.update(requestId, params, responseType, finished)
+                        if let error = response.error {
+                            continuation.resume(throwing: error)
+                        } else if let result = response.result {
+                            continuation.resume(returning: result)
+                        } else {
+                            continuation.resume(throwing: TSDKClientError("Nothing for return"))
+                        }
                     }
+                } catch {
+                    continuation.resume(throwing: error)
                 }
-            } catch {
-                continuation.resume(throwing: error)
             }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
@@ -120,11 +143,15 @@ public final class TSDKNetModule {
     /// Aggregates values from the specified `fields` for recordsthat satisfies the `filter` conditions,
     public func aggregate_collection(_ payload: TSDKParamsOfAggregateCollection, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKResultOfAggregateCollection, TSDKClientError>) throws -> Void
     ) throws {
-        let method: String = "aggregate_collection"
-        try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-            var response: TSDKBindingResponse<TSDKResultOfAggregateCollection, TSDKClientError> = .init()
-            response.update(requestId, params, responseType, finished)
-            try handler(response)
+        do {
+            let method: String = "aggregate_collection"
+            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                var response: TSDKBindingResponse<TSDKResultOfAggregateCollection, TSDKClientError> = .init()
+                response.update(requestId, params, responseType, finished)
+                try handler(response)
+            }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
@@ -133,23 +160,27 @@ public final class TSDKNetModule {
     @available(iOS 13, *)
     @available(macOS 12, *)
     public func aggregate_collection(_ payload: TSDKParamsOfAggregateCollection) async throws -> TSDKResultOfAggregateCollection {
-        try await withCheckedThrowingContinuation { continuation in
-            do {
-                let method: String = "aggregate_collection"
-                try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                    var response: TSDKBindingResponse<TSDKResultOfAggregateCollection, TSDKClientError> = .init()
-                    response.update(requestId, params, responseType, finished)
-                    if let error = response.error {
-                        continuation.resume(throwing: error)
-                    } else if let result = response.result {
-                        continuation.resume(returning: result)
-                    } else {
-                        continuation.resume(throwing: TSDKClientError("Nothing for return"))
+        do {
+            return try await withCheckedThrowingContinuation { continuation in
+                do {
+                    let method: String = "aggregate_collection"
+                    try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                        var response: TSDKBindingResponse<TSDKResultOfAggregateCollection, TSDKClientError> = .init()
+                        response.update(requestId, params, responseType, finished)
+                        if let error = response.error {
+                            continuation.resume(throwing: error)
+                        } else if let result = response.result {
+                            continuation.resume(returning: result)
+                        } else {
+                            continuation.resume(throwing: TSDKClientError("Nothing for return"))
+                        }
                     }
+                } catch {
+                    continuation.resume(throwing: error)
                 }
-            } catch {
-                continuation.resume(throwing: error)
             }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
@@ -160,11 +191,15 @@ public final class TSDKNetModule {
     /// The projection fields are limited to `result` fields
     public func wait_for_collection(_ payload: TSDKParamsOfWaitForCollection, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKResultOfWaitForCollection, TSDKClientError>) throws -> Void
     ) throws {
-        let method: String = "wait_for_collection"
-        try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-            var response: TSDKBindingResponse<TSDKResultOfWaitForCollection, TSDKClientError> = .init()
-            response.update(requestId, params, responseType, finished)
-            try handler(response)
+        do {
+            let method: String = "wait_for_collection"
+            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                var response: TSDKBindingResponse<TSDKResultOfWaitForCollection, TSDKClientError> = .init()
+                response.update(requestId, params, responseType, finished)
+                try handler(response)
+            }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
@@ -176,23 +211,27 @@ public final class TSDKNetModule {
     @available(iOS 13, *)
     @available(macOS 12, *)
     public func wait_for_collection(_ payload: TSDKParamsOfWaitForCollection) async throws -> TSDKResultOfWaitForCollection {
-        try await withCheckedThrowingContinuation { continuation in
-            do {
-                let method: String = "wait_for_collection"
-                try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                    var response: TSDKBindingResponse<TSDKResultOfWaitForCollection, TSDKClientError> = .init()
-                    response.update(requestId, params, responseType, finished)
-                    if let error = response.error {
-                        continuation.resume(throwing: error)
-                    } else if let result = response.result {
-                        continuation.resume(returning: result)
-                    } else {
-                        continuation.resume(throwing: TSDKClientError("Nothing for return"))
+        do {
+            return try await withCheckedThrowingContinuation { continuation in
+                do {
+                    let method: String = "wait_for_collection"
+                    try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                        var response: TSDKBindingResponse<TSDKResultOfWaitForCollection, TSDKClientError> = .init()
+                        response.update(requestId, params, responseType, finished)
+                        if let error = response.error {
+                            continuation.resume(throwing: error)
+                        } else if let result = response.result {
+                            continuation.resume(returning: result)
+                        } else {
+                            continuation.resume(throwing: TSDKClientError("Nothing for return"))
+                        }
                     }
+                } catch {
+                    continuation.resume(throwing: error)
                 }
-            } catch {
-                continuation.resume(throwing: error)
             }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
@@ -200,11 +239,15 @@ public final class TSDKNetModule {
     /// Cancels a subscription specified by its handle.
     public func unsubscribe(_ payload: TSDKResultOfSubscribeCollection, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKNoneResult, TSDKClientError>) throws -> Void
     ) throws {
-        let method: String = "unsubscribe"
-        try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-            var response: TSDKBindingResponse<TSDKNoneResult, TSDKClientError> = .init()
-            response.update(requestId, params, responseType, finished)
-            try handler(response)
+        do {
+            let method: String = "unsubscribe"
+            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                var response: TSDKBindingResponse<TSDKNoneResult, TSDKClientError> = .init()
+                response.update(requestId, params, responseType, finished)
+                try handler(response)
+            }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
@@ -228,11 +271,15 @@ public final class TSDKNetModule {
     /// - If application monitors sequence of some blockchain objects(for example transactions of the specific account): application mustrefresh all cached (or visible to user) lists where this sequences presents.
     public func subscribe_collection(_ payload: TSDKParamsOfSubscribeCollection, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKResultOfSubscribeCollection, TSDKClientError>) throws -> Void
     ) throws {
-        let method: String = "subscribe_collection"
-        try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-            var response: TSDKBindingResponse<TSDKResultOfSubscribeCollection, TSDKClientError> = .init()
-            response.update(requestId, params, responseType, finished)
-            try handler(response)
+        do {
+            let method: String = "subscribe_collection"
+            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                var response: TSDKBindingResponse<TSDKResultOfSubscribeCollection, TSDKClientError> = .init()
+                response.update(requestId, params, responseType, finished)
+                try handler(response)
+            }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
@@ -252,22 +299,30 @@ public final class TSDKNetModule {
     /// - If application monitors sequence of some objects(for example transactions of the specific account): application mustrefresh all cached (or visible to user) lists where this sequences presents.
     public func subscribe(_ payload: TSDKParamsOfSubscribe, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKResultOfSubscribeCollection, TSDKClientError>) throws -> Void
     ) throws {
-        let method: String = "subscribe"
-        try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-            var response: TSDKBindingResponse<TSDKResultOfSubscribeCollection, TSDKClientError> = .init()
-            response.update(requestId, params, responseType, finished)
-            try handler(response)
+        do {
+            let method: String = "subscribe"
+            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                var response: TSDKBindingResponse<TSDKResultOfSubscribeCollection, TSDKClientError> = .init()
+                response.update(requestId, params, responseType, finished)
+                try handler(response)
+            }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
     /// Suspends network module to stop any network activity
     public func suspend(_ handler: @escaping @Sendable (TSDKBindingResponse<TSDKNoneResult, TSDKClientError>) throws -> Void
     ) throws {
-        let method: String = "suspend"
-        try binding.requestLibraryAsync(methodName(module, method), "") { (requestId, params, responseType, finished) in
-            var response: TSDKBindingResponse<TSDKNoneResult, TSDKClientError> = .init()
-            response.update(requestId, params, responseType, finished)
-            try handler(response)
+        do {
+            let method: String = "suspend"
+            try binding.requestLibraryAsync(methodName(module, method), "") { (requestId, params, responseType, finished) in
+                var response: TSDKBindingResponse<TSDKNoneResult, TSDKClientError> = .init()
+                response.update(requestId, params, responseType, finished)
+                try handler(response)
+            }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
@@ -275,34 +330,42 @@ public final class TSDKNetModule {
     @available(iOS 13, *)
     @available(macOS 12, *)
     public func suspend() async throws -> TSDKNoneResult {
-        try await withCheckedThrowingContinuation { continuation in
-            do {
-                let method: String = "suspend"
-                try binding.requestLibraryAsyncAwait(methodName(module, method), "") { (requestId, params, responseType, finished) in
-                    var response: TSDKBindingResponse<TSDKNoneResult, TSDKClientError> = .init()
-                    response.update(requestId, params, responseType, finished)
-                    if let error = response.error {
-                        continuation.resume(throwing: error)
-                    } else if let result = response.result {
-                        continuation.resume(returning: result)
-                    } else {
-                        continuation.resume(throwing: TSDKClientError("Nothing for return"))
+        do {
+            return try await withCheckedThrowingContinuation { continuation in
+                do {
+                    let method: String = "suspend"
+                    try binding.requestLibraryAsyncAwait(methodName(module, method), "") { (requestId, params, responseType, finished) in
+                        var response: TSDKBindingResponse<TSDKNoneResult, TSDKClientError> = .init()
+                        response.update(requestId, params, responseType, finished)
+                        if let error = response.error {
+                            continuation.resume(throwing: error)
+                        } else if let result = response.result {
+                            continuation.resume(returning: result)
+                        } else {
+                            continuation.resume(throwing: TSDKClientError("Nothing for return"))
+                        }
                     }
+                } catch {
+                    continuation.resume(throwing: error)
                 }
-            } catch {
-                continuation.resume(throwing: error)
             }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
     /// Resumes network module to enable network activity
     public func resume(_ handler: @escaping @Sendable (TSDKBindingResponse<TSDKNoneResult, TSDKClientError>) throws -> Void
     ) throws {
-        let method: String = "resume"
-        try binding.requestLibraryAsync(methodName(module, method), "") { (requestId, params, responseType, finished) in
-            var response: TSDKBindingResponse<TSDKNoneResult, TSDKClientError> = .init()
-            response.update(requestId, params, responseType, finished)
-            try handler(response)
+        do {
+            let method: String = "resume"
+            try binding.requestLibraryAsync(methodName(module, method), "") { (requestId, params, responseType, finished) in
+                var response: TSDKBindingResponse<TSDKNoneResult, TSDKClientError> = .init()
+                response.update(requestId, params, responseType, finished)
+                try handler(response)
+            }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
@@ -310,34 +373,42 @@ public final class TSDKNetModule {
     @available(iOS 13, *)
     @available(macOS 12, *)
     public func resume() async throws -> TSDKNoneResult {
-        try await withCheckedThrowingContinuation { continuation in
-            do {
-                let method: String = "resume"
-                try binding.requestLibraryAsyncAwait(methodName(module, method), "") { (requestId, params, responseType, finished) in
-                    var response: TSDKBindingResponse<TSDKNoneResult, TSDKClientError> = .init()
-                    response.update(requestId, params, responseType, finished)
-                    if let error = response.error {
-                        continuation.resume(throwing: error)
-                    } else if let result = response.result {
-                        continuation.resume(returning: result)
-                    } else {
-                        continuation.resume(throwing: TSDKClientError("Nothing for return"))
+        do {
+            return try await withCheckedThrowingContinuation { continuation in
+                do {
+                    let method: String = "resume"
+                    try binding.requestLibraryAsyncAwait(methodName(module, method), "") { (requestId, params, responseType, finished) in
+                        var response: TSDKBindingResponse<TSDKNoneResult, TSDKClientError> = .init()
+                        response.update(requestId, params, responseType, finished)
+                        if let error = response.error {
+                            continuation.resume(throwing: error)
+                        } else if let result = response.result {
+                            continuation.resume(returning: result)
+                        } else {
+                            continuation.resume(throwing: TSDKClientError("Nothing for return"))
+                        }
                     }
+                } catch {
+                    continuation.resume(throwing: error)
                 }
-            } catch {
-                continuation.resume(throwing: error)
             }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
     /// Returns ID of the last block in a specified account shard
     public func find_last_shard_block(_ payload: TSDKParamsOfFindLastShardBlock, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKResultOfFindLastShardBlock, TSDKClientError>) throws -> Void
     ) throws {
-        let method: String = "find_last_shard_block"
-        try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-            var response: TSDKBindingResponse<TSDKResultOfFindLastShardBlock, TSDKClientError> = .init()
-            response.update(requestId, params, responseType, finished)
-            try handler(response)
+        do {
+            let method: String = "find_last_shard_block"
+            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                var response: TSDKBindingResponse<TSDKResultOfFindLastShardBlock, TSDKClientError> = .init()
+                response.update(requestId, params, responseType, finished)
+                try handler(response)
+            }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
@@ -345,34 +416,42 @@ public final class TSDKNetModule {
     @available(iOS 13, *)
     @available(macOS 12, *)
     public func find_last_shard_block(_ payload: TSDKParamsOfFindLastShardBlock) async throws -> TSDKResultOfFindLastShardBlock {
-        try await withCheckedThrowingContinuation { continuation in
-            do {
-                let method: String = "find_last_shard_block"
-                try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                    var response: TSDKBindingResponse<TSDKResultOfFindLastShardBlock, TSDKClientError> = .init()
-                    response.update(requestId, params, responseType, finished)
-                    if let error = response.error {
-                        continuation.resume(throwing: error)
-                    } else if let result = response.result {
-                        continuation.resume(returning: result)
-                    } else {
-                        continuation.resume(throwing: TSDKClientError("Nothing for return"))
+        do {
+            return try await withCheckedThrowingContinuation { continuation in
+                do {
+                    let method: String = "find_last_shard_block"
+                    try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                        var response: TSDKBindingResponse<TSDKResultOfFindLastShardBlock, TSDKClientError> = .init()
+                        response.update(requestId, params, responseType, finished)
+                        if let error = response.error {
+                            continuation.resume(throwing: error)
+                        } else if let result = response.result {
+                            continuation.resume(returning: result)
+                        } else {
+                            continuation.resume(throwing: TSDKClientError("Nothing for return"))
+                        }
                     }
+                } catch {
+                    continuation.resume(throwing: error)
                 }
-            } catch {
-                continuation.resume(throwing: error)
             }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
     /// Requests the list of alternative endpoints from server
     public func fetch_endpoints(_ handler: @escaping @Sendable (TSDKBindingResponse<TSDKEndpointsSet, TSDKClientError>) throws -> Void
     ) throws {
-        let method: String = "fetch_endpoints"
-        try binding.requestLibraryAsync(methodName(module, method), "") { (requestId, params, responseType, finished) in
-            var response: TSDKBindingResponse<TSDKEndpointsSet, TSDKClientError> = .init()
-            response.update(requestId, params, responseType, finished)
-            try handler(response)
+        do {
+            let method: String = "fetch_endpoints"
+            try binding.requestLibraryAsync(methodName(module, method), "") { (requestId, params, responseType, finished) in
+                var response: TSDKBindingResponse<TSDKEndpointsSet, TSDKClientError> = .init()
+                response.update(requestId, params, responseType, finished)
+                try handler(response)
+            }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
@@ -380,34 +459,42 @@ public final class TSDKNetModule {
     @available(iOS 13, *)
     @available(macOS 12, *)
     public func fetch_endpoints() async throws -> TSDKEndpointsSet {
-        try await withCheckedThrowingContinuation { continuation in
-            do {
-                let method: String = "fetch_endpoints"
-                try binding.requestLibraryAsyncAwait(methodName(module, method), "") { (requestId, params, responseType, finished) in
-                    var response: TSDKBindingResponse<TSDKEndpointsSet, TSDKClientError> = .init()
-                    response.update(requestId, params, responseType, finished)
-                    if let error = response.error {
-                        continuation.resume(throwing: error)
-                    } else if let result = response.result {
-                        continuation.resume(returning: result)
-                    } else {
-                        continuation.resume(throwing: TSDKClientError("Nothing for return"))
+        do {
+            return try await withCheckedThrowingContinuation { continuation in
+                do {
+                    let method: String = "fetch_endpoints"
+                    try binding.requestLibraryAsyncAwait(methodName(module, method), "") { (requestId, params, responseType, finished) in
+                        var response: TSDKBindingResponse<TSDKEndpointsSet, TSDKClientError> = .init()
+                        response.update(requestId, params, responseType, finished)
+                        if let error = response.error {
+                            continuation.resume(throwing: error)
+                        } else if let result = response.result {
+                            continuation.resume(returning: result)
+                        } else {
+                            continuation.resume(throwing: TSDKClientError("Nothing for return"))
+                        }
                     }
+                } catch {
+                    continuation.resume(throwing: error)
                 }
-            } catch {
-                continuation.resume(throwing: error)
             }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
     /// Sets the list of endpoints to use on reinit
     public func set_endpoints(_ payload: TSDKEndpointsSet, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKNoneResult, TSDKClientError>) throws -> Void
     ) throws {
-        let method: String = "set_endpoints"
-        try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-            var response: TSDKBindingResponse<TSDKNoneResult, TSDKClientError> = .init()
-            response.update(requestId, params, responseType, finished)
-            try handler(response)
+        do {
+            let method: String = "set_endpoints"
+            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                var response: TSDKBindingResponse<TSDKNoneResult, TSDKClientError> = .init()
+                response.update(requestId, params, responseType, finished)
+                try handler(response)
+            }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
@@ -415,34 +502,42 @@ public final class TSDKNetModule {
     @available(iOS 13, *)
     @available(macOS 12, *)
     public func set_endpoints(_ payload: TSDKEndpointsSet) async throws -> TSDKNoneResult {
-        try await withCheckedThrowingContinuation { continuation in
-            do {
-                let method: String = "set_endpoints"
-                try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                    var response: TSDKBindingResponse<TSDKNoneResult, TSDKClientError> = .init()
-                    response.update(requestId, params, responseType, finished)
-                    if let error = response.error {
-                        continuation.resume(throwing: error)
-                    } else if let result = response.result {
-                        continuation.resume(returning: result)
-                    } else {
-                        continuation.resume(throwing: TSDKClientError("Nothing for return"))
+        do {
+            return try await withCheckedThrowingContinuation { continuation in
+                do {
+                    let method: String = "set_endpoints"
+                    try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                        var response: TSDKBindingResponse<TSDKNoneResult, TSDKClientError> = .init()
+                        response.update(requestId, params, responseType, finished)
+                        if let error = response.error {
+                            continuation.resume(throwing: error)
+                        } else if let result = response.result {
+                            continuation.resume(returning: result)
+                        } else {
+                            continuation.resume(throwing: TSDKClientError("Nothing for return"))
+                        }
                     }
+                } catch {
+                    continuation.resume(throwing: error)
                 }
-            } catch {
-                continuation.resume(throwing: error)
             }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
     /// Requests the list of alternative endpoints from server
     public func get_endpoints(_ handler: @escaping @Sendable (TSDKBindingResponse<TSDKResultOfGetEndpoints, TSDKClientError>) throws -> Void
     ) throws {
-        let method: String = "get_endpoints"
-        try binding.requestLibraryAsync(methodName(module, method), "") { (requestId, params, responseType, finished) in
-            var response: TSDKBindingResponse<TSDKResultOfGetEndpoints, TSDKClientError> = .init()
-            response.update(requestId, params, responseType, finished)
-            try handler(response)
+        do {
+            let method: String = "get_endpoints"
+            try binding.requestLibraryAsync(methodName(module, method), "") { (requestId, params, responseType, finished) in
+                var response: TSDKBindingResponse<TSDKResultOfGetEndpoints, TSDKClientError> = .init()
+                response.update(requestId, params, responseType, finished)
+                try handler(response)
+            }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
@@ -450,23 +545,27 @@ public final class TSDKNetModule {
     @available(iOS 13, *)
     @available(macOS 12, *)
     public func get_endpoints() async throws -> TSDKResultOfGetEndpoints {
-        try await withCheckedThrowingContinuation { continuation in
-            do {
-                let method: String = "get_endpoints"
-                try binding.requestLibraryAsyncAwait(methodName(module, method), "") { (requestId, params, responseType, finished) in
-                    var response: TSDKBindingResponse<TSDKResultOfGetEndpoints, TSDKClientError> = .init()
-                    response.update(requestId, params, responseType, finished)
-                    if let error = response.error {
-                        continuation.resume(throwing: error)
-                    } else if let result = response.result {
-                        continuation.resume(returning: result)
-                    } else {
-                        continuation.resume(throwing: TSDKClientError("Nothing for return"))
+        do {
+            return try await withCheckedThrowingContinuation { continuation in
+                do {
+                    let method: String = "get_endpoints"
+                    try binding.requestLibraryAsyncAwait(methodName(module, method), "") { (requestId, params, responseType, finished) in
+                        var response: TSDKBindingResponse<TSDKResultOfGetEndpoints, TSDKClientError> = .init()
+                        response.update(requestId, params, responseType, finished)
+                        if let error = response.error {
+                            continuation.resume(throwing: error)
+                        } else if let result = response.result {
+                            continuation.resume(returning: result)
+                        } else {
+                            continuation.resume(throwing: TSDKClientError("Nothing for return"))
+                        }
                     }
+                } catch {
+                    continuation.resume(throwing: error)
                 }
-            } catch {
-                continuation.resume(throwing: error)
             }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
@@ -474,11 +573,15 @@ public final class TSDKNetModule {
     /// *Attention* this query retrieves data from 'Counterparties' service which is not supported inthe opensource version of DApp Server (and will not be supported) as well as in Evernode SE (will be supported in SE in future),but is always accessible via [EVER OS Clouds](../ton-os-api/networks.md)
     public func query_counterparties(_ payload: TSDKParamsOfQueryCounterparties, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKResultOfQueryCollection, TSDKClientError>) throws -> Void
     ) throws {
-        let method: String = "query_counterparties"
-        try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-            var response: TSDKBindingResponse<TSDKResultOfQueryCollection, TSDKClientError> = .init()
-            response.update(requestId, params, responseType, finished)
-            try handler(response)
+        do {
+            let method: String = "query_counterparties"
+            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                var response: TSDKBindingResponse<TSDKResultOfQueryCollection, TSDKClientError> = .init()
+                response.update(requestId, params, responseType, finished)
+                try handler(response)
+            }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
@@ -487,23 +590,27 @@ public final class TSDKNetModule {
     @available(iOS 13, *)
     @available(macOS 12, *)
     public func query_counterparties(_ payload: TSDKParamsOfQueryCounterparties) async throws -> TSDKResultOfQueryCollection {
-        try await withCheckedThrowingContinuation { continuation in
-            do {
-                let method: String = "query_counterparties"
-                try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                    var response: TSDKBindingResponse<TSDKResultOfQueryCollection, TSDKClientError> = .init()
-                    response.update(requestId, params, responseType, finished)
-                    if let error = response.error {
-                        continuation.resume(throwing: error)
-                    } else if let result = response.result {
-                        continuation.resume(returning: result)
-                    } else {
-                        continuation.resume(throwing: TSDKClientError("Nothing for return"))
+        do {
+            return try await withCheckedThrowingContinuation { continuation in
+                do {
+                    let method: String = "query_counterparties"
+                    try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                        var response: TSDKBindingResponse<TSDKResultOfQueryCollection, TSDKClientError> = .init()
+                        response.update(requestId, params, responseType, finished)
+                        if let error = response.error {
+                            continuation.resume(throwing: error)
+                        } else if let result = response.result {
+                            continuation.resume(returning: result)
+                        } else {
+                            continuation.resume(throwing: TSDKClientError("Nothing for return"))
+                        }
                     }
+                } catch {
+                    continuation.resume(throwing: error)
                 }
-            } catch {
-                continuation.resume(throwing: error)
             }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
@@ -528,11 +635,15 @@ public final class TSDKNetModule {
     /// So the application has to continue retrieval for missing messages if it requires.
     public func query_transaction_tree(_ payload: TSDKParamsOfQueryTransactionTree, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKResultOfQueryTransactionTree, TSDKClientError>) throws -> Void
     ) throws {
-        let method: String = "query_transaction_tree"
-        try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-            var response: TSDKBindingResponse<TSDKResultOfQueryTransactionTree, TSDKClientError> = .init()
-            response.update(requestId, params, responseType, finished)
-            try handler(response)
+        do {
+            let method: String = "query_transaction_tree"
+            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                var response: TSDKBindingResponse<TSDKResultOfQueryTransactionTree, TSDKClientError> = .init()
+                response.update(requestId, params, responseType, finished)
+                try handler(response)
+            }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
@@ -558,23 +669,27 @@ public final class TSDKNetModule {
     @available(iOS 13, *)
     @available(macOS 12, *)
     public func query_transaction_tree(_ payload: TSDKParamsOfQueryTransactionTree) async throws -> TSDKResultOfQueryTransactionTree {
-        try await withCheckedThrowingContinuation { continuation in
-            do {
-                let method: String = "query_transaction_tree"
-                try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                    var response: TSDKBindingResponse<TSDKResultOfQueryTransactionTree, TSDKClientError> = .init()
-                    response.update(requestId, params, responseType, finished)
-                    if let error = response.error {
-                        continuation.resume(throwing: error)
-                    } else if let result = response.result {
-                        continuation.resume(returning: result)
-                    } else {
-                        continuation.resume(throwing: TSDKClientError("Nothing for return"))
+        do {
+            return try await withCheckedThrowingContinuation { continuation in
+                do {
+                    let method: String = "query_transaction_tree"
+                    try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                        var response: TSDKBindingResponse<TSDKResultOfQueryTransactionTree, TSDKClientError> = .init()
+                        response.update(requestId, params, responseType, finished)
+                        if let error = response.error {
+                            continuation.resume(throwing: error)
+                        } else if let result = response.result {
+                            continuation.resume(returning: result)
+                        } else {
+                            continuation.resume(throwing: TSDKClientError("Nothing for return"))
+                        }
                     }
+                } catch {
+                    continuation.resume(throwing: error)
                 }
-            } catch {
-                continuation.resume(throwing: error)
             }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
@@ -590,11 +705,15 @@ public final class TSDKNetModule {
     /// Application should call the `remove_iterator` when iterator is no longer required.
     public func create_block_iterator(_ payload: TSDKParamsOfCreateBlockIterator, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKRegisteredIterator, TSDKClientError>) throws -> Void
     ) throws {
-        let method: String = "create_block_iterator"
-        try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-            var response: TSDKBindingResponse<TSDKRegisteredIterator, TSDKClientError> = .init()
-            response.update(requestId, params, responseType, finished)
-            try handler(response)
+        do {
+            let method: String = "create_block_iterator"
+            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                var response: TSDKBindingResponse<TSDKRegisteredIterator, TSDKClientError> = .init()
+                response.update(requestId, params, responseType, finished)
+                try handler(response)
+            }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
@@ -611,23 +730,27 @@ public final class TSDKNetModule {
     @available(iOS 13, *)
     @available(macOS 12, *)
     public func create_block_iterator(_ payload: TSDKParamsOfCreateBlockIterator) async throws -> TSDKRegisteredIterator {
-        try await withCheckedThrowingContinuation { continuation in
-            do {
-                let method: String = "create_block_iterator"
-                try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                    var response: TSDKBindingResponse<TSDKRegisteredIterator, TSDKClientError> = .init()
-                    response.update(requestId, params, responseType, finished)
-                    if let error = response.error {
-                        continuation.resume(throwing: error)
-                    } else if let result = response.result {
-                        continuation.resume(returning: result)
-                    } else {
-                        continuation.resume(throwing: TSDKClientError("Nothing for return"))
+        do {
+            return try await withCheckedThrowingContinuation { continuation in
+                do {
+                    let method: String = "create_block_iterator"
+                    try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                        var response: TSDKBindingResponse<TSDKRegisteredIterator, TSDKClientError> = .init()
+                        response.update(requestId, params, responseType, finished)
+                        if let error = response.error {
+                            continuation.resume(throwing: error)
+                        } else if let result = response.result {
+                            continuation.resume(returning: result)
+                        } else {
+                            continuation.resume(throwing: TSDKClientError("Nothing for return"))
+                        }
                     }
+                } catch {
+                    continuation.resume(throwing: error)
                 }
-            } catch {
-                continuation.resume(throwing: error)
             }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
@@ -636,11 +759,15 @@ public final class TSDKNetModule {
     /// Application should call the `remove_iterator` when iterator is no longer required.
     public func resume_block_iterator(_ payload: TSDKParamsOfResumeBlockIterator, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKRegisteredIterator, TSDKClientError>) throws -> Void
     ) throws {
-        let method: String = "resume_block_iterator"
-        try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-            var response: TSDKBindingResponse<TSDKRegisteredIterator, TSDKClientError> = .init()
-            response.update(requestId, params, responseType, finished)
-            try handler(response)
+        do {
+            let method: String = "resume_block_iterator"
+            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                var response: TSDKBindingResponse<TSDKRegisteredIterator, TSDKClientError> = .init()
+                response.update(requestId, params, responseType, finished)
+                try handler(response)
+            }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
@@ -650,23 +777,27 @@ public final class TSDKNetModule {
     @available(iOS 13, *)
     @available(macOS 12, *)
     public func resume_block_iterator(_ payload: TSDKParamsOfResumeBlockIterator) async throws -> TSDKRegisteredIterator {
-        try await withCheckedThrowingContinuation { continuation in
-            do {
-                let method: String = "resume_block_iterator"
-                try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                    var response: TSDKBindingResponse<TSDKRegisteredIterator, TSDKClientError> = .init()
-                    response.update(requestId, params, responseType, finished)
-                    if let error = response.error {
-                        continuation.resume(throwing: error)
-                    } else if let result = response.result {
-                        continuation.resume(returning: result)
-                    } else {
-                        continuation.resume(throwing: TSDKClientError("Nothing for return"))
+        do {
+            return try await withCheckedThrowingContinuation { continuation in
+                do {
+                    let method: String = "resume_block_iterator"
+                    try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                        var response: TSDKBindingResponse<TSDKRegisteredIterator, TSDKClientError> = .init()
+                        response.update(requestId, params, responseType, finished)
+                        if let error = response.error {
+                            continuation.resume(throwing: error)
+                        } else if let result = response.result {
+                            continuation.resume(returning: result)
+                        } else {
+                            continuation.resume(throwing: TSDKClientError("Nothing for return"))
+                        }
                     }
+                } catch {
+                    continuation.resume(throwing: error)
                 }
-            } catch {
-                continuation.resume(throwing: error)
             }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
@@ -691,11 +822,15 @@ public final class TSDKNetModule {
     /// Application should call the `remove_iterator` when iterator is no longer required.
     public func create_transaction_iterator(_ payload: TSDKParamsOfCreateTransactionIterator, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKRegisteredIterator, TSDKClientError>) throws -> Void
     ) throws {
-        let method: String = "create_transaction_iterator"
-        try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-            var response: TSDKBindingResponse<TSDKRegisteredIterator, TSDKClientError> = .init()
-            response.update(requestId, params, responseType, finished)
-            try handler(response)
+        do {
+            let method: String = "create_transaction_iterator"
+            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                var response: TSDKBindingResponse<TSDKRegisteredIterator, TSDKClientError> = .init()
+                response.update(requestId, params, responseType, finished)
+                try handler(response)
+            }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
@@ -721,23 +856,27 @@ public final class TSDKNetModule {
     @available(iOS 13, *)
     @available(macOS 12, *)
     public func create_transaction_iterator(_ payload: TSDKParamsOfCreateTransactionIterator) async throws -> TSDKRegisteredIterator {
-        try await withCheckedThrowingContinuation { continuation in
-            do {
-                let method: String = "create_transaction_iterator"
-                try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                    var response: TSDKBindingResponse<TSDKRegisteredIterator, TSDKClientError> = .init()
-                    response.update(requestId, params, responseType, finished)
-                    if let error = response.error {
-                        continuation.resume(throwing: error)
-                    } else if let result = response.result {
-                        continuation.resume(returning: result)
-                    } else {
-                        continuation.resume(throwing: TSDKClientError("Nothing for return"))
+        do {
+            return try await withCheckedThrowingContinuation { continuation in
+                do {
+                    let method: String = "create_transaction_iterator"
+                    try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                        var response: TSDKBindingResponse<TSDKRegisteredIterator, TSDKClientError> = .init()
+                        response.update(requestId, params, responseType, finished)
+                        if let error = response.error {
+                            continuation.resume(throwing: error)
+                        } else if let result = response.result {
+                            continuation.resume(returning: result)
+                        } else {
+                            continuation.resume(throwing: TSDKClientError("Nothing for return"))
+                        }
                     }
+                } catch {
+                    continuation.resume(throwing: error)
                 }
-            } catch {
-                continuation.resume(throwing: error)
             }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
@@ -747,11 +886,15 @@ public final class TSDKNetModule {
     /// Application should call the `remove_iterator` when iterator is no longer required.
     public func resume_transaction_iterator(_ payload: TSDKParamsOfResumeTransactionIterator, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKRegisteredIterator, TSDKClientError>) throws -> Void
     ) throws {
-        let method: String = "resume_transaction_iterator"
-        try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-            var response: TSDKBindingResponse<TSDKRegisteredIterator, TSDKClientError> = .init()
-            response.update(requestId, params, responseType, finished)
-            try handler(response)
+        do {
+            let method: String = "resume_transaction_iterator"
+            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                var response: TSDKBindingResponse<TSDKRegisteredIterator, TSDKClientError> = .init()
+                response.update(requestId, params, responseType, finished)
+                try handler(response)
+            }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
@@ -762,23 +905,27 @@ public final class TSDKNetModule {
     @available(iOS 13, *)
     @available(macOS 12, *)
     public func resume_transaction_iterator(_ payload: TSDKParamsOfResumeTransactionIterator) async throws -> TSDKRegisteredIterator {
-        try await withCheckedThrowingContinuation { continuation in
-            do {
-                let method: String = "resume_transaction_iterator"
-                try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                    var response: TSDKBindingResponse<TSDKRegisteredIterator, TSDKClientError> = .init()
-                    response.update(requestId, params, responseType, finished)
-                    if let error = response.error {
-                        continuation.resume(throwing: error)
-                    } else if let result = response.result {
-                        continuation.resume(returning: result)
-                    } else {
-                        continuation.resume(throwing: TSDKClientError("Nothing for return"))
+        do {
+            return try await withCheckedThrowingContinuation { continuation in
+                do {
+                    let method: String = "resume_transaction_iterator"
+                    try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                        var response: TSDKBindingResponse<TSDKRegisteredIterator, TSDKClientError> = .init()
+                        response.update(requestId, params, responseType, finished)
+                        if let error = response.error {
+                            continuation.resume(throwing: error)
+                        } else if let result = response.result {
+                            continuation.resume(returning: result)
+                        } else {
+                            continuation.resume(throwing: TSDKClientError("Nothing for return"))
+                        }
                     }
+                } catch {
+                    continuation.resume(throwing: error)
                 }
-            } catch {
-                continuation.resume(throwing: error)
             }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
@@ -791,11 +938,15 @@ public final class TSDKNetModule {
     /// See the description to the appropriated iterator creation function.
     public func iterator_next(_ payload: TSDKParamsOfIteratorNext, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKResultOfIteratorNext, TSDKClientError>) throws -> Void
     ) throws {
-        let method: String = "iterator_next"
-        try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-            var response: TSDKBindingResponse<TSDKResultOfIteratorNext, TSDKClientError> = .init()
-            response.update(requestId, params, responseType, finished)
-            try handler(response)
+        do {
+            let method: String = "iterator_next"
+            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                var response: TSDKBindingResponse<TSDKResultOfIteratorNext, TSDKClientError> = .init()
+                response.update(requestId, params, responseType, finished)
+                try handler(response)
+            }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
@@ -809,23 +960,27 @@ public final class TSDKNetModule {
     @available(iOS 13, *)
     @available(macOS 12, *)
     public func iterator_next(_ payload: TSDKParamsOfIteratorNext) async throws -> TSDKResultOfIteratorNext {
-        try await withCheckedThrowingContinuation { continuation in
-            do {
-                let method: String = "iterator_next"
-                try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                    var response: TSDKBindingResponse<TSDKResultOfIteratorNext, TSDKClientError> = .init()
-                    response.update(requestId, params, responseType, finished)
-                    if let error = response.error {
-                        continuation.resume(throwing: error)
-                    } else if let result = response.result {
-                        continuation.resume(returning: result)
-                    } else {
-                        continuation.resume(throwing: TSDKClientError("Nothing for return"))
+        do {
+            return try await withCheckedThrowingContinuation { continuation in
+                do {
+                    let method: String = "iterator_next"
+                    try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                        var response: TSDKBindingResponse<TSDKResultOfIteratorNext, TSDKClientError> = .init()
+                        response.update(requestId, params, responseType, finished)
+                        if let error = response.error {
+                            continuation.resume(throwing: error)
+                        } else if let result = response.result {
+                            continuation.resume(returning: result)
+                        } else {
+                            continuation.resume(throwing: TSDKClientError("Nothing for return"))
+                        }
                     }
+                } catch {
+                    continuation.resume(throwing: error)
                 }
-            } catch {
-                continuation.resume(throwing: error)
             }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
@@ -834,11 +989,15 @@ public final class TSDKNetModule {
     /// Application always should call the `remove_iterator` when iteratoris no longer required.
     public func remove_iterator(_ payload: TSDKRegisteredIterator, _ handler: @escaping @Sendable (TSDKBindingResponse<TSDKNoneResult, TSDKClientError>) throws -> Void
     ) throws {
-        let method: String = "remove_iterator"
-        try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-            var response: TSDKBindingResponse<TSDKNoneResult, TSDKClientError> = .init()
-            response.update(requestId, params, responseType, finished)
-            try handler(response)
+        do {
+            let method: String = "remove_iterator"
+            try binding.requestLibraryAsync(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                var response: TSDKBindingResponse<TSDKNoneResult, TSDKClientError> = .init()
+                response.update(requestId, params, responseType, finished)
+                try handler(response)
+            }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
@@ -848,34 +1007,42 @@ public final class TSDKNetModule {
     @available(iOS 13, *)
     @available(macOS 12, *)
     public func remove_iterator(_ payload: TSDKRegisteredIterator) async throws -> TSDKNoneResult {
-        try await withCheckedThrowingContinuation { continuation in
-            do {
-                let method: String = "remove_iterator"
-                try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
-                    var response: TSDKBindingResponse<TSDKNoneResult, TSDKClientError> = .init()
-                    response.update(requestId, params, responseType, finished)
-                    if let error = response.error {
-                        continuation.resume(throwing: error)
-                    } else if let result = response.result {
-                        continuation.resume(returning: result)
-                    } else {
-                        continuation.resume(throwing: TSDKClientError("Nothing for return"))
+        do {
+            return try await withCheckedThrowingContinuation { continuation in
+                do {
+                    let method: String = "remove_iterator"
+                    try binding.requestLibraryAsyncAwait(methodName(module, method), payload) { (requestId, params, responseType, finished) in
+                        var response: TSDKBindingResponse<TSDKNoneResult, TSDKClientError> = .init()
+                        response.update(requestId, params, responseType, finished)
+                        if let error = response.error {
+                            continuation.resume(throwing: error)
+                        } else if let result = response.result {
+                            continuation.resume(returning: result)
+                        } else {
+                            continuation.resume(throwing: TSDKClientError("Nothing for return"))
+                        }
                     }
+                } catch {
+                    continuation.resume(throwing: error)
                 }
-            } catch {
-                continuation.resume(throwing: error)
             }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
     /// Returns signature ID for configured network if it should be used in messages signature
     public func get_signature_id(_ handler: @escaping @Sendable (TSDKBindingResponse<TSDKResultOfGetSignatureId, TSDKClientError>) throws -> Void
     ) throws {
-        let method: String = "get_signature_id"
-        try binding.requestLibraryAsync(methodName(module, method), "") { (requestId, params, responseType, finished) in
-            var response: TSDKBindingResponse<TSDKResultOfGetSignatureId, TSDKClientError> = .init()
-            response.update(requestId, params, responseType, finished)
-            try handler(response)
+        do {
+            let method: String = "get_signature_id"
+            try binding.requestLibraryAsync(methodName(module, method), "") { (requestId, params, responseType, finished) in
+                var response: TSDKBindingResponse<TSDKResultOfGetSignatureId, TSDKClientError> = .init()
+                response.update(requestId, params, responseType, finished)
+                try handler(response)
+            }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 
@@ -883,23 +1050,27 @@ public final class TSDKNetModule {
     @available(iOS 13, *)
     @available(macOS 12, *)
     public func get_signature_id() async throws -> TSDKResultOfGetSignatureId {
-        try await withCheckedThrowingContinuation { continuation in
-            do {
-                let method: String = "get_signature_id"
-                try binding.requestLibraryAsyncAwait(methodName(module, method), "") { (requestId, params, responseType, finished) in
-                    var response: TSDKBindingResponse<TSDKResultOfGetSignatureId, TSDKClientError> = .init()
-                    response.update(requestId, params, responseType, finished)
-                    if let error = response.error {
-                        continuation.resume(throwing: error)
-                    } else if let result = response.result {
-                        continuation.resume(returning: result)
-                    } else {
-                        continuation.resume(throwing: TSDKClientError("Nothing for return"))
+        do {
+            return try await withCheckedThrowingContinuation { continuation in
+                do {
+                    let method: String = "get_signature_id"
+                    try binding.requestLibraryAsyncAwait(methodName(module, method), "") { (requestId, params, responseType, finished) in
+                        var response: TSDKBindingResponse<TSDKResultOfGetSignatureId, TSDKClientError> = .init()
+                        response.update(requestId, params, responseType, finished)
+                        if let error = response.error {
+                            continuation.resume(throwing: error)
+                        } else if let result = response.result {
+                            continuation.resume(returning: result)
+                        } else {
+                            continuation.resume(throwing: TSDKClientError("Nothing for return"))
+                        }
                     }
+                } catch {
+                    continuation.resume(throwing: error)
                 }
-            } catch {
-                continuation.resume(throwing: error)
             }
+        } catch {
+            throw TSDKClientError(error)
         }
     }
 

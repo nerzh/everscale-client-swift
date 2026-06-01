@@ -1,7 +1,6 @@
 import Foundation
 import SwiftExtensionsPack
 
-
 public typealias TSDKAbiHandle = UInt32
 
 public enum TSDKAbiErrorCode: Int, Codable {
@@ -141,13 +140,20 @@ public struct TSDKAbiParam: Codable, @unchecked Sendable {
     public var name: String
     public var type: String
     public var components: [TSDKAbiParam]?
-    public var `init`: Bool?
+    public var init_flag: Bool?
 
-    public init(name: String, type: String, components: [TSDKAbiParam]? = nil, `init`: Bool? = nil) {
+    enum CodingKeys: String, CodingKey {
+        case name
+        case type
+        case components
+        case init_flag = "init"
+    }
+
+    public init(name: String, type: String, components: [TSDKAbiParam]? = nil, init_flag: Bool? = nil) {
         self.name = name
         self.type = type
         self.components = components
-        self.`init` = `init`
+        self.init_flag = init_flag
     }
 }
 
@@ -730,4 +736,3 @@ public struct TSDKResultOfGetSignatureData: Codable, @unchecked Sendable {
         self.unsigned = unsigned
     }
 }
-

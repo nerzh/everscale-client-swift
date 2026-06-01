@@ -6,11 +6,29 @@ import Foundation
 import SwiftExtensionsPack
 
 public struct TSDKContextResponse: Codable {
+    public init(
+        result: UInt32? = nil,
+        error: AnyValue? = nil
+    ) {
+        self.result = result
+        self.error = error
+    }
+
     public var result: UInt32?
     public var error: AnyValue?
 }
 
 public struct TSDKBindingRequest<TSDKResult: Codable, TSDKError: Codable, TSDKCustom: Codable> {
+    public init(
+        result: @escaping (_ result: TSDKResult?) -> Void,
+        error: @escaping (_ error: TSDKError?) -> Void,
+        customHandler: @escaping (_ params: TSDKCustom?) -> Void
+    ) {
+        self.result = result
+        self.error = error
+        self.customHandler = customHandler
+    }
+
     public var result: (_ result: TSDKResult?) -> Void
     public var error: (_ error: TSDKError?) -> Void
     public var customHandler: (_ params: TSDKCustom?) -> Void
@@ -42,7 +60,7 @@ public struct TSDKDefault: Codable {
     }
 }
 
-public struct TSDKBindingResponse<TSDKResult: Codable & Sendable, TSDKError: Codable & Sendable> {
+public struct TSDKBindingResponse<TSDKResult: Codable & Sendable, TSDKError: ErrorCommon> {
     public var result: TSDKResult?
     public var error: TSDKError?
     public var dappError: TSDKError?

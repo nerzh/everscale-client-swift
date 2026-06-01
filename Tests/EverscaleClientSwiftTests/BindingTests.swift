@@ -30,10 +30,8 @@ final class BindingTests: XCTestCase {
         var version: String
     }
 
-    struct TestError: Codable {
-        var code: UInt32
-        var message: String
-        var data: AnyValue
+    struct TestError: ErrorCommon {
+        var reason: String = ""
     }
 
     func testRequestLibraryAsync() throws {
@@ -43,7 +41,7 @@ final class BindingTests: XCTestCase {
                 var response: TSDKBindingResponse<Test, TestError> = .init()
                 response.update(requestId, params, responseType, finished)
                 XCTAssertTrue(response.result?.version != nil)
-                XCTAssertEqual(response.error?.message, nil)
+                XCTAssertEqual(response.error?.description, nil)
             }
         }
         usleep(500000)

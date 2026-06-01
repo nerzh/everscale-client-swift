@@ -43,7 +43,7 @@ extension XCTestCase {
     
     func getClient() -> TSDKClientModule {
         var config: TSDKClientConfig = .init()
-        config.network = TSDKNetworkConfig(endpoints: SimpleEnv["server_address"]?.toModel([String].self) ?? [])
+        config.network = TSDKNetworkConfig(endpoints: SimpleEnv["server_address"]?.toModel([String].self))
         return try! .init(config: config)
     }
 
@@ -53,231 +53,231 @@ extension XCTestCase {
         return try handler(client, group)
     }
 
-    @discardableResult
-    func getGramsFromGiverSync(_ client: TSDKClientModule,
-                               _ accountAddress: String? = nil,
-                               _ value: Int = 10_000_000_000
-    ) throws -> Bool {
-        guard let server_address = client.config.network?.endpoints, !server_address.isEmpty else {
-            Log.warn("Please, set client network for Giver work!")
-            return false
-        }
-        
+//    @discardableResult
+//    func getGramsFromGiverSync(_ client: TSDKClientModule,
+//                               _ accountAddress: String? = nil,
+//                               _ value: Int = 10_000_000_000
+//    ) throws -> Bool {
+//        guard let server_address = client.config.network?.endpoints, !server_address.isEmpty else {
+//            Log.warn("Please, set client network for Giver work!")
+//            return false
+//        }
+//        
+//
+//        if (SimpleEnv["use_giver"] ?? SimpleEnv["giver_abi_name"]) ?? "" == "GiverNodeSE" {
+//            return try self.getGramsFromGiverSyncNodeSE(client, accountAddress ?? testAddr, value)
+//        } else if (SimpleEnv["use_giver"] ?? SimpleEnv["giver_abi_name"]) ?? "" == "GiverNodeSE_v2" {
+//            return try self.getGramsFromGiverSyncNodeSE_v2(client, accountAddress ?? testAddr, value)
+//        } else if server_address.contains("https://eri01.net.everos.dev") {
+//            return try self.getGramsFromGiverSyncNetDev(client, accountAddress ?? testAddr, value)
+//        } else {
+//            Log.warn("No Giver for this network: \(server_address)")
+//        }
+//
+//        return false
+//    }
 
-        if (SimpleEnv["use_giver"] ?? SimpleEnv["giver_abi_name"]) ?? "" == "GiverNodeSE" {
-            return try self.getGramsFromGiverSyncNodeSE(client, accountAddress ?? testAddr, value)
-        } else if (SimpleEnv["use_giver"] ?? SimpleEnv["giver_abi_name"]) ?? "" == "GiverNodeSE_v2" {
-            return try self.getGramsFromGiverSyncNodeSE_v2(client, accountAddress ?? testAddr, value)
-        } else if server_address.contains("https://eri01.net.everos.dev") {
-            return try self.getGramsFromGiverSyncNetDev(client, accountAddress ?? testAddr, value)
-        } else {
-            Log.warn("No Giver for this network: \(server_address)")
-        }
+//    func checkPositiveBallance(_ client: TSDKClientModule, _ accountAddress: String) throws -> Bool {
+//        var tokensReceived: Bool = false
+//        var fuseCounter: Int = 0
+//        let group: DispatchGroup = .init()
+//        var isPositiveBalance: Bool = false
+//        while !tokensReceived {
+//            group.enter()
+//            let paramsOfWaitForCollection: TSDKParamsOfWaitForCollection = .init(collection: "accounts",
+//                                                                                 filter: .object(["id": .object(
+//                                                                                                    [
+//                                                                                                        "eq": .string(accountAddress)
+//                                                                                                    ])
+//                                                                                 ]),
+//                                                                                 result: "id balance(format: DEC)",
+//                                                                                 timeout: nil)
+//            try client.net.wait_for_collection(paramsOfWaitForCollection) { (response) in
+//                if let result = response.result?.result.toDictionary(), let balance: Int = Int(result["balance"] as? String ?? "") {
+//                    if balance > 0 {
+//                        tokensReceived = true
+//                        isPositiveBalance = true
+//                    }
+//                }
+//                if response.finished {
+//                    group.leave()
+//                }
+//            }
+//            group.wait()
+//            fuseCounter += 1
+//            if fuseCounter > 20 && !tokensReceived {
+//                tokensReceived = true
+//                isPositiveBalance = false
+//                XCTAssertTrue(false, "Tokens does not received form giver")
+//            }
+//        }
+//        return isPositiveBalance
+//    }
 
-        return false
-    }
+//    func getGramsFromGiverSyncNetDev(_ client: TSDKClientModule,
+//                                     _ accountAddress: String,
+//                                     _ value: Int? = nil
+//    ) throws -> Bool {
+//        let walletAddress: String = SimpleEnv["giver_address"] ?? ""
+//        let abiJSONValue: AnyValue = self.readAbi(SimpleEnv["giver_abi_name"] ?? "")
+//        let abi: TSDKAbi = .init(type: .Serialized, value: abiJSONValue)
+//        let callSetInput: AnyValue = .object(["addr" : .string(accountAddress)])
+//        let callSet: TSDKCallSet = .init(function_name: SimpleEnv["giver_function"] ?? "", header: nil, input: callSetInput)
+//        let paramsOfEncodedMessage: TSDKParamsOfEncodeMessage = .init(abi: abi,
+//                                                                      address: walletAddress,
+//                                                                      deploy_set: nil,
+//                                                                      call_set: callSet,
+//                                                                      signer: TSDKSigner(type: .None),
+//                                                                      processing_try_index: nil)
+//        let sendPaylod: TSDKParamsOfProcessMessage = .init(message_encode_params: paramsOfEncodedMessage, send_events: false)
+//        let group: DispatchGroup = .init()
+//        group.enter()
+//        try client.processing.process_message(sendPaylod) { (response) in
+//            if response.finished {
+//                group.leave()
+//            }
+//        }
+//        group.wait()
+//        return try checkPositiveBallance(client, accountAddress)
+//    }
 
-    func checkPositiveBallance(_ client: TSDKClientModule, _ accountAddress: String) throws -> Bool {
-        var tokensReceived: Bool = false
-        var fuseCounter: Int = 0
-        let group: DispatchGroup = .init()
-        var isPositiveBalance: Bool = false
-        while !tokensReceived {
-            group.enter()
-            let paramsOfWaitForCollection: TSDKParamsOfWaitForCollection = .init(collection: "accounts",
-                                                                                 filter: .object(["id": .object(
-                                                                                                    [
-                                                                                                        "eq": .string(accountAddress)
-                                                                                                    ])
-                                                                                 ]),
-                                                                                 result: "id balance(format: DEC)",
-                                                                                 timeout: nil)
-            try client.net.wait_for_collection(paramsOfWaitForCollection) { (response) in
-                if let result = response.result?.result.toDictionary(), let balance: Int = Int(result["balance"] as? String ?? "") {
-                    if balance > 0 {
-                        tokensReceived = true
-                        isPositiveBalance = true
-                    }
-                }
-                if response.finished {
-                    group.leave()
-                }
-            }
-            group.wait()
-            fuseCounter += 1
-            if fuseCounter > 20 && !tokensReceived {
-                tokensReceived = true
-                isPositiveBalance = false
-                XCTAssertTrue(false, "Tokens does not received form giver")
-            }
-        }
-        return isPositiveBalance
-    }
+//    func getGramsFromGiverSyncNodeSE(_ client: TSDKClientModule,
+//                                     _ accountAddress: String,
+//                                     _ value: Int = 10_000_000_000
+//    ) throws -> Bool {
+//        let walletAddress: String = SimpleEnv["giver_address"] ?? "0:841288ed3b55d9cdafa806807f02a0ae0c169aa5edfe88a789a6482429756a94"
+//        let abiJSONValue: AnyValue = self.readAbi(SimpleEnv["giver_abi_name"] ?? "")
+//        let abi: TSDKAbi = .init(type: .Serialized, value: abiJSONValue)
+//        let callSetInput: AnyValue = .object(["dest" : .string(accountAddress), "amount": .int(Int(SimpleEnv["giver_amount"] ?? "") ?? value)])
+//        let callSet: TSDKCallSet = .init(function_name: "sendGrams", header: nil, input: callSetInput)
+//        let paramsOfEncodedMessage: TSDKParamsOfEncodeMessage = .init(abi: abi,
+//                                                                      address: walletAddress,
+//                                                                      deploy_set: nil,
+//                                                                      call_set: callSet,
+//                                                                      signer: TSDKSigner(type: .None),
+//                                                                      processing_try_index: nil)
+//        let sendPaylod: TSDKParamsOfProcessMessage = .init(message_encode_params: paramsOfEncodedMessage, send_events: false)
+//        let group: DispatchGroup = .init()
+//        group.enter()
+//        try client.processing.process_message(sendPaylod) { (response) in
+//            if response.finished {
+//                group.leave()
+//            }
+//        }
+//        group.wait()
+//        return try checkPositiveBallance(client, accountAddress)
+//    }
 
-    func getGramsFromGiverSyncNetDev(_ client: TSDKClientModule,
-                                     _ accountAddress: String,
-                                     _ value: Int? = nil
-    ) throws -> Bool {
-        let walletAddress: String = SimpleEnv["giver_address"] ?? ""
-        let abiJSONValue: AnyValue = self.readAbi(SimpleEnv["giver_abi_name"] ?? "")
-        let abi: TSDKAbi = .init(type: .Serialized, value: abiJSONValue)
-        let callSetInput: AnyValue = .object(["addr" : .string(accountAddress)])
-        let callSet: TSDKCallSet = .init(function_name: SimpleEnv["giver_function"] ?? "", header: nil, input: callSetInput)
-        let paramsOfEncodedMessage: TSDKParamsOfEncodeMessage = .init(abi: abi,
-                                                                      address: walletAddress,
-                                                                      deploy_set: nil,
-                                                                      call_set: callSet,
-                                                                      signer: TSDKSigner(type: .None),
-                                                                      processing_try_index: nil)
-        let sendPaylod: TSDKParamsOfProcessMessage = .init(message_encode_params: paramsOfEncodedMessage, send_events: false)
-        let group: DispatchGroup = .init()
-        group.enter()
-        try client.processing.process_message(sendPaylod) { (response) in
-            if response.finished {
-                group.leave()
-            }
-        }
-        group.wait()
-        return try checkPositiveBallance(client, accountAddress)
-    }
-
-    func getGramsFromGiverSyncNodeSE(_ client: TSDKClientModule,
-                                     _ accountAddress: String,
-                                     _ value: Int = 10_000_000_000
-    ) throws -> Bool {
-        let walletAddress: String = SimpleEnv["giver_address"] ?? "0:841288ed3b55d9cdafa806807f02a0ae0c169aa5edfe88a789a6482429756a94"
-        let abiJSONValue: AnyValue = self.readAbi(SimpleEnv["giver_abi_name"] ?? "")
-        let abi: TSDKAbi = .init(type: .Serialized, value: abiJSONValue)
-        let callSetInput: AnyValue = .object(["dest" : .string(accountAddress), "amount": .int(Int(SimpleEnv["giver_amount"] ?? "") ?? value)])
-        let callSet: TSDKCallSet = .init(function_name: "sendGrams", header: nil, input: callSetInput)
-        let paramsOfEncodedMessage: TSDKParamsOfEncodeMessage = .init(abi: abi,
-                                                                      address: walletAddress,
-                                                                      deploy_set: nil,
-                                                                      call_set: callSet,
-                                                                      signer: TSDKSigner(type: .None),
-                                                                      processing_try_index: nil)
-        let sendPaylod: TSDKParamsOfProcessMessage = .init(message_encode_params: paramsOfEncodedMessage, send_events: false)
-        let group: DispatchGroup = .init()
-        group.enter()
-        try client.processing.process_message(sendPaylod) { (response) in
-            if response.finished {
-                group.leave()
-            }
-        }
-        group.wait()
-        return try checkPositiveBallance(client, accountAddress)
-    }
-
-    func getGramsFromGiverSyncNodeSE_v2(_ client: TSDKClientModule,
-                                     _ accountAddress: String,
-                                     _ value: Int = 10_000_000_000
-    ) throws -> Bool {
-        let walletAddress: String = SimpleEnv["giver_address"] ?? "0:b5e9240fc2d2f1ff8cbb1d1dee7fb7cae155e5f6320e585fcc685698994a19a5"
-        let jsonKeys: TSDKKeyPair = self.readKeys(SimpleEnv["giver_abi_name"] ?? "")
-        let abiJSONValue: AnyValue = self.readAbi(SimpleEnv["giver_abi_name"] ?? "")
-        let abi: TSDKAbi = .init(type: .Serialized, value: abiJSONValue)
-        let callSetInput: AnyValue = .object(["dest" : .string(accountAddress),
-                                              "value": .int(Int(SimpleEnv["giver_amount"] ?? "") ?? value),
-                                              "bounce": .bool(false)])
-        let callSet: TSDKCallSet = .init(function_name: "sendTransaction", header: nil, input: callSetInput)
-        let paramsOfEncodedMessage: TSDKParamsOfEncodeMessage = .init(abi: abi,
-                                                                      address: walletAddress,
-                                                                      deploy_set: nil,
-                                                                      call_set: callSet,
-                                                                      signer: TSDKSigner(type: .Keys,
-                                                                                         keys: jsonKeys),
-                                                                      processing_try_index: nil)
-        let sendPaylod: TSDKParamsOfProcessMessage = .init(message_encode_params: paramsOfEncodedMessage, send_events: false)
-        let group: DispatchGroup = .init()
-        group.enter()
-        try client.processing.process_message(sendPaylod) { (response) in
-            if response.finished {
-                group.leave()
-            }
-        }
-        group.wait()
-        return try checkPositiveBallance(client, accountAddress)
-    }
+//    func getGramsFromGiverSyncNodeSE_v2(_ client: TSDKClientModule,
+//                                     _ accountAddress: String,
+//                                     _ value: Int = 10_000_000_000
+//    ) throws -> Bool {
+//        let walletAddress: String = SimpleEnv["giver_address"] ?? "0:b5e9240fc2d2f1ff8cbb1d1dee7fb7cae155e5f6320e585fcc685698994a19a5"
+//        let jsonKeys: TSDKKeyPair = self.readKeys(SimpleEnv["giver_abi_name"] ?? "")
+//        let abiJSONValue: AnyValue = self.readAbi(SimpleEnv["giver_abi_name"] ?? "")
+//        let abi: TSDKAbi = .init(type: .Serialized, value: abiJSONValue)
+//        let callSetInput: AnyValue = .object(["dest" : .string(accountAddress),
+//                                              "value": .int(Int(SimpleEnv["giver_amount"] ?? "") ?? value),
+//                                              "bounce": .bool(false)])
+//        let callSet: TSDKCallSet = .init(function_name: "sendTransaction", header: nil, input: callSetInput)
+//        let paramsOfEncodedMessage: TSDKParamsOfEncodeMessage = .init(abi: abi,
+//                                                                      address: walletAddress,
+//                                                                      deploy_set: nil,
+//                                                                      call_set: callSet,
+//                                                                      signer: TSDKSigner(type: .Keys,
+//                                                                                         keys: jsonKeys),
+//                                                                      processing_try_index: nil)
+//        let sendPaylod: TSDKParamsOfProcessMessage = .init(message_encode_params: paramsOfEncodedMessage, send_events: false)
+//        let group: DispatchGroup = .init()
+//        group.enter()
+//        try client.processing.process_message(sendPaylod) { (response) in
+//            if response.finished {
+//                group.leave()
+//            }
+//        }
+//        group.wait()
+//        return try checkPositiveBallance(client, accountAddress)
+//    }
 
 
-    func abiEncodeMessage(nameAbi: String,
-                          nameTvc: String?,
-                          address: String?,
-                          public: String?,
-                          secret: String?,
-                          signerType: TSDKSignerEnumTypes,
-                          callSetFunction_name: String?,
-                          callSetHeader: TSDKFunctionHeader?,
-                          callSetInput: AnyValue?
-    ) throws -> TSDKResultOfEncodeMessage {
-        try testAsyncMethods { (client, group) -> TSDKResultOfEncodeMessage in
-            let abiJSONValue: AnyValue = self.readAbi(nameAbi)
-            let abi: TSDKAbi = .init(type: .Serialized, value: abiJSONValue)
-            var deploySet: TSDKDeploySet?
+//    func abiEncodeMessage(nameAbi: String,
+//                          nameTvc: String?,
+//                          address: String?,
+//                          public: String?,
+//                          secret: String?,
+//                          signerType: TSDKSignerEnumTypes,
+//                          callSetFunction_name: String?,
+//                          callSetHeader: TSDKFunctionHeader?,
+//                          callSetInput: AnyValue?
+//    ) throws -> TSDKResultOfEncodeMessage {
+//        try testAsyncMethods { (client, group) -> TSDKResultOfEncodeMessage in
+//            let abiJSONValue: AnyValue = self.readAbi(nameAbi)
+//            let abi: TSDKAbi = .init(type: .Serialized, value: abiJSONValue)
+//            var deploySet: TSDKDeploySet?
+//
+//            var keys: TSDKKeyPair?
+//            var callSet: TSDKCallSet?
+//            var signer: TSDKSigner!
+//            if nameTvc != nil {
+//                let tvcData: Data = self.readTvc(nameTvc!)
+//                deploySet = .init(tvc: tvcData.base64EncodedString(), workchain_id: nil, initial_data: nil)
+//            }
+//            if `public` != nil && secret != nil {
+//                keys = .init(public_key: `public`!, secret: secret!)
+//            }
+//            switch signerType {
+//            case .External:
+//                signer = .init(type: signerType,
+//                               public_key: `public`,
+//                               keys: nil,
+//                               handle: nil)
+//            case .Keys:
+//                signer = .init(type: signerType,
+//                               public_key: nil,
+//                               keys: keys,
+//                               handle: nil)
+//            default:
+//                signer = .init(type: .None)
+//            }
+//            if callSetFunction_name != nil {
+//                callSet = .init(function_name: callSetFunction_name!,
+//                                header: callSetHeader,
+//                                input: callSetInput)
+//            }
+//
+//            let payload: TSDKParamsOfEncodeMessage = .init(abi: abi,
+//                                                           address: address,
+//                                                           deploy_set: deploySet,
+//                                                           call_set: callSet,
+//                                                           signer: signer,
+//                                                           processing_try_index: nil)
+//            var result: TSDKResultOfEncodeMessage!
+//            group.enter()
+//            try client.abi.encode_message(payload) { [group] (response) in
+//                guard let responseResult = response.result else { fatalError("Abi EncodeMessage is nil") }
+//                result = responseResult
+//                group.leave()
+//            }
+//            group.wait()
+//
+//            return result
+//        }
+//    }
 
-            var keys: TSDKKeyPair?
-            var callSet: TSDKCallSet?
-            var signer: TSDKSigner!
-            if nameTvc != nil {
-                let tvcData: Data = self.readTvc(nameTvc!)
-                deploySet = .init(tvc: tvcData.base64EncodedString(), workchain_id: nil, initial_data: nil)
-            }
-            if `public` != nil && secret != nil {
-                keys = .init(public: `public`!, secret: secret!)
-            }
-            switch signerType {
-            case .External:
-                signer = .init(type: signerType,
-                               public_key: `public`,
-                               keys: nil,
-                               handle: nil)
-            case .Keys:
-                signer = .init(type: signerType,
-                               public_key: nil,
-                               keys: keys,
-                               handle: nil)
-            default:
-                signer = .init(type: .None)
-            }
-            if callSetFunction_name != nil {
-                callSet = .init(function_name: callSetFunction_name!,
-                                header: callSetHeader,
-                                input: callSetInput)
-            }
-
-            let payload: TSDKParamsOfEncodeMessage = .init(abi: abi,
-                                                           address: address,
-                                                           deploy_set: deploySet,
-                                                           call_set: callSet,
-                                                           signer: signer,
-                                                           processing_try_index: nil)
-            var result: TSDKResultOfEncodeMessage!
-            group.enter()
-            try client.abi.encode_message(payload) { [group] (response) in
-                guard let responseResult = response.result else { fatalError("Abi EncodeMessage is nil") }
-                result = responseResult
-                group.leave()
-            }
-            group.wait()
-
-            return result
-        }
-    }
-
-    func generateKeys() throws -> TSDKKeyPair {
-        try testAsyncMethods { (client, group) in
-            group.enter()
-            var keys: TSDKKeyPair = .init(public: "", secret: "")
-            try client.crypto.generate_random_sign_keys() { [group] (response) in
-                guard let result = response.result else { fatalError("BAD SDK RESPONSE") }
-                keys.public = result.public
-                keys.secret = result.secret
-                group.leave()
-            }
-            group.wait()
-            return keys
-        }
-    }
+//    func generateKeys() throws -> TSDKKeyPair {
+//        try testAsyncMethods { (client, group) in
+//            group.enter()
+//            var keys: TSDKKeyPair = .init(public_key: "", secret: "")
+//            try client.crypto.generate_random_sign_keys() { [group] (response) in
+//                guard let result = response.result else { fatalError("BAD SDK RESPONSE") }
+//                keys.public_key = result.public_key
+//                keys.secret = result.secret
+//                group.leave()
+//            }
+//            group.wait()
+//            return keys
+//        }
+//    }
 
     func readKeys(_ name: String) -> TSDKKeyPair {
         let keysJSONPath: String = pathToRootDirectory + "/Tests/EverscaleClientSwiftTests/Fixtures/abi/\(name).keys.json"

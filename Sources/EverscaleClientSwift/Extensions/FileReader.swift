@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Oleh Hudeichuk on 22.10.2020.
 //
@@ -10,45 +10,43 @@ import Foundation
 public final class DOFileReader {
 
     public let fileURL: URL
-    private var file: UnsafeMutablePointer<FILE>? = nil
+    private var lines: [String]?
+    private var currentLineIndex: Int = 0
 
     public init(fileURL: URL) {
         self.fileURL = fileURL
     }
 
     deinit {
-        if self.file != nil { fatalError("Please, close file descriptor.") }
+        if self.lines != nil { fatalError("Please, close file descriptor.") }
     }
 
     public func open(options: String = "r") throws {
-        guard let descriptor = fopen(fileURL.path, options) else {
-            throw NSError(domain: NSPOSIXErrorDomain, code: Int(errno), userInfo: nil)
+        do {
+            let content = try String(contentsOf: fileURL, encoding: .utf8)
+            self.lines = content.components(separatedBy: .newlines)
+            self.currentLineIndex = 0
+        } catch {
+            throw TSDKClientError(error)
         }
-        self.file = descriptor
     }
 
     public func close() {
-        if let descriptor = self.file {
-            self.file = nil
-            let success: Bool = fclose(descriptor) == 0
-            assert(success)
-        }
+        self.lines = nil
+        self.currentLineIndex = 0
     }
 
     public func readLine(maxLength: Int = 4096) throws -> String? {
-        guard let descriptor = self.file else {
-            throw NSError(domain: NSPOSIXErrorDomain, code: Int(EBADF), userInfo: nil)
-        }
-        var buffer = [CChar](repeating: 0, count: maxLength)
-        guard fgets(&buffer, Int32(maxLength), descriptor) != nil else {
-            if feof(descriptor) != 0 {
-                return nil
-            } else {
-                throw NSError(domain: NSPOSIXErrorDomain, code: Int(errno), userInfo: nil)
+        do {
+            guard let lines else {
+                throw NSError(domain: NSPOSIXErrorDomain, code: Int(EBADF), userInfo: nil)
             }
+            guard currentLineIndex < lines.count else { return nil }
+            defer { currentLineIndex += 1 }
+            return lines[currentLineIndex]
+        } catch {
+            throw TSDKClientError(error)
         }
-
-        return String(cString: buffer)
     }
 
     public static func readFile(_ fileURL: URL, _ options: String = "r", _ handler: (_ line: String) -> Void) {
@@ -60,13 +58,13 @@ public final class DOFileReader {
                 handler(line)
             }
         } catch let error {
-            let message: String = "Please, check working directory in schema for this project. Current workingDirectory is \(ProcessInfo.processInfo.environment["PWD"])"
+            let message: String = "Please, check working directory in schema for this project. Current workingDirectory is \(String(describing: ProcessInfo.processInfo.environment["PWD"]))"
             fatalError("\(String(describing: error))   \(message)   ErrorFilePath: \(fileURL.path)")
         }
     }
 
     public static func readFile(_ filePath: String, _ options: String = "r", _ handler: (_ line: String) -> Void) {
-        guard let fileURL: URL = URL(string: filePath) else { fatalError("Can not convert \(filePath) to URL") }
+        let fileURL: URL = URL(fileURLWithPath: filePath)
         readFile(fileURL, options, handler)
     }
 }
